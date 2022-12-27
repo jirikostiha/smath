@@ -3,20 +3,21 @@
 namespace SMath.Functions1
 {
     /// <summary>
-    /// Identity function.
+    /// Square function.
     /// </summary>
     /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Identity_function">wikipedia</a>
+    /// <a href="https://en.wikipedia.org/wiki/Square_(algebra)">wikipedia</a>
+    /// <a href="https://en.wikipedia.org/wiki/Exponentiation#Power_functions">wikipedia</a>
     /// </remarks>
-    public class Identity : IMathFunction, ISingleDomain, ISingleImage
-    {
+    public class Power2 : IMathFunction
+    {        
         /// <inheritdoc />
-        public static bool IsEven
-            => false;
+        public static bool IsEven 
+            => true;
 
         /// <inheritdoc />
-        public static bool IsOdd
-            => true;
+        public static bool IsOdd 
+            => false;
 
         /// <inheritdoc />
         public static bool IsContinuous
@@ -24,7 +25,7 @@ namespace SMath.Functions1
 
         /// <inheritdoc />
         public static string PlainTextFormula
-            => "x";
+            => "x^2";
 
         /// <inheritdoc />
         public static (N Min, N Max) Domain<N>()
@@ -39,16 +40,16 @@ namespace SMath.Functions1
         /// <inheritdoc />
         public static (N Min, N Max) Image<N>()
             where N : IFloatingPointIeee754<N>
-            => (N.NegativeInfinity, N.PositiveInfinity);
+            => (N.Zero, N.PositiveInfinity);
 
         /// <inheritdoc />
         public static (N Min, N Max) NumberImage<N>()
             where N : INumberBase<N>, IMinMaxValue<N>
-            => (N.MinValue, N.MaxValue);
+            => (N.Zero, N.MaxValue);
 
         /// <inheritdoc />
-        public static N Eval<N>(N x)
+        public static N Eval<N>(N x) 
             where N : INumberBase<N>
-            => x;
+            => x * x;
     }
 }
