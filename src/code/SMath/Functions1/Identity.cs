@@ -9,13 +9,13 @@ namespace SMath.Functions1
     /// <a href="https://en.wikipedia.org/wiki/Identity_function">wikipedia</a>
     /// </remarks>
     public class Identity
-    {        
+    {
         /// <inheritdoc />
-        public static bool IsEven 
+        public static bool IsEven
             => false;
 
         /// <inheritdoc />
-        public static bool IsOdd 
+        public static bool IsOdd
             => true;
 
         /// <inheritdoc />
@@ -29,7 +29,7 @@ namespace SMath.Functions1
         /// <inheritdoc />
         public static (N Min, N Max) Domain<N>()
             where N : IFloatingPointIeee754<N>
-            => (N.NegativeInfinity, N.PositiveInfinity); 
+            => (N.NegativeInfinity, N.PositiveInfinity);
 
         /// <inheritdoc />
         public static (N Min, N Max) NumberDomain<N>()
@@ -47,7 +47,7 @@ namespace SMath.Functions1
             => (N.MinValue, N.MaxValue);
 
         /// <inheritdoc />
-        public static N Eval<N>(N x) 
+        public static N Eval<N>(N x)
             where N : INumberBase<N>
             => x;
     }
