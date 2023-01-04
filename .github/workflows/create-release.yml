@@ -71,6 +71,12 @@ jobs:
           draft: true
           generate_release_notes: true
           files: binaries.zip
+      
+      - name: Add GitHub Registry source
+        run: dotnet nuget add source "https://nuget.pkg.github.com/jirikostiha/index.json" --username ijkdata@gmail.com --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github
+
+      - name: Push packages to GitHub Packages NuGet feed
+        run: dotnet nuget push "${{ env.build-dir }}/*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source github
 
       - name: Remove old Releases
         uses: dev-drprasad/delete-older-releases@v0.2.1
