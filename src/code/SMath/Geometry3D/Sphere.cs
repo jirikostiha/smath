@@ -82,7 +82,7 @@ namespace SMath.Geometry3D
         /// </summary>
         /// <remarks>
         /// <a href="https://en.wikipedia.org/wiki/Spherical_cap">wikipedia</a>
-        /// <a href="https://mathworld.wolfram.com/SphericalCap.html">wolfram</a>
+        /// <a href="https://mathworld.wolfram.com/SphericalCap.html">mathworld</a>
         /// <a href="https://www.cuemath.com/measurement/volume-of-a-section-of-a-sphere/">cuemath</a>
         /// <a href="https://www.123calculus.com/en/spherical-cap-page-7-40-135.html">calculator 1</a>
         /// <a href="https://www.redcrab-software.com/en/Calculator/Spherical-Cap">calculator 2</a>
@@ -128,7 +128,6 @@ namespace SMath.Geometry3D
                         where N : IFloatingPoint<N>
                         => 0;
                 }
-
             }
 
             public static class Region

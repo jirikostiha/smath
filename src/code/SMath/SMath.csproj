@@ -10,4 +10,12 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Compile Remove="Geometry3D\Sphere.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Geometry3D\" />
+	</ItemGroup>
+
 </Project>

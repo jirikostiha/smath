@@ -33,9 +33,9 @@ namespace SMath.Geometry2D
             /// </summary>
             public static class Lenght
             {
-                public static N FromRadius<N>(N radius) 
+                public static N FromRadius<N>(N radius)
                     where N : IFloatingPoint<N>
-                    => N.CreateChecked(2) * N.Pi * radius;
+                    => N.CreateChecked(2) * N.Pi * N.CreateChecked(radius);
             }
 
             /// <summary>
@@ -85,27 +85,27 @@ namespace SMath.Geometry2D
             {
                 public static bool Point<N>(N radius, (N X, N Y) point)
                     where N : IFloatingPoint<N>
-                    => default;
+                    => throw new NotImplementedException("todo");
 
                 public static bool Point<N>((N X, N Y) center, N radius, (N X, N Y) point)
                     where N : IFloatingPoint<N>
-                    => default;
+                    => throw new NotImplementedException("todo");
 
                 public static bool LineSegment<N>(N radius, (N X, N Y) a, (N X, N Y) b)
                     where N : IFloatingPoint<N>
-                    => default;
+                    => throw new NotImplementedException("todo");
 
                 public static bool LineSegment<N>((N X, N Y) center, N radius, (N X, N Y) a, (N X, N Y) b)
                     where N : IFloatingPoint<N>
-                    => default;
+                    => throw new NotImplementedException("todo");
 
                 public static bool Circle<N>(N radius, (N X, N Y) center2, N radius2)
                     where N : IFloatingPoint<N>
-                    => default;
+                    => throw new NotImplementedException("todo");
 
                 public static bool Circle<N>((N X, N Y) center, N radius, (N X, N Y) center2, N radius2)
                     where N : IFloatingPoint<N>
-                    => default;
+                    => throw new NotImplementedException("todo");
             }
         }
 
