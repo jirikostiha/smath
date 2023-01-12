@@ -31,7 +31,7 @@ namespace SMath.Geometry2D
             /// <summary>
             /// Circumference of a circle.
             /// </summary>
-            public static class Lenght
+            public static class Length
             {
                 public static N FromRadius<N>(N radius)
                     where N : IFloatingPoint<N>
@@ -69,6 +69,20 @@ namespace SMath.Geometry2D
                 public static N FromAngle<N>(N radius, N angle)
                     where N : IFloatingPoint<N>, ITrigonometricFunctions<N>
                     => radius * N.CreateChecked(2) * N.Sin(angle / N.CreateChecked(2));
+            }
+
+            public static class Sagitta
+            {
+                public static N FromAngle<N>(N radius, N angle)
+                    where N : IFloatingPoint<N>, ITrigonometricFunctions<N>
+                    => radius * (N.CreateChecked(1) - N.Cos(angle / N.CreateChecked(2)));
+            }
+
+            public static class Apothem
+            {
+                public static N FromAngle<N>(N radius, N angle)
+                    where N : IFloatingPoint<N>, ITrigonometricFunctions<N>
+                    => radius * N.Cos(angle / N.CreateChecked(2));
             }
         }
 
@@ -113,7 +127,7 @@ namespace SMath.Geometry2D
         {
             public static class Perimeter
             {
-                public static class Lenght
+                public static class Length
                 {
                     public static N FromArcAngle<N>(N radius, N arcAngle)
                         where N : IFloatingPoint<N>

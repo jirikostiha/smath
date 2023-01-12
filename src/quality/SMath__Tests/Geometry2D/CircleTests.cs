@@ -1,5 +1,6 @@
 ﻿using System;
 using Xunit;
+using static System.Math;
 
 namespace SMath.Geometry2D
 {
@@ -8,7 +9,20 @@ namespace SMath.Geometry2D
         [Fact]
         public void Circumference()
         {
-            Assert.Equal(2 * Math.PI, Circle.Perimeter.Lenght.FromRadius(1d));
+            Assert.Equal(2 * PI, Circle.Perimeter.Length.FromRadius(1d));
+        }
+
+        [Fact]
+        public void Area()
+        {
+            Assert.Equal(PI, Circle.Region.Area.FromRadius(1d));
+        }
+
+        [Fact]
+        public void Radius()
+        {
+            Assert.Equal(1d, Circle.Radius.FromCircumference(2 * PI));
+            Assert.Equal(1d, Circle.Radius.FromArea(PI));
         }
     }
 }
