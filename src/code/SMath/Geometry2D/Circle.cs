@@ -3,10 +3,11 @@
 namespace SMath.Geometry2D
 {
     /// <summary>
-    /// Circle shape
+    /// Circle.
     /// </summary>
     /// <remarks>
     /// <a href="https://en.wikipedia.org/wiki/Circle">wikipedia</a>
+    /// <a href="https://mathworld.wolfram.com/Circle.html">mathworld</a>
     /// </remarks>
     public static class Circle
     {
@@ -52,6 +53,13 @@ namespace SMath.Geometry2D
             }
         }
 
+        /// <summary>
+        /// Circular arc.
+        /// </summary>
+        /// <remarks>
+        /// <a href="https://en.wikipedia.org/wiki/Circular_arc">wikipedia</a>
+        /// <a href="https://mathworld.wolfram.com/Arc.html">mathworld</a>
+        /// </remarks>
         public static class Arc
         {
             public static class Length
@@ -62,6 +70,13 @@ namespace SMath.Geometry2D
             }
         }
 
+        /// <summary>
+        /// Chord of a circle.
+        /// </summary>
+        /// <remarks>
+        /// <a href="https://en.wikipedia.org/wiki/Chord_(geometry)">wikipedia</a>
+        /// <a href="https://mathworld.wolfram.com/Chord.html">mathworld</a>
+        /// </remarks>
         public static class Chord
         {
             public static class Length
@@ -123,6 +138,13 @@ namespace SMath.Geometry2D
             }
         }
 
+        /// <summary>
+        /// Circular sector.
+        /// </summary>
+        /// <remarks>
+        /// <a href="https://en.wikipedia.org/wiki/Circular_sector">wikipedia</a>
+        /// <a href="https://mathworld.wolfram.com/CircularSector.html">mathworld</a>
+        /// </remarks>
         public static class Sector
         {
             public static class Perimeter
@@ -154,6 +176,13 @@ namespace SMath.Geometry2D
             }
         }
 
+        /// <summary>
+        /// Circular segment.
+        /// </summary>
+        /// <remarks>
+        /// <a href="https://en.wikipedia.org/wiki/Circular_segment">wikipedia</a>
+        /// <a href="https://mathworld.wolfram.com/CircularSegment.html">mathworld</a>
+        /// </remarks>
         public static class Segment
         {
             public static class Perimeter
