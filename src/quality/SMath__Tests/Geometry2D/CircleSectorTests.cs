@@ -10,7 +10,7 @@ namespace SMath.Geometry2D
         public void Circumference()
         {
             Assert.Equal(3d, Circle.Sector.Perimeter.Length.FromArcLength(1d, 1d));
-            Assert.Equal(3d, Circle.Sector.Perimeter.Length.FromArcAngle(1d, 1d));
+            Assert.Equal(3d, Circle.Sector.Perimeter.Length.FromAngle(1d, 1d));
         }
 
         [Fact]

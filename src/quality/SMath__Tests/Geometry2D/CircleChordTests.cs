@@ -1,5 +1,4 @@
-﻿using System;
-using Xunit;
+﻿using Xunit;
 using static System.Math;
 
 namespace SMath.Geometry2D

@@ -129,13 +129,13 @@ namespace SMath.Geometry2D
             {
                 public static class Length
                 {
-                    public static N FromArcAngle<N>(N radius, N arcAngle)
+                    public static N FromAngle<N>(N radius, N angle)
                         where N : IFloatingPoint<N>
-                        => radius + radius + Arc.Length.FromAngle(radius, arcAngle);
+                        => radius + radius + Arc.Length.FromAngle(radius, angle);
 
-                    public static N FromArcLength<N>(N radius, N arcLenght)
+                    public static N FromArcLength<N>(N radius, N arcLength)
                         where N : IFloatingPoint<N>
-                        => radius + radius + arcLenght;
+                        => radius + radius + arcLength;
                 }
             }
 
@@ -156,10 +156,24 @@ namespace SMath.Geometry2D
 
         public static class Segment
         {
+            public static class Perimeter
+            {
+                public static class Length
+                {
+                    public static N FromAngle<N>(N radius, N angle)
+                        where N : IFloatingPoint<N>, ITrigonometricFunctions<N>
+                        => Arc.Length.FromAngle(radius, angle) + Chord.Length.FromAngle(radius, angle);
+                }
+            }
+
             public static class Region
             {
                 public static class Area
-                { }
+                {
+                    public static N FromAngle<N>(N radius, N angle)
+                        where N : IFloatingPoint<N>, ITrigonometricFunctions<N>
+                        => (radius * radius) / N.CreateChecked(2) * (angle - N.Sin(angle));
+                }
             }
         }
     }

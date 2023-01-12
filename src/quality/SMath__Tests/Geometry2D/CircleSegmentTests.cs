@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Reflection.Metadata;
 using Xunit;
+using static SMath.Geometry2D.Circle;
 using static System.Math;
 
 namespace SMath.Geometry2D
@@ -7,17 +9,17 @@ namespace SMath.Geometry2D
     public class CircleSegmentTests
     {
         [Fact]
-        public void Circumference()
+        public void Perimeter()
         {
-            //Assert.Equal(3d, Circle.Sector.Perimeter.Length.FromArcLength(1d, 1d));
-            Assert.Equal(3d, Circle.Sector.Perimeter.Length.FromArcAngle(1d, 1d));
+            Assert.Equal(1d + 2d * Sin(0.5d), Circle.Segment.Perimeter.Length.FromAngle(1d, 1d));
         }
 
         [Fact]
         public void Area()
         {
-            Assert.Equal(0.5d, Circle.Sector.Region.Area.FromArcLength(1d, 1d));
-            Assert.Equal(0.5d, Circle.Sector.Region.Area.FromArcAngle(1d, 1d));
+            var a = (1d * 1d) / 2d * (1d - Sin(1d));
+            //Assert.Equal(a, 0.5d - 0.5d * Sin(1d));
+            Assert.Equal(0.5d - Sin(1d) / 2d, Circle.Segment.Region.Area.FromAngle(1d, 1d));
         }
     }
 }
