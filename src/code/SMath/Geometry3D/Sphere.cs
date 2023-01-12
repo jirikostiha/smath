@@ -3,10 +3,11 @@
 namespace SMath.Geometry3D
 {
     /// <summary>
-    /// Sphere shape
+    /// Sphere.
     /// </summary>
     /// <remarks>
     /// <a href="https://en.wikipedia.org/wiki/Sphere">wikipedia</a>
+    /// <a href="https://mathworld.wolfram.com/Sphere.html">mathworld</a>
     /// </remarks>
     public static class Sphere
     {

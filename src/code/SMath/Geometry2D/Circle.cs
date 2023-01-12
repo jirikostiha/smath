@@ -13,6 +13,9 @@ namespace SMath.Geometry2D
     {
         public static string SymetryGroup => "O(2)";
 
+        /// <summary>
+        /// Radius of a circle.
+        /// </summary>
         public static class Radius
         {
             public static N FromCircumference<N>(N circumference)
@@ -62,6 +65,9 @@ namespace SMath.Geometry2D
         /// </remarks>
         public static class Arc
         {
+            /// <summary>
+            /// Length of a circular arc.
+            /// </summary>
             public static class Length
             {
                 public static N FromAngle<N>(N radius, N angle)
@@ -79,6 +85,9 @@ namespace SMath.Geometry2D
         /// </remarks>
         public static class Chord
         {
+            /// <summary>
+            /// Length of a chord of a circle.
+            /// </summary>
             public static class Length
             {
                 public static N FromAngle<N>(N radius, N angle)
@@ -86,6 +95,9 @@ namespace SMath.Geometry2D
                     => radius * N.CreateChecked(2) * N.Sin(angle / N.CreateChecked(2));
             }
 
+            /// <summary>
+            /// Sagitta of circle determined by chord.
+            /// </summary>
             public static class Sagitta
             {
                 public static N FromAngle<N>(N radius, N angle)
@@ -93,6 +105,9 @@ namespace SMath.Geometry2D
                     => radius * (N.CreateChecked(1) - N.Cos(angle / N.CreateChecked(2)));
             }
 
+            /// <summary>
+            /// Apothem of circle determined by chord.
+            /// </summary>
             public static class Apothem
             {
                 public static N FromAngle<N>(N radius, N angle)
@@ -101,8 +116,14 @@ namespace SMath.Geometry2D
             }
         }
 
+        /// <summary>
+        /// Enclosed plane region of a circle.
+        /// </summary>
         public static class Region
         {
+            /// <summary>
+            /// Enclosed plane region area of a circle.
+            /// </summary>
             public static class Area
             {
                 public static N FromRadius<N>(N radius)
@@ -147,8 +168,14 @@ namespace SMath.Geometry2D
         /// </remarks>
         public static class Sector
         {
+            /// <summary>
+            /// Perimeter of a circular sector.
+            /// </summary>
             public static class Perimeter
             {
+                /// <summary>
+                /// Length of perimeter of a circular sector.
+                /// </summary>
                 public static class Length
                 {
                     public static N FromAngle<N>(N radius, N angle)
@@ -161,8 +188,14 @@ namespace SMath.Geometry2D
                 }
             }
 
+            /// <summary>
+            /// Enclosed plane region of a circular sector.
+            /// </summary>
             public static class Region
             {
+                /// <summary>
+                /// Enclosed plane region area of a circular sector.
+                /// </summary>
                 public static class Area
                 {
                     public static N FromArcAngle<N>(N radius, N arcAngle)
@@ -185,8 +218,14 @@ namespace SMath.Geometry2D
         /// </remarks>
         public static class Segment
         {
+            /// <summary>
+            /// Perimeter of a circular segment.
+            /// </summary>
             public static class Perimeter
             {
+                /// <summary>
+                /// Length of perimeter of a circular segment.
+                /// </summary>
                 public static class Length
                 {
                     public static N FromAngle<N>(N radius, N angle)
@@ -195,8 +234,14 @@ namespace SMath.Geometry2D
                 }
             }
 
+            /// <summary>
+            /// Enclosed plane region of a circular segment.
+            /// </summary>
             public static class Region
             {
+                /// <summary>
+                /// Enclosed plane region area of a circular segment.
+                /// </summary>
                 public static class Area
                 {
                     public static N FromAngle<N>(N radius, N angle)
