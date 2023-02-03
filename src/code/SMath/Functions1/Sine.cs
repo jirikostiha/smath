@@ -9,7 +9,7 @@ namespace SMath.Functions1
     /// <a href="https://en.wikipedia.org/wiki/Square_(algebra)">wikipedia</a>
     /// <a href="https://en.wikipedia.org/wiki/Exponentiation#Power_functions">wikipedia</a>
     /// </remarks>
-    public class Sin : IMathFunction
+    public class Sine : IMathFunction
     {        
         /// <inheritdoc />
         public static bool IsEven 
@@ -51,5 +51,19 @@ namespace SMath.Functions1
         public static N Eval<N>(N x) 
             where N : IFloatingPointIeee754<N>
             => N.Sin(x);
+
+        public static class Points
+        {
+            public static IEnumerable<(N X, N Y)> Get<N>(N step)
+                where N : IFloatingPointIeee754<N>
+                => Get<N>(N.Zero, N.CreateChecked(2) * N.Pi, step);
+
+            public static IEnumerable<(N X, N Y)> Get<N>(N from, N to, N step)
+                where N : IFloatingPointIeee754<N>
+            { 
+                for (N x = from; x < to; x+= step)
+                    yield return (x, N.Sin(x));
+            }
+        }
     }
 }
