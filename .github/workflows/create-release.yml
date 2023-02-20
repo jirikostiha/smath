@@ -14,9 +14,21 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        dotnet-version: [ '2.0.x', '7.0.x' ]
+
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+
+    - name: Install .Net ${{ matrix.dotnet-version }}
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ matrix.dotnet-version }}
+    
+    - name: Dotnet Info
+      run: dotnet --info
 
     - name: Restore
       run: dotnet restore "${{ env.sln-path }}"
