@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ci", "ci", "{1A810558-9123-
 		..\.github\dependabot.yml = ..\.github\dependabot.yml
 		..\.github\workflows\lint-code.yml = ..\.github\workflows\lint-code.yml
 		..\.github\workflows\lint-commit.yml = ..\.github\workflows\lint-commit.yml
+		..\.github\workflows\publish.yml = ..\.github\workflows\publish.yml
 		..\.github\workflows\release.yml = ..\.github\workflows\release.yml
 	EndProjectSection
 EndProject
