@@ -1,4 +1,4 @@
-name: Lint Source Code and Fix
+name: Code Lint
 
 on:
   push:
