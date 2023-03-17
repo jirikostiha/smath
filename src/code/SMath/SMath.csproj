@@ -8,6 +8,22 @@
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
 		<NoWarn>CA1725,CA1716,CS1591,CA1715</NoWarn>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+
+		<Product>SMath</Product>
+		<Copyright>Copyright © 2022 Jiri Kostiha</Copyright>
+		<Company />
+		<RepositoryUrl>https://github.com/jirikostiha/smath</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+
+		<Title>SMath</Title>
+		<Description>Mathematical library.</Description>
+		<PackageTags> math; geometry; csharp</PackageTags>
+		<PackageProjectUrl>https://github.com/jirikostiha/smath</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<SignAssembly>False</SignAssembly>
+		<Version>0.0.1</Version>
+		<Authors>Jiri Kostiha</Authors>
 	</PropertyGroup>
 
 </Project>
