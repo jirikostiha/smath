@@ -15,14 +15,14 @@ namespace SMath.Geometry2D
         [Fact]
         public void Volume()
         {
-            Assert.Equal(4d/3d * PI, Sphere.Region.Volume.FromRadius(1d));
+            Assert.Equal(4d / 3d * PI, Sphere.Region.Volume.FromRadius(1d));
         }
 
         [Fact]
         public void Radius()
         {
             Assert.Equal(1d, Sphere.Radius.FromSurfaceArea(4 * PI));
-            Assert.Equal(1d, Sphere.Radius.FromVolume(4d/3d * PI));
+            Assert.Equal(1d, Sphere.Radius.FromVolume(4d / 3d * PI));
         }
     }
 }
