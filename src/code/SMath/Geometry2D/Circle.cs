@@ -21,7 +21,7 @@ namespace SMath.Geometry2D
             public static N FromCircumference<N>(N circumference)
                 where N : IFloatingPoint<N>
                 => circumference / (N.CreateChecked(2) * N.Pi);
-            
+
             public static N FromArea<N>(N area)
                 where N : IFloatingPoint<N>, IRootFunctions<N>
                 => N.Sqrt(area / N.Pi);
