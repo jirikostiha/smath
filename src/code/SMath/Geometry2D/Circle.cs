@@ -19,11 +19,11 @@ namespace SMath.Geometry2D
         public static class Radius
         {
             public static N FromCircumference<N>(N circumference)
-                where N : IFloatingPoint<N>
+                where N : IFloatingPointConstants<N>
                 => circumference / (N.CreateChecked(2) * N.Pi);
 
             public static N FromArea<N>(N area)
-                where N : IFloatingPoint<N>, IRootFunctions<N>
+                where N : IRootFunctions<N>
                 => N.Sqrt(area / N.Pi);
         }
 
@@ -38,7 +38,7 @@ namespace SMath.Geometry2D
             public static class Length
             {
                 public static N FromRadius<N>(N radius)
-                    where N : IFloatingPoint<N>
+                    where N : IFloatingPointConstants<N>
                     => N.CreateChecked(2) * N.Pi * N.CreateChecked(radius);
             }
         }

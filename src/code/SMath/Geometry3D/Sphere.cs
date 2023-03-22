@@ -21,11 +21,11 @@ namespace SMath.Geometry3D
         public static class Radius
         {
             public static N FromSurfaceArea<N>(N surface)
-                where N : IFloatingPoint<N>, IRootFunctions<N>
+                where N : IRootFunctions<N>
                 => N.Sqrt(surface / (N.CreateChecked(4) * N.Pi));
 
             public static N FromVolume<N>(N volume)
-                where N : IFloatingPoint<N>, IRootFunctions<N>
+                where N : IRootFunctions<N>
                 => N.Cbrt(volume / (N.CreateChecked(4) / N.CreateChecked(3) * N.Pi));
         }
 
@@ -40,7 +40,7 @@ namespace SMath.Geometry3D
             public static class Area
             {
                 public static N FromRadius<N>(N radius)
-                    where N : IFloatingPoint<N>
+                    where N : IFloatingPointConstants<N>
                     => N.CreateChecked(4) * N.Pi * radius * radius;
             }
         }
@@ -56,7 +56,7 @@ namespace SMath.Geometry3D
             public static class Volume
             {
                 public static N FromRadius<N>(N radius)
-                    where N : IFloatingPoint<N>
+                    where N : IFloatingPointConstants<N>
                     => N.CreateChecked(4) / N.CreateChecked(3) * N.Pi * radius * radius * radius;
             }
         }
