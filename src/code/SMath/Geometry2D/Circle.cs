@@ -43,6 +43,23 @@ namespace SMath.Geometry2D
                     where N : IFloatingPointConstants<N>
                     => N.CreateChecked(2) * N.Pi * N.CreateChecked(radius);
             }
+
+            public static class Points
+            {
+                /// <summary>
+                /// Enumerating points on circle from the +x axis towards the +y axis and beyond.
+                /// </summary>
+                public static IEnumerable<(N X, N Y)> FromRadius<N>(N radius, int count)
+                    where N : IFloatingPoint<N>, ITrigonometricFunctions<N>
+                {
+                    N deltaAngle = N.CreateChecked(2) * N.Pi / N.CreateChecked(count);
+                    for (int i = 0; i < count; i++)
+                    {
+                        N angle = N.CreateChecked(i) * deltaAngle;
+                        yield return (radius * N.Cos(angle), radius * N.Sin(angle));
+                    }
+                }
+            }
         }
     }
 }
