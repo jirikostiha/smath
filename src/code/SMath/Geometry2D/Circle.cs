@@ -13,6 +13,8 @@ namespace SMath.Geometry2D
     {
         public static string SymetryGroup => "O(2)";
 
+        public static string PlainTextEquation => "(x - a)^2 + (y - b)^2 = r^2";
+
         /// <summary>
         /// Radius of a circle.
         /// </summary>
