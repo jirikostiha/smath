@@ -49,7 +49,7 @@ namespace SMath.Geometry2D
                 public static N XFromAngle<N>(N radius, N angle)
                     where N : ITrigonometricFunctions<N>
                     => radius * N.Cos(angle);
-                
+
                 public static N YFromAngle<N>(N radius, N angle)
                     where N : ITrigonometricFunctions<N>
                     => radius * N.Sin(angle);

@@ -66,7 +66,7 @@
             => PT.Hypotenuse(vector1.X1 - vector2.X1, vector1.X2 - vector2.X2);
 
         public static (N X1, N X2) Direction<N>(N v1x1, N v1x2, N v2x1, N v2x2)
-            where N : ISubtractionOperators<N,N,N>
+            where N : ISubtractionOperators<N, N, N>
             => (v2x1 - v1x1, v2x2 - v1x2);
 
         public static (N X1, N X2) Direction<N>((N X1, N X2) vector1, (N X1, N X2) vector2)
