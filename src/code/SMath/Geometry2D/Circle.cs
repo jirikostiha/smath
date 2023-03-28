@@ -44,6 +44,21 @@ namespace SMath.Geometry2D
                     => N.CreateChecked(2) * N.Pi * N.CreateChecked(radius);
             }
 
+            public static class Point
+            {
+                public static N XFromAngle<N>(N radius, N angle)
+                    where N : ITrigonometricFunctions<N>
+                    => radius * N.Cos(angle);
+                
+                public static N YFromAngle<N>(N radius, N angle)
+                    where N : ITrigonometricFunctions<N>
+                    => radius * N.Sin(angle);
+
+                public static (N X, N Y) FromAngle<N>(N radius, N angle)
+                  where N : ITrigonometricFunctions<N>
+                  => (XFromAngle(radius, angle), YFromAngle(radius, angle));
+            }
+
             public static class Points
             {
                 /// <summary>
@@ -56,7 +71,7 @@ namespace SMath.Geometry2D
                     for (int i = 0; i < count; i++)
                     {
                         N angle = N.CreateChecked(i) * deltaAngle;
-                        yield return (radius * N.Cos(angle), radius * N.Sin(angle));
+                        yield return Point.FromAngle(radius, angle);
                     }
                 }
             }
