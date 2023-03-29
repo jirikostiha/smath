@@ -9,13 +9,13 @@ namespace SMath.Functions1
     /// <a href="https://en.wikipedia.org/wiki/Sine">wikipedia</a>
     /// </remarks>
     public class Sine
-    {        
+    {
         /// <inheritdoc />
-        public static bool IsEven 
+        public static bool IsEven
             => true;
 
         /// <inheritdoc />
-        public static bool IsOdd 
+        public static bool IsOdd
             => false;
 
         /// <inheritdoc />
@@ -47,7 +47,7 @@ namespace SMath.Functions1
             => (N.Zero, N.MaxValue);
 
         /// <inheritdoc />
-        public static N Eval<N>(N x) 
+        public static N Eval<N>(N x)
             where N : ITrigonometricFunctions<N>
             => N.Sin(x);
 
@@ -59,8 +59,8 @@ namespace SMath.Functions1
 
             public static IEnumerable<(N X, N Y)> Get<N>(N from, N to, N step)
                 where N : IFloatingPointIeee754<N>
-            { 
-                for (N x = from; x < to; x+= step)
+            {
+                for (N x = from; x < to; x += step)
                     yield return (x, N.Sin(x));
             }
         }
