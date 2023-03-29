@@ -22,7 +22,9 @@
            where N : IRootFunctions<N>
            => PT.Hypotenuse(vector.X1, vector.X2);
 
-        /// <summary> Polar angle. Angle from x1 axis to x2 axis. </summary>
+        /// <summary> 
+        /// Polar angle. Angle from x1 axis to x2 axis. 
+        /// </summary>
         public static N Φ1<N>(N x1, N x2)
             where N : ITrigonometricFunctions<N>
             => N.Atan(x2 / x1);
@@ -72,6 +74,28 @@
         public static (N X1, N X2) Direction<N>((N X1, N X2) vector1, (N X1, N X2) vector2)
             where N : ISubtractionOperators<N, N, N>
             => (vector2.X1 - vector1.X1, vector2.X2 - vector1.X2);
+
+        /// <summary> Calculate dot product or scalar product. </summary>
+        //public static double DotProduct(double v1x1, double v1x2, double v2x1, double v2x2)
+        //    => v1x1 * v2x1 + v1x2 * v2x2;
+
+        /// <summary> Calculate dot product or scalar product. </summary>
+        //public static double DotProduct(double v1Length, double v2Length, double angle)
+        //    => v1Length * v2Length * Cos(angle);
+
+        //public static (N X1, N X2) Kvadrantized<N>(N x1, N x2)
+        //    where N : INumberBase<N>
+        //    => (x1 / N.Abs(x1), x2 / N.Abs(x2));
+
+        ///// <summary> Length of sum of two polar vectors. </summary>
+        ///// <remarks> https://math.stackexchange.com/questions/1365622/adding-two-polar-vectors </remarks>
+        //public static double SumLength(double v1Length, double v2Length, double v1φ1, double v2φ1)
+        //    => Root2.f(Power2.f(v1Length) + Power2.f(v2Length) + 2 * v1Length * v2Length * Cos(v2φ1 - v1φ1));
+
+        ///// <summary> Polar angle of sum of two polar vectors. </summary>
+        ///// <remarks> https://math.stackexchange.com/questions/1365622/adding-two-polar-vectors </remarks>
+        //public static double SumΦ1(double v1Length, double v2Length, double v1φ1, double v2φ1)
+        //    => v1φ1 + Atan2(v2Length * Sin(v2φ1 - v1φ1), v1Length + v2Length * Cos(v2φ1 - v1φ1));
 
         /// <summary>
         /// First normal vector of an input coordinates. 
