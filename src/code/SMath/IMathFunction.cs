@@ -27,11 +27,12 @@ namespace SMath
         /// </summary>
         public static abstract string PlainTextFormula { get; }
 
-        /// <summary> Evaluates function value. </summary>
+        // Error CS0425  
+        /*/// <summary> Evaluates function value. </summary>
         /// <typeparam name="N"> A number type. </typeparam>
         /// <param name="x"> Input number. </param>
         /// <returns> Output number. </returns>
-        public static abstract N Eval<N>(N x)
+        public static abstract N Eval<N>(N x);*/
             where N : INumberBase<N>;
     }
 }

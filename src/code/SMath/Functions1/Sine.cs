@@ -8,7 +8,7 @@ namespace SMath.Functions1
     /// <remarks>
     /// <a href="https://en.wikipedia.org/wiki/Sine">wikipedia</a>
     /// </remarks>
-    public class Sine
+    public class Sine : IMathFunction
     {
         /// <inheritdoc />
         public static bool IsEven
