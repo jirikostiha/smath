@@ -69,7 +69,7 @@ namespace SMath.Functions1
                 where N : ITrigonometricFunctions<N>
             {
                 var slope = Slope.FromX(x);
-                return (-slope, N.CreateChecked(1), slope*x - Eval(x));
+                return (-slope, N.CreateChecked(1), slope * x - Eval(x));
             }
 
             public static class Slope
