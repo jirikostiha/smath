@@ -75,6 +75,67 @@ namespace SMath.Geometry2D
                     }
                 }
             }
+
+            /// <summary>
+            /// Determines if a point is a part of circle perimeter.
+            /// </summary>
+            /// <remarks>
+            /// <a href="https://mathworld.wolfram.com/Circle-LineIntersection.html">mathword</a>
+            /// </remarks>
+            public static class Includes
+            {
+                public static bool Point<N>(N radius, (N X, N Y) point)
+                    where N : IRootFunctions<N>
+                    => PT.Hypotenuse(point.X, point.Y) == radius;
+
+                public static bool Point<N>((N X, N Y) center, N radius, (N X, N Y) point)
+                    where N : IRootFunctions<N>
+                    => PT.Hypotenuse(point.X - center.X, point.Y - center.Y) == radius;
+            }
+        }
+
+        public static class TangentLine
+        {
+            public static class Slope
+            {
+                public static N FromAngle<N>(N angle)
+                    where N : ITrigonometricFunctions<N>
+                    => N.Tan(angle);
+            }
+
+            public static (N A, N B, N C) FromAngle<N>(N radius, N angle)
+                where N : ITrigonometricFunctions<N>
+                => (
+                    Perimeter.Point.XFromAngle(radius, angle),
+                    Perimeter.Point.YFromAngle(radius, angle),
+                    -(radius * radius));
+        }
+
+        /// <summary>
+        /// Enclosed plane region of a circle.
+        /// </summary>
+        public static class Region
+        {
+            /// <summary>
+            /// Enclosed plane region area of a circle.
+            /// </summary>
+            public static class Area
+            {
+                public static N FromRadius<N>(N radius)
+                    where N : IFloatingPoint<N>
+                    => N.Pi * radius * radius;
+            }
+
+            public static class Includes
+            {
+                public static bool Point<N>(N radius, (N X, N Y) point)
+                    where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
+                    => PT.Hypotenuse(point.X, point.Y) <= radius;
+
+                public static bool Point<N>((N X, N Y) center, N radius, (N X, N Y) point)
+                    where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
+                    => PT.Hypotenuse(point.X - center.X, point.Y - center.Y) <= radius;
+            }
         }
     }
 }
