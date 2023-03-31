@@ -39,12 +39,10 @@ namespace SMath.Geometry2D
             var direction = GeometricVector2.Direction(point1, point2);
             // normal vector
             var normal = GeometricVector2.Normal1(direction);
-            // normalized normal vector
-            var normalized = GeometricVector2.Normalized(normal);
             // calculate c constant
-            var c = -normalized.X1 * point1.X - normalized.X2 * point1.Y;
+            var c = -normal.X1 * point1.X - normal.X2 * point1.Y;
 
-            return (normalized.X1, normalized.X2, c);
+            return (normal.X1, normal.X2, c);
         }
 
         public static class Slope

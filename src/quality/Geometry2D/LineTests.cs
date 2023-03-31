@@ -4,16 +4,28 @@ namespace SMath.Geometry2D
 {
     public class LineTests
     {
-        [Fact]
-        public void FromTwoPoints()
+        [Theory]
+        [InlineData(-1, 1, 0, 1)]
+        [InlineData(1, 1, -1, -1)]
+        [InlineData(0, 1, -1, 0)]
+        public void Slope(double a, double b, double c, double slope)
         {
-            Assert.Equal(Line.X<double>(), Line.FromTwoPoints((0d, 0d), (1d, 0d)));
-            Assert.Equal(Line.Y<double>(), Line.FromTwoPoints((0d, 0d), (0d, 1d)));
-            Assert.Equal((0, -1, 0), Line.FromTwoPoints((0d, 0d), (-1d, 0d)));
-            Assert.Equal((1, 0, 0), Line.FromTwoPoints((0d, 0d), (0d, -1d)));
+            Assert.Equal(slope, Line.Slope.Get((a, b, c)));
+        }
 
-            var (A, B, _) = Line.FromTwoPoints((0d, 0d), (1d, 1d));
-            Assert.Equal(A, -B);
+        [Theory]
+        [InlineData(0, 0, 1, 0, 0, 1, 0)]
+        [InlineData(0, 0, 0, 1, -1, 0, 0)]
+        [InlineData(0, 0, -1, 0, 0, -1, 0)]
+        [InlineData(0, 0, 0, -1, 1, 0, 0)]
+        [InlineData(0, 0, 1, 1, -1, 1, 0)]
+        public void FromTwoPoints(double p1x, double p1y, double p2x, double p2y, double a, double b, double c)
+        {
+            var line = Line.FromTwoPoints((p1x, p1y), (p2x, p2y));
+
+            Assert.Equal(a, line.A);
+            Assert.Equal(b, line.B);
+            Assert.Equal(c, line.C);
         }
     }
 }
