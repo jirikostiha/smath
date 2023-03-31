@@ -46,8 +46,20 @@ namespace SMath.Functions1
             where N : IMinMaxValue<N>, IFloatingPointIeee754<N>
             => (N.MinValue, N.MaxValue);
 
+        public static N GlobalMaximum<N>()
+            where N : IFloatingPointIeee754<N>
+            => N.PositiveInfinity;
+
+        public static N GlobalMinimum<N>()
+            where N : IFloatingPointIeee754<N>
+            => N.NegativeInfinity;
+
         /// <inheritdoc />
         public static N Eval<N>(N x)
             => x;
+
+        public static N DerivativeEval<N>()
+            where N : INumberBase<N>
+            => N.CreateChecked(0);
     }
 }
