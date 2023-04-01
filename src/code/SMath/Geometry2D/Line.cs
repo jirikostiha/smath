@@ -97,6 +97,20 @@ namespace SMath.Geometry2D
                     where N : ISubtractionOperators<N, N, N>, IDivisionOperators<N, N, N>
                     => (point2.Y - point1.Y) / (point2.X - point1.X);
             }
+
+            public static class Points
+            {
+                public static IEnumerable<(N X, N Y)> Get<N>((N X, N Y) point1, (N X, N Y) point2, int count)
+                    where N : INumberBase<N>
+                {
+                    var xstep = (point2.X - point1.X) / N.CreateChecked(count + 1);
+                    var ystep = (point2.Y - point1.Y) / N.CreateChecked(count + 1);
+                    for (int i = 1; i <= count; i++)
+                        yield return (
+                            point1.X + N.CreateChecked(i) * xstep,
+                            point1.Y + N.CreateChecked(i) * ystep);
+                }
+            }
         }
     }
 }
