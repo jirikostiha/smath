@@ -60,6 +60,6 @@ namespace SMath.Functions1
 
         public static N DerivativeEval<N>()
             where N : INumberBase<N>
-            => N.CreateChecked(0);
+            => N.Zero;
     }
 }

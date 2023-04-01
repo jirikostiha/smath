@@ -17,14 +17,14 @@ namespace SMath.Geometry2D
         /// </summary>
         public static (N A, N B, N C) X<N>()
             where N : INumberBase<N>
-            => (N.CreateChecked(0), N.CreateChecked(1), N.CreateChecked(0));
+            => (N.Zero, N.One, N.Zero);
 
         /// <summary>
         /// Y axis line in general form.
         /// </summary>
         public static (N A, N B, N C) Y<N>()
             where N : INumberBase<N>
-            => (N.CreateChecked(-1), N.CreateChecked(0), N.CreateChecked(0));
+            => (-N.One, N.Zero, N.Zero);
 
         public static string PlainTextEquation
             => "a*x + b*y + c = 0";

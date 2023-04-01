@@ -48,11 +48,11 @@ namespace SMath.Functions1
 
         public static N GlobalMaximum<N>()
             where N : INumberBase<N>
-            => N.CreateChecked(1);
+            => N.One;
 
         public static N GlobalMinimum<N>()
             where N : INumberBase<N>
-            => N.CreateChecked(-1);
+            => -N.One;
 
         /// <inheritdoc />
         public static N Eval<N>(N x)
@@ -69,7 +69,7 @@ namespace SMath.Functions1
                 where N : ITrigonometricFunctions<N>
             {
                 var slope = Slope.FromX(x);
-                return (-slope, N.CreateChecked(1), slope * x - Eval(x));
+                return (-slope, N.One, slope * x - Eval(x));
             }
 
             public static class Slope
@@ -86,8 +86,8 @@ namespace SMath.Functions1
                 where N : ITrigonometricFunctions<N>
             {
                 var fx = Eval(x);
-                var slope = -N.CreateChecked(1) / DerivativeEval(x);
-                return (slope, N.CreateChecked(1), fx - slope * x);
+                var slope = -N.One / DerivativeEval(x);
+                return (slope, N.One, fx - slope * x);
             }
         }
 
