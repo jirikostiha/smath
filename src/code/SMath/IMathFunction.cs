@@ -32,7 +32,7 @@ namespace SMath
         /// <typeparam name="N"> A number type. </typeparam>
         /// <param name="x"> Input number. </param>
         /// <returns> Output number. </returns>
-        public static abstract N Eval<N>(N x);*/
-            where N : INumberBase<N>;
+        public static abstract N Eval<N>(N x);
+            where N : INumberBase<N>;*/
     }
 }
