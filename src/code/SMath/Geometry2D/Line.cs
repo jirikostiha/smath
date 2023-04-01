@@ -15,14 +15,14 @@ namespace SMath.Geometry2D
         /// <summary>
         /// X axis line in general form.
         /// </summary>
-        public static (N A, N B, N C) X<N>()
+        public static (N A, N B, N C) XAxis<N>()
             where N : INumberBase<N>
             => (N.Zero, N.One, N.Zero);
 
         /// <summary>
         /// Y axis line in general form.
         /// </summary>
-        public static (N A, N B, N C) Y<N>()
+        public static (N A, N B, N C) YAxis<N>()
             where N : INumberBase<N>
             => (-N.One, N.Zero, N.Zero);
 
@@ -69,8 +69,8 @@ namespace SMath.Geometry2D
             }
 
             public static (N A, N B, N C) Get<N>((N A, N B, N C) line)
-               where N : IUnaryNegationOperators<N, N>
-               => (line.B, -line.A, line.C);
+                where N : IUnaryNegationOperators<N, N>
+                => (line.B, -line.A, line.C);
         }
 
         /// <summary>
