@@ -74,7 +74,27 @@ namespace SMath.Geometry2D
         }
 
         /// <summary>
+        /// Ray.
+        /// Determined by point and angle.
+        /// </summary>
+        public static class Ray
+        {
+            public static class Points
+            {
+                public static IEnumerable<(N X, N Y)> Get<N>(N angle, N step, int count)
+                    where N : ITrigonometricFunctions<N>
+                {
+                    for (int i = 1; i <= count; i++)
+                        yield return (
+                            Circle.Perimeter.Point.XFromAngle(N.CreateChecked(i) * step, angle),
+                            Circle.Perimeter.Point.YFromAngle(N.CreateChecked(i) * step, angle));
+                }
+            }
+        }
+
+        /// <summary>
         /// Line Segment
+        /// Determined by two points.
         /// </summary>
         public static class Segment
         {
