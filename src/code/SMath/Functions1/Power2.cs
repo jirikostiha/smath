@@ -10,13 +10,13 @@ namespace SMath.Functions1
     /// <a href="https://en.wikipedia.org/wiki/Exponentiation#Power_functions">wikipedia</a>
     /// </remarks>
     public class Power2 : IMathFunction
-    {        
+    {
         /// <inheritdoc />
-        public static bool IsEven 
+        public static bool IsEven
             => true;
 
         /// <inheritdoc />
-        public static bool IsOdd 
+        public static bool IsOdd
             => false;
 
         /// <inheritdoc />
