@@ -220,6 +220,48 @@ namespace SMath.Geometry2D
             }
         }
 
+        /// <summary>
+        /// Circular segment.
+        /// </summary>
+        /// <remarks>
+        /// <a href="https://en.wikipedia.org/wiki/Circular_segment">wikipedia</a>
+        /// <a href="https://mathworld.wolfram.com/CircularSegment.html">mathworld</a>
+        /// </remarks>
+        public static class Segment
+        {
+            /// <summary>
+            /// Perimeter of a circular segment.
+            /// </summary>
+            public static class Perimeter
+            {
+                /// <summary>
+                /// Length of perimeter of a circular segment.
+                /// </summary>
+                public static class Length
+                {
+                    public static N FromAngle<N>(N radius, N angle)
+                        where N : IFloatingPoint<N>, ITrigonometricFunctions<N>
+                        => Arc.Length.FromAngle(radius, angle) + Chord.Length.FromAngle(radius, angle);
+                }
+            }
+
+            /// <summary>
+            /// Enclosed plane region of a circular segment.
+            /// </summary>
+            public static class Region
+            {
+                /// <summary>
+                /// Enclosed plane region area of a circular segment.
+                /// </summary>
+                public static class Area
+                {
+                    public static N FromAngle<N>(N radius, N angle)
+                        where N : IFloatingPoint<N>, ITrigonometricFunctions<N>
+                        => (radius * radius) / N.CreateChecked(2) * (angle - N.Sin(angle));
+                }
+            }
+        }
+
         public static class TangentLine
         {
             public static class Slope
