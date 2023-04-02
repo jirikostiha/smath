@@ -85,9 +85,15 @@ namespace SMath.Functions1
             public static (N A, N B, N C) FromX<N>(N x)
                 where N : ITrigonometricFunctions<N>
             {
-                var fx = Eval(x);
                 var slope = -N.One / DerivativeEval(x);
-                return (slope, N.One, fx - slope * x);
+                return (-slope, N.One, slope * x - Eval(x));
+            }
+
+            public static class Slope
+            {
+                public static N FromX<N>(N x)
+                    where N : ITrigonometricFunctions<N>
+                    => -N.One / DerivativeEval(x);
             }
         }
 
