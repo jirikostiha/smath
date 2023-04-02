@@ -135,6 +135,24 @@ namespace SMath.Geometry2D
                 public static bool Point<N>((N X, N Y) center, N radius, (N X, N Y) point)
                     where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                     => PT.Hypotenuse(point.X - center.X, point.Y - center.Y) <= radius;
+
+        /// <summary>
+        /// Circular arc.
+        /// </summary>
+        /// <remarks>
+        /// <a href="https://en.wikipedia.org/wiki/Circular_arc">wikipedia</a>
+        /// <a href="https://mathworld.wolfram.com/Arc.html">mathworld</a>
+        /// </remarks>
+        public static class Arc
+        {
+            /// <summary>
+            /// Length of a circular arc.
+            /// </summary>
+            public static class Length
+            {
+                public static N FromAngle<N>(N radius, N angle)
+                    where N : IFloatingPoint<N>
+                    => angle * radius;
             }
         }
     }
