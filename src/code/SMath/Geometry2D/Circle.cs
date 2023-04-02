@@ -94,6 +94,46 @@ namespace SMath.Geometry2D
             }
         }
 
+        /// <summary>
+        /// Chord of a circle.
+        /// </summary>
+        /// <remarks>
+        /// <a href="https://en.wikipedia.org/wiki/Chord_(geometry)">wikipedia</a>
+        /// <a href="https://mathworld.wolfram.com/Chord.html">mathworld</a>
+        /// </remarks>
+        public static class Chord
+        {
+            /// <summary>
+            /// Length of a chord of a circle.
+            /// </summary>
+            public static class Length
+            {
+                public static N FromAngle<N>(N radius, N angle)
+                    where N : IFloatingPoint<N>, ITrigonometricFunctions<N>
+                    => radius * N.CreateChecked(2) * N.Sin(angle / N.CreateChecked(2));
+            }
+
+            /// <summary>
+            /// Sagitta of circle determined by chord.
+            /// </summary>
+            public static class Sagitta
+            {
+                public static N FromAngle<N>(N radius, N angle)
+                    where N : IFloatingPoint<N>, ITrigonometricFunctions<N>
+                    => radius * (N.CreateChecked(1) - N.Cos(angle / N.CreateChecked(2)));
+            }
+
+            /// <summary>
+            /// Apothem of circle determined by chord.
+            /// </summary>
+            public static class Apothem
+            {
+                public static N FromAngle<N>(N radius, N angle)
+                    where N : IFloatingPoint<N>, ITrigonometricFunctions<N>
+                    => radius * N.Cos(angle / N.CreateChecked(2));
+            }
+        }
+
         public static class TangentLine
         {
             public static class Slope
