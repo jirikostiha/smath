@@ -108,6 +108,17 @@ namespace SMath.Geometry2D
                     where N : IFloatingPoint<N>
                     => N.Pi * radius * radius;
             }
+
+            public static class Includes
+            {
+                public static bool Point<N>(N radius, (N X, N Y) point)
+                    where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
+                    => PT.Hypotenuse(point.X, point.Y) <= radius;
+
+                public static bool Point<N>((N X, N Y) center, N radius, (N X, N Y) point)
+                    where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
+                    => PT.Hypotenuse(point.X - center.X, point.Y - center.Y) <= radius;
+            }
         }
 
         /// <summary>
