@@ -80,5 +80,21 @@ namespace SMath.Functions1
                     => DerivativeEval(x);
             }
         }
+        public static class NormalLine
+        {
+            public static (N A, N B, N C) FromX<N>(N x)
+                where N : INumberBase<N>
+            {
+                var slope = Slope.FromX(x);
+                return (-slope, N.One, slope * x - Eval(x));
+            }
+
+            public static class Slope
+            {
+                public static N FromX<N>(N x)
+                    where N : INumberBase<N>
+                    => -N.One / DerivativeEval(x);
+            }
+        }
     }
 }
