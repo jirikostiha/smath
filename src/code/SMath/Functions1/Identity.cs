@@ -62,5 +62,32 @@ namespace SMath.Functions1
             where N : INumberBase<N>
             => N.One;
 
+        public static class TangentLine
+        {
+            public static (N A, N B, N C) FromX<N>(N x)
+                where N : INumberBase<N>
+                => (-N.One, N.One, N.Zero);
+
+            public static class Slope
+            {
+                public static N FromX<N>()
+                    where N : INumberBase<N>
+                    => DerivativeEval<N>();
+            }
+        }
+
+        public static class NormalLine
+        {
+            public static (N A, N B, N C) FromX<N>(N x)
+                where N : INumberBase<N>
+                => (N.One, N.One, -x);
+
+            public static class Slope
+            {
+                public static N FromX<N>()
+                    where N : INumberBase<N>
+                    => -N.One;
+            }
+        }
     }
 }
