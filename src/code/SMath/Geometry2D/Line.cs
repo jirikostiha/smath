@@ -45,6 +45,9 @@ namespace SMath.Geometry2D
             return (normal.X1, normal.X2, c);
         }
 
+        /// <summary>
+        /// Slope of a line determined in general form.
+        /// </summary>
         public static class Slope
         {
             public static N Get<N>((N A, N B, N C) line)
@@ -57,8 +60,14 @@ namespace SMath.Geometry2D
         /// </summary>
         public static class NormalLine
         {
+            /// <summary>
+            /// Slope of a normal line.
+            /// </summary>
             public static class Slope
             {
+                /// <summary>
+                /// Get a slope of a normal line to line determined in general forn.
+                /// </summary>
                 public static N Get<N>(N a, N b)
                     where N : IDivisionOperators<N, N, N>
                     => b / a;
@@ -79,6 +88,9 @@ namespace SMath.Geometry2D
         /// </summary>
         public static class Ray
         {
+            /// <summary>
+            /// Points on a ray.
+            /// </summary>
             public static class Points
             {
                 public static IEnumerable<(N X, N Y)> Get<N>(N angle, N step, int count)
@@ -98,6 +110,9 @@ namespace SMath.Geometry2D
         /// </summary>
         public static class Segment
         {
+            /// <summary>
+            /// Length of a line segment.
+            /// </summary>
             public static class Length
             {
                 public static N FromTwoPints<N>((N X, N Y) p1, (N X, N Y) p2)
@@ -105,6 +120,9 @@ namespace SMath.Geometry2D
                     => PT.Hypotenuse(p2.X - p1.X, p2.Y - p1.Y);
             }
 
+            /// <summary>
+            /// Slope of a line segment.
+            /// </summary>
             public static class Slope
             {
                 /// <summary>
@@ -118,6 +136,9 @@ namespace SMath.Geometry2D
                     => (point2.Y - point1.Y) / (point2.X - point1.X);
             }
 
+            /// <summary>
+            /// Points on a segment line.
+            /// </summary>
             public static class Points
             {
                 public static IEnumerable<(N X, N Y)> Get<N>((N X, N Y) point1, (N X, N Y) point2, int count)
