@@ -46,13 +46,37 @@ namespace SMath.Geometry2D
         }
 
         /// <summary>
-        /// Slope of a line determined in general form.
+        /// Line in general form from slope and y-intercept.
         /// </summary>
+        public static (N A, N B, N C) FromSlopeAndYIntercept<N>(N slope, N yintercept)
+            where N : INumberBase<N>
+            => (-slope, N.One, -yintercept);
+
         public static class Slope
         {
             public static N Get<N>((N A, N B, N C) line)
                 where N : IUnaryNegationOperators<N, N>, IDivisionOperators<N, N, N>
                 => -line.A / line.B;
+        }
+
+        /// <summary>
+        /// The x-intercept is the point at which the lines crosses the x-axis.
+        /// </summary>
+        public static class XIntercept
+        {
+            public static N Get<N>((N A, N B, N C) line)
+                where N : IUnaryNegationOperators<N, N>, IDivisionOperators<N, N, N>
+                => -line.C / line.A;
+        }
+
+        /// <summary>
+        /// The y-intercept is the point at which the lines crosses the y-axis.
+        /// </summary>
+        public static class YIntercept
+        {
+            public static N Get<N>((N A, N B, N C) line)
+                where N : IUnaryNegationOperators<N, N>, IDivisionOperators<N, N, N>
+                => -line.C / line.B;
         }
 
         /// <summary>
