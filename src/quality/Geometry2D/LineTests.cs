@@ -31,7 +31,7 @@ namespace SMath.Geometry2D
         [Theory]
         [InlineData(0, 0, 0, 1, 0)] // x-axis
         [InlineData(1, 0, -1, 1, 0)] // identity
-        public void FromFromSlopeAndYIntercept(double slope, double yintercept, double a, double b, double c)
+        public void FromSlopeAndYIntercept(double slope, double yintercept, double a, double b, double c)
         {
             var line = Line.FromSlopeAndYIntercept(slope, yintercept);
             
