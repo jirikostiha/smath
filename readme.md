@@ -10,13 +10,36 @@
 SMath is
   generic math library.
   set of static types.
-  a different approach.
+  a different approach to math.
 </pre>
 
 ## Features
 
 2D geometry  
 One parametric functions
+
+## Setup
+
+Add nuget package to your project.
+Project file (`.csproj`) should look like this:
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SMath" Version="X.X.X" />
+  </ItemGroup>
+</Project>
+```
+Replace 'X.X.X' with a specific version.
+
+## Usage
+
+```cs
+var line = Circle.TangentLine.FromAngle(radius, angle)
+```
 
 ## Contributing
 
