@@ -52,6 +52,9 @@ namespace SMath.Geometry2D
             where N : INumberBase<N>
             => (-slope, N.One, -yintercept);
 
+        /// <summary>
+        /// Slope of a line determined in general form.
+        /// </summary>
         public static class Slope
         {
             public static N Get<N>((N A, N B, N C) line)

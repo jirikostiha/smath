@@ -34,7 +34,7 @@ namespace SMath.Geometry2D
         public void FromFromSlopeAndYIntercept(double slope, double yintercept, double a, double b, double c)
         {
             var line = Line.FromSlopeAndYIntercept(slope, yintercept);
-
+            
             Assert.Equal(a, line.A);
             Assert.Equal(b, line.B);
             Assert.Equal(c, line.C);
