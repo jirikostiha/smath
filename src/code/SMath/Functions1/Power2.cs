@@ -85,8 +85,13 @@ namespace SMath.Functions1
             public static (N A, N B, N C) FromX<N>(N x)
                 where N : INumberBase<N>
             {
-                var slope = Slope.FromX(x);
-                return (-slope, N.One, slope * x - Eval(x));
+                if (x != N.Zero)
+                {
+                    var slope = Slope.FromX(x);
+                    return (-slope, N.One, slope * x - Eval(x));
+                }
+                else
+                    return (N.One, N.Zero, N.Zero);
             }
 
             public static class Slope
