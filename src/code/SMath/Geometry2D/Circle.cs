@@ -55,8 +55,8 @@ namespace SMath.Geometry2D
                     => radius * N.Sin(angle);
 
                 public static (N X, N Y) FromAngle<N>(N radius, N angle)
-                  where N : ITrigonometricFunctions<N>
-                  => (XFromAngle(radius, angle), YFromAngle(radius, angle));
+                    where N : ITrigonometricFunctions<N>
+                    => (XFromAngle(radius, angle), YFromAngle(radius, angle));
             }
 
             public static class Points

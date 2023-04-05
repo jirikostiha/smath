@@ -19,8 +19,8 @@
             => PT.Hypotenuse(x1, x2);
 
         public static N Magnitude<N>((N X1, N X2) vector)
-           where N : IRootFunctions<N>
-           => PT.Hypotenuse(vector.X1, vector.X2);
+            where N : IRootFunctions<N>
+            => PT.Hypotenuse(vector.X1, vector.X2);
 
         /// <summary> 
         /// Polar angle. Angle from x1 axis to x2 axis. 
