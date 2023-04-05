@@ -98,7 +98,7 @@
         //    => v1φ1 + Atan2(v2Length * Sin(v2φ1 - v1φ1), v1Length + v2Length * Cos(v2φ1 - v1φ1));
 
         /// <summary>
-        /// First normal vector of an input coordinates. 
+        /// First normal vector of an input vector. It is the first one in circular direction from (+)x-axis to (+)y-axis.
         /// </summary>
         /// <remarks> 
         /// <a href="https://en.wikipedia.org/wiki/Normal_(geometry)">wikipedia</a>
@@ -108,7 +108,7 @@
             => (-x2, x1);
 
         /// <summary>
-        /// First normal vector of an input vector. 
+        /// First normal vector of an input vector. It is the first one in circular direction from (+)x-axis to (+)y-axis.
         /// </summary>
         /// <remarks> 
         /// <a href="https://en.wikipedia.org/wiki/Normal_(geometry)">wikipedia</a>
@@ -118,7 +118,7 @@
             => (-vector.X2, vector.X1);
 
         /// <summary>
-        /// Second normal vector of an input coordinates.
+        /// Second normal vector of an input vector. It is the second one in circular direction from (+)x-axis to (+)y-axis.
         /// </summary>
         /// <remarks> 
         /// <a href="https://en.wikipedia.org/wiki/Normal_(geometry)">wikipedia</a>
@@ -128,7 +128,7 @@
             => (x2, -x1);
 
         /// <summary>
-        /// Second normal vector of an input vector. 
+        /// Second normal vector of an input vector. It is the second one in circular direction from (+)x-axis to (+)y-axis.
         /// </summary>
         /// <remarks> 
         /// <a href="https://en.wikipedia.org/wiki/Normal_(geometry)">wikipedia</a>
