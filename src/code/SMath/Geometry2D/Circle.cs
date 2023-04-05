@@ -275,13 +275,6 @@ namespace SMath.Geometry2D
 
         public static class TangentLine
         {
-            public static class Slope
-            {
-                public static N FromAngle<N>(N angle)
-                    where N : ITrigonometricFunctions<N>
-                    => N.Tan(angle);
-            }
-
             public static (N A, N B, N C) FromAngle<N>(N radius, N angle)
                 where N : ITrigonometricFunctions<N>
                 => (

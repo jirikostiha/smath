@@ -38,20 +38,13 @@ namespace SMath.Geometry2D
         [InlineData(0, 0, 0, 0, 0)]
         [InlineData(1, 0, 1, 0, -1)]
         [InlineData(1, double.Pi / 2d, 0, 1, -1)]
+        [InlineData(1, double.Pi / 4d, 0.707107, 0.707107, -1)]
         public void TangentLine_FromAngle(double radius, double angle, double a, double b, double c)
         {
-            Assert.Equal(a, Circle.TangentLine.FromAngle(radius, angle).A, 6);
-            Assert.Equal(b, Circle.TangentLine.FromAngle(radius, angle).B, 6);
-            Assert.Equal(c, Circle.TangentLine.FromAngle(radius, angle).C, 6);
-        }
-
-        [Theory]
-        [InlineData(0, 0)]
-        [InlineData(double.Pi / 4d, 1)]
-        [InlineData(double.Pi / 2d, double.PositiveInfinity)]
-        public void TangentLineSlope_FromAngle(double angle, double slope)
-        {
-            Assert.Equal(slope, Circle.TangentLine.Slope.FromAngle(angle), 6);
+            var line = Circle.TangentLine.FromAngle(radius, angle);
+            Assert.Equal(a, line.A, 6);
+            Assert.Equal(b, line.B, 6);
+            Assert.Equal(c, line.C, 6);
         }
     }
 }
