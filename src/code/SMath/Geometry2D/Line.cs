@@ -63,7 +63,7 @@ namespace SMath.Geometry2D
 
             public static N FromAngle<N>(N angle)
                 where N : IFloatingPointIeee754<N>, ITrigonometricFunctions<N>
-                => angle != N.Pi / N.CreateChecked(2) 
+                => angle != N.Pi / N.CreateChecked(2)
                 ? N.Tan(angle)
                 : N.PositiveInfinity;
         }
