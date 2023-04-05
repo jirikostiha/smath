@@ -8,9 +8,18 @@ namespace SMath.Geometry2D
         [InlineData(-1, 1, 0, 1)]
         [InlineData(1, 1, -1, -1)]
         [InlineData(0, 1, -1, 0)]
-        public void Slope(double a, double b, double c, double slope)
+        public void Slope_FromGenericForm(double a, double b, double c, double slope)
         {
-            Assert.Equal(slope, Line.Slope.Get((a, b, c)));
+            Assert.Equal(slope, Line.Slope.FromGenericForm((a, b, c)));
+        }
+
+        [Theory]
+        [InlineData(0, 0)]
+        [InlineData(double.Pi / 4d, 1)]
+        [InlineData(double.Pi / 2d, double.PositiveInfinity)]
+        public void Slope_FromAngle(double angle, double slope)
+        {
+            Assert.Equal(slope, Line.Slope.FromAngle(angle), 6);
         }
 
         [Theory]

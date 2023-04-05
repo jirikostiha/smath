@@ -53,13 +53,19 @@ namespace SMath.Geometry2D
             => (-slope, N.One, -yintercept);
 
         /// <summary>
-        /// Slope of a line determined in general form.
+        /// Slope of a line.
         /// </summary>
         public static class Slope
         {
-            public static N Get<N>((N A, N B, N C) line)
+            public static N FromGenericForm<N>((N A, N B, N C) line)
                 where N : IUnaryNegationOperators<N, N>, IDivisionOperators<N, N, N>
                 => -line.A / line.B;
+
+            public static N FromAngle<N>(N angle)
+                where N : IFloatingPointIeee754<N>, ITrigonometricFunctions<N>
+                => angle != N.Pi / N.CreateChecked(2) 
+                ? N.Tan(angle)
+                : N.PositiveInfinity;
         }
 
         /// <summary>
