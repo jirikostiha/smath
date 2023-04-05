@@ -25,7 +25,6 @@ Currently includes:
 ## Setup
 
 Add nuget package to your project.
-Project file (`.csproj`) should look like this:
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
@@ -42,7 +41,11 @@ Replace 'X.X.X' with a specific version.
 ## Usage
 
 ```cs
-var line = Circle.TangentLine.FromAngle(radius, angle)
+// double numbers
+var line1 = Circle.TangentLine.FromAngle(radius: 5d, angle: double.Pi / 4d)
+
+// float numbers
+var line2 = Circle.TangentLine.FromAngle(radius: 5f, angle: float.Pi / 4f)
 ```
 
 ## Contributing
