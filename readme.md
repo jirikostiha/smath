@@ -15,8 +15,12 @@ SMath is
 
 ## Features
 
-2D geometry  
-One parametric functions
+The library is based on [Generic math](https://learn.microsoft.com/en-us/dotnet/standard/generics/math)
+available since .NET 7.  
+
+Currently includes:  
+* 2D geometry  
+* One parametric functions
 
 ## Setup
 
