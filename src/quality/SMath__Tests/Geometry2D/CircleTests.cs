@@ -46,5 +46,43 @@ namespace SMath.Geometry2D
             Assert.Equal(b, line.B, 6);
             Assert.Equal(c, line.C, 6);
         }
+
+        [Theory]
+        [InlineData(0, 0, 0)]
+        [InlineData(-1, 0, 0)]
+        [InlineData(1, 0, 0)]
+        [InlineData(1, 0.5, 0.5)]
+        public void TangentPoints_FromInnerPoint(double radius, double pX, double pY)
+        {
+            Assert.Null(Circle.TangentPoint.FromPoint(radius, (pX, pY)));
+        }
+
+        [Theory]
+        [InlineData(1, 1, 0)] // x-axis
+        [InlineData(1, 0, 1)] // y-axis
+        public void TangentPoints_FromCirclePoint(double radius, double pX, double pY)
+        {
+            var points = Circle.TangentPoint.FromPoint(radius, (pX, pY));
+
+            Assert.NotNull(points);
+            Assert.Equal(pX, points.Value.Point1.X, 6);
+            Assert.Equal(pY, points.Value.Point1.Y, 6);
+            Assert.Equal(pX, points.Value.Point2.X, 6);
+            Assert.Equal(pY, points.Value.Point2.Y, 6);
+        }
+
+        [Theory]
+        [InlineData(1, 1, 1, 0, 1, 1, 0)] // tangent is parallel to axis in (0,1), (1,0)
+        [InlineData(2, 4, 0, 1, 1.732050807, 1, -1.732050807)] // outer point on x-axis
+        public void TangentPoints_FromOuterPoint(double radius, double pX, double pY, double x1, double y1, double x2, double y2)
+        {
+            var points = Circle.TangentPoint.FromPoint(radius, (pX, pY));
+
+            Assert.NotNull(points);
+            Assert.Equal(x1, points.Value.Point1.X, 6);
+            Assert.Equal(y1, points.Value.Point1.Y, 6);
+            Assert.Equal(x2, points.Value.Point2.X, 6);
+            Assert.Equal(y2, points.Value.Point2.Y, 6);
+        }
     }
 }

@@ -44,6 +44,9 @@ namespace SMath.Geometry2D
                     => N.CreateChecked(2) * N.Pi * N.CreateChecked(radius);
             }
 
+            /// <summary>
+            /// Point on the perimeter of a circle.
+            /// </summary>
             public static class Point
             {
                 public static N XFromAngle<N>(N radius, N angle)
@@ -59,6 +62,9 @@ namespace SMath.Geometry2D
                     => (XFromAngle(radius, angle), YFromAngle(radius, angle));
             }
 
+            /// <summary>
+            /// Points on the perimeter of a circle.
+            /// </summary>
             public static class Points
             {
                 /// <summary>
@@ -118,6 +124,52 @@ namespace SMath.Geometry2D
                 public static bool Point<N>((N X, N Y) center, N radius, (N X, N Y) point)
                     where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                     => PT.Hypotenuse(point.X - center.X, point.Y - center.Y) <= radius;
+            }
+        }
+
+        /// <summary>
+        /// Tangent line of a circle.
+        /// </summary>
+        public static class TangentLine
+        {
+            /// <summary>
+            /// Get tangent line of a circle determined by center in origin and angle.
+            /// </summary>
+            public static (N A, N B, N C) FromAngle<N>(N radius, N angle)
+                where N : ITrigonometricFunctions<N>
+                => (
+                    Perimeter.Point.XFromAngle(radius, angle),
+                    Perimeter.Point.YFromAngle(radius, angle),
+                    -(radius * radius));
+        }
+
+        /// <summary>
+        /// Common point(s) of a circle and it's tangent line.
+        /// </summary>
+        public static class TangentPoint
+        {
+            public static ((N X, N Y) Point1, (N X, N Y) Point2)? FromPoint<N>(N radius, (N X, N Y) point)
+                where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
+            {
+                // distance from center to outer point
+                var d = PT.Hypotenuse(point.X, point.Y);
+
+                if (d < radius || radius <= N.Zero)
+                    return default;
+
+                if (radius == d)
+                    return (point, point);
+
+                var a = radius * radius / d;
+                var q = radius * N.Sqrt((d * d) - (radius * radius)) / d;
+                var cpNormalized = GeometricVector2.Normalized(point);
+                var cpNormal = GeometricVector2.Normal1(cpNormalized);
+                var vaX1 = cpNormalized.X1 * a;
+                var vaX2 = cpNormalized.X2 * a;
+
+                return (
+                    (vaX1 + cpNormal.X1 * q, vaX2 + cpNormal.X2 * q),
+                    (vaX1 - cpNormal.X1 * q, vaX2 - cpNormal.X2 * q));
             }
         }
 
@@ -271,16 +323,6 @@ namespace SMath.Geometry2D
                         => (radius * radius) / N.CreateChecked(2) * (angle - N.Sin(angle));
                 }
             }
-        }
-
-        public static class TangentLine
-        {
-            public static (N A, N B, N C) FromAngle<N>(N radius, N angle)
-                where N : ITrigonometricFunctions<N>
-                => (
-                    Perimeter.Point.XFromAngle(radius, angle),
-                    Perimeter.Point.YFromAngle(radius, angle),
-                    -(radius * radius));
         }
     }
 }
