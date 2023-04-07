@@ -92,10 +92,10 @@
         //public static double SumLength(double v1Length, double v2Length, double v1φ1, double v2φ1)
         //    => Root2.f(Power2.f(v1Length) + Power2.f(v2Length) + 2 * v1Length * v2Length * Cos(v2φ1 - v1φ1));
 
-        ///// <summary> Polar angle of sum of two polar vectors. </summary>
-        ///// <remarks> https://math.stackexchange.com/questions/1365622/adding-two-polar-vectors </remarks>
-        //public static double SumΦ1(double v1Length, double v2Length, double v1φ1, double v2φ1)
-        //    => v1φ1 + Atan2(v2Length * Sin(v2φ1 - v1φ1), v1Length + v2Length * Cos(v2φ1 - v1φ1));
+        /// <summary> Dot product or scalar product. </summary>
+        public static N DotProduct<N>(N vector1X, N vector1Y, N vector2X, N vector2Y)
+            where N : IAdditionOperators<N, N, N>, IMultiplyOperators<N, N, N>
+            => vector1X * vector2X + vector1Y * vector2Y;
 
         /// <summary>
         /// First normal vector of an input vector. It is the first one in circular direction from (+)x-axis to (+)y-axis.
