@@ -40,9 +40,9 @@ namespace SMath.Geometry2D
             // normal vector
             var normal = GeometricVector2.Normal1(direction);
             // calculate c constant
-            var c = -normal.X1 * point1.X - normal.X2 * point1.Y;
+            var c = -normal.X * point1.X - normal.Y * point1.Y;
 
-            return (normal.X1, normal.X2, c);
+            return (normal.X, normal.Y, c);
         }
 
         /// <summary>

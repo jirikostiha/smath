@@ -18,9 +18,9 @@ namespace SMath.Geometry2D
         {
             Assert.Equal((1d, 0d), GeometricVector2.Normalized(1d, 0d));
             Assert.Equal((0d, 1d), GeometricVector2.Normalized(0d, 1d));
-            Assert.Equal(1 / Math.Sqrt(2d), GeometricVector2.Normalized(1d, 1d).X1, 0.00000001);
-            Assert.Equal(1 / Math.Sqrt(2d), GeometricVector2.Normalized(1d, 1d).X2, 0.00000001);
-            Assert.Equal(2 / Math.Sqrt(8d), GeometricVector2.Normalized(2d, 2d).X2, 0.00000001);
+            Assert.Equal(1 / Math.Sqrt(2d), GeometricVector2.Normalized(1d, 1d).X, 0.00000001);
+            Assert.Equal(1 / Math.Sqrt(2d), GeometricVector2.Normalized(1d, 1d).Y, 0.00000001);
+            Assert.Equal(2 / Math.Sqrt(8d), GeometricVector2.Normalized(2d, 2d).Y, 0.00000001);
         }
 
         [Fact]

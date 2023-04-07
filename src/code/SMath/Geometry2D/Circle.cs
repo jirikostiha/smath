@@ -164,12 +164,12 @@ namespace SMath.Geometry2D
                 var q = radius * N.Sqrt((d * d) - (radius * radius)) / d;
                 var cpNormalized = GeometricVector2.Normalized(point);
                 var cpNormal = GeometricVector2.Normal1(cpNormalized);
-                var vaX1 = cpNormalized.X1 * a;
-                var vaX2 = cpNormalized.X2 * a;
+                var vaX = cpNormalized.X * a;
+                var vaY = cpNormalized.Y * a;
 
                 return (
-                    (vaX1 + cpNormal.X1 * q, vaX2 + cpNormal.X2 * q),
-                    (vaX1 - cpNormal.X1 * q, vaX2 - cpNormal.X2 * q));
+                    (vaX + cpNormal.X * q, vaY + cpNormal.Y * q),
+                    (vaX - cpNormal.X * q, vaY - cpNormal.Y * q));
             }
         }
 
