@@ -17,7 +17,7 @@ namespace SMath.Geometry2D
             where N : IRootFunctions<N>
             => PT.Hypotenuse(x, y);
 
-          /// <summary>
+        /// <summary>
         /// Length or magnitude or scalar value of the vector in x-y plane.
         /// </summary>
         public static N Magnitude<N>((N X, N Y) vector)
