@@ -1,18 +1,18 @@
 using System.Numerics;
 
-namespace SMath
+namespace SMath.Functions1
 {
     /// <summary>
     /// Function image.
     /// </summary>
-    public interface ISingleImage
+    public interface IComplexImage
     {
         /// <summary>
         /// Represents image of the function. 
         /// </summary>
         /// <typeparam name="N"> A number type. </typeparam>
         /// <returns> Image. </returns>
-        public static abstract (N Min, N Max) Image<N>()
+        public static abstract IEnumerable<(N Min, N Max, bool MinIn, bool MaxIn)> Image<N>()
             where N : INumberBase<N>, IMinMaxValue<N>;
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace SMath
         /// </summary>
         /// <typeparam name="N"> A number type. </typeparam>
         /// <returns> Image in number type. </returns>
-        public static abstract (N Min, N Max) NumberImage<N>()
+        public static abstract IEnumerable<(N Min, N Max, bool MinIn, bool MaxIn)> NumberImage<N>()
             where N : INumberBase<N>, IMinMaxValue<N>;
     }
 }
