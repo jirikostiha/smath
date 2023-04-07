@@ -170,7 +170,7 @@ namespace SMath.Geometry2D
             public static class Length
             {
                 /// <summary>
-                /// Length of a line-segment determined by two points.
+                /// Length of a line segment determined by two points.
                 /// </summary>
                 public static N FromTwoPints<N>((N X, N Y) p1, (N X, N Y) p2)
                     where N : IRootFunctions<N>
@@ -199,7 +199,7 @@ namespace SMath.Geometry2D
             public static class Points
             {
                 /// <summary>
-                /// Get n points on a line-segment determined by two points.
+                /// Get n points on a line segment determined by two points.
                 /// </summary>
                 public static IEnumerable<(N X, N Y)> Get<N>((N X, N Y) point1, (N X, N Y) point2, int count)
                     where N : INumberBase<N>
@@ -210,6 +210,53 @@ namespace SMath.Geometry2D
                         yield return (
                             point1.X + N.CreateChecked(i) * xstep,
                             point1.Y + N.CreateChecked(i) * ystep);
+                }
+            }
+
+            /// <summary>
+            /// Parallel line segment to original segment.
+            /// </summary>
+            public static class Parallel
+            {
+                /// <summary>
+                /// Get a point which is with s2p1 line segment parallel to (s1p1, s1p2).
+                /// </summary>
+                public static (N X, N Y) FromThreePoints<N>((N X, N Y) point1, (N X, N Y) point2, (N X, N Y) seedPoint)
+                    where N : INumberBase<N>
+                    => (seedPoint.X + point2.X - point1.X, seedPoint.Y + point2.Y - point1.Y);
+            }
+
+            /// <summary>
+            /// Parallel line segments to original segment.
+            /// </summary>
+            public static class Parallels
+            {
+                /// <summary>
+                /// Get line segment parallels to given line segment in seed direction.
+                /// </summary>
+                public static IEnumerable<((N X, N Y) Point1, (N X, N Y) Point2)> Get<N>((N X, N Y) basePoint,
+                    (N X, N Y) direction, (N X, N Y) seedDirection, params (N Distance, N Length)[] @params)
+                    where N : INumberBase<N>, IRootFunctions<N>
+                    => Get(basePoint, direction, seedDirection, @params);
+
+                /// <summary>
+                /// Get line segment parallels to given line segment in seed direction.
+                /// </summary>
+                public static IEnumerable<((N X, N Y) Point1, (N X, N Y) Point2)> Get<N>((N X, N Y) basePoint, 
+                    (N X, N Y) direction, (N X, N Y) seedDirection, IList<(N Distance, N Length)> @params)
+                    where N : INumberBase<N>, IRootFunctions<N>
+                {
+                    direction = GeometricVector2.Normalized(direction);
+                    seedDirection = GeometricVector2.Normalized(seedDirection);
+
+                    foreach (var param in @params)
+                    {
+                        yield return (
+                            (basePoint.X + seedDirection.X * param.Distance,
+                             basePoint.Y + seedDirection.Y * param.Distance),
+                            (basePoint.X + seedDirection.X * param.Distance + direction.X * param.Length,
+                             basePoint.Y + seedDirection.Y * param.Distance + direction.Y * param.Length));
+                    }
                 }
             }
         }
