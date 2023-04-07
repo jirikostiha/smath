@@ -30,7 +30,7 @@ namespace SMath.Geometry2D
             var point = Line.Segment.Parallel.FromThreePoints((0d, 0), (0, 1), (1, 0));
 
             Assert.Equal(1, point.X);
-            Assert.Equal(1, point.Y); 
+            Assert.Equal(1, point.Y);
         }
 
         [Fact]

@@ -242,7 +242,7 @@ namespace SMath.Geometry2D
                 /// <summary>
                 /// Get line segment parallels to given line segment in seed direction.
                 /// </summary>
-                public static IEnumerable<((N X, N Y) Point1, (N X, N Y) Point2)> Get<N>((N X, N Y) basePoint, 
+                public static IEnumerable<((N X, N Y) Point1, (N X, N Y) Point2)> Get<N>((N X, N Y) basePoint,
                     (N X, N Y) direction, (N X, N Y) seedDirection, IList<(N Distance, N Length)> @params)
                     where N : INumberBase<N>, IRootFunctions<N>
                 {
