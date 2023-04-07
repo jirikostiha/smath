@@ -13,7 +13,7 @@ namespace SMath.Geometry2D
         [InlineData(0, 0, 1, 1, 1)]
         public void Slope(double p1x, double p1y, double p2x, double p2y, double slope)
         {
-            Assert.Equal(slope, Line.Segment.Slope.Get((p1x, p1y), (p2x, p2y)));
+            Assert.Equal(slope, Line.Segment.Slope.FromTwoPoints((p1x, p1y), (p2x, p2y)));
         }
 
         [Fact]

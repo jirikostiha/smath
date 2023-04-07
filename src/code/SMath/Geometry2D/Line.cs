@@ -57,10 +57,16 @@ namespace SMath.Geometry2D
         /// </summary>
         public static class Slope
         {
-            public static N FromGenericForm<N>((N A, N B, N C) line)
+            /// <summary>
+            /// Slope of a line from line general form of line.
+            /// </summary>
+            public static N FromGeneralForm<N>((N A, N B, N C) line)
                 where N : IUnaryNegationOperators<N, N>, IDivisionOperators<N, N, N>
                 => -line.A / line.B;
 
+            /// <summary>
+            /// Slope of a line from line angle.
+            /// </summary>
             public static N FromAngle<N>(N angle)
                 where N : IFloatingPointIeee754<N>, ITrigonometricFunctions<N>
                 => angle != N.Pi / N.CreateChecked(2)
@@ -73,7 +79,10 @@ namespace SMath.Geometry2D
         /// </summary>
         public static class XIntercept
         {
-            public static N Get<N>((N A, N B, N C) line)
+            /// <summary>
+            /// The x-intercept of a line in general form.
+            /// </summary>
+            public static N FromGeneralForm<N>((N A, N B, N C) line)
                 where N : IUnaryNegationOperators<N, N>, IDivisionOperators<N, N, N>
                 => -line.C / line.A;
         }
@@ -83,7 +92,10 @@ namespace SMath.Geometry2D
         /// </summary>
         public static class YIntercept
         {
-            public static N Get<N>((N A, N B, N C) line)
+            /// <summary>
+            /// The y-intercept of a line in general form.
+            /// </summary>
+            public static N GeneralForm<N>((N A, N B, N C) line)
                 where N : IUnaryNegationOperators<N, N>, IDivisionOperators<N, N, N>
                 => -line.C / line.B;
         }
@@ -101,16 +113,22 @@ namespace SMath.Geometry2D
                 /// <summary>
                 /// Get a slope of a normal line to line determined in general forn.
                 /// </summary>
-                public static N Get<N>(N a, N b)
+                public static N FromGeneralForm<N>(N a, N b)
                     where N : IDivisionOperators<N, N, N>
                     => b / a;
 
-                public static N Get<N>((N A, N B, N C) line)
+                /// <summary>
+                /// Get a slope of a normal line to line determined in general forn.
+                /// </summary>
+                public static N FromGeneralForm<N>((N A, N B, N C) line)
                     where N : IDivisionOperators<N, N, N>
                     => line.B / line.A;
             }
 
-            public static (N A, N B, N C) Get<N>((N A, N B, N C) line)
+            /// <summary>
+            /// Get normal line in general form from line determined by general form.
+            /// </summary>
+            public static (N A, N B, N C) FromGeneralForm<N>((N A, N B, N C) line)
                 where N : IUnaryNegationOperators<N, N>
                 => (line.B, -line.A, line.C);
         }
@@ -126,6 +144,9 @@ namespace SMath.Geometry2D
             /// </summary>
             public static class Points
             {
+                /// <summary>
+                /// Get points on a ray determined by origin point and angle.
+                /// </summary>
                 public static IEnumerable<(N X, N Y)> Get<N>(N angle, N step, int count)
                     where N : ITrigonometricFunctions<N>
                 {
@@ -148,6 +169,9 @@ namespace SMath.Geometry2D
             /// </summary>
             public static class Length
             {
+                /// <summary>
+                /// Length of a line-segment determined by two points.
+                /// </summary>
                 public static N FromTwoPints<N>((N X, N Y) p1, (N X, N Y) p2)
                     where N : IRootFunctions<N>
                     => PT.Hypotenuse(p2.X - p1.X, p2.Y - p1.Y);
@@ -164,7 +188,7 @@ namespace SMath.Geometry2D
                 /// <remarks>
                 /// <a href="https://en.wikipedia.org/wiki/Slope">wikipedia</a>
                 /// </remarks>
-                public static N Get<N>((N X, N Y) point1, (N X, N Y) point2)
+                public static N FromTwoPoints<N>((N X, N Y) point1, (N X, N Y) point2)
                     where N : ISubtractionOperators<N, N, N>, IDivisionOperators<N, N, N>
                     => (point2.Y - point1.Y) / (point2.X - point1.X);
             }
@@ -174,6 +198,9 @@ namespace SMath.Geometry2D
             /// </summary>
             public static class Points
             {
+                /// <summary>
+                /// Get n points on a line-segment determined by two points.
+                /// </summary>
                 public static IEnumerable<(N X, N Y)> Get<N>((N X, N Y) point1, (N X, N Y) point2, int count)
                     where N : INumberBase<N>
                 {

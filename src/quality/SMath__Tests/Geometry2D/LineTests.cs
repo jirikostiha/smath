@@ -8,9 +8,9 @@ namespace SMath.Geometry2D
         [InlineData(-1, 1, 0, 1)]
         [InlineData(1, 1, -1, -1)]
         [InlineData(0, 1, -1, 0)]
-        public void Slope_FromGenericForm(double a, double b, double c, double slope)
+        public void Slope_FromGeneralForm(double a, double b, double c, double slope)
         {
-            Assert.Equal(slope, Line.Slope.FromGenericForm((a, b, c)));
+            Assert.Equal(slope, Line.Slope.FromGeneralForm((a, b, c)));
         }
 
         [Theory]
