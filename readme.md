@@ -20,7 +20,7 @@ available since .NET 7.
 
 Currently includes:  
 * 2D geometry  
-* One parametric functions
+* One-parametric functions
 
 ## Setup
 
@@ -42,10 +42,15 @@ Replace 'X.X.X' with a specific version.
 
 ```cs
 // double numbers
-var line1 = Circle.TangentLine.FromAngle(radius: 5d, angle: double.Pi / 4d)
+var line1 = Circle.TangentLine.FromAngle(radius: 5d, angle: double.Pi / 4d);
 
 // float numbers
-var line2 = Circle.TangentLine.FromAngle(radius: 5f, angle: float.Pi / 4f)
+var line2 = Circle.TangentLine.FromAngle(radius: 5f, angle: float.Pi / 4f);
+```
+
+```cs
+var tangentPoints = Circle.TangentPoint.FromPoint(radius: 2d, (4, 4));
+var secantLine = Line.FromTwoPoints(tangentPoints.Value.Point1, tangentPoints.Value.Point2);
 ```
 
 ## Contributing
