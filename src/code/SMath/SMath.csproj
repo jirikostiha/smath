@@ -22,7 +22,7 @@
 		<PackageProjectUrl>https://github.com/jirikostiha/smath</PackageProjectUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<SignAssembly>False</SignAssembly>
-		<Version>0.0.1</Version>
+		<Version>0.1.0</Version>
 		<Authors>Jiri Kostiha</Authors>
 	</PropertyGroup>
 
