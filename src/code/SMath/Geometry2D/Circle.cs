@@ -165,8 +165,8 @@ namespace SMath.Geometry2D
 
                 var a = radius * radius / d;
                 var q = radius * N.Sqrt((d * d) - (radius * radius)) / d;
-                var cpNormalized = GeometricVector2.Normalized(point);
-                var cpNormal = GeometricVector2.Normal1(cpNormalized);
+                var cpNormalized = GeometricVector2.Cartesian.Normalized(point);
+                var cpNormal = GeometricVector2.Normal1.FromCartesian(cpNormalized);
                 var vaX = cpNormalized.X * a;
                 var vaY = cpNormalized.Y * a;
 

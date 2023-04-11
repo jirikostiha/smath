@@ -36,9 +36,9 @@ namespace SMath.Geometry2D
             where N : IRootFunctions<N>
         {
             // direction vector = P2 - P1
-            var direction = GeometricVector2.Direction(point1, point2);
+            var direction = GeometricVector2.Direction.FromCartesian(point1, point2);
             // normal vector
-            var normal = GeometricVector2.Normal1(direction);
+            var normal = GeometricVector2.Normal1.FromCartesian(direction);
             // calculate c constant
             var c = -normal.X * point1.X - normal.Y * point1.Y;
 
@@ -246,8 +246,8 @@ namespace SMath.Geometry2D
                     (N X, N Y) direction, (N X, N Y) seedDirection, IList<(N Distance, N Length)> @params)
                     where N : INumberBase<N>, IRootFunctions<N>
                 {
-                    direction = GeometricVector2.Normalized(direction);
-                    seedDirection = GeometricVector2.Normalized(seedDirection);
+                    direction = GeometricVector2.Cartesian.Normalized(direction);
+                    seedDirection = GeometricVector2.Cartesian.Normalized(seedDirection);
 
                     foreach (var param in @params)
                     {
