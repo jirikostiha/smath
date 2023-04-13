@@ -101,7 +101,7 @@ namespace SMath.Geometry2D
         }
 
         /// <summary>
-        /// Enclosed plane region of a circle.
+        /// Plane region enclosed by a circle.
         /// </summary>
         public static class Region
         {
@@ -177,7 +177,7 @@ namespace SMath.Geometry2D
         }
 
         /// <summary>
-        /// Circular arc.
+        /// Arc of a circle.
         /// </summary>
         /// <remarks>
         /// <a href="https://en.wikipedia.org/wiki/Circular_arc">wikipedia</a>
@@ -206,7 +206,7 @@ namespace SMath.Geometry2D
         public static class Chord
         {
             /// <summary>
-            /// Length of a chord of a circle.
+            /// The length of a chord of a circle.
             /// </summary>
             public static class Length
             {
@@ -216,7 +216,7 @@ namespace SMath.Geometry2D
             }
 
             /// <summary>
-            /// Sagitta of circle determined by chord.
+            /// Sagitta of a circle determined by chord.
             /// </summary>
             public static class Sagitta
             {
@@ -237,7 +237,7 @@ namespace SMath.Geometry2D
         }
 
         /// <summary>
-        /// Sector of an circle or circular sector.
+        /// Sector of a circle or circular sector.
         /// </summary>
         /// <remarks>
         /// <a href="https://en.wikipedia.org/wiki/Circular_sector">wikipedia</a>
@@ -246,12 +246,12 @@ namespace SMath.Geometry2D
         public static class Sector
         {
             /// <summary>
-            /// Perimeter of a circular sector.
+            /// Perimeter of the circular sector.
             /// </summary>
             public static class Perimeter
             {
                 /// <summary>
-                /// Length of perimeter of a circular sector.
+                /// Length of the perimeter (circumference) of the circular sector.
                 /// </summary>
                 public static class Length
                 {
@@ -266,12 +266,12 @@ namespace SMath.Geometry2D
             }
 
             /// <summary>
-            /// Enclosed plane region of a circular sector.
+            /// Plane region enclosed by a circular sector.
             /// </summary>
             public static class Region
             {
                 /// <summary>
-                /// Enclosed plane region area of a circular sector.
+                /// The area of plane region enclosed by a circular sector.
                 /// </summary>
                 public static class Area
                 {
@@ -287,7 +287,7 @@ namespace SMath.Geometry2D
         }
 
         /// <summary>
-        /// Circular segment.
+        /// Segment of a circle or circular segment.
         /// </summary>
         /// <remarks>
         /// <a href="https://en.wikipedia.org/wiki/Circular_segment">wikipedia</a>
@@ -295,6 +295,9 @@ namespace SMath.Geometry2D
         /// </remarks>
         public static class Segment
         {
+            /// <summary>
+            /// Radius of a circular segment.
+            /// </summary>
             public static class Radius
             {
                 public static N FromSagittaAndChord<N>(N sagitta, N chordLength)
@@ -302,6 +305,9 @@ namespace SMath.Geometry2D
                     => (sagitta / N.CreateChecked(2)) + (chordLength * chordLength / (N.CreateChecked(8) * sagitta));
             }
 
+            /// <summary>
+            /// Sagitta of a circular segment.
+            /// </summary>
             public static class Sagitta
             {
                 public static N FromAngle<N>(N radius, N angle)
@@ -309,6 +315,9 @@ namespace SMath.Geometry2D
                     => N.CreateChecked(2) * radius * N.Sin(angle / N.CreateChecked(2));
             }
 
+            /// <summary>
+            /// Apothem of a circular segment.
+            /// </summary>
             public static class Apothem
             {
                 public static N FromAngle<N>(N radius, N angle)
@@ -338,7 +347,7 @@ namespace SMath.Geometry2D
             public static class Region
             {
                 /// <summary>
-                /// Enclosed plane region area of a circular segment.
+                /// The area of plane region enclosed by a circular segment.
                 /// </summary>
                 public static class Area
                 {
