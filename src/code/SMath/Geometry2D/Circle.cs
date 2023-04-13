@@ -106,8 +106,11 @@ namespace SMath.Geometry2D
         public static class Region
         {
             /// <summary>
-            /// Enclosed plane region area of a circle.
+            /// Area of a plane region enclosed by circle.
             /// </summary>
+            /// <remarks>
+            /// <a href="https://en.wikipedia.org/wiki/Area_of_a_circle">wikipedia</a>
+            /// </remarks>
             public static class Area
             {
                 public static N FromRadius<N>(N radius)
