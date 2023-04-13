@@ -237,7 +237,7 @@ namespace SMath.Geometry2D
         }
 
         /// <summary>
-        /// Circular sector.
+        /// Sector of an circle or circular sector.
         /// </summary>
         /// <remarks>
         /// <a href="https://en.wikipedia.org/wiki/Circular_sector">wikipedia</a>
@@ -295,6 +295,27 @@ namespace SMath.Geometry2D
         /// </remarks>
         public static class Segment
         {
+            public static class Radius
+            {
+                public static N FromSagittaAndChord<N>(N sagitta, N chordLength)
+                    where N : INumberBase<N>
+                    => (sagitta / N.CreateChecked(2)) + (chordLength * chordLength / (N.CreateChecked(8) * sagitta));
+            }
+
+            public static class Sagitta
+            {
+                public static N FromAngle<N>(N radius, N angle)
+                    where N : ITrigonometricFunctions<N>
+                    => N.CreateChecked(2) * radius * N.Sin(angle / N.CreateChecked(2));
+            }
+
+            public static class Apothem
+            {
+                public static N FromAngle<N>(N radius, N angle)
+                    where N : ITrigonometricFunctions<N>
+                    => radius * N.Cos(angle / N.CreateChecked(2));
+            }
+
             /// <summary>
             /// Perimeter of a circular segment.
             /// </summary>
