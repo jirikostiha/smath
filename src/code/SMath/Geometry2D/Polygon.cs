@@ -1,4 +1,6 @@
-﻿namespace Wayout.Mathematics.Geometry.D2
+﻿using System.Numerics;
+
+namespace SMath.GeometryD2
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -11,9 +13,9 @@
     /// </remarks>
     public static class Polygon
     {
-        public static N Perimeter<N>(IEnumerable<N> edgesLength)
-            where N : INumberBase<N>
-            => edgesLength.Sum();
+        //public static N Perimeter<N>(IEnumerable<N> edgesLength)
+        //    where N : INumberBase<N>
+        //    => edgesLength.Sum();
 
         
 
