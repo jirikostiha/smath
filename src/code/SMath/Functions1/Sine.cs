@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 
 namespace SMath.Functions1
 {
@@ -62,61 +62,5 @@ namespace SMath.Functions1
         public static N DerivativeEval<N>(N x)
             where N : ITrigonometricFunctions<N>
             => N.Cos(x);
-
-        public static class TangentLine
-        {
-            public static (N A, N B, N C) FromX<N>(N x)
-                where N : ITrigonometricFunctions<N>
-            {
-                var slope = Slope.FromX(x);
-                return (-slope, N.One, slope * x - Eval(x));
-            }
-
-            public static class Slope
-            {
-                public static N FromX<N>(N x)
-                    where N : ITrigonometricFunctions<N>
-                    => DerivativeEval(x);
-            }
-        }
-
-        public static class NormalLine
-        {
-            public static (N A, N B, N C) FromX<N>(N x)
-                where N : ITrigonometricFunctions<N>
-            {
-                var slope = -N.One / DerivativeEval(x);
-                return (-slope, N.One, slope * x - Eval(x));
-            }
-
-            public static class Slope
-            {
-                public static N FromX<N>(N x)
-                    where N : ITrigonometricFunctions<N>
-                    => -N.One / DerivativeEval(x);
-            }
-        }
-
-        public static class Points
-        {
-            public static IEnumerable<(N X, N Y)> Get<N>(int count)
-                where N : ITrigonometricFunctions<N>, IComparisonOperators<N, N, bool>
-                => Get(N.Zero, N.CreateChecked(2) * N.Pi, count);
-
-            public static IEnumerable<(N X, N Y)> Get<N>(N from, N to, int count)
-                where N : ITrigonometricFunctions<N>, IComparisonOperators<N, N, bool>
-                => Get(from, to, N.CreateChecked(2) * N.Pi / N.CreateChecked(count));
-
-            public static IEnumerable<(N X, N Y)> Get<N>(N xstep)
-                where N : ITrigonometricFunctions<N>, IComparisonOperators<N, N, bool>
-                => Get(N.Zero, N.CreateChecked(2) * N.Pi, xstep);
-
-            public static IEnumerable<(N X, N Y)> Get<N>(N from, N to, N xstep)
-                where N : ITrigonometricFunctions<N>, IComparisonOperators<N, N, bool>
-            {
-                for (N x = from; x < to; x += xstep)
-                    yield return (x, N.Sin(x));
-            }
-        }
     }
 }
