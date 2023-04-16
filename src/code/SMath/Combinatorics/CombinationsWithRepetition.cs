@@ -31,13 +31,13 @@ namespace SMath.Combinatorics
         //}
 
         public static NInt Count<NInt>(NInt n, NInt k)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
             => n > NInt.Zero && k > NInt.Zero
                 ? Factorial.Eval(n + k - NInt.One) / (Factorial.Eval(k) * Factorial.Eval(n - NInt.One))
                 : NInt.Zero;
 
         public static IEnumerable<(NInt Index1, NInt Index2)> Tuple2<NInt>(NInt n)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             if (n <= NInt.Zero)
                 yield break;
@@ -46,7 +46,7 @@ namespace SMath.Combinatorics
         }
 
         public static IEnumerable<(NInt Index1, NInt Index2, NInt Index3)> Tuple3<NInt>(NInt n)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             if (n <= NInt.Zero)
                 yield break;
@@ -55,7 +55,7 @@ namespace SMath.Combinatorics
         }
 
         public static IEnumerable<(NInt Index1, NInt Index2, NInt Index3, NInt Index4)> Tuple4<NInt>(NInt n)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             if (n <= NInt.Zero)
                 yield break;
@@ -77,7 +77,7 @@ namespace SMath.Combinatorics
         //https://rosettacode.org/wiki/Permutations_with_repetitions
         //https://www.tutorialcup.com/interview/string/print-permutations-repetition.htm
         public static IEnumerable<NInt[]> Tuples<NInt>(NInt n, NInt k)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             if (n <= NInt.Zero || k <= NInt.Zero)
                 yield break;            

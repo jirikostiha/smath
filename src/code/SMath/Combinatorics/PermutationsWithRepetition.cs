@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Numerics;
 
 namespace SMath.Combinatorics
@@ -29,14 +28,20 @@ namespace SMath.Combinatorics
         //    return 0; //or exception
         //}
 
+        public static N Count<N>(N n, N k)
+            where N : IFloatingPointIeee754<N>, IPowerFunctions<N>, IComparisonOperators<N, N, bool>
+            => n > N.Zero && k > N.Zero
+                ? N.Pow(n, k)
+                : N.NaN; //or exc or nan
+
         public static NInt Count<NInt>(NInt n, NInt k)
-            where NInt : IPowerFunctions<NInt>, IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
             => n > NInt.Zero && k > NInt.Zero
-                ? NInt.Pow(n, k)
+                ? NInt.CreateChecked(double.Pow(double.CreateChecked(n), double.CreateChecked(k)))
                 : NInt.Zero; //or exc
 
         public static IEnumerable<(NInt Index1, NInt Index2)> Tuple2<NInt>(NInt n)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             if (n <= NInt.Zero)
                 yield break;
@@ -45,7 +50,7 @@ namespace SMath.Combinatorics
         }
 
         public static IEnumerable<(NInt Index1, NInt Index2, NInt Index3)> Tuple3<NInt>(NInt n)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             if (n <= NInt.Zero)
                 yield break;
@@ -54,7 +59,7 @@ namespace SMath.Combinatorics
         }
 
         public static IEnumerable<(NInt Index1, NInt Index2, NInt Index3, NInt Index4)> Tuple4<NInt>(NInt n)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             if (n <= NInt.Zero)
                 yield break;
@@ -77,7 +82,7 @@ namespace SMath.Combinatorics
         //https://www.geeksforgeeks.org/print-all-permutations-with-repetition-of-characters/
         //https://rosettacode.org/wiki/Permutations_with_repetitions
         public static IEnumerable<NInt[]> Tuples<NInt>(NInt n, NInt k)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             if (n < k || k <= NInt.Zero)
                 yield break;

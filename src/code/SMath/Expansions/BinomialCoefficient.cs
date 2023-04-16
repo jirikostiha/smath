@@ -17,7 +17,7 @@ namespace SMath.Expansions
         /// <param name="k"></param>
         /// <returns></returns>
         public static NInt Eval<NInt>(NInt n, NInt k)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
             => Factorial.Eval(n) / (Factorial.Eval(k) * Factorial.Eval(n - k));
     }
 }

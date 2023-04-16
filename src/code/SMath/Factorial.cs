@@ -12,7 +12,7 @@ namespace SMath
     public static class Factorial
     {
         public static NInt Eval<NInt>(NInt n)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             return n == NInt.Zero
                 ? NInt.One

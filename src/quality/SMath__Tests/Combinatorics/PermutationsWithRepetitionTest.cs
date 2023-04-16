@@ -18,7 +18,7 @@
         //DES: NE - nema smysl pze muze byt k > n
         //[DataTestMethod]
         //[MemberData(nameof(CountForN))]
-        //public void Count(uint n, uint expected)
+        //public void Count(int n, int expected)
         //{
         //    Assert.Equal(expected, PermutationsWithRepetition.Count(n));
         //}
@@ -28,7 +28,7 @@
         [MemberData(nameof(CountForTuple2FromN))]
         [MemberData(nameof(CountForTuple3FromN))]
         [MemberData(nameof(CountForTuple4FromN))]
-        public void CountTuples(uint n, uint k, uint expected)
+        public void CountTuples(int n, int k, int expected)
         {
             var count = PermutationsWithRepetition.Count(n, k);
             WriteResult(n, k, count);
@@ -38,35 +38,32 @@
 
         [Theory]
         [MemberData(nameof(CountForTuple2FromN))]
-        public void Tuple2(uint n, uint k, uint expected)
+        public void Tuple2(int n, int k, int expected)
         {
             var tuples = PermutationsWithRepetition.Tuple2(n).ToArray();
             WriteRow(n, k, tuples.Select(x => $"{x.Index1}{x.Index2}"));
 
-            Assert.Equal(expected, tuples.Length);
-            //CollectionAssert.AllItemsAreUnique(tuples);
+            Assert.Equal(expected, tuples.Distinct().Count());
         }
 
         [Theory]
         [MemberData(nameof(CountForTuple3FromN))]
-        public void Tuple3(uint n, uint k, uint expected)
+        public void Tuple3(int n, int k, int expected)
         {
             var tuples = PermutationsWithRepetition.Tuple3(n).ToArray();
             WriteRow(n, k, tuples.Select(x => $"{x.Index1}{x.Index2}{x.Index3}"));
 
-            Assert.Equal(expected, tuples.Length);
-            //CollectionAssert.AllItemsAreUnique(tuples);
+            Assert.Equal(expected, tuples.Distinct().Count());
         }
 
         [Theory]
         [MemberData(nameof(CountForTuple4FromN))]
-        public void Tuple4(uint n, uint k, uint expected)
+        public void Tuple4(int n, int k, int expected)
         {
             var tuples = PermutationsWithRepetition.Tuple4(n).ToArray();
             WriteRow(n, k, tuples.Select(x => $"{x.Index1}{x.Index2}{x.Index3}{x.Index4}"));
 
-            Assert.Equal(expected, tuples.Length);
-            //CollectionAssert.AllItemsAreUnique(tuples);
+            Assert.Equal(expected, tuples.Distinct().Count());
         }
 
         #region data
@@ -131,10 +128,10 @@
         }
         #endregion
 
-        private void WriteResult(uint n, uint k, uint count)
+        private void WriteResult(int n, int k, int count)
             => _output.WriteLine("n={0}, k={1}, count:{2}", n, k, count);
 
-        private void WriteRow(uint n, uint k, IEnumerable<string> tuples)
+        private void WriteRow(int n, int k, IEnumerable<string> tuples)
             => _output.WriteLine("n={0}, k={1}, tuples:({2})", n, k, string.Join(", ", tuples));
     }
 }

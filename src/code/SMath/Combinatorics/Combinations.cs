@@ -21,7 +21,7 @@ namespace SMath.Combinatorics
         /// Counts combinations (without repetition).
         /// </summary>
         public static NInt Count<NInt>(NInt n)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             //Q: is there a formula?
             if (n > NInt.Zero)
@@ -41,13 +41,13 @@ namespace SMath.Combinatorics
         /// <param name="n"></param>
         /// <param name="k"> trida </param>
         public static NInt Count<NInt>(NInt n, NInt k)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
             => n >= k && k > NInt.Zero
                 ? BinomialCoefficient.Eval(n, k)
                 : NInt.Zero; //or exception
 
         public static IEnumerable<(NInt Index1, NInt Index2)> Tuple2<NInt>(NInt n)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             for (var i = NInt.Zero; i < n - NInt.One; i++)
                 for (var j = i + NInt.One; j < n; j++)
@@ -55,7 +55,7 @@ namespace SMath.Combinatorics
         }
 
         public static IEnumerable<(NInt Index1, NInt Index2, NInt Index3)> Tuple3<NInt>(NInt n)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             for (var i = NInt.Zero; i < n - NInt.One; i++)
                 for (var j = i + NInt.One; j < n; j++)
@@ -64,7 +64,7 @@ namespace SMath.Combinatorics
         }
 
         public static IEnumerable<(NInt Index1, NInt Index2, NInt Index3, NInt Index4)> Tuple4<NInt>(NInt n)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             for (var i = NInt.Zero; i < n - NInt.One; i++)
                 for (var j = i + NInt.One; j < n; j++)
@@ -74,7 +74,7 @@ namespace SMath.Combinatorics
         }
 
         public static IEnumerable<NInt[]> Tuples<NInt>(NInt n) //all
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             if (n <= NInt.Zero)
                 yield break;
@@ -85,7 +85,7 @@ namespace SMath.Combinatorics
         }
 
         public static IEnumerable<NInt[]> Tuples<NInt>(NInt n, NInt k)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             if (n < k || k <= NInt.Zero)
                 yield break;

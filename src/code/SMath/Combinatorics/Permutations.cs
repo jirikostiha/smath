@@ -23,7 +23,7 @@ namespace SMath.Combinatorics
         /// </summary>
         /// <param name="n"></param>
         public static NInt Count<NInt>(NInt n)
-             where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+             where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             //Q: is there a formula?
             if (n > NInt.Zero)
@@ -46,31 +46,31 @@ namespace SMath.Combinatorics
         /// <param name="n"></param>
         /// <param name="k"></param>
         public static NInt Count<NInt>(NInt n, NInt k)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
             => n >= k && k > NInt.Zero
                 ? Factorial.Eval(n) / Factorial.Eval(n - k)
                 : NInt.Zero; //or exception
 
         public static IEnumerable<(NInt Index1, NInt Index2)> Tuple2<NInt>(NInt n)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             throw new NotImplementedException("todo");
         }
 
-        public static IEnumerable<(NInt Index1, NInt Index2, NInt Index3)> Tuple3<NInt>(int n)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+        public static IEnumerable<(NInt Index1, NInt Index2, NInt Index3)> Tuple3<NInt>(NInt n)
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             throw new NotImplementedException("todo");
         }
 
-        public static IEnumerable<(NInt Index1, NInt Index2, NInt Index3, NInt Index4)> Tuple4<NInt>(int n)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+        public static IEnumerable<(NInt Index1, NInt Index2, NInt Index3, NInt Index4)> Tuple4<NInt>(NInt n)
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             throw new NotImplementedException("todo");
         }
 
         public static IEnumerable<NInt[]> Tuples<NInt>(NInt n)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             if (n <= NInt.Zero)
                 yield break;
@@ -84,7 +84,7 @@ namespace SMath.Combinatorics
         //https://www.geeksforgeeks.org/heaps-algorithm-for-generating-permutations/
         //https://rosettacode.org/wiki/Permutations_with_repetitions
         public static IEnumerable<NInt[]> Tuples<NInt>(NInt n, NInt k)
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             if (n < k || k <= NInt.Zero)
                 yield break;

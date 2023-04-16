@@ -13,12 +13,12 @@ namespace SMath.Series
     {
         public static N Term<N, NInt>(N initial, N diff, NInt n)
             where N : INumberBase<N>
-            where NInt : IUnsignedNumber<NInt>
+            where NInt : IBinaryInteger<NInt>
             => N.CreateChecked(n / NInt.CreateChecked(2)) * (N.CreateChecked(2) * initial + N.CreateChecked(n - NInt.One) * diff);
 
         public static IEnumerable<N> Terms<N, NInt>(N initial, N diff, NInt count)
             where N : INumberBase<N>
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             for (var n = NInt.One; n <= count; n++)
                 yield return Term(initial, diff, n);

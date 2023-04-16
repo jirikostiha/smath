@@ -11,13 +11,12 @@
         [Fact]
         public void Terms()
         {
-            ArithmeticSequence.Term();
-            CollectionAssert.Equal(new double[] { 0, 0, 0 }, ArithmeticSequence.Terms(0, 0, 3).ToArray());
-            CollectionAssert.Equal(new double[] { 1, 1, 1 }, ArithmeticSequence.Terms(1, 0, 3).ToArray());
-            CollectionAssert.Equal(new double[] { -1, -1, -1 }, ArithmeticSequence.Terms(-1, 0, 3).ToArray());
+            Assert.Equal(new double[] { 0, 0, 0 }, ArithmeticSequence.Terms(0d, 0, 3u).ToArray());
+            Assert.Equal(new double[] { 1, 1, 1 }, ArithmeticSequence.Terms(1d, 0, 3u).ToArray());
+            Assert.Equal(new double[] { -1, -1, -1 }, ArithmeticSequence.Terms(-1d, 0, 3u).ToArray());
 
-            CollectionAssert.Equal(new double[] { 0, 1, 2, 3 }, ArithmeticSequence.Terms(0, 1, 4).ToArray());
-            CollectionAssert.Equal(new double[] { -2, 0, 2 }, ArithmeticSequence.Terms(-2, 2, 3).ToArray());
+            Assert.Equal(new double[] { 0, 1, 2, 3 }, ArithmeticSequence.Terms(0d, 1, 4u).ToArray());
+            Assert.Equal(new double[] { -2, 0, 2 }, ArithmeticSequence.Terms(-2d, 2, 3u).ToArray());
         }
     }
 }

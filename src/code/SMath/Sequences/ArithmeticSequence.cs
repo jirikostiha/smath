@@ -16,12 +16,12 @@ namespace SMath.Sequences
         /// </summary>
         public static N Term<N,NInt>(N initial, N diff, NInt n)
             where N : INumberBase<N>
-            where NInt : IUnsignedNumber<NInt>
+            where NInt : IBinaryInteger<NInt>
             => initial + N.CreateChecked(n - NInt.One) * diff;
 
         public static IEnumerable<N> Terms<N, NInt>(N initial, N diff, NInt count)
             where N : INumberBase<N>
-            where NInt : IUnsignedNumber<NInt>, IComparisonOperators<NInt, NInt, bool>
+            where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
         {
             for (NInt n = NInt.One; n <= count; n++)
                 yield return Term(initial, diff, n);

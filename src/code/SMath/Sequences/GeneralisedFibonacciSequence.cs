@@ -15,14 +15,14 @@ namespace SMath.Sequences
         /// </summary>
         public static N Term<N, NInt>(N a, N b, NInt n)
             where N : INumberBase<N>
-            where NInt : IUnsignedNumber<NInt>
+            where NInt : IBinaryInteger<NInt>
         {
             return default; //todo
         }
 
         public static IEnumerable<N> Terms<N, NInt>(N a, N b, NInt count)
             where N : INumberBase<N>, IComparisonOperators<N, N, bool>
-            where NInt : IUnsignedNumber<NInt>
+            where NInt : IBinaryInteger<NInt>
         {
             //double a = aInitial;
             yield return a;

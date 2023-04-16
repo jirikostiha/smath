@@ -24,7 +24,7 @@
         [Fact]
         public void Terms()
         {
-            CollectionAssert.Equal(new double[] { 0, 1, 3, 6, 10 }, ArithmeticSeries.Terms(0, 1, 5).ToArray());
+            Assert.Equal(new double[] { 0, 1, 3, 6, 10 }, ArithmeticSeries.Terms(0d, 1, 5).ToArray());
         }
     }
 }
