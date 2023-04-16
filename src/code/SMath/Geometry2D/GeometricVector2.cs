@@ -121,12 +121,12 @@ namespace SMath.Geometry2D
         {
             public static (N Magnitude, N Φ1) FromCartesian<N>(N x, N y)
                 where N : IRootFunctions<N>, ITrigonometricFunctions<N>
-                => (Magnitude.FromCartesian(x, y), 
+                => (Magnitude.FromCartesian(x, y),
                     PolarAngle.FromCartesian(x, y));
 
             public static (N Magnitude, N Φ1) FromCartesian<N>((N X, N Y) vector)
                 where N : IRootFunctions<N>, ITrigonometricFunctions<N>
-                => (Magnitude.FromCartesian(vector.X, vector.Y), 
+                => (Magnitude.FromCartesian(vector.X, vector.Y),
                     PolarAngle.FromCartesian(vector.X, vector.Y));
 
             public static (N Magnitude, N Φ1) Normalized<N>(N Magnitude, N polarAngle)
