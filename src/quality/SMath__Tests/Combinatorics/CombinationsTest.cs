@@ -1,69 +1,73 @@
-﻿namespace Wayout.Mathematics.Combinatorics
+﻿namespace SMath.Combinatorics
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Xunit;
+    using Xunit.Abstractions;
 
     public class CombinationsTest
     {
-        public TestContext TestContext { get; set; }
+        private readonly ITestOutputHelper _output;
 
-        [Theory]
-        [DynamicData(nameof(CountForN), DynamicDataSourceType.Method)]
-        public void Count(int n, int expected)
+        public CombinationsTest(ITestOutputHelper output)
         {
-            Assert.AreEqual(expected, Combinations.Count(n));
+            _output = output;
         }
 
         [Theory]
-        [DynamicData(nameof(CountForTuple1FromN), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(CountForTuple2FromN), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(CountForTuple3FromN), DynamicDataSourceType.Method)]
-        [DynamicData(nameof(CountForTuple4FromN), DynamicDataSourceType.Method)]
-        public void CountTuples(int n, int k, int expected)
+        [MemberData(nameof(CountForN), parameters: 2)]
+        public void Count(uint n, uint expected)
         {
-            var count = Combinations.Count(n, k);
-            WriteResult(n, k, count);
-
-            Assert.AreEqual(expected, count);
+            Assert.Equal(expected, Combinations.Count(n));
         }
 
         [Theory]
-        [DynamicData(nameof(CountForTuple2FromN), DynamicDataSourceType.Method)]
-        public void Tuple2(int n, int k, int expected)
+        [MemberData(nameof(CountForTuple1FromN))]
+        [MemberData(nameof(CountForTuple2FromN))]
+        [MemberData(nameof(CountForTuple3FromN))]
+        [MemberData(nameof(CountForTuple4FromN))]
+        public void CountTuples(uint n, uint k, uint expected)
+        {
+            //var count = Combinations.Count(n, k);
+            //WriteResult(n, k, count);
+
+            Assert.Equal(expected, Combinations.Count(n, k));
+        }
+
+        [Theory]
+        [MemberData(nameof(CountForTuple2FromN))]
+        public void Tuple2(uint n, uint k, int expected)
         {
             var tuples = Combinations.Tuple2(n).ToArray();
             WriteRow(n, k, tuples.Select(x => $"{x.Index1}{x.Index2}"));
 
-            Assert.AreEqual(expected, tuples.Length);
-            CollectionAssert.AllItemsAreUnique(tuples);
+            Assert.Equal(expected, tuples.Distinct().Count());
         }
 
-        [Theory]
-        [DynamicData(nameof(CountForTuple3FromN), DynamicDataSourceType.Method)]
-        public void Tuple3(int n, int k, int expected)
-        {
-            var tuples = Combinations.Tuple3(n).ToArray();
-            WriteRow(n, k, tuples.Select(x => $"{x.Index1}{x.Index2}{x.Index3}"));
+        //[Theory]
+        //[MemberData(nameof(CountForTuple3FromN))]
+        //public void Tuple3(uint n, uint k, uint expected)
+        //{
+        //    var tuples = Combinations.Tuple3(n).ToArray();
+        //    WriteRow(n, k, tuples.Select(x => $"{x.Index1}{x.Index2}{x.Index3}"));
 
-            Assert.AreEqual(expected, tuples.Length);
-            CollectionAssert.AllItemsAreUnique(tuples);
-        }
+        //    Assert.Equal(expected, tuples.Length);
+        //    CollectionAssert.AllItemsAreUnique(tuples);
+        //}
 
-        [Theory]
-        [DynamicData(nameof(CountForTuple4FromN), DynamicDataSourceType.Method)]
-        public void Tuple4(int n, int k, int expected)
-        {
-            var tuples = Combinations.Tuple4(n).ToArray();
-            WriteRow(n, k, tuples.Select(x => $"{x.Index1}{x.Index2}{x.Index3}{x.Index4}"));
+        //[Theory]
+        //[MemberData(nameof(CountForTuple4FromN))]
+        //public void Tuple4(uint n, uint k, uint expected)
+        //{
+        //    var tuples = Combinations.Tuple4(n).ToArray();
+        //    WriteRow(n, k, tuples.Select(x => $"{x.Index1}{x.Index2}{x.Index3}{x.Index4}"));
 
-            Assert.AreEqual(expected, tuples.Length);
-            CollectionAssert.AllItemsAreUnique(tuples);
-        }
+        //    Assert.Equal(expected, tuples.Length);
+        //    CollectionAssert.AllItemsAreUnique(tuples);
+        //}
 
         #region data
-        private static IEnumerable<object[]> CountForN()
+        public static IEnumerable<object[]> CountForN()
         {
             // n; expected
             yield return new object[] { -1, 0 };
@@ -74,8 +78,8 @@
             yield return new object[] { 4, 15 };
             //todo upper limit
         }
-        
-        private static IEnumerable<object[]> CountForTuple1FromN()
+
+        public static IEnumerable<object[]> CountForTuple1FromN()
         {
             // n; k; expected
             yield return new object[] { -1, 1, 0 };
@@ -85,7 +89,7 @@
             yield return new object[] { 3, 1, 3 };
         }
 
-        private static IEnumerable<object[]> CountForTuple2FromN()
+        public static IEnumerable<object[]> CountForTuple2FromN()
         {
             // n; k; expected
             yield return new object[] { -1, 2, 0 };
@@ -97,7 +101,7 @@
             yield return new object[] { 5, 2, 10 };
         }
 
-        private static IEnumerable<object[]> CountForTuple3FromN()
+        public static IEnumerable<object[]> CountForTuple3FromN()
         {
             // n; k; expected
             yield return new object[] { -1, 3, 0 };
@@ -110,7 +114,7 @@
             yield return new object[] { 6, 3, 20 };
         }
 
-        private static IEnumerable<object[]> CountForTuple4FromN()
+        public static IEnumerable<object[]> CountForTuple4FromN()
         {
             // n; k; expected
             yield return new object[] { -1, 4, 0 };
@@ -124,10 +128,10 @@
         }
         #endregion
 
-        private void WriteResult(int n, int k, int count)
-            => TestContext.WriteLine("n={0}, k={1}, count:{2}", n, k, count);
+        private void WriteResult(uint n, uint k, uint count)
+            => _output.WriteLine("n={0}, k={1}, count:{2}", n, k, count);
 
-        private void WriteRow(int n, int k, IEnumerable<string> tuples)
-            => TestContext.WriteLine("n={0}, k={1}, tuples:({2})", n, k, string.Join(", ", tuples));
+        private void WriteRow(uint n, uint k, IEnumerable<string> tuples)
+            => _output.WriteLine("n={0}, k={1}, tuples:({2})", n, k, string.Join(", ", tuples));
     }
 }

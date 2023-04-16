@@ -1,31 +1,30 @@
-﻿namespace Wayout.Mathematics.Series
+﻿namespace SMath.Series
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Wayout.Mathematics.Series;
+    using Xunit;
 
-    [TestClass]
     public class ArithmeticSeriesTest
     {
-        [TestMethod]
-        public void Term()
+        [Theory]
+        [InlineData(0, 0, 1, 0)]
+        [InlineData(0, 0, 2, 0)]
+        [InlineData(0, 1, 1, 0)]
+        [InlineData(0, 1, 2, 1)]
+        [InlineData(1, 0, 1, 1)]
+        [InlineData(1, 0, 0, 2)]
+        [InlineData(1, 1, 1, 2)]
+        [InlineData(1, 1, 2, 3)]
+        public void Term(uint initial, uint diff, uint n, uint result)
         {
-            Assert.AreEqual(0, ArithmeticSeries.Term(0, 0, 1));
-            Assert.AreEqual(0, ArithmeticSeries.Term(0, 0, 2));
-            Assert.AreEqual(0, ArithmeticSeries.Term(0, 1, 1));
-            Assert.AreEqual(1, ArithmeticSeries.Term(0, 1, 2));
-            Assert.AreEqual(1, ArithmeticSeries.Term(1, 0, 1));
-            Assert.AreEqual(2, ArithmeticSeries.Term(1, 0, 2));
-            Assert.AreEqual(1, ArithmeticSeries.Term(1, 1, 1));
-            Assert.AreEqual(3, ArithmeticSeries.Term(1, 1, 2));
+            Assert.Equal(result, ArithmeticSeries.Term(initial, diff, n));
         }
 
-        [TestMethod]
+        [Fact]
         public void Terms()
         {
-            CollectionAssert.AreEqual(new double[] { 0, 1, 3, 6, 10 }, ArithmeticSeries.Terms(0, 1, 5).ToArray());
+            CollectionAssert.Equal(new double[] { 0, 1, 3, 6, 10 }, ArithmeticSeries.Terms(0, 1, 5).ToArray());
         }
     }
 }

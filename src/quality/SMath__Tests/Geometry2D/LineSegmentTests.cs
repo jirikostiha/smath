@@ -62,20 +62,20 @@ namespace SMath.Geometry2D
             var parallels = Line.Segment.Parallels.Get((0d, 0), (0, 1), (1, 0), new[] { (1d, 1d), (2, 2) });
 
             Assert.Collection(parallels,
-             item =>
-             {
-                 Assert.Equal(1, item.Point1.X, 6);
-                 Assert.Equal(0, item.Point1.Y, 6);
-                 Assert.Equal(1, item.Point2.X, 6);
-                 Assert.Equal(1, item.Point2.Y, 6);
-             },
-             item =>
-             {
-                 Assert.Equal(2, item.Point1.X, 6);
-                 Assert.Equal(0, item.Point1.Y, 6);
-                 Assert.Equal(2, item.Point2.X, 6);
-                 Assert.Equal(2, item.Point2.Y, 6);
-             });
+                item =>
+                {
+                    Assert.Equal(1, item.Point1.X, 6);
+                    Assert.Equal(0, item.Point1.Y, 6);
+                    Assert.Equal(1, item.Point2.X, 6);
+                    Assert.Equal(1, item.Point2.Y, 6);
+                },
+                item =>
+                {
+                    Assert.Equal(2, item.Point1.X, 6);
+                    Assert.Equal(0, item.Point1.Y, 6);
+                    Assert.Equal(2, item.Point2.X, 6);
+                    Assert.Equal(2, item.Point2.Y, 6);
+                });
         }
 
         [Fact]

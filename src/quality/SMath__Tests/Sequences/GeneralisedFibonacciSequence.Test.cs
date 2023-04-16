@@ -1,18 +1,17 @@
-﻿namespace Wayout.Mathematics.Sequences
+﻿namespace SMath.Sequences
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Xunit;
 
-    [TestClass]
     public class GeneralisedFibonacciSequenceTest
     {
-        [TestMethod]
+        [Fact]
         public void Terms()
         {
-            CollectionAssert.AreEqual(new double[] { 0, 1, 1, 2, 3, 5 }, GeneralisedFibonacciSequence.Terms(0, 1, 6).ToArray());
-            CollectionAssert.AreEqual(new double[] { -1, 2, 1, 3, 4 }, GeneralisedFibonacciSequence.Terms(-1, 2, 5).ToArray());
+            CollectionAssert.Equal(new double[] { 0, 1, 1, 2, 3, 5 }, GeneralisedFibonacciSequence.Terms(0, 1, 6).ToArray());
+            CollectionAssert.Equal(new double[] { -1, 2, 1, 3, 4 }, GeneralisedFibonacciSequence.Terms(-1, 2, 5).ToArray());
         }
     }
 }
