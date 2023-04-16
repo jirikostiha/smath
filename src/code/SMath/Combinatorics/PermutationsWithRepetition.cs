@@ -28,16 +28,18 @@ namespace SMath.Combinatorics
         //    return 0; //or exception
         //}
 
-        public static N Count<N>(N n, N k)
-            where N : IFloatingPointIeee754<N>, IPowerFunctions<N>, IComparisonOperators<N, N, bool>
-            => n > N.Zero && k > N.Zero
-                ? N.Pow(n, k)
-                : N.NaN; //or exc or nan
+        //public static N Count<N>(N n, N k)
+        //    where N : IFloatingPointIeee754<N>, IPowerFunctions<N>, IComparisonOperators<N, N, bool>
+        //    => n > N.Zero && k > N.Zero
+        //        ? N.Pow(n, k)
+        //        : N.NaN; //or exc or nan
 
         public static NInt Count<NInt>(NInt n, NInt k)
             where NInt : IBinaryInteger<NInt>, IComparisonOperators<NInt, NInt, bool>
             => n > NInt.Zero && k > NInt.Zero
-                ? NInt.CreateChecked(double.Pow(double.CreateChecked(n), double.CreateChecked(k)))
+                //? NInt.CreateChecked(double.Pow(double.CreateChecked(n), double.CreateChecked(k)))
+                ? BinaryIntegerExtension.Pow(n, k)
+                //? NInt.Pow2(n, k)
                 : NInt.Zero; //or exc
 
         public static IEnumerable<(NInt Index1, NInt Index2)> Tuple2<NInt>(NInt n)

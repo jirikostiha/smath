@@ -15,7 +15,7 @@
         }
 
         [Theory]
-        [MemberData(nameof(CountForN), parameters: 2)]
+        [MemberData(nameof(CountForN))]
         public void Count(int n, int expected)
         {
             Assert.Equal(expected, Combinations.Count(n));
@@ -28,9 +28,6 @@
         [MemberData(nameof(CountForTuple4FromN))]
         public void CountTuples(int n, int k, int expected)
         {
-            //var count = Combinations.Count(n, k);
-            //WriteResult(n, k, count);
-
             Assert.Equal(expected, Combinations.Count(n, k));
         }
 
