@@ -33,9 +33,9 @@ namespace SMath.Geometry2D
         [InlineData(-1, -0.5, 1, -1.5)]
         public void Power2_NormalLineInPoint(double x, double a, double b, double c)
         {
-            var tl = Function1Geometry.NormalLine.FromX(x, Power2.Eval(x), 
+            var tl = Function1Geometry.NormalLine.FromX(x, Power2.Eval(x),
                 Function1Geometry.NormalLine.Slope.FromX(Power2.DerivativeEval(x)));
-            
+
             Assert.Equal(a, tl.A, 6);
             Assert.Equal(b, tl.B, 6);
             Assert.Equal(c, tl.C, 6);
