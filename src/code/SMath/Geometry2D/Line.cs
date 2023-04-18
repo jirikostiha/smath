@@ -133,6 +133,9 @@ namespace SMath.Geometry2D
                 => (line.B, -line.A, line.C);
         }
 
+        /// <summary>
+        /// Line and ... investigation.
+        /// </summary>
         public static class And
         {
             /// <summary>
@@ -155,6 +158,7 @@ namespace SMath.Geometry2D
                         where N : IRootFunctions<N>
                         => N.Abs(line.A * point.X + line.B * point.Y + line.C) / PT.Hypotenuse(line.A, line.B);
                 }
+
                 /// <summary>
                 /// Line and point intersection.
                 /// </summary>
@@ -168,6 +172,40 @@ namespace SMath.Geometry2D
                         => line.A * point.X + line.B * point.Y + line.C == N.Zero;
                 }
             }
+
+            /// <summary>
+            /// Line and line investigation.
+            /// </summary>
+            public static class Line
+            {
+                /// <summary>
+                /// Line and line intersection.
+                /// </summary>
+                public static class Intersection
+                {
+                    /// <summary>
+                    /// Line intersects line.
+                    /// </summary>
+                    /// <remarks>
+                    /// <a href="https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection">wikipedia</a>
+                    /// </remarks>
+                    /// <returns>
+                    ///     null: parallel or identical
+                    ///     (x,y): intersection point
+                    /// </returns>
+                    public static (N X, N Y)? FromGeneralForm<N>((N A, N B, N C) line1, (N A, N B, N C) line2)
+                        where N : INumberBase<N>
+                    {
+                        var determinant = Determinant.FromCells(line1.A, line1.B, line2.A, line2.B);
+                        return determinant != N.Zero
+                            ? ((line2.B * (-line1.C) - line1.B * (-line2.C)) / determinant,
+                               (line1.A * (-line2.C) - line2.A * (-line1.C)) / determinant)
+                            : null;
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Ray.
         /// Determined by point and angle.
