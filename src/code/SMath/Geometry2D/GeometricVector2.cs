@@ -1,5 +1,4 @@
-﻿using SMath.Functions1;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace SMath.Geometry2D
 {
@@ -30,23 +29,20 @@ namespace SMath.Geometry2D
                 where N : IRootFunctions<N>
                 => PT.Hypotenuse(vector.X, vector.Y);
 
-            //spise sum -> magnitude
-            /// <summary>
-            /// Magnitude of sum of two vectors.
-            /// </summary>
-            public static class Sum
-            {
-                public static N SumLength<N>(N magnitude1, N magnitude2, N angle)
-                    where N : ITrigonometricFunctions<N>, IRootFunctions<N>
-                    => PT.Cosine(magnitude1, magnitude2, -angle);
+            public static N FromCartesianVectors<N>(params (N X, N Y)[] vectors)
+                where N : IRootFunctions<N>
+                => FromCartesian(Cartesian.FromCartesianVectors(vectors));
 
-                /// <summary>
-                /// Magnitude of sum of two polar vectors.
-                /// </summary>
-                public static N SumLength<N>((N Magnitude, N Angle) vector1, (N Magnitude, N Angle) vector2)
-                    where N : ITrigonometricFunctions<N>, IRootFunctions<N>
-                    => PT.Cosine(vector1.Magnitude, vector2.Magnitude, vector1.Angle - vector2.Angle);
-            }
+            public static N FromTwoPolarVectors<N>(N magnitude1, N magnitude2, N angle)
+                where N : ITrigonometricFunctions<N>, IRootFunctions<N>
+                => PT.Cosine(magnitude1, magnitude2, -angle);
+
+            /// <summary>
+            /// Magnitude of sum of two polar vectors.
+            /// </summary>
+            public static N FromPolarVectors<N>((N Magnitude, N Angle) vector1, (N Magnitude, N Angle) vector2)
+                where N : ITrigonometricFunctions<N>, IRootFunctions<N>
+                => PT.Cosine(vector1.Magnitude, vector2.Magnitude, vector1.Angle - vector2.Angle);
         }
 
         /// <summary>
@@ -92,7 +88,12 @@ namespace SMath.Geometry2D
                 where N : ITrigonometricFunctions<N>
                 => (X.FromPolar(magnitude, φ1), Y.FromPolar(magnitude, φ1));
 
-            //from two vectors (sum/add)
+            /// <summary>
+            /// Vector summation determined by n cartesian vectors.
+            /// </summary>
+            public static (N X, N Y) FromCartesianVectors<N>(params (N X, N Y)[] vectors)
+                where N : IRootFunctions<N>
+                => (Summation.Eval(vectors.Select(v => v.X)), Summation.Eval(vectors.Select(v => v.Y)));
 
             public static (N X, N Y) Normalized<N>(N x, N y)
                 where N : IRootFunctions<N>
@@ -194,7 +195,7 @@ namespace SMath.Geometry2D
         }
 
         /// <summary> 
-        /// Dot product or scalar product. 
+        /// Dot product or scalar product.
         /// </summary>
         public static class DotProduct
         {
@@ -207,11 +208,15 @@ namespace SMath.Geometry2D
                 => length1 * length2 * N.Cos(angle);
         }
 
-        /// <summary> Polar angle of sum of two polar vectors. </summary>
-        /// <remarks> https://math.stackexchange.com/questions/1365622/adding-two-polar-vectors </remarks>
-        //public static double SumΦ1(double v1Length, double v2Length, double v1φ1, double v2φ1)
-        //    => v1φ1 + Atan2(v2Length * Sin(v2φ1 - v1φ1), v1Length + v2Length * Cos(v2φ1 - v1φ1));
-
-
+        /// <summary> 
+        /// Cross product or vector product.
+        /// In 2D the result is magnitude in 3rd dimension.
+        /// </summary>
+        public static class CrossProduct
+        {
+            public static N FromCartesian<N>((N X, N Y) vector1, (N X, N Y) vector2)
+                where N : ISubtractionOperators<N, N, N>, IMultiplyOperators<N, N, N>
+                => (vector1.X * vector2.Y) - (vector1.Y * vector2.X);
+        }
     }
 }
