@@ -29,7 +29,7 @@ namespace SMath
                                      N r2c1, N r2c2, N r2c3,
                                      N r3c1, N r3c2, N r3c3)
             where N : INumberBase<N>
-            => 
+            =>
               r1c1 * r2c2 * r3c3 + r1c1 * r2c3 * r3c1 + r1c3 * r2c1 * r3c2
             - r1c3 * r2c2 * r3c1 - r2c3 * r3c2 * r1c1 - r3c3 * r1c2 * r2c1;
     }

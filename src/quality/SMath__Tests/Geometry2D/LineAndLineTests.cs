@@ -8,7 +8,7 @@ namespace SMath.Geometry2D
         [InlineData(1, 0, 0, 0, 1, 0, 0, 0)] // x-axis cross y-axis in origin
         [InlineData(1, 1, 0, -1, 1, 0, 0, 0)] // the cross of 90 degrees in origin
         [InlineData(-1, 1, 0, 1, 1, -2, 1, 1)] // the cross of 90 degrees in (1,1)
-        public void Intersection_FromGeneralForm_InPoint(double a1, double b1, double c1, double a2, double b2, double c2, 
+        public void Intersection_FromGeneralForm_InPoint(double a1, double b1, double c1, double a2, double b2, double c2,
             double x, double y)
         {
             var point = Line.And.Line.Intersection.FromGeneralForm((a1, b1, c1), (a2, b2, c2));
