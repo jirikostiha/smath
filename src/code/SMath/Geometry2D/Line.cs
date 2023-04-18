@@ -133,6 +133,41 @@ namespace SMath.Geometry2D
                 => (line.B, -line.A, line.C);
         }
 
+        public static class And
+        {
+            /// <summary>
+            /// Line and point investigation.
+            /// </summary>
+            public static class Point
+            {
+                /// <summary>
+                /// Line and point distance.
+                /// </summary>
+                public static class Distance
+                {
+                    /// <summary>
+                    /// Determine distance of line in general form and point.
+                    /// </summary>
+                    /// <remarks>
+                    /// <a href="https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line">wikipedia</a>
+                    /// </remarks>
+                    public static N FromGeneralForm<N>((N A, N B, N C) line, (N X, N Y) point)
+                        where N : IRootFunctions<N>
+                        => N.Abs(line.A * point.X + line.B * point.Y + line.C) / PT.Hypotenuse(line.A, line.B);
+                }
+                /// <summary>
+                /// Line and point intersection.
+                /// </summary>
+                public static class Intersection
+                {
+                    /// <summary>
+                    /// Determine if line includes point.
+                    /// </summary>
+                    public static bool FromGeneralForm<N>((N A, N B, N C) line, (N X, N Y) point)
+                        where N : INumberBase<N>
+                        => line.A * point.X + line.B * point.Y + line.C == N.Zero;
+                }
+            }
         /// <summary>
         /// Ray.
         /// Determined by point and angle.
