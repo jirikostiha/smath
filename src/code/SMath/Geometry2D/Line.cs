@@ -332,6 +332,45 @@ namespace SMath.Geometry2D
                     }
                 }
             }
+
+            /// <summary>
+            /// Line segment and ... investigation.
+            /// </summary>
+            public static class And
+            {
+                /// <summary>
+                /// Line segment and point investigation.
+                /// </summary>
+                public static class Point
+                {
+                    /// <summary>
+                    /// Line segment and point distance.
+                    /// </summary>
+                    public static class Distance
+                    {
+                        /// <summary>
+                        /// Determine distance of line segment and point.
+                        /// </summary>
+                        public static N FromPoints<N>((N X, N Y) segmentPoint1, (N X, N Y) segmentPoint2, (N X, N Y) extPoint)
+                            where N : INumberBase<N>
+                            => default; //todo
+                        //https://www.geeksforgeeks.org/minimum-distance-from-a-point-to-the-line-segment-using-vectors/?ref=gcse
+                    }
+
+                    /// <summary>
+                    /// Line segment and point intersection.
+                    /// </summary>
+                    public static class Intersection
+                    {
+                        /// <summary>
+                        /// Determine if line segment includes point.
+                        /// </summary>
+                        public static bool FromPoints<N>((N X, N Y) segmentPoint1, (N X, N Y) segmentPoint2, (N X, N Y) extPoint)
+                            where N : INumberBase<N>
+                            => default; //todo
+                    }
+                }
+            }
         }
     }
 }
