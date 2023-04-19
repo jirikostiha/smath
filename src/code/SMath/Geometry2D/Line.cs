@@ -146,17 +146,26 @@ namespace SMath.Geometry2D
                 /// <summary>
                 /// Line and point distance.
                 /// </summary>
+                /// <remarks>
+                /// <a href="https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line">wikipedia</a>
+                /// </remarks>
                 public static class Distance
                 {
                     /// <summary>
-                    /// Determine distance of line in general form and point.
+                    /// Calculates the distance of line in general form and point.
                     /// </summary>
-                    /// <remarks>
-                    /// <a href="https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line">wikipedia</a>
-                    /// </remarks>
                     public static N FromGeneralForm<N>((N A, N B, N C) line, (N X, N Y) point)
                         where N : IRootFunctions<N>
                         => N.Abs(line.A * point.X + line.B * point.Y + line.C) / PT.Hypotenuse(line.A, line.B);
+
+                    /// <summary>
+                    /// Calculates distance of line determined by two points and point.
+                    /// </summary>
+                    public static N FromPoints<N>((N X, N Y) linePoint1, (N X, N Y) linePoint2, (N X, N Y) point)
+                        where N : IRootFunctions<N>
+                        => N.Abs((linePoint2.X - linePoint1.X) * (linePoint1.Y - point.Y)
+                            - (linePoint1.X - point.X) * (linePoint2.Y - linePoint1.Y))
+                            / PT.Hypotenuse(linePoint1.X - linePoint2.X, linePoint1.Y - linePoint2.Y);
                 }
 
                 /// <summary>
