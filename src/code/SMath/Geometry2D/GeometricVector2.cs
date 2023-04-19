@@ -11,34 +11,40 @@ namespace SMath.Geometry2D
     public static class GeometricVector2
     {
         /// <summary>
-        /// Vector magnitude/length/size/scalar.
+        /// Magnitude/length/size/scalar of vector.
         /// </summary>
         public static class Magnitude
         {
             /// <summary>
-            /// Get magnitude of a vector determined by cartesian coordinate system.
+            /// Calculate magnitude of a vector determined in cartesian coordinate system.
             /// </summary>
             public static N FromCartesian<N>(N x, N y)
                 where N : IRootFunctions<N>
                 => PT.Hypotenuse(x, y);
 
             /// <summary>
-            /// Get magnitude of a vector determined by cartesian coordinate system.
+            /// Calculate magnitude of a vector determined in cartesian coordinate system.
             /// </summary>
             public static N FromCartesian<N>((N X, N Y) vector)
                 where N : IRootFunctions<N>
                 => PT.Hypotenuse(vector.X, vector.Y);
 
+            /// <summary>
+            /// Calculate magnitude of vectors determined in cartesian coordinate system.
+            /// </summary>
             public static N FromCartesianVectors<N>(params (N X, N Y)[] vectors)
                 where N : IRootFunctions<N>
                 => FromCartesian(Cartesian.FromCartesianVectors(vectors));
 
+            /// <summary>
+            /// Calculate magnitude of two vectors determined in polar coordinate system.
+            /// </summary>
             public static N FromTwoPolarVectors<N>(N magnitude1, N magnitude2, N angle)
                 where N : ITrigonometricFunctions<N>, IRootFunctions<N>
                 => PT.Cosine(magnitude1, magnitude2, -angle);
 
             /// <summary>
-            /// Magnitude of sum of two polar vectors.
+            /// Calculate magnitude of sum of two vectors determined in polar coordinate system.
             /// </summary>
             public static N FromPolarVectors<N>((N Magnitude, N Angle) vector1, (N Magnitude, N Angle) vector2)
                 where N : ITrigonometricFunctions<N>, IRootFunctions<N>
@@ -61,7 +67,7 @@ namespace SMath.Geometry2D
         public static class Y
         {
             /// <summary>
-            /// Get y-component of vector determined by polar coordinate system.
+            /// Calculate y-component of vector determined in polar coordinate system.
             /// </summary>
             public static N FromPolar<N>(N magnitude, N φ1)
                 where N : ITrigonometricFunctions<N>
@@ -82,6 +88,9 @@ namespace SMath.Geometry2D
                 => N.Atan(vector.Y / vector.X);
         }
 
+        /// <summary>
+        /// Vector in cartesian coordinate system.
+        /// </summary>
         public static class Cartesian
         {
             public static (N X, N Y) FromPolar<N>(N magnitude, N φ1)
@@ -118,6 +127,9 @@ namespace SMath.Geometry2D
                 => (vector.X / N.Abs(vector.X), vector.Y / N.Abs(vector.Y));
         }
 
+        /// <summary>
+        /// Vector in polar coordinate system.
+        /// </summary>
         public static class Polar
         {
             public static (N Magnitude, N Φ1) FromCartesian<N>(N x, N y)
@@ -185,7 +197,7 @@ namespace SMath.Geometry2D
         }
 
         /// <summary>
-        /// Direction from one to the other vector.
+        /// Direction from one to the other vector. It is not normalized.
         /// </summary>
         public static class Direction
         {
