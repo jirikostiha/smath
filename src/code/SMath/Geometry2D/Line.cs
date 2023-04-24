@@ -144,6 +144,26 @@ namespace SMath.Geometry2D
             public static class Point
             {
                 /// <summary>
+                /// Projection of point to line.
+                /// </summary>
+                public static class Projection
+                {
+                    public static (N X, N Y) FromPoints<N>((N X, N Y) spoint1, (N X, N Y) spoint2, (N X, N Y) point)
+                        where N : IRootFunctions<N>
+                    {
+                        var e1 = GeometricVector2.Direction.FromCartesian(spoint1, spoint2);
+                        var e2 = GeometricVector2.Direction.FromCartesian(spoint1, point);
+                        var dp = GeometricVector2.DotProduct.FromCartesian(e1, e2);
+                        var len = GeometricVector2.Magnitude.FromCartesian(e1);
+                        var len2 = len * len;
+                        var projection = (spoint1.X + (dp * e1.X) / len2,
+                                          spoint1.Y + (dp * e1.Y) / len2);
+                        
+                        return projection;
+                    }
+                }
+
+                /// <summary>
                 /// Line and point distance.
                 /// </summary>
                 /// <remarks>
