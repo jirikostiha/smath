@@ -42,12 +42,12 @@ namespace SMath.Geometry2D
         [InlineData(-1, 0, 1, 0, -2, 0, -2, 0)] // inline before first point
         [InlineData(-1, 0, 1, 0, 2, 0, 2, 0)]   // inline after second point
         [InlineData(0, 0, 0, 2, 1, 1, 0, 1)]    // right to the first point on y-axis
-        [InlineData(0, 2, 2, 0, 0, 0, 1, 1)]    
+        [InlineData(0, 2, 2, 0, 0, 0, 1, 1)]
         public void Projection_FromPoints(double ax, double ay, double bx, double by,
           double px, double py, double pointX, double pointY)
         {
             var point = Line.And.Point.Projection.FromPoints((ax, ay), (bx, by), (px, py));
-            
+
             Assert.Equal(pointX, point.X, 6);
             Assert.Equal(pointY, point.Y, 6);
         }

@@ -158,7 +158,7 @@ namespace SMath.Geometry2D
                         var len2 = len * len;
                         var projection = (spoint1.X + (dp * e1.X) / len2,
                                           spoint1.Y + (dp * e1.Y) / len2);
-                        
+
                         return projection;
                     }
                 }
