@@ -11,7 +11,7 @@ namespace SMath.Geometry2D
     /// </remarks>
     public static class Circle
     {
-        public static string SymetryGroup => "O(2)";
+        public static string SymmetryGroup => "O(2)";
 
         public static string PlainTextEquation => "(x - a)^2 + (y - b)^2 = r^2";
 
