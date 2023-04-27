@@ -244,10 +244,31 @@ namespace SMath.Geometry2D
 
         /// <summary>
         /// Ray.
-        /// Determined by point and angle.
+        /// Determined by point and angle from x-axis.
         /// </summary>
         public static class Ray
         {
+            /// <summary>
+            /// Positive x-axis ray.
+            /// </summary>
+            public static ((N X, N Y) Point, N Angle) PositiveXAxis<N>()
+                where N : IFloatingPointConstants<N>
+                => ((N.Zero, N.Zero), N.Zero);
+
+            /// <summary>
+            /// Positive y-axis ray.
+            /// </summary>
+            public static ((N X, N Y) Point, N Angle) PositiveYAxis<N>()
+                where N : IFloatingPointConstants<N>
+                => ((N.Zero, N.Zero), N.Pi / N.CreateChecked(2));
+
+            /// <summary>
+            /// Positive identity ray.
+            /// </summary>
+            public static ((N X, N Y) Point, N Angle) PositiveIdentity<N>()
+                where N : IFloatingPointConstants<N>
+                => ((N.Zero, N.Zero), N.Pi / N.CreateChecked(4));
+
             /// <summary>
             /// Points on a ray.
             /// </summary>
