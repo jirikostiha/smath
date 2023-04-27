@@ -295,6 +295,27 @@ namespace SMath.Geometry2D
         public static class Segment
         {
             /// <summary>
+            /// X unit segment.
+            /// </summary>
+            public static ((N X, N Y) Point1, (N X, N Y) Point2) XUnit<N>()
+                where N : INumberBase<N>
+                => ((N.Zero, N.Zero), (N.One, N.Zero));
+
+            /// <summary>
+            /// Y unit segment.
+            /// </summary>
+            public static ((N X, N Y) Point1, (N X, N Y) Point2) YUnit<N>()
+                where N : INumberBase<N>
+                => ((N.Zero, N.Zero), (N.Zero, N.One));
+
+            /// <summary>
+            /// Unit segment.
+            /// </summary>
+            public static ((N X, N Y) Point1, (N X, N Y) Point2) Unit<N>()
+                where N : INumberBase<N>
+                => ((N.Zero, N.Zero), (N.One, N.One));
+
+            /// <summary>
             /// Length of a line segment.
             /// </summary>
             public static class Length
