@@ -118,14 +118,14 @@ namespace SMath.Geometry2D
             public static class Slope
             {
                 /// <summary>
-                /// Get a slope of a normal line to line determined in general forn.
+                /// Get a slope of a normal line to line determined in general form.
                 /// </summary>
                 public static N FromGeneralForm<N>(N a, N b)
                     where N : IDivisionOperators<N, N, N>
                     => b / a;
 
                 /// <summary>
-                /// Get a slope of a normal line to line determined in general forn.
+                /// Get a slope of a normal line to line determined in general form.
                 /// </summary>
                 public static N FromGeneralForm<N>((N A, N B, N C) line)
                     where N : IDivisionOperators<N, N, N>
