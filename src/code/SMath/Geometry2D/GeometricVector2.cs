@@ -16,21 +16,21 @@ namespace SMath.Geometry2D
         public static class Magnitude
         {
             /// <summary>
-            /// Calculate magnitude of a vector determined in cartesian coordinate system.
+            /// Calculate magnitude of a vector determined in Cartesian coordinate system.
             /// </summary>
             public static N FromCartesian<N>(N x, N y)
                 where N : IRootFunctions<N>
                 => PT.Hypotenuse(x, y);
 
             /// <summary>
-            /// Calculate magnitude of a vector determined in cartesian coordinate system.
+            /// Calculate magnitude of a vector determined in Cartesian coordinate system.
             /// </summary>
             public static N FromCartesian<N>((N X, N Y) vector)
                 where N : IRootFunctions<N>
                 => PT.Hypotenuse(vector.X, vector.Y);
 
             /// <summary>
-            /// Calculate magnitude of vectors determined in cartesian coordinate system.
+            /// Calculate magnitude of vectors determined in Cartesian coordinate system.
             /// </summary>
             public static N FromCartesianVectors<N>(params (N X, N Y)[] vectors)
                 where N : IRootFunctions<N>
@@ -89,7 +89,7 @@ namespace SMath.Geometry2D
         }
 
         /// <summary>
-        /// Vector in cartesian coordinate system.
+        /// Vector in Cartesian coordinate system.
         /// </summary>
         public static class Cartesian
         {
@@ -98,7 +98,7 @@ namespace SMath.Geometry2D
                 => (X.FromPolar(magnitude, φ1), Y.FromPolar(magnitude, φ1));
 
             /// <summary>
-            /// Vector summation determined by n cartesian vectors.
+            /// Vector summation determined by n Cartesian vectors.
             /// </summary>
             public static (N X, N Y) FromCartesianVectors<N>(params (N X, N Y)[] vectors)
                 where N : IRootFunctions<N>

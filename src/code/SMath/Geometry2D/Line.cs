@@ -30,7 +30,7 @@ namespace SMath.Geometry2D
             => "a*x + b*y + c = 0";
 
         /// <summary>
-        /// Line in general form from two points in cartesian coordinates.
+        /// Line in general form from two points in Cartesian coordinates.
         /// </summary>
         public static (N A, N B, N C) FromTwoPoints<N>((N X, N Y) point1, (N X, N Y) point2)
             where N : IRootFunctions<N>

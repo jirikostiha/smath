@@ -59,7 +59,7 @@ namespace SMath.Geometry2D
         }
 
         /// <summary>
-        /// Perimeter or curve or outline of aa ellipse.
+        /// Perimeter or curve or outline of an ellipse.
         /// </summary>
         public static class Perimeter
         {
