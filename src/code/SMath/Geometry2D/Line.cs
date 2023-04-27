@@ -217,14 +217,14 @@ namespace SMath.Geometry2D
                 /// <summary>
                 /// Line and line intersection.
                 /// </summary>
+                /// <remarks>
+                /// <a href="https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection">wikipedia</a>
+                /// </remarks>
                 public static class Intersection
                 {
                     /// <summary>
                     /// Line intersects line.
                     /// </summary>
-                    /// <remarks>
-                    /// <a href="https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection">wikipedia</a>
-                    /// </remarks>
                     /// <returns>
                     ///     null: parallel or identical
                     ///     (x,y): intersection point
@@ -422,7 +422,8 @@ namespace SMath.Geometry2D
                 public static class Point
                 {
                     /// <summary>
-                    /// Line segment and point distance.
+                    /// Distance of line segment and point.
+                    /// <a href="https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line#Line_defined_by_two_points">wikipedia</a>
                     /// </summary>
                     public static class Distance
                     {
@@ -436,16 +437,25 @@ namespace SMath.Geometry2D
                     }
 
                     /// <summary>
-                    /// Line segment and point intersection.
+                    /// Line segment and line segment investigation.
                     /// </summary>
-                    public static class Intersection
+                    public static class Segment
                     {
                         /// <summary>
-                        /// Determine if line segment includes point.
+                        /// Line segment and line segment intersection.
                         /// </summary>
-                        public static bool FromPoints<N>((N X, N Y) segmentPoint1, (N X, N Y) segmentPoint2, (N X, N Y) extPoint)
-                            where N : INumberBase<N>
-                            => default; //todo
+                        /// <remarks>
+                        /// <a href="https://en.wikipedia.org/wiki/Intersection_(geometry)#Two_line_segments">wikipedia</a>
+                        /// </remarks>
+                        public static class Intersection
+                        {
+                            /// <summary>
+                            /// Determine if line segment includes point.
+                            /// </summary>
+                            public static bool FromPoints<N>((N X, N Y) segmentPoint1, (N X, N Y) segmentPoint2, (N X, N Y) extPoint)
+                                where N : INumberBase<N>
+                                => default; //todo
+                        }
                     }
                 }
             }
