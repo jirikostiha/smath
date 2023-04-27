@@ -26,6 +26,13 @@ namespace SMath.Geometry2D
             where N : INumberBase<N>
             => (-N.One, N.Zero, N.Zero);
 
+        /// <summary>
+        /// Identity line y=x in general form.
+        /// </summary>
+        public static (N A, N B, N C) Identity<N>()
+            where N : INumberBase<N>
+            => (-N.One, N.One, N.Zero);
+
         public static string PlainTextEquation
             => "a*x + b*y + c = 0";
 
