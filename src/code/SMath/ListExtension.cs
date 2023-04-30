@@ -3,82 +3,153 @@ using System.Numerics;
 namespace SMath
 {
     /// <summary>
-    /// 
+    /// List extensions.
     /// </summary>
     public static class ListExtension
     {
+        public static IEnumerable<T> SmallestElements<T, N>(this IList<T> list, int count, Func<T, N> valueSelector)
+            where N : IComparisonOperators<N, N, bool>
+            => list.SmallestElements<T, N>(count, 0, list.Count - 1, valueSelector);
 
+        public static IEnumerable<N> SmallestElements<N>(this IList<N> list, int count)
+            where N : IComparisonOperators<N, N, bool>
+            => list.SmallestElements(count, 0, list.Count - 1, x => x);
 
-        //https://afteracademy.com/blog/kth-smallest-element-in-an-array/
-        //https://www.dotnetlovers.com/article/10252/find-kth-smallest-and-largest-element-in-an-unsorted-array
-        //https://www.geeksforgeeks.org/kth-smallest-largest-element-in-unsorted-array/
-
-        // Standard partition process of QuickSort.
-        // It considers the last element as pivot
-        // and moves all smaller element to left of
-        // it and greater elements to right
-        public static int partition(int[] arr, int l, int r)
+        public static IEnumerable<T> SmallestElements<T, N>(this IList<T> list, int count, int start, int end, Func<T, N> valueSelector)
+            where N : IComparisonOperators<N, N, bool>
         {
-            int x = arr[r], i = l;
-            int temp = 0;
-            for (int j = l; j <= r - 1; j++)
+            throw new NotImplementedException("todo");
+        }
+
+        public static T KthSmallestElement<T, N>(this IList<T> list, int k, Func<T, N> valueSelector)
+            where N : IComparisonOperators<N, N, bool>
+            => list.KthSmallestElement<T, N>(k, 0, list.Count - 1, valueSelector);
+
+        public static N KthSmallestElement<N>(this IList<N> list, int k)
+            where N : IComparisonOperators<N, N, bool>
+            => list.KthSmallestElement(k, 0, list.Count - 1, x => x);
+
+        /// <summary>
+        /// Investigate kth smallest element.
+        /// </summary>
+        /// <typeparam name="T"> Type of element. </typeparam>
+        /// <typeparam name="N"> Type of numeric value. </typeparam>
+        /// <param name="list"> List of elements. </param>
+        /// <param name="k"> K </param>
+        /// <param name="start"> Starting index. </param>
+        /// <param name="end"> Ending index. </param>
+        /// <param name="valueSelector"> Numeric value selector from element. </param>
+        /// <returns> Kth smallest element. </returns>
+        public static T KthSmallestElement<T, N>(this IList<T> list, int k, int start, int end, Func<T, N> valueSelector)
+            where N : IComparisonOperators<N, N, bool>
+        {
+            if (start >= end)
+                return list[k - 1];
+
+            // Index from where array will be splitted
+            int q = Partition(list, start, end, valueSelector);
+            //If pivot is placed at index k-1 then it is the solution
+            if (q == (k - 1))
             {
+                return list[k - 1];
+            }
+            else if (q > (k - 1))
+            {
+                return KthSmallestElement(list, k, start, q - 1, valueSelector);
+            }
+            else
+            {
+                return KthSmallestElement(list, k, q + 1, end, valueSelector);
+            }
+        }
 
-                if (arr[j] <= x)
+        public static T KthLargestElement<T, N>(this IList<T> list, int k, Func<T, N> valueSelector)
+            where N : IComparisonOperators<N, N, bool>
+            => list.KthLargestElement(k, 0, list.Count - 1, valueSelector);
+
+        public static N KthLargestElement<N>(this IList<N> list, int k)
+            where N : IComparisonOperators<N, N, bool>
+            => list.KthLargestElement<N, N>(k, 0, list.Count - 1, x => x);
+
+        /// <summary>
+        /// Investigate kth smallest element.
+        /// </summary>
+        /// <typeparam name="T"> Type of element. </typeparam>
+        /// <typeparam name="N"> Type of numeric value. </typeparam>
+        /// <param name="list"> List of elements. </param>
+        /// <param name="k"> K </param>
+        /// <param name="start"> Starting index. </param>
+        /// <param name="end"> Ending index. </param>
+        /// <param name="valueSelector"> Numeric value selector from element. </param>
+        /// <returns> Kth smallest element. </returns>
+        public static T KthLargestElement<T, N>(this IList<T> list, int k, int start, int end, Func<T, N> valueSelector)
+            where N : IComparisonOperators<N, N, bool>
+        {
+            if (start >= end)
+                return list[k - 1];
+
+            // Index from where array will be splitted
+            int q = Partition2(list, start, end, valueSelector);
+            //If pivot is placed at index k-1 then it is the solution
+            if (q == (k - 1))
+            {
+                return list[k - 1];
+            }
+            else if (q > (k - 1))
+            {
+                return KthLargestElement(list, k, start, q - 1, valueSelector);
+            }
+            else
+            {
+                return KthLargestElement(list, k, q + 1, end, valueSelector);
+            }
+        }
+
+        private static int Partition<T, N>(IList<T> list, int p, int r, Func<T, N> valueSelector)
+            where N : IComparisonOperators<N, N, bool>
+        {
+            var pivot = valueSelector(list[r]);
+            int i = p - 1;
+
+            for (int j = p; j < r; j++)
+            {
+                if (valueSelector(list[j]) <= pivot)
                 {
-                    // Swapping arr[i] and arr[j]
-                    temp = arr[i];
-                    arr[i] = arr[j];
-                    arr[j] = temp;
-
                     i++;
+                    Swap(list, i, j);
                 }
             }
-
-            // Swapping arr[i] and arr[r]
-            temp = arr[i];
-            arr[i] = arr[r];
-            arr[r] = temp;
+            i++;
+            Swap(list, i, r);
 
             return i;
         }
 
-        // This function returns k'th smallest
-        // element in arr[l..r] using QuickSort
-        // based method. ASSUMPTION: ALL ELEMENTS
-        // IN ARR[] ARE DISTINCT
-        public static int kthSmallest(int[] arr, int l, int r,
-                                      int K)
+        private static int Partition2<T, N>(IList<T> list, int p, int r, Func<T, N> valueSelector)
+            where N : IComparisonOperators<N, N, bool>
         {
-            // If k is smaller than number
-            // of elements in array
-            if (K > 0 && K <= r - l + 1)
+            var pivot = valueSelector(list[r]);
+            int i = p - 1;
+
+            for (int j = p; j < r; j++)
             {
-                // Partition the array around last
-                // element and get position of pivot
-                // element in sorted array
-                int pos = partition(arr, l, r);
-
-                // If position is same as k
-                if (pos - l == K - 1)
-                    return arr[pos];
-
-                // If position is more, recur for
-                // left subarray
-                if (pos - l > K - 1)
-                    return kthSmallest(arr, l, pos - 1, K);
-
-                // Else recur for right subarray
-                return kthSmallest(arr, pos + 1, r,
-                                   K - pos + l - 1);
+                if (valueSelector(list[j]) >= pivot)
+                {
+                    i++;
+                    Swap(list, i, j);
+                }
             }
+            i++;
+            Swap(list, i, r);
 
-            // If k is more than number
-            // of elements in array
-            return int.MaxValue;
+            return i;
         }
 
-        //priority queue
-        //binary search
+        private static void Swap<T>(IList<T> list, int i, int j)
+        {
+            var temp = list[i];
+            list[i] = list[j];
+            list[j] = temp;
+        }
     }
 }
