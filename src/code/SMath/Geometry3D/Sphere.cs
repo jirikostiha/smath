@@ -11,7 +11,7 @@ namespace SMath.Geometry3D
     /// </remarks>
     public static class Sphere
     {
-        public static string SymetryGroup => "O(3)";
+        public static string SymmetryGroup => "O(3)";
 
         public static int EulerCharacteristic => 2;
 
