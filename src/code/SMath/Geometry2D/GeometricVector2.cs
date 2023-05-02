@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace SMath.Geometry2D
 {
@@ -56,6 +57,7 @@ namespace SMath.Geometry2D
         /// </summary>
         public static class X
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static N FromPolar<N>(N magnitude, N φ1)
                 where N : ITrigonometricFunctions<N>
                 => magnitude * N.Cos(φ1);
@@ -69,6 +71,7 @@ namespace SMath.Geometry2D
             /// <summary>
             /// Calculate y-component of vector determined in polar coordinate system.
             /// </summary>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static N FromPolar<N>(N magnitude, N φ1)
                 where N : ITrigonometricFunctions<N>
                 => magnitude * N.Sin(φ1);
@@ -79,10 +82,12 @@ namespace SMath.Geometry2D
         /// </summary>
         public static class PolarAngle
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static N FromCartesian<N>(N x, N y)
                 where N : ITrigonometricFunctions<N>
                 => N.Atan(y / x);
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static N FromCartesian<N>((N X, N Y) vector)
                 where N : ITrigonometricFunctions<N>
                 => N.Atan(vector.Y / vector.X);
@@ -118,10 +123,12 @@ namespace SMath.Geometry2D
                 return (vector.X / magnitude, vector.Y / magnitude);
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static (N X, N Y) Kvadrantized<N>(N x, N y)
                 where N : INumberBase<N>
                 => (x / N.Abs(x), y / N.Abs(y));
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static (N X, N Y) Kvadrantized<N>((N X, N Y) vector)
                 where N : INumberBase<N>
                 => (vector.X / N.Abs(vector.X), vector.Y / N.Abs(vector.Y));
@@ -142,7 +149,8 @@ namespace SMath.Geometry2D
                 => (Magnitude.FromCartesian(vector.X, vector.Y),
                     PolarAngle.FromCartesian(vector.X, vector.Y));
 
-            public static (N Magnitude, N Φ1) Normalized<N>(N Magnitude, N polarAngle)
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static (N Magnitude, N Φ1) Normalized<N>(N magnitude, N polarAngle)
                 where N : INumberBase<N>
                 => (N.One, polarAngle);
         }
@@ -155,10 +163,12 @@ namespace SMath.Geometry2D
         /// </remarks>
         public static class Normal1
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static (N X, N Y) FromCartesian<N>(N x, N y)
                 where N : IUnaryNegationOperators<N, N>
                 => (-y, x);
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static (N X, N Y) FromCartesian<N>((N X, N Y) vector)
                 where N : IUnaryNegationOperators<N, N>
                 => (-vector.Y, vector.X);
@@ -172,10 +182,12 @@ namespace SMath.Geometry2D
         /// </remarks>
         public static class Normal2
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static (N X, N Y) FromCartesian<N>(N x, N y)
                 where N : IUnaryNegationOperators<N, N>
                 => (y, -x);
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static (N X, N Y) FromCartesian<N>((N X, N Y) vector)
                 where N : IUnaryNegationOperators<N, N>
                 => (vector.Y, -vector.X);
@@ -201,6 +213,7 @@ namespace SMath.Geometry2D
         /// </summary>
         public static class Direction
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static (N X, N Y) FromCartesian<N>((N X, N Y) fromVector, (N X, N Y) toVector)
                 where N : ISubtractionOperators<N, N, N>
                 => (toVector.X - fromVector.X, toVector.Y - fromVector.Y);
