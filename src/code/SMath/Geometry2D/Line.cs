@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SMath.Geometry2D
 {
@@ -60,6 +59,20 @@ namespace SMath.Geometry2D
         public static (N A, N B, N C) FromSlopeAndYIntercept<N>(N slope, N yintercept)
             where N : INumberBase<N>
             => (-slope, N.One, -yintercept);
+
+        /// <summary>
+        /// Line in general form recounted to have a=1.
+        /// </summary>
+        public static (N A, N B, N C) NormalizedX<N>((N A, N B, N C) line)
+            where N : INumberBase<N>
+            => (N.One, line.B / line.A, line.C / line.A);
+
+        /// <summary>
+        /// Line in general form recounted to have b=1.
+        /// </summary>
+        public static (N A, N B, N C) NormalizedY<N>((N A, N B, N C) line)
+            where N : INumberBase<N>
+            => (line.A / line.B, N.One, line.C / line.B);
 
         /// <summary>
         /// Slope of a line.
@@ -456,7 +469,7 @@ namespace SMath.Geometry2D
 
                             var x = sp1.X + u * p1ToP2Dir.X;
                             var y = sp1.Y + u * p1ToP2Dir.Y;
-                            return GeometricVector2.Distance.FromCartesian((x,y), point);
+                            return GeometricVector2.Distance.FromCartesian((x, y), point);
                         }
                     }
 
@@ -514,7 +527,7 @@ namespace SMath.Geometry2D
                             var s1Dir = GeometricVector2.Direction.FromCartesian(s1p1, s1p2);
                             var s2Dir = GeometricVector2.Direction.FromCartesian(s2p1, s2p2);
 
-                            var denominator = s2Dir.Y * s1Dir.X - s2Dir.X *  s1Dir.Y;
+                            var denominator = s2Dir.Y * s1Dir.X - s2Dir.X * s1Dir.Y;
                             if (denominator == N.Zero)
                                 return null;
 
