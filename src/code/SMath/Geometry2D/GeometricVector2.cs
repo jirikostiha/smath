@@ -77,8 +77,8 @@ namespace SMath.Geometry2D
                 => magnitude * N.Sin(φ1);
         }
 
-        /// <summary> 
-        /// Polar angle. Angle from x-axis to y-axis. 
+        /// <summary>
+        /// Polar angle. Angle from x-axis to y-axis.
         /// </summary>
         public static class PolarAngle
         {
@@ -158,7 +158,7 @@ namespace SMath.Geometry2D
         /// <summary>
         /// First normal vector of an input vector. It is the first one in circular direction from (+)x-axis to (+)y-axis.
         /// </summary>
-        /// <remarks> 
+        /// <remarks>
         /// <a href="https://en.wikipedia.org/wiki/Normal_(geometry)">wikipedia</a>
         /// </remarks>
         public static class Normal1
@@ -177,7 +177,7 @@ namespace SMath.Geometry2D
         /// <summary>
         /// Second normal vector of an input vector. It is the second one in circular direction from (+)x-axis to (+)y-axis.
         /// </summary>
-        /// <remarks> 
+        /// <remarks>
         /// <a href="https://en.wikipedia.org/wiki/Normal_(geometry)">wikipedia</a>
         /// </remarks>
         public static class Normal2
@@ -219,7 +219,7 @@ namespace SMath.Geometry2D
                 => (toVector.X - fromVector.X, toVector.Y - fromVector.Y);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Dot product or scalar product.
         /// </summary>
         public static class DotProduct
@@ -233,7 +233,7 @@ namespace SMath.Geometry2D
                 => length1 * length2 * N.Cos(angle);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Cross product or vector product.
         /// In 2D the result is magnitude in 3rd dimension.
         /// </summary>
