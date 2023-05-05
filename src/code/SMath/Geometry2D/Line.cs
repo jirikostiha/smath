@@ -1,4 +1,6 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SMath.Geometry2D
 {
@@ -430,31 +432,102 @@ namespace SMath.Geometry2D
                         /// <summary>
                         /// Determine distance of line segment and point.
                         /// </summary>
-                        public static N FromPoints<N>((N X, N Y) segmentPoint1, (N X, N Y) segmentPoint2, (N X, N Y) extPoint)
-                            where N : INumberBase<N>
-                            => default; //todo
-                        //https://www.geeksforgeeks.org/minimum-distance-from-a-point-to-the-line-segment-using-vectors/?ref=gcse
+                        public static N FromPoints<N>((N X, N Y) sp1, (N X, N Y) sp2, (N X, N Y) point)
+                            where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
+                        {
+
+                            var p1ToP2Dir = GeometricVector2.Direction.FromCartesian(sp1, sp2);
+                            var p1ToP2Length = GeometricVector2.Magnitude.FromCartesian(p1ToP2Dir);
+                            var p1ToP3Dir = GeometricVector2.Direction.FromCartesian(sp1, point);
+
+                            if (p1ToP2Length == N.Zero) // segment is point
+                                return GeometricVector2.Magnitude.FromCartesian(p1ToP3Dir);
+
+                            var u = (p1ToP3Dir.X * p1ToP2Dir.X + p1ToP3Dir.Y * p1ToP2Dir.Y) / (p1ToP2Dir.X * p1ToP2Dir.X + p1ToP2Dir.Y * p1ToP2Dir.Y);
+
+                            if (u < N.Zero)
+                            {
+                                return GeometricVector2.Magnitude.FromCartesian(p1ToP3Dir);
+                            }
+                            else if (u > N.One)
+                            {
+                                return GeometricVector2.Distance.FromCartesian(sp2, point);
+                            }
+
+                            var x = sp1.X + u * p1ToP2Dir.X;
+                            var y = sp1.Y + u * p1ToP2Dir.Y;
+                            return GeometricVector2.Distance.FromCartesian((x,y), point);
+                        }
                     }
 
                     /// <summary>
-                    /// Line segment and line segment investigation.
+                    /// Line segment and point intersection.
                     /// </summary>
-                    public static class Segment
+                    public static class Intersection
                     {
                         /// <summary>
-                        /// Line segment and line segment intersection.
+                        /// Determine if line segment includes the point.
                         /// </summary>
-                        /// <remarks>
-                        /// <a href="https://en.wikipedia.org/wiki/Intersection_(geometry)#Two_line_segments">wikipedia</a>
-                        /// </remarks>
-                        public static class Intersection
+                        public static bool FromPoints<N>((N X, N Y) sp1, (N X, N Y) sp2, (N X, N Y) point)
+                            where N : INumberBase<N>, IComparisonOperators<N, N, bool>
                         {
-                            /// <summary>
-                            /// Determine if line segment includes point.
-                            /// </summary>
-                            public static bool FromPoints<N>((N X, N Y) segmentPoint1, (N X, N Y) segmentPoint2, (N X, N Y) extPoint)
-                                where N : INumberBase<N>
-                                => default; //todo
+                            var ab = GeometricVector2.Direction.FromCartesian(sp1, sp2);
+                            var ac = GeometricVector2.Direction.FromCartesian(sp1, point);
+
+                            var abc = GeometricVector2.CrossProduct.FromCartesian(ab, ac);
+                            if (abc != N.Zero)
+                                return false;
+
+                            var kac = GeometricVector2.DotProduct.FromCartesian(ab, ac);
+                            if (kac < N.Zero)
+                                return false;
+                            if (kac == N.Zero)
+                                return true;
+
+                            var kab = GeometricVector2.DotProduct.FromCartesian(ab, ab);
+                            if (kac > kab)
+                                return false;
+                            if (kac == kab)
+                                return true;
+
+                            return true;
+                        }
+                    }
+                }
+
+                /// <summary>
+                /// Line segment and line segment investigation.
+                /// </summary>
+                public static class Segment
+                {
+                    /// <summary>
+                    /// Line segment and line segment intersection.
+                    /// </summary>
+                    /// <remarks>
+                    /// <a href="https://en.wikipedia.org/wiki/Intersection_(geometry)#Two_line_segments">wikipedia</a>
+                    /// </remarks>
+                    public static class Intersection
+                    {
+                        public static (N X, N Y)? FromPoints<N>((N X, N Y) s1p1, (N X, N Y) s1p2, (N X, N Y) s2p1, (N X, N Y) s2p2)
+                            where N : INumberBase<N>, IComparisonOperators<N, N, bool>
+                        {
+                            var s1Dir = GeometricVector2.Direction.FromCartesian(s1p1, s1p2);
+                            var s2Dir = GeometricVector2.Direction.FromCartesian(s2p1, s2p2);
+
+                            var denominator = s2Dir.Y * s1Dir.X - s2Dir.X *  s1Dir.Y;
+                            if (denominator == N.Zero)
+                                return null;
+
+                            var p3p1Dir = GeometricVector2.Direction.FromCartesian(s2p1, s1p1);
+                            var numeratorA = s2Dir.X * p3p1Dir.Y - s2Dir.Y * p3p1Dir.X;
+                            var numeratorB = s1Dir.X * p3p1Dir.Y - s1Dir.Y * p3p1Dir.X;
+
+                            var ua = numeratorA / denominator;
+                            var ub = numeratorB / denominator;
+                            if (ua >= N.Zero && ua <= N.One && ub >= N.Zero && ub <= N.One)
+                                return (s1p1.X + ua * s1Dir.X, s1p1.Y + ua * s1Dir.Y);
+
+                            return null;
                         }
                     }
                 }
