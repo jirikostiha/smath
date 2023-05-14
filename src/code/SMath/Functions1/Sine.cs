@@ -6,7 +6,7 @@ namespace SMath.Functions1
     /// Sine function.
     /// </summary>
     /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Sine">wikipedia</a>
+    /// <a href="https://en.wikipedia.org/wiki/Sine">Wikipedia</a>
     /// </remarks>
     public class Sine : IMathFunction
     {

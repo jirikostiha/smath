@@ -6,8 +6,8 @@ namespace SMath
     /// Product.
     /// </summary>
     /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Product_(mathematics)">wikipedia</a>
-    /// <a href="https://en.wikipedia.org/wiki/Empty_product">wikipedia</a>
+    /// <a href="https://en.wikipedia.org/wiki/Product_(mathematics)">Wikipedia</a>
+    /// <a href="https://en.wikipedia.org/wiki/Empty_product">Wikipedia</a>
     /// </remarks>
     public static class Product
     {

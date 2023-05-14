@@ -6,8 +6,8 @@ namespace SMath.Functions1
     /// Power 2 (square) function.
     /// </summary>
     /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Square_(algebra)">wikipedia</a>
-    /// <a href="https://en.wikipedia.org/wiki/Exponentiation#Power_functions">wikipedia</a>
+    /// <a href="https://en.wikipedia.org/wiki/Square_(algebra)">Wikipedia</a>
+    /// <a href="https://en.wikipedia.org/wiki/Exponentiation#Power_functions">Wikipedia</a>
     /// </remarks>
     public class Power2 : IMathFunction
     {

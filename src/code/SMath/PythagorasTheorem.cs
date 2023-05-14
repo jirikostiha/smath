@@ -4,7 +4,7 @@ namespace SMath
 {
     /// <summary>
     /// Pythagoras Theorem
-    /// <a href="https://en.wikipedia.org/wiki/Pythagorean_theorem">wikipedia</a>
+    /// <a href="https://en.wikipedia.org/wiki/Pythagorean_theorem">Wikipedia</a>
     /// </summary>
     public static class PT
     {
@@ -37,7 +37,7 @@ namespace SMath
 
         /// <summary>
         /// Law of cosines
-        /// <a href="https://en.wikipedia.org/wiki/Law_of_cosines">wikipedia</a>
+        /// <a href="https://en.wikipedia.org/wiki/Law_of_cosines">Wikipedia</a>
         /// </summary>
         public static N Cosine<N>(N a1, N a2, N angle)
             where N : IRootFunctions<N>, ITrigonometricFunctions<N>

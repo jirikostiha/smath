@@ -6,8 +6,8 @@ namespace SMath.Geometry2D
     /// Circle.
     /// </summary>
     /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Circle">wikipedia</a>
-    /// <a href="https://mathworld.wolfram.com/Circle.html">mathworld</a>
+    /// <a href="https://en.wikipedia.org/wiki/Circle">Wikipedia</a>
+    /// <a href="https://mathworld.wolfram.com/Circle.html">Wolfram Mathworld</a>
     /// </remarks>
     public static class Circle
     {
@@ -109,7 +109,7 @@ namespace SMath.Geometry2D
             /// Area of a plane region enclosed by circle.
             /// </summary>
             /// <remarks>
-            /// <a href="https://en.wikipedia.org/wiki/Area_of_a_circle">wikipedia</a>
+            /// <a href="https://en.wikipedia.org/wiki/Area_of_a_circle">Wikipedia</a>
             /// </remarks>
             public static class Area
             {
@@ -180,8 +180,8 @@ namespace SMath.Geometry2D
         /// Arc of a circle.
         /// </summary>
         /// <remarks>
-        /// <a href="https://en.wikipedia.org/wiki/Circular_arc">wikipedia</a>
-        /// <a href="https://mathworld.wolfram.com/Arc.html">mathworld</a>
+        /// <a href="https://en.wikipedia.org/wiki/Circular_arc">Wikipedia</a>
+        /// <a href="https://mathworld.wolfram.com/Arc.html">Wolfram Mathworld</a>
         /// </remarks>
         public static class Arc
         {
@@ -200,8 +200,8 @@ namespace SMath.Geometry2D
         /// Chord of a circle.
         /// </summary>
         /// <remarks>
-        /// <a href="https://en.wikipedia.org/wiki/Chord_(geometry)">wikipedia</a>
-        /// <a href="https://mathworld.wolfram.com/Chord.html">mathworld</a>
+        /// <a href="https://en.wikipedia.org/wiki/Chord_(geometry)">Wikipedia</a>
+        /// <a href="https://mathworld.wolfram.com/Chord.html">Wolfram Mathworld</a>
         /// </remarks>
         public static class Chord
         {
@@ -240,8 +240,8 @@ namespace SMath.Geometry2D
         /// Sector of a circle or circular sector.
         /// </summary>
         /// <remarks>
-        /// <a href="https://en.wikipedia.org/wiki/Circular_sector">wikipedia</a>
-        /// <a href="https://mathworld.wolfram.com/CircularSector.html">mathworld</a>
+        /// <a href="https://en.wikipedia.org/wiki/Circular_sector">Wikipedia</a>
+        /// <a href="https://mathworld.wolfram.com/CircularSector.html">Wolfram Mathworld</a>
         /// </remarks>
         public static class Sector
         {
@@ -290,8 +290,8 @@ namespace SMath.Geometry2D
         /// Segment of a circle or circular segment.
         /// </summary>
         /// <remarks>
-        /// <a href="https://en.wikipedia.org/wiki/Circular_segment">wikipedia</a>
-        /// <a href="https://mathworld.wolfram.com/CircularSegment.html">mathworld</a>
+        /// <a href="https://en.wikipedia.org/wiki/Circular_segment">Wikipedia</a>
+        /// <a href="https://mathworld.wolfram.com/CircularSegment.html">Wolfram Mathworld</a>
         /// </remarks>
         public static class Segment
         {

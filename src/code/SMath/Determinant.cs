@@ -6,7 +6,7 @@ namespace SMath
     /// Determinant of a square matrix.
     /// </summary>
     /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Determinant">wikipedia</a>
+    /// <a href="https://en.wikipedia.org/wiki/Determinant">Wikipedia</a>
     /// </remarks>
     public static class Determinant
     {

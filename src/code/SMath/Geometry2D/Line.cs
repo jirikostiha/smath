@@ -8,7 +8,7 @@ namespace SMath.Geometry2D
     /// </summary>
     /// <remarks>
     /// Line is defined in general form by default.
-    /// <a href="https://en.wikipedia.org/wiki/Line_(geometry)">wikipedia</a>
+    /// <a href="https://en.wikipedia.org/wiki/Line_(geometry)">Wikipedia</a>
     /// <a href="https://www.123calculus.com/en/line-calculator-page-7-60-100.html">calculator 1</a>
     /// </remarks>
     public static class Line
@@ -189,7 +189,7 @@ namespace SMath.Geometry2D
                 /// Line and point distance.
                 /// </summary>
                 /// <remarks>
-                /// <a href="https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line">wikipedia</a>
+                /// <a href="https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line">Wikipedia</a>
                 /// </remarks>
                 public static class Distance
                 {
@@ -233,7 +233,7 @@ namespace SMath.Geometry2D
                 /// Line and line intersection.
                 /// </summary>
                 /// <remarks>
-                /// <a href="https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection">wikipedia</a>
+                /// <a href="https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection">Wikipedia</a>
                 /// </remarks>
                 public static class Intersection
                 {
@@ -352,7 +352,7 @@ namespace SMath.Geometry2D
                 /// Get slope value from two points in 2D.
                 /// </summary>
                 /// <remarks>
-                /// <a href="https://en.wikipedia.org/wiki/Slope">wikipedia</a>
+                /// <a href="https://en.wikipedia.org/wiki/Slope">Wikipedia</a>
                 /// </remarks>
                 public static N FromTwoPoints<N>((N X, N Y) point1, (N X, N Y) point2)
                     where N : ISubtractionOperators<N, N, N>, IDivisionOperators<N, N, N>
@@ -438,7 +438,7 @@ namespace SMath.Geometry2D
                 {
                     /// <summary>
                     /// Distance of line segment and point.
-                    /// <a href="https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line#Line_defined_by_two_points">wikipedia</a>
+                    /// <a href="https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line#Line_defined_by_two_points">Wikipedia</a>
                     /// </summary>
                     public static class Distance
                     {
@@ -517,7 +517,7 @@ namespace SMath.Geometry2D
                     /// Line segment and line segment intersection.
                     /// </summary>
                     /// <remarks>
-                    /// <a href="https://en.wikipedia.org/wiki/Intersection_(geometry)#Two_line_segments">wikipedia</a>
+                    /// <a href="https://en.wikipedia.org/wiki/Intersection_(geometry)#Two_line_segments">Wikipedia</a>
                     /// </remarks>
                     public static class Intersection
                     {

@@ -6,8 +6,8 @@ namespace SMath.Geometry3D
     /// Sphere.
     /// </summary>
     /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Sphere">wikipedia</a>
-    /// <a href="https://mathworld.wolfram.com/Sphere.html">mathworld</a>
+    /// <a href="https://en.wikipedia.org/wiki/Sphere">Wikipedia</a>
+    /// <a href="https://mathworld.wolfram.com/Sphere.html">Wolfram Mathworld</a>
     /// </remarks>
     public static class Sphere
     {

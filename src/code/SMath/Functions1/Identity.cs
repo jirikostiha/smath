@@ -6,7 +6,7 @@ namespace SMath.Functions1
     /// Identity function.
     /// </summary>
     /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Identity_function">wikipedia</a>
+    /// <a href="https://en.wikipedia.org/wiki/Identity_function">Wikipedia</a>
     /// </remarks>
     public class Identity : IMathFunction
     {

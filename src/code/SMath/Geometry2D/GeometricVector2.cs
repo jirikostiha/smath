@@ -7,7 +7,7 @@ namespace SMath.Geometry2D
     /// Euclidean or geometric vector with 2 components.
     /// </summary>
     /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Euclidean_vector">wikipedia</a>
+    /// <a href="https://en.wikipedia.org/wiki/Euclidean_vector">Wikipedia</a>
     /// </remarks>
     public static class GeometricVector2
     {
@@ -159,7 +159,7 @@ namespace SMath.Geometry2D
         /// First normal vector of an input vector. It is the first one in circular direction from (+)x-axis to (+)y-axis.
         /// </summary>
         /// <remarks>
-        /// <a href="https://en.wikipedia.org/wiki/Normal_(geometry)">wikipedia</a>
+        /// <a href="https://en.wikipedia.org/wiki/Normal_(geometry)">Wikipedia</a>
         /// </remarks>
         public static class Normal1
         {
@@ -178,7 +178,7 @@ namespace SMath.Geometry2D
         /// Second normal vector of an input vector. It is the second one in circular direction from (+)x-axis to (+)y-axis.
         /// </summary>
         /// <remarks>
-        /// <a href="https://en.wikipedia.org/wiki/Normal_(geometry)">wikipedia</a>
+        /// <a href="https://en.wikipedia.org/wiki/Normal_(geometry)">Wikipedia</a>
         /// </remarks>
         public static class Normal2
         {

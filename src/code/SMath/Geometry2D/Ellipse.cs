@@ -7,8 +7,8 @@ namespace SMath.Geometry2D
     /// Ellipse.
     /// </summary>
     /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Ellipse">wikipedia</a>
-    /// <a href="https://mathworld.wolfram.com/Ellipse.html">mathworld</a>
+    /// <a href="https://en.wikipedia.org/wiki/Ellipse">Wikipedia</a>
+    /// <a href="https://mathworld.wolfram.com/Ellipse.html">Wolfram Mathworld</a>
     /// </remarks>
     public static class Ellipse
     {
@@ -67,7 +67,7 @@ namespace SMath.Geometry2D
             /// Circumference of an ellipse.
             /// </summary>
             /// <remarks>
-            /// <a href="https://en.wikipedia.org/wiki/Ellipse#Circumference">wikipedia</a>
+            /// <a href="https://en.wikipedia.org/wiki/Ellipse#Circumference">Wikipedia</a>
             /// </remarks>
             public static class Length
             {

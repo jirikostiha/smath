@@ -6,7 +6,7 @@ namespace SMath
     /// Summation.
     /// </summary>
     /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Summation">wikipedia</a>
+    /// <a href="https://en.wikipedia.org/wiki/Summation">Wikipedia</a>
     /// </remarks>
     public static class Summation
     {
