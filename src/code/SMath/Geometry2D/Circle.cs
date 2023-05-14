@@ -83,20 +83,145 @@ namespace SMath.Geometry2D
             }
 
             /// <summary>
-            /// Determines if a point is a part of circle perimeter.
+            /// Circle perimeter and ... investigation.
             /// </summary>
-            /// <remarks>
-            /// <a href="https://mathworld.wolfram.com/Circle-LineIntersection.html">mathword</a>
-            /// </remarks>
-            public static class Includes
+            public static class And
             {
-                public static bool Point<N>(N radius, (N X, N Y) point)
-                    where N : IRootFunctions<N>
-                    => PT.Hypotenuse(point.X, point.Y) == radius;
+                /// <summary>
+                /// Circle perimeter and point investigation.
+                /// </summary>
+                public static class Point
+                {
+                    /// <summary>
+                    /// Circle perimeter and point distance.
+                    /// </summary>
+                    public static class Distance
+                    {
+                        /// <summary>
+                        /// Calculates the distance of circle perimeter and point.
+                        /// </summary>
+                        public static N FromRadius<N>(N radius, (N X, N Y) point)
+                            where N : IRootFunctions<N>
+                            => throw new NotImplementedException("todo");
 
-                public static bool Point<N>((N X, N Y) center, N radius, (N X, N Y) point)
-                    where N : IRootFunctions<N>
-                    => PT.Hypotenuse(point.X - center.X, point.Y - center.Y) == radius;
+                        /// <summary>
+                        /// Calculates the distance of circle perimeter and point.
+                        /// </summary>
+                        public static N FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) point)
+                            where N : IRootFunctions<N>
+                            => throw new NotImplementedException("todo");
+                    }
+
+                    /// <summary>
+                    /// Circle perimeter and point intersection.
+                    /// </summary>
+                    public static class Intersection
+                    {
+                        public static bool FromRadius<N>(N radius, (N X, N Y) point)
+                            where N : IRootFunctions<N>
+                            => PT.Hypotenuse(point.X, point.Y) == radius; //? todo
+
+                        public static bool Point<N>((N X, N Y) center, N radius, (N X, N Y) point)
+                            where N : IRootFunctions<N>
+                            => PT.Hypotenuse(point.X - center.X, point.Y - center.Y) == radius; //? todo
+                    }
+                }
+
+                /// <summary>
+                /// Circle perimeter and line investigation.
+                /// </summary>
+                public static class Line
+                {
+                    /// <summary>
+                    /// Circle perimeter and line distance.
+                    /// </summary>
+                    public static class Distance
+                    {
+                        /// <summary>
+                        /// Calculates the distance of circle perimeter determined by radius from line determined in general form.
+                        /// </summary>
+                        public static N FromRadius<N>(N radius, (N A, N B, N C) line)
+                            where N : INumberBase<N>
+                            => throw new NotImplementedException("todo");
+
+                        /// <summary>
+                        /// Calculates the distance of circle perimeter determined by center and radius from line determined in general form.
+                        /// </summary>
+                        public static N FromRadius<N>((N X, N Y) center, N radius, (N A, N B, N C) line)
+                            where N : INumberBase<N>
+                            => throw new NotImplementedException("todo");
+                    }
+
+                    /// <summary>
+                    /// Circle perimeter and line intersection.
+                    /// </summary>
+                    public static class Intersection
+                    {
+                        /// <summary>
+                        /// Calculates the intersection of circle perimeter determined by radius with line determined in general form.
+                        /// </summary>
+                        /// <remarks>
+
+                        /// </remarks>
+                        public static ((N X, N Y) Point1, (N X, N Y) Point2)? FromRadius<N>(N radius, (N A, N B, N C) line)
+                            where N : IRootFunctions<N>
+                            => throw new NotImplementedException("todo");
+                    }
+                }
+
+                /// <summary>
+                /// Circle perimeter and circle investigation.
+                /// </summary>
+                public static class Circle
+                {
+                    /// <summary>
+                    /// Circle perimeter and circle distance.
+                    /// </summary>
+                    public static class Distance
+                    {
+                        /// <summary>
+                        /// Calculates the distance of circle perimeter and circle.
+                        /// </summary>
+                        public static N FromRadius<N>(N radius, (N X, N Y) otherCenter, N otherRadius)
+                            where N : IRootFunctions<N>
+                            => throw new NotImplementedException("todo");
+
+                        /// <summary>
+                        /// Calculates the distance of circle perimeter and circle.
+                        /// </summary>
+                        public static N FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) otherCenter, N otherRadius)
+                            where N : IRootFunctions<N>
+                            => throw new NotImplementedException("todo");
+                    }
+
+                    /// <summary>
+                    /// Circle perimeter and circle perimeter intersection.
+                    /// </summary>
+                    public static class Intersection
+                    {
+                        /// <summary>
+                        /// Calculates the intersection of circle perimeter determined by radius with other circle perimeter determined by center and radius.
+                        /// </summary>
+                        /// <remarks>
+                        /// <a href="https://en.wikipedia.org/wiki/Intersection_(geometry)#Two_circles">Wikipedia</a>
+                        /// <a href="https://mathworld.wolfram.com/Circle-CircleIntersection.html">Wolfram Mathworld</a>
+                        /// </remarks>
+                        public static ((N X, N Y) Point1, (N X, N Y) Point2)? FromRadius<N>(N radius, (N X, N Y) otherCenter, N otherRadius)
+                            where N : IRootFunctions<N>
+                            => throw new NotImplementedException("todo");
+
+                        /// <summary>
+                        /// Calculates the intersection of circle perimeter determined by center and radius with other circle perimeter determined by center and radius.
+                        /// </summary>
+                        /// <remarks>
+                        /// <a href="https://en.wikipedia.org/wiki/Intersection_(geometry)#Two_circles">Wikipedia</a>
+                        /// <a href="https://mathworld.wolfram.com/Circle-CircleIntersection.html">Wolfram Mathworld</a>
+                        /// </remarks>
+                        public static ((N X, N Y) Point1, (N X, N Y) Point2) FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) otherCenter, N otherRadius)
+                            where N : IRootFunctions<N>
+                            => throw new NotImplementedException("todo");
+                    }
+                }
             }
         }
 
@@ -118,15 +243,71 @@ namespace SMath.Geometry2D
                     => N.Pi * radius * radius;
             }
 
-            public static class Includes
+            /// <summary>
+            /// Circle region and ... investigation.
+            /// </summary>
+            public static class And
             {
-                public static bool Point<N>(N radius, (N X, N Y) point)
-                    where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
-                    => PT.Hypotenuse(point.X, point.Y) <= radius;
+                /// <summary>
+                /// Circle region and point investigation.
+                /// </summary>
+                public static class Point
+                {
+                    /// <summary>
+                    /// Circle region and point distance.
+                    /// </summary>
+                    public static class Distance
+                    {
+                        /// <summary>
+                        /// Calculates the distance of circle region and point.
+                        /// </summary>
+                        public static N FromRadius<N>(N radius, (N X, N Y) point)
+                            where N : IRootFunctions<N>
+                            => throw new NotImplementedException("todo");
 
-                public static bool Point<N>((N X, N Y) center, N radius, (N X, N Y) point)
-                    where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
-                    => PT.Hypotenuse(point.X - center.X, point.Y - center.Y) <= radius;
+                        /// <summary>
+                        /// Calculates the distance of circle region and point.
+                        /// </summary>
+                        public static N FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) point)
+                            where N : IRootFunctions<N>
+                            => throw new NotImplementedException("todo");
+                    }
+
+                    /// <summary>
+                    /// Circle region and point intersection.
+                    /// </summary>
+                    public static class Intersection
+                    {
+                        public static bool FromRadius<N>(N radius, (N X, N Y) point)
+                            where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
+                            //=> PT.Hypotenuse(point.X, point.Y) <= radius;
+                            => throw new NotImplementedException("todo");
+
+                        public static bool FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) point)
+                            where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
+                            //=> PT.Hypotenuse(point.X - center.X, point.Y - center.Y) <= radius;
+                            => throw new NotImplementedException("todo");
+                    }
+                }
+
+                /// <summary>
+                /// Circle region and circle investigation.
+                /// </summary>
+                public static class Circle
+                {
+                    /// <summary>
+                    /// Circle region and circle distance.
+                    /// </summary>
+                    public static class Distance
+                    {
+                        /// <summary>
+                        /// Calculates the distance of circle region and circle.
+                        /// </summary>
+                        public static N FromRadius<N>(N radius, (N X, N Y) point)
+                            where N : IRootFunctions<N>
+                            => throw new NotImplementedException("todo");
+                    }
+                }
             }
         }
 
