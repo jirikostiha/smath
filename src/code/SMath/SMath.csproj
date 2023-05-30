@@ -26,4 +26,8 @@
 		<Authors>Jiri Kostiha</Authors>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Compile Remove="Circle.cs" />
+	</ItemGroup>
+
 </Project>

@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using static SMath.Geometry2D.GeometricVector2;
 
 namespace SMath.Geometry2D
 {
@@ -90,7 +91,7 @@ namespace SMath.Geometry2D
                 /// <summary>
                 /// Circle perimeter and point investigation.
                 /// </summary>
-                public static class Point
+                public static class OtherPoint
                 {
                     /// <summary>
                     /// Circle perimeter and point distance.
@@ -102,14 +103,14 @@ namespace SMath.Geometry2D
                         /// </summary>
                         public static N FromRadius<N>(N radius, (N X, N Y) point)
                             where N : IRootFunctions<N>
-                            => throw new NotImplementedException("todo");
+                            => N.Abs(GeometricVector2.Magnitude.FromCartesian(point) - radius);
 
                         /// <summary>
                         /// Calculates the distance of circle perimeter and point.
                         /// </summary>
                         public static N FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) point)
                             where N : IRootFunctions<N>
-                            => throw new NotImplementedException("todo");
+                            => N.Abs(GeometricVector2.Magnitude.FromCartesian(center.X + point.X, center.Y + point.Y) - radius);
                     }
 
                     /// <summary>
@@ -119,18 +120,18 @@ namespace SMath.Geometry2D
                     {
                         public static bool FromRadius<N>(N radius, (N X, N Y) point)
                             where N : IRootFunctions<N>
-                            => PT.Hypotenuse(point.X, point.Y) == radius; //? todo
+                            => PT.Hypotenuse(point.X, point.Y) == radius;
 
                         public static bool Point<N>((N X, N Y) center, N radius, (N X, N Y) point)
                             where N : IRootFunctions<N>
-                            => PT.Hypotenuse(point.X - center.X, point.Y - center.Y) == radius; //? todo
+                            => PT.Hypotenuse(point.X - center.X, point.Y - center.Y) == radius;
                     }
                 }
 
                 /// <summary>
                 /// Circle perimeter and line investigation.
                 /// </summary>
-                public static class Line
+                public static class OtherLine
                 {
                     /// <summary>
                     /// Circle perimeter and line distance.
@@ -142,14 +143,28 @@ namespace SMath.Geometry2D
                         /// </summary>
                         public static N FromRadius<N>(N radius, (N A, N B, N C) line)
                             where N : INumberBase<N>
-                            => throw new NotImplementedException("todo");
+                        {
+                            //var centerProjection = Geometry2D.Line.And.Point.Projection.FromGeneralForm(line, (0, 0));
+
+                            //https://math.stackexchange.com/questions/1481904/distance-between-line-and-circle
+                            var d = N.Abs(line.C) / PT.Hypotenuse(line.A, line.B);
+
+
+                            //throw new NotImplementedException("todo");
+                            return d;
+                        }
 
                         /// <summary>
                         /// Calculates the distance of circle perimeter determined by center and radius from line determined in general form.
                         /// </summary>
                         public static N FromRadius<N>((N X, N Y) center, N radius, (N A, N B, N C) line)
                             where N : INumberBase<N>
-                            => throw new NotImplementedException("todo");
+                        {
+                            var d = N.Abs(line.A * center.X + line.B * center.Y + line.C) / PT.Hypotenuse(line.A, line.B);
+
+                            //=> throw new NotImplementedException("todo");
+                            return d;
+                        }
                     }
 
                     /// <summary>
@@ -172,7 +187,7 @@ namespace SMath.Geometry2D
                 /// <summary>
                 /// Circle perimeter and circle investigation.
                 /// </summary>
-                public static class Circle
+                public static class OtherCircle
                 {
                     /// <summary>
                     /// Circle perimeter and circle distance.
@@ -184,14 +199,34 @@ namespace SMath.Geometry2D
                         /// </summary>
                         public static N FromRadius<N>(N radius, (N X, N Y) otherCenter, N otherRadius)
                             where N : IRootFunctions<N>
-                            => throw new NotImplementedException("todo");
+                        {
+                            var centerDistance = PT.Hypotenuse(otherCenter);
+                            var d = centerDistance - radius - otherRadius;
+
+                            return d > 0
+                                ? d
+                                : centerDistance + otherRadius < radius
+                                    ? 0
+                                    : centerDistance - otherRadius;
+
+                            //throw new NotImplementedException("todo");
+                        }
 
                         /// <summary>
                         /// Calculates the distance of circle perimeter and circle.
                         /// </summary>
                         public static N FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) otherCenter, N otherRadius)
                             where N : IRootFunctions<N>
-                            => throw new NotImplementedException("todo");
+                        {
+                            var centerDistance = PT.Hypotenuse(center.X - otherCenter.X, center.Y - otherCenter.Y);
+                            var d = centerDistance - radius - otherRadius;
+
+                            return d > N.Zero
+                                ? d
+                                : centerDistance + otherRadius < radius
+                                    ? N.Zero
+                                    : centerDistance - otherRadius; //todo
+                        }
                     }
 
                     /// <summary>
@@ -251,7 +286,7 @@ namespace SMath.Geometry2D
                 /// <summary>
                 /// Circle region and point investigation.
                 /// </summary>
-                public static class Point
+                public static class OtherPoint
                 {
                     /// <summary>
                     /// Circle region and point distance.
@@ -263,14 +298,14 @@ namespace SMath.Geometry2D
                         /// </summary>
                         public static N FromRadius<N>(N radius, (N X, N Y) point)
                             where N : IRootFunctions<N>
-                            => throw new NotImplementedException("todo");
+                            => N.Max(PT.Hypotenuse(point.X, point.Y) - radius, N.Zero);
 
                         /// <summary>
                         /// Calculates the distance of circle region and point.
                         /// </summary>
                         public static N FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) point)
                             where N : IRootFunctions<N>
-                            => throw new NotImplementedException("todo");
+                            => N.Max(PT.Hypotenuse(point.X - center.X, point.Y - center.Y) - radius, N.Zero);
                     }
 
                     /// <summary>
@@ -280,20 +315,18 @@ namespace SMath.Geometry2D
                     {
                         public static bool FromRadius<N>(N radius, (N X, N Y) point)
                             where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
-                            //=> PT.Hypotenuse(point.X, point.Y) <= radius;
-                            => throw new NotImplementedException("todo");
+                            => PT.Hypotenuse(point.X, point.Y) <= radius;
 
                         public static bool FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) point)
                             where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
-                            //=> PT.Hypotenuse(point.X - center.X, point.Y - center.Y) <= radius;
-                            => throw new NotImplementedException("todo");
+                            => PT.Hypotenuse(point.X - center.X, point.Y - center.Y) <= radius;
                     }
                 }
 
                 /// <summary>
                 /// Circle region and circle investigation.
                 /// </summary>
-                public static class Circle
+                public static class OtherCircle
                 {
                     /// <summary>
                     /// Circle region and circle distance.
