@@ -17,8 +17,8 @@
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 
 		<Title>SMath</Title>
-		<Description>Mathematical library.</Description>
-		<PackageTags> math; geometry; csharp</PackageTags>
+		<Description>Alternative math library based on .Net 7 generic math.</Description>
+		<PackageTags>math; generic-math; geometry; combinatorics; vectors; csharp</PackageTags>
 		<PackageProjectUrl>https://github.com/jirikostiha/smath</PackageProjectUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<SignAssembly>False</SignAssembly>
