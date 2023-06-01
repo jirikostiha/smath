@@ -13,6 +13,10 @@ namespace SMath
             where N : IRootFunctions<N>
             => N.Sqrt((leg1 * leg1) + (leg2 * leg2));
 
+        public static N Hypotenuse<N>((N First, N Second) legs)
+            where N : IRootFunctions<N>
+            => N.Sqrt((legs.First * legs.First) + (legs.Second * legs.Second));
+
         /// <summary> Calculate length of leg of a right-angled triangle. </summary>
         public static N Leg<N>(N hypotenuse, N otherLeg)
             where N : IRootFunctions<N>
