@@ -2,7 +2,7 @@
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/jirikostiha/smath)
 ![GitHub code size](https://img.shields.io/github/languages/code-size/jirikostiha/smath)
-[![NuGet Downloads](https://img.shields.io/nuget/dt/SMath.svg)](https://www.nuget.org/packages/SMath/)
+![Nuget](https://img.shields.io/nuget/dt/SMath)  
 [![Build](https://github.com/jirikostiha/smath/actions/workflows/build.yml/badge.svg)](https://github.com/jirikostiha/smath/actions/workflows/build.yml)
 [![Code Analysis](https://github.com/jirikostiha/smath/actions/workflows/analyse-code.yml/badge.svg)](https://github.com/jirikostiha/smath/actions/workflows/analyse-code.yml)
 [![Code Lint](https://github.com/jirikostiha/smath/actions/workflows/lint-code.yml/badge.svg)](https://github.com/jirikostiha/smath/actions/workflows/lint-code.yml)
