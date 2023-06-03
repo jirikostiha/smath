@@ -19,9 +19,17 @@ SMath is
 The library is based on [Generic math](https://learn.microsoft.com/en-us/dotnet/standard/generics/math)
 available since .NET 7.  
 
-Currently includes:  
-* 2D geometry  
-* One-parametric functions
+### Geometry 2D
+**Point**  
+Euclidean distance, Manhattan distance, Chebyshev distance, Minkowski distance  
+
+**Line**  
+subelements: Ray, Line Segment  
+investigation: Projection, Intersection, Inclusion
+
+**Circle**  
+subelements: Arc, Chord, Sector, Segment  
+investigation: Perimeter, Region, Tangent Points, Inclusion
 
 ## Setup
 
