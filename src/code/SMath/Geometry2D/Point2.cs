@@ -58,7 +58,6 @@ namespace SMath.GeometryD2
         /// <remarks>
         /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static N ChebyshevDistance<N>((N X, N Y) point)
             where N : INumber<N>
             => N.Max(N.Abs(point.X), N.Abs(point.Y));
@@ -69,18 +68,16 @@ namespace SMath.GeometryD2
         /// <remarks>
         /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static N ChebyshevDistance<N>((N X, N Y) point1, (N X, N Y) point2)
             where N : INumber<N>
             => N.Max(N.Abs(point1.X - point2.X), N.Abs(point1.Y - point2.Y));
 
         /// <summary>
-        /// Minkowski distance of point and origin
+        /// Minkowski distance of point and origin.
         /// </summary>
         /// <remarks>
         /// <a href="https://en.wikipedia.org/wiki/Minkowski_distance">Wikipedia</a>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static N MinkowskiDistance<N>((N X, N Y) point, N r)
             where N : IPowerFunctions<N>
             => N.Pow(N.Pow(N.Abs(point.X), r) + N.Pow(N.Abs(point.Y), r), N.One / r);
@@ -91,9 +88,9 @@ namespace SMath.GeometryD2
         /// <remarks>
         /// <a href="https://en.wikipedia.org/wiki/Minkowski_distance">Wikipedia</a>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static N MinkowskiDistance<N>((N X, N Y) point1, (N X, N Y) point2, N r)
             where N : IPowerFunctions<N>
             => N.Pow(N.Pow(N.Abs(point1.X - point2.X), r) + N.Pow(N.Abs(point1.Y - point2.Y), r), N.One / r);
+
     }
 }
