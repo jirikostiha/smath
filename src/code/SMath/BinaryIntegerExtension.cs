@@ -24,5 +24,24 @@ namespace SMath
 
             return setBits;
         }
+
+        public static N ToGrayCode<N>(this N number)
+            where N : IBinaryInteger<N>, IUnsignedNumber<N>
+            => number ^ (number >> 1);
+
+        public static N FromGrayCode<N>(this N gray)
+            where N : IBinaryInteger<N>, IUnsignedNumber<N>
+        {
+            var n = gray;
+            var result = n;
+
+            while (n > N.Zero)
+            {
+                n >>= 1;
+                result ^= n;
+            }
+
+            return result;
+        }
     }
 }
