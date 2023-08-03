@@ -203,10 +203,10 @@ namespace SMath.Geometry2D
                             var centerDistance = PT.Hypotenuse(otherCenter);
                             var d = centerDistance - radius - otherRadius;
 
-                            return d > 0
+                            return d > N.Zero
                                 ? d
                                 : centerDistance + otherRadius < radius
-                                    ? 0
+                                    ? N.Zero
                                     : centerDistance - otherRadius;
 
                             //throw new NotImplementedException("todo");
