@@ -24,5 +24,33 @@
             var sum = Summation.Eval(sequence, out long count);
             return double.CreateChecked(sum) / double.CreateChecked(count);
         }
+
+        ////https://math.stackexchange.com/questions/106700/incremental-averageing
+        //public static double f2(double newValue, double previousMean, double count)
+        //{
+        //    return previousMean + (newValue - previousMean) / count;
+        //}
+
+        //public static double f2(IEnumerable<double> numbers)
+        //{
+        //    long count = 0;
+        //    double mean = 0;
+        //    foreach (var value in numbers)
+        //    {
+        //        count++;
+        //        mean = f2(value, mean, count);
+        //    }
+
+        //    return mean;
+        //}
+
+        //public static double f2(IList<double> sequence)
+        //{
+        //    double mean = 0;
+        //    for (int i = 0; i < sequence.Count; i++)
+        //        mean = f2(sequence[i], mean, i);
+
+        //    return mean;
+        //}
     }
 }

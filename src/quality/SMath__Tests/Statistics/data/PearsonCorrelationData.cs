@@ -1,4 +1,4 @@
-namespace SMath.Statistics
+﻿namespace SMath.Statistics
 {
     using Xunit;
 

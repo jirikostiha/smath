@@ -27,8 +27,8 @@ namespace SMath.Geometry2D
         [InlineData(-1, 0, 1, 0, -1, 1, 1)] // above first point
         [InlineData(-1, 0, 1, 0, 0, 1, 1)]  // above the center point (origin)
         [InlineData(-1, 0, 1, 0, 1, 1, 1)]  // above second point
-        [InlineData(-1, 0, 1, 0, -2, 0, 0)] // inline before first point
-        [InlineData(-1, 0, 1, 0, 2, 0, 0)]  // inline after second point
+        [InlineData(-1, 0, 1, 0, -2, 0, 0)] // in line before first point
+        [InlineData(-1, 0, 1, 0, 2, 0, 0)]  // in line after second point
         public void Distance_FromPoints(double ax, double ay, double bx, double by,
             double px, double py, double pointDistance)
         {
@@ -38,7 +38,7 @@ namespace SMath.Geometry2D
         [Theory]
         [MemberData(nameof(TestData.ProjectionData), MemberType = typeof(TestData))]
         public void Projection_FromPoints(((double X, double Y) P1, (double X, double Y) P2) segment,
-            (double X, double Y) point, (double X, double Y) projectedPoint)
+            (double X, double Y) point, (double X, double Y) projectedPoint, string message)
         {
             var evaluatetPoint = Line.And.Point.Projection.FromPoints(segment.P1, segment.P2, point);
 
@@ -56,8 +56,8 @@ namespace SMath.Geometry2D
                 yield return new object[] { (-1d, 0d), (1d, 0d), (-1d, 1d), (-1d, 0d), "above first point on x-axis" };
                 yield return new object[] { (-1d, 0d), (1d, 0d), (0d, 1d), (0d, 0d), "above the center point (origin) on x-axis" };
                 yield return new object[] { (-1d, 0d), (1d, 0d), (1d, 1d), (1d, 0d), "above second point on x-axis" };
-                yield return new object[] { (-1d, 0d), (1d, 0d), (-2d, 0d), (-2d, 0d), "inline before first point" };
-                yield return new object[] { (-1d, 0d), (1d, 0d), (2d, 0d), (2d, 0d), "inline after second point" };
+                yield return new object[] { (-1d, 0d), (1d, 0d), (-2d, 0d), (-2d, 0d), "in line before first point" };
+                yield return new object[] { (-1d, 0d), (1d, 0d), (2d, 0d), (2d, 0d), "in line after second point" };
                 yield return new object[] { (0d, 0d), (0d, 2d), (1d, 1d), (0d, 1d), "right to the first point on y-axis" };
                 yield return new object[] { (0d, 2d), (2d, 0d), (0d, 0d), (1d, 1d), "" };
             }

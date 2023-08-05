@@ -1,4 +1,4 @@
-using BenchmarkDotNet.Attributes;
+﻿using BenchmarkDotNet.Attributes;
 using System.Collections.Generic;
 using System.Collections;
 using SMath.Statistics;

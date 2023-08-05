@@ -105,5 +105,14 @@
         public void EvalArrayPerf_BothSequencesAreEmpty_NoException() =>
             PearsonCorrelation.EvalPerf(Array.Empty<double>(), Array.Empty<double>(), 0);
         #endregion
+        [Theory]
+        [MemberData(nameof(PearsonCorrelationData.NotCorrelatedData), MemberType = typeof(PearsonCorrelationData))]
+        public void EvalArrayPerf_NotCorrelated(int[] aSequence, int[] bSequence, double expected)
+        {
+            Assert.Equal(expected, PearsonCorrelation.EvalPerf(aSequence, bSequence, 0), 6);
+        }
+        public void EvalArrayPerf_BothSequencesAreEmpty_NoException() =>
+            PearsonCorrelation.EvalPerf(Array.Empty<double>(), Array.Empty<double>(), 0);
+        #endregion
     }
 }
