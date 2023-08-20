@@ -6,7 +6,7 @@ namespace SMath.Statistics
     public class CovarianceTest
     {
         [Theory]
-        [InlineData(new double[] { 0, 0 }, new double[] { 0, 0}, 0)]
+        [InlineData(new double[] { 0, 0 }, new double[] { 0, 0 }, 0)]
         [InlineData(new double[] { 0, 0 }, new double[] { 1, 1 }, 0)]
         [InlineData(new double[] { 1, 1 }, new double[] { 1, 1 }, 0)]
         [InlineData(new double[] { 0, 1, 2 }, new double[] { 0, 1, 2 }, 1)]
