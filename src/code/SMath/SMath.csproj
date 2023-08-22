@@ -21,9 +21,10 @@
 		<PackageTags>math; generic-math; geometry; combinatorics; statistics; vectors; csharp</PackageTags>
 		<PackageProjectUrl>https://github.com/jirikostiha/smath</PackageProjectUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<SignAssembly>False</SignAssembly>
+		<SignAssembly>True</SignAssembly>
 		<Version>0.6.0</Version>
 		<Authors>Jiri Kostiha</Authors>
+		<AssemblyOriginatorKeyFile>.\..\..\ijkdata.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 
 </Project>
