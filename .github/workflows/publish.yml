@@ -40,5 +40,8 @@ jobs:
       - name: Pack
         run: dotnet pack "${{ env.sln-path }}" -c Release -o "${{ env.package-dir }}" --no-build
 
-      - name: Publish the package to GPR
+      - name: Publish to Github Package Registry
         run: dotnet nuget push "${{ env.package-dir }}"/**/*.nupkg
+
+      - name: Publish to Nuget.org
+        run: dotnet nuget push "${{ env.package-dir }}"/**/*.nupkg --api-key ${{ secrets.NUGET_AUTH_TOKEN }} --source https://api.nuget.org/v3/index.json
