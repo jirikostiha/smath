@@ -38,7 +38,7 @@ namespace SMath.Geometry2D
         [Theory]
         [MemberData(nameof(TestData.ProjectionData), MemberType = typeof(TestData))]
         public void Projection_FromPoints(((double X, double Y) P1, (double X, double Y) P2) segment,
-            (double X, double Y) point, (double X, double Y) projectedPoint)
+            (double X, double Y) point, (double X, double Y) projectedPoint, string message)
         {
             var evaluatetPoint = Line.And.Point.Projection.FromPoints(segment.P1, segment.P2, point);
 
