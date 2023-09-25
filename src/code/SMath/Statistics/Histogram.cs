@@ -37,7 +37,7 @@ public static class Histogram
                 }
             }
             bins[^1] = (bins[^1].Bound, bins[^1].Count + NInt.One);
-outerLoopEnd:;
+        outerLoopEnd:;
         }
 
         return bins;
@@ -62,7 +62,7 @@ outerLoopEnd:;
                 }
             }
             bins[^1] = (bins[^1].Bound, bins[^1].Count + NInt.One);
-outerLoopEnd:;
+        outerLoopEnd:;
         }
 
         return bins;
