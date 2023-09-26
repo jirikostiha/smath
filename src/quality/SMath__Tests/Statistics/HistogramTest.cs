@@ -1,4 +1,4 @@
-namespace SMath.Statistics;
+﻿namespace SMath.Statistics;
 
 using System.Linq;
 using Xunit;

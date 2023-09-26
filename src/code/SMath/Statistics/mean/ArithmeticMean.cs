@@ -1,4 +1,4 @@
-namespace SMath.Statistics
+﻿namespace SMath.Statistics
 {
     using System.Collections.Generic;
     using System.Numerics;
@@ -12,6 +12,13 @@ namespace SMath.Statistics
     public static class ArithmeticMean
     {
         public static double Eval<N>(IEnumerable<N> sequence)
+            where N : INumberBase<N>
+        {
+            var sum = Summation.Eval(sequence, out long count);
+            return double.CreateChecked(sum) / double.CreateChecked(count);
+        }
+
+        public static double Eval<N>(ReadOnlySpan<N> sequence)
             where N : INumberBase<N>
         {
             var sum = Summation.Eval(sequence, out long count);

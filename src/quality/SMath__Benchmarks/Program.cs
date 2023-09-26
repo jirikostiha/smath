@@ -11,8 +11,9 @@ namespace SMath
         {
             var config = DefaultConfig.Instance.WithArtifactsPath(@"./../../../../../../benchmarks");
 
-            BenchmarkRunner.Run<Sine_Eval_Benchmark>(config);
-            BenchmarkRunner.Run<PT_Hypotenuse_Benchmark>(config);
+            //BenchmarkRunner.Run<Sine_Eval_Benchmark>(config);
+            //BenchmarkRunner.Run<PT_Hypotenuse_Benchmark>(config);
+            BenchmarkRunner.Run<PearsonCorrelation_Benchmark>(config);
         }
     }
 }

@@ -1,4 +1,5 @@
-using System.Numerics;
+﻿using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace SMath.Statistics
 {
@@ -11,6 +12,30 @@ namespace SMath.Statistics
     /// </remarks>
     public static class Variance
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static double PreEvaluate<N>(IEnumerable<N> sequence, out int count)
+            where N : INumberBase<N>
+        {
+            var mean = ArithmeticMean.Eval(sequence);
+            var sum = Summation.Eval(
+                sequence.Select(n => (double.CreateChecked(n) - mean) * (double.CreateChecked(n) - mean)),
+                out count);
+
+            return sum;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static double PreEvaluate<N>(ReadOnlySpan<N> sequence)
+            where N : INumberBase<N>
+        {
+            var mean = ArithmeticMean.Eval(sequence);
+            double sum = 0;
+            for (int i = 0; i < sequence.Length; i++)
+                sum += (double.CreateChecked(sequence[i]) - mean) * (double.CreateChecked(sequence[i]) - mean);
+
+            return sum;
+        }
+
         /// <summary>
         /// Sample variance.
         /// </summary>
@@ -18,14 +43,13 @@ namespace SMath.Statistics
         {
             public static double Eval<N>(IEnumerable<N> sequence)
                 where N : INumberBase<N>
-            {
-                var mean = ArithmeticMean.Eval(sequence);
-                var sum = Summation.Eval(
-                    sequence.Select(n => (double.CreateChecked(n) - mean) * (double.CreateChecked(n) - mean)),
-                    out int count);
+                =>
+                PreEvaluate(sequence, out int count) / (double.CreateChecked(count) - 1d);
 
-                return sum / (double.CreateChecked(count) - 1d);
-            }
+            public static double Eval<N>(ReadOnlySpan<N> sequence)
+                where N : INumberBase<N>
+                =>
+                PreEvaluate(sequence) / (double.CreateChecked(sequence.Length) - 1d);
         }
 
         /// <summary>
@@ -35,14 +59,13 @@ namespace SMath.Statistics
         {
             public static double Eval<N>(IEnumerable<N> sequence)
                 where N : INumberBase<N>
-            {
-                var mean = ArithmeticMean.Eval(sequence);
-                var sum = Summation.Eval(
-                    sequence.Select(n => (double.CreateChecked(n) - mean) * (double.CreateChecked(n) - mean)),
-                    out int count);
+                =>
+                PreEvaluate(sequence, out int count) / double.CreateChecked(count);
 
-                return sum / double.CreateChecked(count);
-            }
+            public static double Eval<N>(ReadOnlySpan<N> sequence)
+                where N : INumberBase<N>
+                =>
+                PreEvaluate(sequence) / double.CreateChecked(sequence.Length);
         }
     }
 }

@@ -11,11 +11,25 @@ namespace SMath.Statistics
     /// </remarks>
     public static class Covariance
     {
-        public static double Eval<N>(IEnumerable<N> aSequence, IEnumerable<N> bSequence)
-            where N : INumberBase<N>
-            => Eval(aSequence, bSequence, out long _);
-
         public static double Eval<N>(IEnumerable<N> aSequence, IEnumerable<N> bSequence, out long count)
+            where N : INumberBase<N>
+        {
+            if (aSequence.Count() != bSequence.Count())
+                throw new ArgumentException("Inconsistent length of sequences.");
+
+            return Evaluate(aSequence, bSequence, out count);
+        }
+
+        public static double Eval<N>(ICollection<N> aSequence, ICollection<N> bSequence)
+            where N : INumberBase<N>
+        {
+            if (aSequence.Count != bSequence.Count)
+                throw new ArgumentException("Inconsistent length of sequences.");
+
+            return Evaluate(aSequence, bSequence, out _);
+        }
+
+        internal static double Evaluate<N>(IEnumerable<N> aSequence, IEnumerable<N> bSequence, out long count)
             where N : INumberBase<N>
         {
             var sumS1 = N.Zero;
@@ -35,7 +49,31 @@ namespace SMath.Statistics
                 }
             }
 
-            return (double.CreateChecked(sumS1S2) - double.CreateChecked(sumS1 * sumS2) / double.CreateChecked(count)) / double.CreateChecked(count - 1);
+            return (double.CreateChecked(sumS1S2) - double.CreateChecked(sumS1 * sumS2)
+                / double.CreateChecked(count))
+                / double.CreateChecked(count - 1);
+        }
+
+        public static double Eval<N>(ReadOnlySpan<N> aSequence, ReadOnlySpan<N> bSequence)
+            where N : INumberBase<N>
+        {
+            if (aSequence.Length != bSequence.Length)
+                throw new ArgumentException("Inconsistent length of sequences.");
+
+            var sumS1 = N.Zero;
+            var sumS2 = N.Zero;
+            var sumS1S2 = N.Zero;
+
+            for (int i = 0; i < aSequence.Length; i++)
+            {
+                sumS1 += aSequence[i];
+                sumS2 += bSequence[i];
+                sumS1S2 += aSequence[i] * bSequence[i];
+            }
+
+            return (double.CreateChecked(sumS1S2) - double.CreateChecked(sumS1 * sumS2)
+                / double.CreateChecked(aSequence.Length))
+                / double.CreateChecked(aSequence.Length - 1);
         }
     }
 }
