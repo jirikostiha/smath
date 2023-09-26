@@ -1,15 +1,12 @@
-﻿using System;
-using Xunit;
-using static System.Math;
+﻿using Xunit;
 
-namespace SMath.Geometry2D
+namespace SMath.Geometry2D;
+
+public class CircleArcTests
 {
-    public class CircleArcTests
+    [Fact]
+    public void Length()
     {
-        [Fact]
-        public void Length()
-        {
-            Assert.Equal(1d, Circle.Arc.Length.FromAngle(1d, 1d));
-        }
+        Assert.Equal(1d, Circle.Arc.Length.FromAngle(1d, 1d));
     }
 }
