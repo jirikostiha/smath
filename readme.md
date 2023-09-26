@@ -31,6 +31,9 @@ investigation: Projection, Intersection, Inclusion
 subelements: Arc, Chord, Sector, Segment  
 investigation: Perimeter, Region, Tangent Points, Inclusion
 
+### Statistics
+Correlation, Variance, Covariance, Standard Deviation, Histogram  
+
 ## Setup
 
 Add nuget package to your project.
