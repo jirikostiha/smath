@@ -36,7 +36,7 @@ public class CovarianceTest
     [Fact]
     public void Eval_InconsistentSequences_Exception()
     {
-         Assert.Throws<ArgumentException>(() => Covariance.Eval(new int[] { 1 }, new int[] { 1, 2 }));
+        Assert.Throws<ArgumentException>(() => Covariance.Eval(new int[] { 1 }, new int[] { 1, 2 }));
     }
 
     [Fact]
