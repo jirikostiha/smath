@@ -16,6 +16,8 @@ jobs:
 
       - name: Lint commit message
         uses: wagoid/commitlint-github-action@v5
+        with:
+          configFile: .github/commitlint_config.js
 
       - name: Check no !fixup commits
         if: ${{ github.event_name == 'pull_request' }}
