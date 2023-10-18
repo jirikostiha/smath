@@ -1,0 +1,46 @@
+name: Benchmark Tests
+
+env:
+  sln-path: "./src/smath.sln"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/code/**'
+      - '!src/**.sln' # ignore sln changes
+
+permissions:
+  contents: write
+  deployments: write
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.0.x'
+
+      - name: .NET Info
+        run: dotnet --info
+
+      - name: Run benchmark
+        run: cd src/quality/SMath__Benchmarks && dotnet run -c Release --exporters json --filter '*'
+
+      - name: Store benchmark result
+        uses: rhysd/github-action-benchmark@v1
+        with:
+          name: Benchmark.Net
+          tool: 'benchmarkdotnet'
+          output-file-path: benchmarks/results/SMath__Benchmarks-report-full-compressed.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
+          alert-threshold: '200%'
+          comment-on-alert: true
