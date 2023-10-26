@@ -56,3 +56,5 @@ jobs:
           auto-push: true
           alert-threshold: '200%'
           comment-on-alert: true
+          gh-pages-branch: main
+          benchmark-data-dir-path: docs/dev/bench
