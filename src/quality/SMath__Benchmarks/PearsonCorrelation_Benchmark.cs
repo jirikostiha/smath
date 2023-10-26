@@ -7,7 +7,7 @@ namespace SMath.Functions1;
 
 [JsonExporterAttribute.Full]
 [JsonExporterAttribute.FullCompressed]
-[JsonExporter("-custom", indentJson: true, excludeMeasurements: true)]
+//[JsonExporter("-custom", indentJson: true, excludeMeasurements: true)]
 public class PearsonCorrelation_Benchmark
 {
     public static double[] Sequence1

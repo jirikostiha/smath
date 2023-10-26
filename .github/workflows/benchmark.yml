@@ -1,4 +1,4 @@
-name: Benchmark Tests
+name: Benchmarks
 
 env:
   sln-path: "./src/smath.sln"
@@ -34,12 +34,24 @@ jobs:
       - name: Run benchmark
         run: cd src/quality/SMath__Benchmarks && dotnet run -c Release --exporters json --filter '*'
 
+      - name: Find Summary File
+        id: find_summary_report_file
+        run: |
+            file_path=$(find . -type f -name "*report-full-compressed.json" -exec basename {} \; | head -n 1)
+            echo "file path: $file_path"
+            echo "file_path=$file_path" >> $GITHUB_OUTPUT
+
+      - name: Print File Path
+        run: |
+            echo "file: ${{steps.find_summary_report_file.outputs.file_path}}"
+            echo "path: benchmarks/results/${{ steps.find_summary_report_file.outputs.file_path }}"
+
       - name: Store benchmark result
         uses: rhysd/github-action-benchmark@v1
         with:
           name: Benchmark.Net
           tool: 'benchmarkdotnet'
-          output-file-path: benchmarks/results/SMath__Benchmarks-report-full-compressed.json
+          output-file-path: "benchmarks/results/${{steps.find_summary_report_file.outputs.file_path}}"
           github-token: ${{ secrets.GITHUB_TOKEN }}
           auto-push: true
           alert-threshold: '200%'
