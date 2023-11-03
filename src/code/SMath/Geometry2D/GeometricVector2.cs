@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
+using static SMath.Geometry2D.GeometricVector2;
 
 namespace SMath.Geometry2D;
 
@@ -242,5 +243,101 @@ public static class GeometricVector2
         public static N FromCartesian<N>((N X, N Y) vector1, (N X, N Y) vector2)
             where N : ISubtractionOperators<N, N, N>, IMultiplyOperators<N, N, N>
             => (vector1.X * vector2.Y) - (vector1.Y * vector2.X);
+    }
+
+    public static class Reflection
+    {
+        public static class ToX
+        {
+            /// <summary>
+            /// Reflect or mirror vector to a line parallel to x-axis.
+            /// </summary>
+            /// <param name="vector"> Vector to mirror. </param>
+            /// <param name="y"> Y coordinate of a mirror line. </param>
+            /// <returns> Vector with mirrored coordinates. </returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static (N X, N Y) FromCartesian<N>((N X, N Y) vector, N y)
+                where N : INumberBase<N>
+                => new(vector.X, vector.Y - N.CreateChecked(2) * (vector.Y - y));
+        }
+
+        public static class ToY
+        {
+            /// <summary>
+            /// Reflect or mirror vector to a line parallel to y-axis.
+            /// </summary>
+            /// <param name="vector"> Vector to mirror. </param>
+            /// <param name="x"> X coordinate of a mirror line. </param>
+            /// <returns> Vector with mirrored coordinates. </returns>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static (N X, N Y) FromCartesian<N>((N X, N Y) vector, N x)
+                where N : INumberBase<N>
+                => new(vector.X - N.CreateChecked(2) * (vector.X - x), vector.Y);
+        }
+
+        public static class ToLine
+        {
+            /// <summary>
+            /// Mirror vector to line determined by origin and direction vector.
+            /// </summary>
+            /// <param name="vector"> Vector to mirror. </param>
+            /// <param name="directionVector"> Direction vector of mirror line. </param>
+            /// <returns> Vector with mirrored coordinates. </returns>
+            public static (N X, N Y) FromCartesian<N>((N X, N Y) vector, (N X, N Y) directionVector)
+                where N : INumberBase<N>
+            {
+                var normalizedDir =  directionVector.Normalized();
+                float dotProduct = vector.X * normalizedDir.X + vector.Y * normalizedDir.Y;
+
+                return new(
+                    2 * dotProduct * normalizedDir.X - vector.X,
+                    2 * dotProduct * normalizedDir.Y - vector.Y);
+            }
+
+            /// <summary>
+            /// Mirror vector to line determined by one point and direction vector.
+            /// </summary>
+            /// <param name="vector"> Vector to mirror. </param>
+            /// <param name="reflectionPoint"> Point of mirror line. </param>
+            /// <param name="directionVector"> Direction vector of mirror line. </param>
+            /// <returns> Vector with mirrored coordinates. </returns>
+            public static (N X, N Y) FromCartesian<N>((N X, N Y) vector, (N X, N Y) reflectionPoint, (N X, N Y) directionVector)
+                where N : INumberBase<N>
+            {
+                var normalizedDir = directionVector.Normalized();
+                float dotProduct = (vector.X - mirrorPoint.X) * normalizedDir.X + (vector.Y - mirrorPoint.Y) * normalizedDir.Y;
+
+                return new(
+                    2 * (mirrorPoint.X + dotProduct * normalizedDir.X) - vector.X,
+                    2 * (mirrorPoint.Y + dotProduct * normalizedDir.Y) - vector.Y);
+            }
+
+            /// <summary>
+            /// Mirror vector to line determined by two points.
+            /// </summary>
+            /// <param name="vector"> Vector to mirror.</param>
+            /// <param name="reflectionPointA"> First point of mirror line. </param>
+            /// <param name="reflectionPointB"> Second point of mirror line. </param>
+            /// <returns> Vector with mirrored coordinates. </returns>
+            public static (N X, N Y) FromCartesian<N>((N X, N Y) vector, (N X, N Y) reflectionPointA, (N X, N Y) reflectionPointB)
+                where N : INumberBase<N>
+            {
+                var dx = mirrorPointB.X - mirrorPointA.X;
+                var dy = mirrorPointB.Y - mirrorPointA.Y;
+
+                if (dx == 0 && dy == 0)
+                {
+                    return new(2 * mirrorPointA.X - vector.X, 2 * mirrorPointA.Y - vector.Y);
+                }
+                else
+                {
+                    float t = ((vector.X - mirrorPointA.X) * dx + (vector.Y - mirrorPointA.Y) * dy) / (dx * dx + dy * dy);
+
+                    return new(
+                        2 * (mirrorPointA.X + t * dx) - vector.X,
+                        2 * (mirrorPointA.Y + t * dy) - vector.Y);
+                }
+            }
+        }
     }
 }
