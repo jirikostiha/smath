@@ -39,11 +39,11 @@ public class Point2Tests
     [Fact]
     public void CoordinatesInChebyshevDistance()
     {
-        var coords = Point2.CoordinatesInChebyshevDistance((1,1), 2).ToArray();
+        var coords = Point2.CoordinatesInChebyshevDistance((1, 1), 2).ToArray();
 
         Assert.Equal(16, coords.Length);
-        Assert.Equal((-1,-1), coords[0]);
-        Assert.Equal((0,-1), coords[1]);
+        Assert.Equal((-1, -1), coords[0]);
+        Assert.Equal((0, -1), coords[1]);
         Assert.Equal((3, -1), coords[4]);
         Assert.Equal((3, 0), coords[5]);
         Assert.Equal((3, 1), coords[6]);
@@ -63,7 +63,7 @@ public class Point2Tests
     [Fact]
     public void CoordinatesInChebyshevDistanceWithLimitsSmallerThanDistance_NoCoords()
     {
-        var coords = Point2.CoordinatesInChebyshevDistance((1, 1), 2, (0,0), (2,2)).ToArray();
+        var coords = Point2.CoordinatesInChebyshevDistance((1, 1), 2, (0, 0), (2, 2)).ToArray();
 
         Assert.Empty(coords);
     }
