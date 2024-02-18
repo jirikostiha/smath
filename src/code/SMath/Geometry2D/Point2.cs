@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
+using static SMath.Geometry2D.GeometricVector2;
 
 namespace SMath.GeometryD2;
 
@@ -92,4 +93,70 @@ public static class Point2
         where N : IPowerFunctions<N>
         => N.Pow(N.Pow(N.Abs(point1.X - point2.X), r) + N.Pow(N.Abs(point1.Y - point2.Y), r), N.One / r);
 
+    /// <summary>
+    /// Get all coordinates in determined Chebyshev distance from the center point.
+    /// </summary>
+    /// <remarks>
+    /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
+    /// </remarks>
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesInChebyshevDistance<NInt>((NInt X, NInt Y) center, NInt distance)
+        where NInt : IBinaryInteger<NInt>
+    {
+        var minX = center.X - distance;
+        var maxX = center.X + distance;
+        var minY = center.Y - distance;
+        var maxY = center.Y + distance;
+
+        for (var x = minX; x <= maxX; x++)
+            yield return (x, minY);
+
+        for (var y = minY + NInt.One; y < maxY; y++)
+            yield return (maxX, y);
+
+        for (var x = maxX; x >= minX; x--)
+            yield return (x, maxY);
+
+        for (var y = maxY - NInt.One; y > minY; y--)
+            yield return (minX, y);
+    }
+
+    /// <summary>
+    /// Get all coordinates in determined Chebyshev distance from the center point.
+    /// </summary>
+    /// <remarks>
+    /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
+    /// </remarks>
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesInChebyshevDistance<NInt>((NInt X, NInt Y) center, NInt distance,
+        (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
+        where NInt : IBinaryInteger<NInt>
+    {
+        var minX = center.X - distance;
+        var maxX = center.X + distance;
+        var minY = center.Y - distance;
+        var maxY = center.Y + distance;
+
+        if (minY >= bottomLimit.Y)
+        {
+            for (var x = NInt.Max(minX, bottomLimit.X); x <= NInt.Min(maxX, topLimit.X); x++)
+                yield return (x, minY);
+        }
+
+        if (maxX <= topLimit.X)
+        {
+            for (var y = NInt.Max(minY + NInt.One, bottomLimit.Y); y < NInt.Min(maxY, topLimit.Y); y++)
+                yield return (maxX, y);
+        }
+
+        if (maxY <= topLimit.Y)
+        {
+            for (var x = NInt.Min(maxX, topLimit.X); x >= NInt.Max(minX, bottomLimit.X); x--)
+                yield return (x, maxY);
+        }
+
+        if (minX >= bottomLimit.X)
+        {
+            for (var y = NInt.Min(maxY - NInt.One, topLimit.Y); y > NInt.Max(minY, bottomLimit.Y); y--)
+                yield return (minX, y);
+        }
+    }
 }
