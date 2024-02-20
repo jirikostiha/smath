@@ -35,7 +35,7 @@ public static class Point2
     /// Manhattan or taxicab distance of point and origin.
     /// </summary>
     /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Minkowski_distance">Wikipedia</a>
+    /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static N ManhattanDistance<N>((N X, N Y) point)
@@ -46,7 +46,7 @@ public static class Point2
     /// Manhattan or taxicab distance of two points.
     /// </summary>
     /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Minkowski_distance">Wikipedia</a>
+    /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static N ManhattanDistance<N>((N X, N Y) point1, (N X, N Y) point2)
@@ -94,6 +94,69 @@ public static class Point2
         => N.Pow(N.Pow(N.Abs(point1.X - point2.X), r) + N.Pow(N.Abs(point1.Y - point2.Y), r), N.One / r);
 
     /// <summary>
+    /// Get all coordinates in determined Manhattan or taxicab distance from the center point.
+    /// </summary>
+    /// <remarks>
+    /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
+    /// </remarks>
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesInManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance)
+        where NInt : IBinaryInteger<NInt>
+    {
+        var minX = center.X - distance;
+        var maxX = center.X + distance;
+        var minY = center.Y - distance;
+        var maxY = center.Y + distance;
+
+        for (var diff = NInt.Zero; diff <= distance; diff++)
+            yield return (center.X + diff, minY + diff);
+
+        for (var diff = NInt.One; diff < distance; diff++)
+            yield return (maxX - diff, center.Y + diff);
+
+        for (var diff = NInt.Zero; diff <= distance; diff++)
+            yield return (center.X - diff, maxY - diff);
+
+        for (var diff = NInt.One; diff < distance; diff++)
+            yield return (minX + diff, center.Y - diff);
+    }
+
+    /// <summary>
+    /// Get all coordinates in determined Manhattan or taxicab distance from the center point limited by bounds.
+    /// </summary>
+    /// <remarks>
+    /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
+    /// </remarks>
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesInManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance,
+        (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
+        where NInt : IBinaryInteger<NInt>
+    {
+        var minX = center.X - distance;
+        var maxX = center.X + distance;
+        var minY = center.Y - distance;
+        var maxY = center.Y + distance;
+
+        for (var diff = distance - NInt.Min(distance, center.Y - bottomLimit.Y); diff <= NInt.Min(distance, topLimit.X - center.X); diff++)
+            yield return (center.X + diff, minY + diff);
+
+        {
+            var from = NInt.Max(distance - NInt.Min(distance, topLimit.X - center.X), NInt.One);
+            var to = NInt.Min(distance - NInt.One, topLimit.Y - center.Y);
+            for (var diff = from; diff <= to; diff++)
+                yield return (maxX - diff, center.Y + diff);
+        }
+
+        for (var diff = distance - NInt.Min(distance, topLimit.Y - center.Y); diff <= NInt.Min(distance, center.X - bottomLimit.X); diff++)
+            yield return (center.X - diff, maxY - diff);
+
+        {
+            var from = NInt.Max(distance - NInt.Min(distance, center.X - bottomLimit.X), NInt.One);
+            var to = NInt.Min(distance - NInt.One, center.Y - bottomLimit.Y);
+            for (var diff = from; diff <= to; diff++)
+                yield return (minX + diff, center.Y - diff);
+        }
+    }
+
+    /// <summary>
     /// Get all coordinates in determined Chebyshev distance from the center point.
     /// </summary>
     /// <remarks>
@@ -121,7 +184,7 @@ public static class Point2
     }
 
     /// <summary>
-    /// Get all coordinates in determined Chebyshev distance from the center point.
+    /// Get all coordinates in determined Chebyshev distance from the center point limited by bounds.
     /// </summary>
     /// <remarks>
     /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
