@@ -93,9 +93,41 @@ public class Point2Tests
     }
 
     [Fact]
-    public void CoordinatesInChebyshevDistance()
+    public void CoordinatesUpToManhattanDistance()
     {
-        var coords = Point2.CoordinatesInChebyshevDistance((1, 1), 2).ToArray();
+        var coords = Point2.CoordinatesUpToManhattanDistance((1, 1), 2).ToArray();
+
+        Assert.Equal(25, coords.Length);
+    }
+
+    [Fact]
+    public void CoordinatesUpToManhattanDistanceWithLimits()
+    {
+        var coords = Point2.CoordinatesUpToManhattanDistance((1, 1), 2, (0,-1), (2,2)).ToArray();
+
+        Assert.Equal(12, coords.Length);
+    }
+
+    [Fact]
+    public void CoordinatesUpToManhattanDistance()
+    {
+        var coords = Point2.CoordinatesUpToManhattanDistance((1, 1), 2).ToArray();
+
+        Assert.Equal(13, coords.Length);
+    }
+
+    [Fact]
+    public void CoordinatesUpToManhattanDistanceWithLimits_Square()
+    {
+        var coords = Point2.CoordinatesUpToManhattanDistance((1, 1), 2, (0,0), (2,2)).ToArray();
+
+        Assert.Equal(9, coords.Length);
+    }
+
+    [Fact]
+    public void CoordinatesAtChebyshevDistance()
+    {
+        var coords = Point2.CoordinatesAtChebyshevDistance((1, 1), 2).ToArray();
 
         Assert.Equal(16, coords.Length);
         Assert.Equal((-1, -1), coords[0]);
@@ -107,9 +139,9 @@ public class Point2Tests
     }
 
     [Fact]
-    public void CoordinatesInChebyshevDistanceWithBottomLimitSmallerThanDistance_OnlyHigherCoords()
+    public void CoordinatesAtChebyshevDistanceWithBottomLimitSmallerThanDistance_OnlyHigherCoords()
     {
-        var coords = Point2.CoordinatesInChebyshevDistance((1, 1), 2, (0, 0), (5, 5)).ToArray();
+        var coords = Point2.CoordinatesAtChebyshevDistance((1, 1), 2, (0, 0), (5, 5)).ToArray();
 
         Assert.Equal(7, coords.Length);
         Assert.Equal((3, 0), coords[0]);
@@ -117,10 +149,26 @@ public class Point2Tests
     }
 
     [Fact]
-    public void CoordinatesInChebyshevDistanceWithLimitsSmallerThanDistance_NoCoords()
+    public void CoordinatesAtChebyshevDistanceWithLimitsSmallerThanDistance_NoCoords()
     {
-        var coords = Point2.CoordinatesInChebyshevDistance((1, 1), 2, (0, 0), (2, 2)).ToArray();
+        var coords = Point2.CoordinatesAtChebyshevDistance((1, 1), 2, (0, 0), (2, 2)).ToArray();
 
         Assert.Empty(coords);
+    }
+
+    [Fact]
+    public void CoordinatesUpToChebyshevDistance()
+    {
+        var coords = Point2.CoordinatesUpToChebyshevDistance((1, 1), 2).ToArray();
+
+        Assert.Equal(25, coords.Length);
+    }
+
+    [Fact]
+    public void CoordinatesUpToChebyshevDistanceWithLimits()
+    {
+        var coords = Point2.CoordinatesUpToChebyshevDistance((1, 1), 2, (0, -1), (2, 2)).ToArray();
+
+        Assert.Equal(12, coords.Length);
     }
 }

@@ -136,6 +136,8 @@ public static class Point2
         if (distance < NInt.One)
             yield break;
 
+        //TODO simplify
+
         var minX = center.X - distance;
         var maxX = center.X + distance;
         var minY = center.Y - distance;
@@ -203,14 +205,124 @@ public static class Point2
     }
 
     /// <summary>
-    /// Get all coordinates in determined Chebyshev distance from the center point.
+    /// Get all coordinates up to the Manhattan or taxicab distance from the center point.
+    /// Center is included.
+    /// </summary>
+    /// <remarks>
+    /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
+    /// </remarks>
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesUpToManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance)
+       where NInt : IBinaryInteger<NInt>
+    {
+        if (distance < NInt.One)
+            yield break;
+
+        var minX = center.X - distance;
+        var maxX = center.X + distance;
+        var minY = center.Y - distance;
+        var maxY = center.Y + distance;
+
+        for (var x = minX; x <= maxX; x++)
+            for (var y = minY; y <= maxY; y++)
+                yield return (x, y);
+    }
+
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesUpToManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance,
+        (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (distance < NInt.One)
+            yield break;
+
+        var minX = NInt.Max(center.X - distance, bottomLimit.X);
+        var maxX = NInt.Min(center.X + distance, topLimit.X);
+        var minY = NInt.Max(center.Y - distance, bottomLimit.Y);
+        var maxY = NInt.Min(center.Y + distance, topLimit.X);
+
+        for (var x = minX; x <= maxX; x++)
+            for (var y = minY; y <= maxY; y++)
+                yield return (x, y);
+    }
+
+    /// <summary>
+    /// Get all coordinates up to the Manhattan or taxicab distance from the center point.
+    /// Center is included.
+    /// </summary>
+    /// <remarks>
+    /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
+    /// </remarks>
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesUpToManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance)
+       where NInt : IBinaryInteger<NInt>
+    {
+        if (distance < NInt.One)
+            yield break;
+
+        var minX = center.X - distance;
+        var maxX = center.X + distance;
+        var minY = center.Y - distance;
+
+        // bottom part
+        for (var diff = NInt.Zero; diff <= distance; diff++)
+            for (var x = center.X - diff; x <= center.X + diff; x++)
+                yield return (x, minY + diff);
+
+        // upper part
+        for (var diff = NInt.One; diff <= distance; diff++)
+            for (var x = minX + diff; x <= maxX - diff; x++)
+                yield return (x, center.Y + diff);
+    }
+
+    /// <summary>
+    /// Get all coordinates up to the Manhattan or taxicab distance from the center point limited by bounds.
+    /// Center is included.
+    /// </summary>
+    /// <remarks>
+    /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
+    /// </remarks>
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesUpToManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance,
+        (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (distance < NInt.One)
+            yield break;
+
+        //TODO simplify
+
+        var minX = NInt.Max(center.X - distance, bottomLimit.X);
+        var maxX = NInt.Min(center.X + distance, topLimit.X);
+
+        {
+            // bottom part
+            var dist = NInt.Min(distance, center.Y - bottomLimit.Y);
+            var diffFrom = distance - dist;
+            var diffTo = NInt.Min(distance, distance + topLimit.Y - center.Y);
+            for (var diff = diffFrom; diff <= diffTo; diff++)
+                for (var x = NInt.Max(center.X - diff, minX); x <= NInt.Min(center.X + diff, maxX); x++)
+                    yield return (x, center.Y - distance + diff);
+        }
+
+        {
+            // upper part
+            var diffFrom = NInt.Max(NInt.One, bottomLimit.Y - center.Y);
+            var diffTo = NInt.Min(distance, topLimit.Y - center.Y);
+            for (var diff = diffFrom; diff <= diffTo; diff++)
+                for (var x = center.X - distance + diff; x <= center.X + distance - diff; x++)
+                    yield return (x, center.Y + diff);
+        }
+    }
+
+    /// <summary>
+    /// Get all coordinates at exact Chebyshev distance from the center point.
     /// </summary>
     /// <remarks>
     /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
     /// </remarks>
-    public static IEnumerable<(NInt X, NInt Y)> CoordinatesInChebyshevDistance<NInt>((NInt X, NInt Y) center, NInt distance)
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesAtChebyshevDistance<NInt>((NInt X, NInt Y) center, NInt distance)
         where NInt : IBinaryInteger<NInt>
     {
+        if (distance < NInt.One)
+            yield break;
+
         var minX = center.X - distance;
         var maxX = center.X + distance;
         var minY = center.Y - distance;
@@ -230,15 +342,18 @@ public static class Point2
     }
 
     /// <summary>
-    /// Get all coordinates in determined Chebyshev distance from the center point limited by bounds.
+    /// Get all coordinates at exact Chebyshev distance from the center point limited by bounds.
     /// </summary>
     /// <remarks>
     /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
     /// </remarks>
-    public static IEnumerable<(NInt X, NInt Y)> CoordinatesInChebyshevDistance<NInt>((NInt X, NInt Y) center, NInt distance,
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesAtChebyshevDistance<NInt>((NInt X, NInt Y) center, NInt distance,
         (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
         where NInt : IBinaryInteger<NInt>
     {
+        if (distance < NInt.One)
+            yield break;
+
         var minX = center.X - distance;
         var maxX = center.X + distance;
         var minY = center.Y - distance;
@@ -267,5 +382,50 @@ public static class Point2
             for (var y = NInt.Min(maxY - NInt.One, topLimit.Y); y > NInt.Max(minY, bottomLimit.Y); y--)
                 yield return (minX, y);
         }
+    }
+
+    /// <summary>
+    /// Get all coordinates up to the Chebyshev distance from the center point.
+    /// </summary>
+    /// <remarks>
+    /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
+    /// </remarks>
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesUpToChebyshevDistance<NInt>((NInt X, NInt Y) center, NInt distance)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (distance < NInt.One)
+            yield break;
+
+        var minX = center.X - distance;
+        var maxX = center.X + distance;
+        var minY = center.Y - distance;
+        var maxY = center.Y + distance;
+
+        for (var x = minX; x <= maxX; x++)
+            for (var y = minY; y <= maxY; y++)
+                yield return (x, y);
+    }
+
+    /// <summary>
+    /// Get all coordinates up to the Chebyshev distance from the center point limited by bounds.
+    /// </summary>
+    /// <remarks>
+    /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
+    /// </remarks>
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesUpToChebyshevDistance<NInt>((NInt X, NInt Y) center, NInt distance,
+        (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (distance < NInt.One)
+            yield break;
+
+        var minX = NInt.Max(center.X - distance, bottomLimit.X);
+        var maxX = NInt.Min(center.X + distance, topLimit.X);
+        var minY = NInt.Max(center.Y - distance, bottomLimit.Y);
+        var maxY = NInt.Min(center.Y + distance, topLimit.Y);
+
+        for (var x = minX; x <= maxX; x++)
+            for (var y = minY; y <= maxY; y++)
+                yield return (x, y);
     }
 }
