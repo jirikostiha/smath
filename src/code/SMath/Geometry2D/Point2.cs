@@ -94,14 +94,17 @@ public static class Point2
         => N.Pow(N.Pow(N.Abs(point1.X - point2.X), r) + N.Pow(N.Abs(point1.Y - point2.Y), r), N.One / r);
 
     /// <summary>
-    /// Get all coordinates in determined Manhattan or taxicab distance from the center point.
+    /// Get all coordinates at exact Manhattan or taxicab distance from the center point.
     /// </summary>
     /// <remarks>
     /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
     /// </remarks>
-    public static IEnumerable<(NInt X, NInt Y)> CoordinatesInManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance)
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesAtManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance)
         where NInt : IBinaryInteger<NInt>
     {
+        if (distance < NInt.One)
+            yield break;
+
         var minX = center.X - distance;
         var maxX = center.X + distance;
         var minY = center.Y - distance;
@@ -121,15 +124,18 @@ public static class Point2
     }
 
     /// <summary>
-    /// Get all coordinates in determined Manhattan or taxicab distance from the center point limited by bounds.
+    /// Get all coordinates at exact Manhattan or taxicab distance from the center point limited by bounds.
     /// </summary>
     /// <remarks>
     /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
     /// </remarks>
-    public static IEnumerable<(NInt X, NInt Y)> CoordinatesInManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance,
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesAtManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance,
         (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
         where NInt : IBinaryInteger<NInt>
     {
+        if (distance < NInt.One)
+            yield break;
+
         var minX = center.X - distance;
         var maxX = center.X + distance;
         var minY = center.Y - distance;
@@ -154,6 +160,46 @@ public static class Point2
             for (var diff = from; diff <= to; diff++)
                 yield return (minX + diff, center.Y - diff);
         }
+    }
+
+    /// <summary>
+    /// Get all coordinates up to the Manhattan or taxicab distance from the center point.
+    /// Center is included.
+    /// </summary>
+    /// <remarks>
+    /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
+    /// </remarks>
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesUpToManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance)
+       where NInt : IBinaryInteger<NInt>
+    {
+        if (distance < NInt.One)
+            yield break;
+
+        var minX = center.X - distance;
+        var maxX = center.X + distance;
+        var minY = center.Y - distance;
+        var maxY = center.Y + distance;
+
+        for (var x = minX; x <= maxX; x++)
+            for (var y = minY; y <= maxY; y++)
+                yield return (x, y);
+    }
+
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesUpToManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance,
+        (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (distance < NInt.One)
+            yield break;
+
+        var minX = NInt.Max(center.X - distance, bottomLimit.X);
+        var maxX = NInt.Min(center.X + distance, topLimit.X);
+        var minY = NInt.Max(center.Y - distance, bottomLimit.Y);
+        var maxY = NInt.Min(center.Y + distance, topLimit.X);
+
+        for (var x = minX; x <= maxX; x++)
+            for (var y = minY; y <= maxY; y++)
+                yield return (x, y);
     }
 
     /// <summary>

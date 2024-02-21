@@ -37,9 +37,9 @@ public class Point2Tests
     }
 
     [Fact]
-    public void CoordinatesInManhattanDistance()
+    public void CoordinatesAtManhattanDistance()
     {
-        var coords = Point2.CoordinatesInManhattanDistance((1, 1), 2).ToArray();
+        var coords = Point2.CoordinatesAtManhattanDistance((1, 1), 2).ToArray();
 
         Assert.Equal(8, coords.Length);
         Assert.Equal((1, -1), coords[0]);
@@ -51,9 +51,9 @@ public class Point2Tests
     }
 
     [Fact]
-    public void CoordinatesInManhattanDistanceWithBottomLimitSmallerThanDistance_OnlyHigherCoords()
+    public void CoordinatesAtManhattanDistanceWithBottomLimitSmallerThanDistance_OnlyHigherCoords()
     {
-        var coords = Point2.CoordinatesInManhattanDistance((1, 1), 2, (0, 0), (5, 5)).ToArray();
+        var coords = Point2.CoordinatesAtManhattanDistance((1, 1), 2, (0, 0), (5, 5)).ToArray();
 
         Assert.Equal(6, coords.Length);
         Assert.Equal((2, 0), coords[0]);
@@ -65,15 +65,31 @@ public class Point2Tests
     }
 
     [Fact]
-    public void CoordinatesInManhattanDistanceWithLimitsSmallerThanDistance_FourCoords()
+    public void CoordinatesAtManhattanDistanceWithLimitsSmallerThanDistance_FourCoords()
     {
-        var coords = Point2.CoordinatesInManhattanDistance((1, 1), 2, (0, 0), (2, 2)).ToArray();
+        var coords = Point2.CoordinatesAtManhattanDistance((1, 1), 2, (0, 0), (2, 2)).ToArray();
 
         Assert.Equal(4, coords.Length);
         Assert.Equal((2, 0), coords[0]);
         Assert.Equal((2, 2), coords[1]);
         Assert.Equal((0, 2), coords[2]);
         Assert.Equal((0, 0), coords[3]);
+    }
+
+    [Fact]
+    public void CoordinatesUpToManhattanDistance()
+    {
+        var coords = Point2.CoordinatesUpToManhattanDistance((1, 1), 2).ToArray();
+
+        Assert.Equal(25, coords.Length);
+    }
+
+    [Fact]
+    public void CoordinatesUpToManhattanDistanceWithLimits()
+    {
+        var coords = Point2.CoordinatesUpToManhattanDistance((1, 1), 2, (0,-1), (2,2)).ToArray();
+
+        Assert.Equal(12, coords.Length);
     }
 
     [Fact]
