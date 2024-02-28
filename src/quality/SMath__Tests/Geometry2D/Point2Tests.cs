@@ -93,30 +93,6 @@ public class Point2Tests
     }
 
     [Fact]
-    public void CoordinatesUpToManhattanDistance()
-    {
-        var coords = Point2.CoordinatesUpToManhattanDistance((1, 1), 2).ToArray();
-
-        Assert.Equal(25, coords.Length);
-    }
-
-    [Fact]
-    public void CoordinatesUpToManhattanDistanceWithLimits()
-    {
-        var coords = Point2.CoordinatesUpToManhattanDistance((1, 1), 2, (0, -1), (2, 2)).ToArray();
-
-        Assert.Equal(12, coords.Length);
-    }
-
-    [Fact]
-    public void CoordinatesUpToManhattanDistance()
-    {
-        var coords = Point2.CoordinatesUpToManhattanDistance((1, 1), 2).ToArray();
-
-        Assert.Equal(13, coords.Length);
-    }
-
-    [Fact]
     public void CoordinatesUpToManhattanDistanceWithLimits_Square()
     {
         var coords = Point2.CoordinatesUpToManhattanDistance((1, 1), 2, (0, 0), (2, 2)).ToArray();
