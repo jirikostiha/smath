@@ -9,6 +9,30 @@ namespace SMath.GeometryD2;
 public static class Point2
 {
     /// <summary>
+    /// Get the neighbors in axes directions.
+    /// </summary>
+    public static IEnumerable<(NInt X, NInt Y)> AxialNeighbors<NInt>((NInt X, NInt Y) point)
+        where NInt : IBinaryInteger<NInt>
+    {
+        yield return (++point.X, point.Y);
+        yield return (point.X, ++point.Y);
+        yield return (--point.X, point.Y);
+        yield return (point.X, --point.Y);
+    }
+
+    /// <summary>
+    /// Get the neighbors in diagonal directions.
+    /// </summary>
+    public static IEnumerable<(NInt X, NInt Y)> DiagonalNeighbors<NInt>((NInt X, NInt Y) point)
+        where NInt : IBinaryInteger<NInt>
+    {
+        yield return (++point.X, ++point.Y);
+        yield return (++point.X, --point.Y);
+        yield return (--point.X, ++point.Y);
+        yield return (--point.X, --point.Y);
+    }
+
+    /// <summary>
     /// Euclidean distance of the point and origin.
     /// </summary>
     /// <remarks>
