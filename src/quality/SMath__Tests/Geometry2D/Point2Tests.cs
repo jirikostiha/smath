@@ -77,6 +77,7 @@ public class Point2Tests
     }
 
     //[Fact]
+    [Fact]
     public void CoordinatesUpToManhattanDistance()
     {
         var coords = Point2.CoordinatesUpToManhattanDistance((1, 1), 2).ToArray();
@@ -85,6 +86,7 @@ public class Point2Tests
     }
 
     //[Fact]
+    [Fact]
     public void CoordinatesUpToManhattanDistanceWithLimits()
     {
         var coords = Point2.CoordinatesUpToManhattanDistance((1, 1), 2, (0, -1), (2, 2)).ToArray();
