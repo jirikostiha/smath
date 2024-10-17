@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="\src\code\SMath\icon.png"" alt="SMath" width="50"/>
+</p>
+
 # SMath  
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/jirikostiha/smath)
@@ -7,36 +11,45 @@
 [![Code Analysis](https://github.com/jirikostiha/smath/actions/workflows/analyse-code.yml/badge.svg)](https://github.com/jirikostiha/smath/actions/workflows/analyse-code.yml)
 [![Code Lint](https://github.com/jirikostiha/smath/actions/workflows/lint-code.yml/badge.svg)](https://github.com/jirikostiha/smath/actions/workflows/lint-code.yml)
 
-<pre>
-SMath is
-  generic math library.
-  set of static types.
-  a different approach to math.
-</pre>
+
+## Overview
+
+SMath is a math library built on .NET 7 [generic math](https://learn.microsoft.com/en-us/dotnet/standard/generics/math), offering a comprehensive set of static types for working with 2D geometry and statistics.  
+
 
 ## Features
 
-The library is based on [Generic math](https://learn.microsoft.com/en-us/dotnet/standard/generics/math)
-available since .NET 7.  
+### Generic Math Capabilities  
 
-### Geometry 2D
-**Point**  
-Euclidean distance, Manhattan distance, Chebyshev distance, Minkowski distance  
+Leverages .NET 7’s new generic math features, allowing type-safe mathematical operations on various numeric types.
 
-**Line**  
-subelements: Ray, Line Segment  
-investigation: Projection, Intersection, Inclusion
+### Geometry (2D)
 
-**Circle**  
-subelements: Arc, Chord, Sector, Segment  
-investigation: Perimeter, Region, Tangent Points, Inclusion
+Handle 2D geometric computations with ease. Available types and operations include:
 
-### Statistics
-Correlation, Variance, Covariance, Standard Deviation, Histogram  
+- **Point**  
+  - Euclidean distance, Manhattan distance, Chebyshev distance, Minkowski distance.
+- **Line**
+  - Ray, Line Segment.
+  - Operations: Projection, Intersection, Inclusion.
+- **Circle**
+  - Arc, Chord, Sector, Segment.
+  - Operations: Perimeter, Region, Tangent Points, Inclusion.  
+
+### Statistical Analysis
+
+Perform basic statistical calculations:
+
+- Correlation
+- Variance
+- Covariance
+- Standard Deviation
+- Histograms
+
 
 ## Setup
 
-Add nuget package to your project.
+Add nuget package to project.
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
@@ -48,21 +61,33 @@ Add nuget package to your project.
   </ItemGroup>
 </Project>
 ```
-Replace 'X.X.X' with a specific version.
+Replace 'X.X.X' with the appropriate version from [NuGet](https://www.nuget.org/packages/SMath).
 
 ## Usage
 
-```cs
-// double numbers
-var line1 = Circle.TangentLine.FromAngle(radius: 5d, angle: double.Pi / 4d);
+Here are some basic usage examples to get started with SMath:
 
-// float numbers
-var line2 = Circle.TangentLine.FromAngle(radius: 5f, angle: float.Pi / 4f);
-```
+### Geometry: Working with Circles and Lines
 
 ```cs
+// Using double precision
+var line1 = Circle.TangentLine.FromAngle(radius: 5d, angle: Math.PI / 4d);
+
+// Using float precision
+var line2 = Circle.TangentLine.FromAngle(radius: 5f, angle: MathF.PI / 4f);
+
+// Find tangent points from a circle
 var tangentPoints = Circle.TangentPoint.FromPoint(radius: 2d, (4, 4));
 var secantLine = Line.FromTwoPoints(tangentPoints.Value.Point1, tangentPoints.Value.Point2);
+```
+
+### Statistical Calculations
+
+```cs
+// Example of calculating variance
+var values = new double[] { 1, 2, 3, 4, 5 };
+double variance = Statistics.Variance(values);
+Console.WriteLine($"Variance: {variance}");
 ```
 
 ## Contributing
