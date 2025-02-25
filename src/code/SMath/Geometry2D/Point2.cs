@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
 
-namespace SMath.GeometryD2;
+namespace SMath.Geometry2D;
 
 /// <summary>
 /// Point in two dimensions.

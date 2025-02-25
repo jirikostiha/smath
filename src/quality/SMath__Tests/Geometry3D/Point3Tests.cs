@@ -1,4 +1,4 @@
-﻿using SMath.GeometryD2;
+﻿using SMath.Geometry2D;
 using Xunit;
 
 namespace SMath.Geometry2D;

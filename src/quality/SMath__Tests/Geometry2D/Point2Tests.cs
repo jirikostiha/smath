@@ -1,5 +1,4 @@
-﻿using SMath.GeometryD2;
-using System.Linq;
+﻿using System.Linq;
 using Xunit;
 
 namespace SMath.Geometry2D;
