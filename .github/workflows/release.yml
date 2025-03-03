@@ -20,7 +20,6 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: false
       matrix:
         dotnet-version: [ '7.0.x' ]
 
@@ -39,11 +38,11 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore "${{ env.sln-path }}"
 
-      - name: Build release
-        run: dotnet build "${{ env.sln-path }}" --no-restore -o "${{ env.build-dir }}"
-
       - name: Test
-        run: dotnet test "${{ env.sln-path }}" --no-build --logger "trx;LogFileName=test-results.trx" || true
+        run: dotnet test "${{ env.sln-path }}" --no-restore -c Release
+
+      - name: Build release
+        run: dotnet build "${{ env.sln-path }}" --no-restore -c Release -o "${{ env.build-dir }}"
 
       - name: Upload artifact - binaries
         uses: actions/upload-artifact@v4
