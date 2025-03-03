@@ -75,22 +75,20 @@ public class Point2Tests
         Assert.Equal((0, 0), coords[3]);
     }
 
-    //[Fact]
     [Fact]
     public void CoordinatesUpToManhattanDistance()
     {
         var coords = Point2.CoordinatesUpToManhattanDistance((1, 1), 2).ToArray();
 
-        Assert.Equal(25, coords.Length);
+        Assert.Equal(13, coords.Length);
     }
 
-    //[Fact]
     [Fact]
     public void CoordinatesUpToManhattanDistanceWithLimits()
     {
         var coords = Point2.CoordinatesUpToManhattanDistance((1, 1), 2, (0, -1), (2, 2)).ToArray();
 
-        Assert.Equal(12, coords.Length);
+        Assert.Equal(10, coords.Length);
     }
 
     [Fact]
