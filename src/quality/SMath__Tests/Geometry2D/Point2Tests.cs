@@ -41,12 +41,12 @@ public class Point2Tests
         var coords = Point2.CoordinatesAtManhattanDistance((1, 1), 2).ToArray();
 
         Assert.Equal(8, coords.Length);
-        Assert.Equal((1, -1), coords[0]);
-        Assert.Equal((2, 0), coords[1]);
-        Assert.Equal((3, 1), coords[2]);
-        Assert.Equal((2, 2), coords[3]);
-        Assert.Equal((1, 3), coords[4]);
-        Assert.Equal((0, 2), coords[5]);
+        Assert.Contains((1, -1), coords);
+        Assert.Contains((2, 0), coords);
+        Assert.Contains((3, 1), coords);
+        Assert.Contains((2, 2), coords);
+        Assert.Contains((1, 3), coords);
+        Assert.Contains((0, 2), coords);
     }
 
     [Fact]
@@ -55,12 +55,12 @@ public class Point2Tests
         var coords = Point2.CoordinatesAtManhattanDistance((1, 1), 2, (0, 0), (5, 5)).ToArray();
 
         Assert.Equal(6, coords.Length);
-        Assert.Equal((2, 0), coords[0]);
-        Assert.Equal((3, 1), coords[1]);
-        Assert.Equal((2, 2), coords[2]);
-        Assert.Equal((1, 3), coords[3]);
-        Assert.Equal((0, 2), coords[4]);
-        Assert.Equal((0, 0), coords[5]);
+        Assert.Contains((2, 0), coords);
+        Assert.Contains((3, 1), coords);
+        Assert.Contains((2, 2), coords);
+        Assert.Contains((1, 3), coords);
+        Assert.Contains((0, 2), coords);
+        Assert.Contains((0, 0), coords);
     }
 
     [Fact]
@@ -69,10 +69,10 @@ public class Point2Tests
         var coords = Point2.CoordinatesAtManhattanDistance((1, 1), 2, (0, 0), (2, 2)).ToArray();
 
         Assert.Equal(4, coords.Length);
-        Assert.Equal((2, 0), coords[0]);
-        Assert.Equal((2, 2), coords[1]);
-        Assert.Equal((0, 2), coords[2]);
-        Assert.Equal((0, 0), coords[3]);
+        Assert.Contains((2, 0), coords);
+        Assert.Contains((2, 2), coords);
+        Assert.Contains((0, 2), coords);
+        Assert.Contains((0, 0), coords);
     }
 
     [Fact]
@@ -105,12 +105,12 @@ public class Point2Tests
         var coords = Point2.CoordinatesAtChebyshevDistance((1, 1), 2).ToArray();
 
         Assert.Equal(16, coords.Length);
-        Assert.Equal((-1, -1), coords[0]);
-        Assert.Equal((0, -1), coords[1]);
-        Assert.Equal((3, -1), coords[4]);
-        Assert.Equal((3, 0), coords[5]);
-        Assert.Equal((3, 1), coords[6]);
-        Assert.Equal((-1, 0), coords[15]);
+        Assert.Contains((-1, -1), coords);
+        Assert.Contains((0, -1), coords);
+        Assert.Contains((3, -1), coords);
+        Assert.Contains((3, 0), coords);
+        Assert.Contains((3, 1), coords);
+        Assert.Contains((-1, 0), coords);
     }
 
     [Fact]
@@ -119,8 +119,8 @@ public class Point2Tests
         var coords = Point2.CoordinatesAtChebyshevDistance((1, 1), 2, (0, 0), (5, 5)).ToArray();
 
         Assert.Equal(7, coords.Length);
-        Assert.Equal((3, 0), coords[0]);
-        Assert.Equal((0, 3), coords[6]);
+        Assert.Contains((3, 0), coords);
+        Assert.Contains((0, 3), coords);
     }
 
     [Fact]

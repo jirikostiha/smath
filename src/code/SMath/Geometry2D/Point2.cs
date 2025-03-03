@@ -128,22 +128,14 @@ public static class Point2
         if (distance < NInt.One)
             yield break;
 
-        var minX = center.X - distance;
-        var maxX = center.X + distance;
-        var minY = center.Y - distance;
-        var maxY = center.Y + distance;
+        for (var dy = -distance; dy <= distance; dy++)
+        {
+            var dx = distance - NInt.Abs(dy);
 
-        for (var diff = NInt.Zero; diff <= distance; diff++)
-            yield return (center.X + diff, minY + diff);
-
-        for (var diff = NInt.One; diff < distance; diff++)
-            yield return (maxX - diff, center.Y + diff);
-
-        for (var diff = NInt.Zero; diff <= distance; diff++)
-            yield return (center.X - diff, maxY - diff);
-
-        for (var diff = NInt.One; diff < distance; diff++)
-            yield return (minX + diff, center.Y - diff);
+            yield return (center.X - dx, center.Y + dy);
+            if (dx != NInt.Zero) // zabránění duplicitního výpisu při dx == 0
+                yield return (center.X + dx, center.Y + dy);
+        }
     }
 
     /// <summary>
@@ -159,31 +151,21 @@ public static class Point2
         if (distance < NInt.One)
             yield break;
 
-        //TODO simplify
-
-        var minX = center.X - distance;
-        var maxX = center.X + distance;
-        var minY = center.Y - distance;
-        var maxY = center.Y + distance;
-
-        for (var diff = distance - NInt.Min(distance, center.Y - bottomLimit.Y); diff <= NInt.Min(distance, topLimit.X - center.X); diff++)
-            yield return (center.X + diff, minY + diff);
-
+        for (var dy = -distance; dy <= distance; dy++)
         {
-            var from = NInt.Max(distance - NInt.Min(distance, topLimit.X - center.X), NInt.One);
-            var to = NInt.Min(distance - NInt.One, topLimit.Y - center.Y);
-            for (var diff = from; diff <= to; diff++)
-                yield return (maxX - diff, center.Y + diff);
-        }
+            var dx = distance - NInt.Abs(dy);
 
-        for (var diff = distance - NInt.Min(distance, topLimit.Y - center.Y); diff <= NInt.Min(distance, center.X - bottomLimit.X); diff++)
-            yield return (center.X - diff, maxY - diff);
+            var x1 = center.X - dx;
+            var x2 = center.X + dx;
+            var y = center.Y + dy;
 
-        {
-            var from = NInt.Max(distance - NInt.Min(distance, center.X - bottomLimit.X), NInt.One);
-            var to = NInt.Min(distance - NInt.One, center.Y - bottomLimit.Y);
-            for (var diff = from; diff <= to; diff++)
-                yield return (minX + diff, center.Y - diff);
+            if (y >= bottomLimit.Y && y <= topLimit.Y)
+            {
+                if (x1 >= bottomLimit.X && x1 <= topLimit.X)
+                    yield return (x1, y);
+                if (x2 != x1 && x2 >= bottomLimit.X && x2 <= topLimit.X) // Zabránění duplikátům
+                    yield return (x2, y);
+            }
         }
     }
 
@@ -197,22 +179,14 @@ public static class Point2
     public static IEnumerable<(NInt X, NInt Y)> CoordinatesUpToManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance)
        where NInt : IBinaryInteger<NInt>
     {
-        if (distance < NInt.One)
-            yield break;
-
-        var minX = center.X - distance;
-        var maxX = center.X + distance;
-        var minY = center.Y - distance;
-
-        // bottom part
-        for (var diff = NInt.Zero; diff <= distance; diff++)
-            for (var x = center.X - diff; x <= center.X + diff; x++)
-                yield return (x, minY + diff);
-
-        // upper part
-        for (var diff = NInt.One; diff <= distance; diff++)
-            for (var x = minX + diff; x <= maxX - diff; x++)
-                yield return (x, center.Y + diff);
+        for (var dy = -distance; dy <= distance; dy++)
+        {
+            var dxMax = distance - NInt.Abs(dy);
+            for (var dx = -dxMax; dx <= dxMax; dx++)
+            {
+                yield return (center.X + dx, center.Y + dy);
+            }
+        }
     }
 
     /// <summary>
@@ -222,35 +196,26 @@ public static class Point2
     /// <remarks>
     /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
     /// </remarks>
-    public static IEnumerable<(NInt X, NInt Y)> CoordinatesUpToManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance,
-        (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesUpToManhattanDistance<NInt>(
+        (NInt X, NInt Y) center, NInt distance, (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
         where NInt : IBinaryInteger<NInt>
     {
-        if (distance < NInt.One)
+        if (distance < NInt.Zero)
             yield break;
 
-        //TODO simplify
-
-        var minX = NInt.Max(center.X - distance, bottomLimit.X);
-        var maxX = NInt.Min(center.X + distance, topLimit.X);
-
+        for (var dy = -distance; dy <= distance; dy++)
         {
-            // bottom part
-            var dist = NInt.Min(distance, center.Y - bottomLimit.Y);
-            var diffFrom = distance - dist;
-            var diffTo = NInt.Min(distance, distance + topLimit.Y - center.Y);
-            for (var diff = diffFrom; diff <= diffTo; diff++)
-                for (var x = NInt.Max(center.X - diff, minX); x <= NInt.Min(center.X + diff, maxX); x++)
-                    yield return (x, center.Y - distance + diff);
-        }
+            var y = center.Y + dy;
+            if (y < bottomLimit.Y || y > topLimit.Y)
+                continue;
 
-        {
-            // upper part
-            var diffFrom = NInt.Max(NInt.One, bottomLimit.Y - center.Y);
-            var diffTo = NInt.Min(distance, topLimit.Y - center.Y);
-            for (var diff = diffFrom; diff <= diffTo; diff++)
-                for (var x = center.X - distance + diff; x <= center.X + distance - diff; x++)
-                    yield return (x, center.Y + diff);
+            var dxMax = distance - NInt.Abs(dy);
+            for (var dx = -dxMax; dx <= dxMax; dx++)
+            {
+                var x = center.X + dx;
+                if (x >= bottomLimit.X && x <= topLimit.X)
+                    yield return (x, y);
+            }
         }
     }
 
