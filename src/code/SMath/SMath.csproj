@@ -1,38 +1,44 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
-		<LangVersion>latest</LangVersion>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<AnalysisLevel>latest-recommended</AnalysisLevel>
-		<NoWarn>CA1725,CA1716,CS1591,CA1715</NoWarn>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <NoWarn>CA1725,CA1716,CS1591,CA1715</NoWarn>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
 
-		<Product>SMath</Product>
-		<Copyright>Copyright © 2022 Jiri Kostiha</Copyright>
-		<Company />
-		<RepositoryUrl>https://github.com/jirikostiha/smath</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <Product>SMath</Product>
+    <Copyright>Copyright © 2022 Jiri Kostiha</Copyright>
+    <Company />
+    <RepositoryUrl>https://github.com/jirikostiha/smath</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
 
-		<Title>SMath</Title>
-		<Description>Alternative math library based on .Net 7 generic math.</Description>
-		<PackageTags>math; generic-math; geometry; combinatorics; statistics; vectors; csharp</PackageTags>
-		<PackageProjectUrl>https://github.com/jirikostiha/smath</PackageProjectUrl>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<SignAssembly>True</SignAssembly>
-		<Version>0.8.0</Version>
-		<Authors>Jiri Kostiha</Authors>
-		<AssemblyOriginatorKeyFile>.\..\..\ijkdata.snk</AssemblyOriginatorKeyFile>
-		<PackageIcon>icon.png</PackageIcon>
-	</PropertyGroup>
+    <Title>SMath</Title>
+    <Description>Alternative math library based on .Net 7 generic math.</Description>
+    <PackageTags>math; generic-math; geometry; combinatorics; statistics; vectors; csharp</PackageTags>
+    <PackageProjectUrl>https://github.com/jirikostiha/smath</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <SignAssembly>True</SignAssembly>
+    <Version>0.8.0</Version>
+    <Authors>Jiri Kostiha</Authors>
+    <AssemblyOriginatorKeyFile>.\..\..\ijkdata.snk</AssemblyOriginatorKeyFile>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+  </PropertyGroup>
 
-	<ItemGroup>
-	  <None Update="icon.png">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
-	</ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\readme.md">
+      <Link>readme.md</Link>
+      <Pack>true</Pack>
+      <PackagePath>readme.md</PackagePath>
+    </None>
+    <None Update="icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
