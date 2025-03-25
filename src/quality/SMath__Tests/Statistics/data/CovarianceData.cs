@@ -4,7 +4,7 @@ using Xunit;
 
 public class CovarianceData
 {
-    public static TheoryData<int[], int[], double> Data => new()
+    public static TheoryData<int[], int[], int> Data => new()
     {
         { new[] { 0, 0 }, new[] { 0, 0 }, 0 },
         { new[] { 0, 0 }, new[] { 1, 1 }, 0 },
