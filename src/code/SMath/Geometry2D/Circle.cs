@@ -41,7 +41,7 @@ public static class Circle
         {
             public static N FromRadius<N>(N radius)
                 where N : IFloatingPointConstants<N>
-                => N.CreateChecked(2) * N.Pi * N.CreateChecked(radius);
+                => N.CreateTruncating(2) * N.Pi * radius;
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ public static class Circle
                 N deltaAngle = N.CreateChecked(2) * N.Pi / N.CreateChecked(count);
                 for (int i = 0; i < count; i++)
                 {
-                    N angle = N.CreateChecked(i) * deltaAngle;
+                    N angle = N.CreateTruncating(i) * deltaAngle;
                     yield return Point.FromAngle(radius, angle);
                 }
             }
@@ -212,7 +212,7 @@ public static class Circle
         {
             public static N FromAngle<N>(N radius, N angle)
                 where N : IFloatingPoint<N>, ITrigonometricFunctions<N>
-                => radius * N.CreateChecked(2) * N.Sin(angle / N.CreateChecked(2));
+                => radius * N.CreateTruncating(2) * N.Sin(angle / N.CreateTruncating(2));
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ public static class Circle
         {
             public static N FromAngle<N>(N radius, N angle)
                 where N : IFloatingPoint<N>, ITrigonometricFunctions<N>
-                => radius * (N.CreateChecked(1) - N.Cos(angle / N.CreateChecked(2)));
+                => radius * (N.One - N.Cos(angle / N.CreateTruncating(2)));
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ public static class Circle
         {
             public static N FromAngle<N>(N radius, N angle)
                 where N : IFloatingPoint<N>, ITrigonometricFunctions<N>
-                => radius * N.Cos(angle / N.CreateChecked(2));
+                => radius * N.Cos(angle / N.CreateTruncating(2));
         }
     }
 
@@ -277,11 +277,11 @@ public static class Circle
             {
                 public static N FromArcAngle<N>(N radius, N arcAngle)
                     where N : IFloatingPoint<N>
-                    => radius * radius * arcAngle / N.CreateChecked(2);
+                    => radius * radius * arcAngle / N.CreateTruncating(2);
 
                 public static N FromArcLength<N>(N radius, N length)
                     where N : IFloatingPoint<N>
-                    => radius * length / N.CreateChecked(2);
+                    => radius * length / N.CreateTruncating(2);
             }
         }
     }
@@ -302,7 +302,7 @@ public static class Circle
         {
             public static N FromSagittaAndChord<N>(N sagitta, N chordLength)
                 where N : INumberBase<N>
-                => (sagitta / N.CreateChecked(2)) + (chordLength * chordLength / (N.CreateChecked(8) * sagitta));
+                => (sagitta / N.CreateTruncating(2)) + (chordLength * chordLength / (N.CreateTruncating(8) * sagitta));
         }
 
         /// <summary>
@@ -312,7 +312,7 @@ public static class Circle
         {
             public static N FromAngle<N>(N radius, N angle)
                 where N : ITrigonometricFunctions<N>
-                => N.CreateChecked(2) * radius * N.Sin(angle / N.CreateChecked(2));
+                => N.CreateTruncating(2) * radius * N.Sin(angle / N.CreateTruncating(2));
         }
 
         /// <summary>
@@ -322,7 +322,7 @@ public static class Circle
         {
             public static N FromAngle<N>(N radius, N angle)
                 where N : ITrigonometricFunctions<N>
-                => radius * N.Cos(angle / N.CreateChecked(2));
+                => radius * N.Cos(angle / N.CreateTruncating(2));
         }
 
         /// <summary>
@@ -353,7 +353,7 @@ public static class Circle
             {
                 public static N FromAngle<N>(N radius, N angle)
                     where N : IFloatingPoint<N>, ITrigonometricFunctions<N>
-                    => (radius * radius) / N.CreateChecked(2) * (angle - N.Sin(angle));
+                    => (radius * radius) / N.CreateTruncating(2) * (angle - N.Sin(angle));
             }
         }
     }
