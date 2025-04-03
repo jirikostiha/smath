@@ -7,7 +7,7 @@ public static class Rectangle
     /// <summary> Count of vertices. </summary>
     public static N VertexCount<N>()
         where N : INumberBase<N>
-        =>  N.CreateTruncating(4);
+        => N.CreateTruncating(4);
 
     /// <summary> Count of edges. </summary>
     public static N EdgeCount<N>()
@@ -67,7 +67,7 @@ public static class Rectangle
         public static class Points
         {
             public static IEnumerable<(N X, N Y)> Indexes<N>(int count, N a, N b)
-                where N : INumberBase<N>, IModulusOperators<N,N,N>, IComparisonOperators<N,N,bool>
+                where N : INumberBase<N>, IModulusOperators<N, N, N>, IComparisonOperators<N, N, bool>
             {
                 var perimeter = Perimeter.FromEdges(a, b);
                 var segmentIndexes = Line.Segment.Indices(count, perimeter);
