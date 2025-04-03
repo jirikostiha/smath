@@ -331,6 +331,20 @@ public static class Line
             => ((N.Zero, N.Zero), (N.One, N.One));
 
         /// <summary>
+        /// Divides a line segment into equal subsegments and returns start distances.
+        /// </summary>
+        public static IEnumerable<N> Indices<N>(int count, N length)
+            where N : INumberBase<N>
+        {
+            if (count <= 0)
+                yield break;
+
+            N step = length / N.CreateTruncating(count);
+            for (int i = 0; i < count; i++)
+                yield return N.CreateTruncating(i) * step;
+        }
+
+        /// <summary>
         /// Length of a line segment.
         /// </summary>
         public static class Length
