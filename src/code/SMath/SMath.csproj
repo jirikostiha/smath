@@ -22,7 +22,7 @@
     <PackageProjectUrl>https://github.com/jirikostiha/smath</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <SignAssembly>True</SignAssembly>
-    <Version>0.8.0</Version>
+    <Version>0.9.0</Version>
     <Authors>Jiri Kostiha</Authors>
     <AssemblyOriginatorKeyFile>.\..\..\ijkdata.snk</AssemblyOriginatorKeyFile>
     <PackageIcon>icon.png</PackageIcon>
