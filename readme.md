@@ -28,13 +28,17 @@ Leverages .NET 7’s new generic math features, allowing type-safe mathematical op
 Handle 2D geometric computations with ease. Available types and operations include:
 
 - **Point**  
-  - Euclidean distance, Manhattan distance, Chebyshev distance, Minkowski distance.
-- **Line**
-  - Ray, Line Segment.
-  - Operations: Projection, Intersection, Inclusion.
-- **Circle**
-  - Arc, Chord, Sector, Segment.
-  - Operations: Perimeter, Region, Tangent Points, Inclusion.  
+  - Euclidean distance, Manhattan distance, Chebyshev distance, Minkowski distance  
+- **Line**  
+  - Ray, Line Segment  
+  - Operations: Projection, Intersection, Inclusion  
+- **Circle**  
+  - Arc, Chord, Sector, Segment  
+  - Operations: Perimeter, Region, Tangent Points, Inclusion  
+- **Rectangles**  
+  - Vertices  
+  - Operations: Perimeter  
+
 
 ### Statistical Analysis
 
