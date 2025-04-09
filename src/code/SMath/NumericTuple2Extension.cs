@@ -13,7 +13,7 @@ public static class NumericTuple2Extension
     /// Add two vectors.
     /// </summary>
     public static (N X, N Y) Add<N>(this (N X, N Y) a, (N X, N Y) b)
-        where N : IAdditionOperators<N,N,N>
+        where N : IAdditionOperators<N, N, N>
         =>
         (a.X + b.X, a.Y + b.Y);
 
