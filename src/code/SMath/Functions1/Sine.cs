@@ -12,11 +12,11 @@ public class Sine : IMathFunction
 {
     /// <inheritdoc />
     public static bool IsEven
-        => true;
+        => false;
 
     /// <inheritdoc />
     public static bool IsOdd
-        => false;
+        => true;
 
     /// <inheritdoc />
     public static bool IsContinuous
@@ -34,17 +34,17 @@ public class Sine : IMathFunction
     /// <inheritdoc />
     public static (N Min, N Max) NumberDomain<N>()
         where N : INumberBase<N>, IMinMaxValue<N>
-        => (N.MaxValue, N.MaxValue);
+        => (N.MinValue, N.MaxValue);
 
     /// <inheritdoc />
     public static (N Min, N Max) Image<N>()
         where N : IFloatingPointIeee754<N>
-        => (N.Zero, N.PositiveInfinity);
+        => (-N.One, N.One);
 
     /// <inheritdoc />
     public static (N Min, N Max) NumberImage<N>()
         where N : INumberBase<N>, IMinMaxValue<N>
-        => (N.Zero, N.MaxValue);
+        => (-N.One, N.One);
 
     public static N GlobalMaximum<N>()
         where N : INumberBase<N>
