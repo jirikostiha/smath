@@ -63,7 +63,7 @@ public static class Point2
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static N ManhattanDistance<N>((N X, N Y) point)
         where N : INumberBase<N>
-        => N.Abs(point.X + point.Y);
+        => N.Abs(point.X) + N.Abs(point.Y);
 
     /// <summary>
     /// Manhattan or taxicab distance of two points.
