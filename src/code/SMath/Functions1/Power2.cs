@@ -35,7 +35,7 @@ public class Power2 : IMathFunction
     /// <inheritdoc />
     public static (N Min, N Max) NumberDomain<N>()
         where N : INumberBase<N>, IMinMaxValue<N>
-        => (N.MaxValue, N.MaxValue);
+        => (N.MinValue, N.MaxValue);
 
     /// <inheritdoc />
     public static (N Min, N Max) Image<N>()
