@@ -312,7 +312,7 @@ public static class Circle
         {
             public static N FromAngle<N>(N radius, N angle)
                 where N : ITrigonometricFunctions<N>
-                => N.CreateTruncating(2) * radius * N.Sin(angle / N.CreateTruncating(2));
+                => radius * (N.One - N.Cos(angle / N.CreateTruncating(2)));
         }
 
         /// <summary>
