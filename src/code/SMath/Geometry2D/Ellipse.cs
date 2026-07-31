@@ -19,7 +19,7 @@ public static class Ellipse
     {
         public static N FromRadius<N>(N majorRadius, N minorRadius)
             where N : IRootFunctions<N>
-            => N.Sqrt(N.One - (majorRadius * majorRadius / minorRadius * minorRadius));
+            => N.Sqrt(N.One - (minorRadius * minorRadius) / (majorRadius * majorRadius));
     }
 
     /// <summary>
@@ -53,8 +53,8 @@ public static class Ellipse
         public static class Length
         {
             public static N FromRadius<N>(N majorRadius, N minorRadius)
-                where N : IDivisionOperators<N, N, N>
-                => minorRadius / majorRadius;
+                where N : IDivisionOperators<N, N, N>, IMultiplyOperators<N, N, N>
+                => minorRadius * minorRadius / majorRadius;
         }
     }
 
