@@ -14,10 +14,10 @@ public static class Point2
     public static IEnumerable<(NInt X, NInt Y)> AxialNeighbors<NInt>((NInt X, NInt Y) point)
         where NInt : IBinaryInteger<NInt>
     {
-        yield return (++point.X, point.Y);
-        yield return (point.X, ++point.Y);
-        yield return (--point.X, point.Y);
-        yield return (point.X, --point.Y);
+        yield return (point.X + NInt.One, point.Y);
+        yield return (point.X, point.Y + NInt.One);
+        yield return (point.X - NInt.One, point.Y);
+        yield return (point.X, point.Y - NInt.One);
     }
 
     /// <summary>
@@ -26,10 +26,10 @@ public static class Point2
     public static IEnumerable<(NInt X, NInt Y)> DiagonalNeighbors<NInt>((NInt X, NInt Y) point)
         where NInt : IBinaryInteger<NInt>
     {
-        yield return (++point.X, ++point.Y);
-        yield return (++point.X, --point.Y);
-        yield return (--point.X, ++point.Y);
-        yield return (--point.X, --point.Y);
+        yield return (point.X + NInt.One, point.Y + NInt.One);
+        yield return (point.X + NInt.One, point.Y - NInt.One);
+        yield return (point.X - NInt.One, point.Y + NInt.One);
+        yield return (point.X - NInt.One, point.Y - NInt.One);
     }
 
     /// <summary>
