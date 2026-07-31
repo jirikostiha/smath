@@ -296,9 +296,12 @@ public static class Line
                 where N : ITrigonometricFunctions<N>
             {
                 for (int i = 1; i <= count; i++)
+                {
+                    var radius = N.CreateChecked(i) * step;
                     yield return (
-                        Circle.Perimeter.Point.XFromAngle(N.CreateChecked(i) * step, angle),
-                        Circle.Perimeter.Point.YFromAngle(N.CreateChecked(i) * step, angle));
+                        Circle.Perimeter.Point.XFromAngle(radius, angle),
+                        Circle.Perimeter.Point.YFromAngle(radius, angle));
+                }
             }
         }
     }
@@ -387,9 +390,12 @@ public static class Line
                 var xstep = (point2.X - point1.X) / N.CreateChecked(count + 1);
                 var ystep = (point2.Y - point1.Y) / N.CreateChecked(count + 1);
                 for (int i = 1; i <= count; i++)
+                {
+                    var factor = N.CreateChecked(i);
                     yield return (
-                        point1.X + N.CreateChecked(i) * xstep,
-                        point1.Y + N.CreateChecked(i) * ystep);
+                        point1.X + factor * xstep,
+                        point1.Y + factor * ystep);
+                }
             }
         }
 
@@ -431,11 +437,12 @@ public static class Line
 
                 foreach (var param in @params)
                 {
+                    var startX = basePoint.X + seedDirection.X * param.Distance;
+                    var startY = basePoint.Y + seedDirection.Y * param.Distance;
                     yield return (
-                        (basePoint.X + seedDirection.X * param.Distance,
-                         basePoint.Y + seedDirection.Y * param.Distance),
-                        (basePoint.X + seedDirection.X * param.Distance + direction.X * param.Length,
-                         basePoint.Y + seedDirection.Y * param.Distance + direction.Y * param.Length));
+                        (startX, startY),
+                        (startX + direction.X * param.Length,
+                         startY + direction.Y * param.Length));
                 }
             }
         }
