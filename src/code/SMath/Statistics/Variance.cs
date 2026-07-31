@@ -18,7 +18,11 @@ public static class Variance
     {
         var mean = ArithmeticMean.Eval(sequence);
         var sum = Summation.Eval(
-            sequence.Select(n => (double.CreateChecked(n) - mean) * (double.CreateChecked(n) - mean)),
+            sequence.Select(n =>
+            {
+                var diff = double.CreateChecked(n) - mean;
+                return diff * diff;
+            }),
             out count);
 
         return sum;
@@ -31,7 +35,10 @@ public static class Variance
         var mean = ArithmeticMean.Eval(sequence);
         double sum = 0;
         for (int i = 0; i < sequence.Length; i++)
-            sum += (double.CreateChecked(sequence[i]) - mean) * (double.CreateChecked(sequence[i]) - mean);
+        {
+            var diff = double.CreateChecked(sequence[i]) - mean;
+            sum += diff * diff;
+        }
 
         return sum;
     }

@@ -42,9 +42,11 @@ public static class Covariance
         {
             while (aEnumerator.MoveNext() && bEnumerator.MoveNext())
             {
-                sumS1 += aEnumerator.Current;
-                sumS2 += bEnumerator.Current;
-                sumS1S2 += aEnumerator.Current * bEnumerator.Current;
+                var a = aEnumerator.Current;
+                var b = bEnumerator.Current;
+                sumS1 += a;
+                sumS2 += b;
+                sumS1S2 += a * b;
                 count++;
             }
         }
@@ -66,9 +68,11 @@ public static class Covariance
 
         for (int i = 0; i < aSequence.Length; i++)
         {
-            sumS1 += aSequence[i];
-            sumS2 += bSequence[i];
-            sumS1S2 += aSequence[i] * bSequence[i];
+            var a = aSequence[i];
+            var b = bSequence[i];
+            sumS1 += a;
+            sumS2 += b;
+            sumS1S2 += a * b;
         }
 
         return (double.CreateChecked(sumS1S2) - double.CreateChecked(sumS1 * sumS2)

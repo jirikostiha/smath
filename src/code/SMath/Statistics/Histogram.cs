@@ -32,11 +32,11 @@ public static class Histogram
             {
                 if (number < bins[i].Bound)
                 {
-                    bins[i] = (bins[i].Bound, bins[i].Count + NInt.One);
+                    bins[i].Count += NInt.One;
                     goto outerLoopEnd;
                 }
             }
-            bins[^1] = (bins[^1].Bound, bins[^1].Count + NInt.One);
+            bins[^1].Count += NInt.One;
         outerLoopEnd:;
         }
 
@@ -57,11 +57,11 @@ public static class Histogram
             {
                 if (number <= bins[i].Bound)
                 {
-                    bins[i] = (bins[i].Bound, bins[i].Count + NInt.One);
+                    bins[i].Count += NInt.One;
                     goto outerLoopEnd;
                 }
             }
-            bins[^1] = (bins[^1].Bound, bins[^1].Count + NInt.One);
+            bins[^1].Count += NInt.One;
         outerLoopEnd:;
         }
 
