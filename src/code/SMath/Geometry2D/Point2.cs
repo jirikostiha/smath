@@ -131,10 +131,11 @@ public static class Point2
         for (var dy = -distance; dy <= distance; dy++)
         {
             var dx = distance - NInt.Abs(dy);
+            var y = center.Y + dy;
 
-            yield return (center.X - dx, center.Y + dy);
+            yield return (center.X - dx, y);
             if (dx != NInt.Zero) // zabránění duplicitního výpisu při dx == 0
-                yield return (center.X + dx, center.Y + dy);
+                yield return (center.X + dx, y);
         }
     }
 
@@ -181,10 +182,11 @@ public static class Point2
     {
         for (var dy = -distance; dy <= distance; dy++)
         {
+            var y = center.Y + dy;
             var dxMax = distance - NInt.Abs(dy);
             for (var dx = -dxMax; dx <= dxMax; dx++)
             {
-                yield return (center.X + dx, center.Y + dy);
+                yield return (center.X + dx, y);
             }
         }
     }
