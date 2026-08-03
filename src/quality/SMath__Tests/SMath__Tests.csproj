@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<NeutralLanguage>en-US</NeutralLanguage>
 		<IsTestProject>true</IsTestProject>
 		<IsPackable>false</IsPackable>
 		<RootNamespace>SMath</RootNamespace>
+		<UseAppHost>true</UseAppHost>
 	</PropertyGroup>
 
 	<ItemGroup>
