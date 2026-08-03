@@ -34,7 +34,7 @@ public class Identity : IMathFunction
     /// <inheritdoc />
     public static (N Min, N Max) NumberDomain<N>()
         where N : IMinMaxValue<N>, IFloatingPointIeee754<N>
-        => (N.MaxValue, N.MaxValue);
+        => (N.MinValue, N.MaxValue);
 
     /// <inheritdoc />
     public static (N Min, N Max) Image<N>()
