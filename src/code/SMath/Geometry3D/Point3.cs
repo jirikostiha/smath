@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
 
-namespace SMath.Geometry2D;
+namespace SMath.Geometry3D;
 
 /// <summary>
 /// Point in three dimensions.
