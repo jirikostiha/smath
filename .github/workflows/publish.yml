@@ -19,6 +19,7 @@ jobs:
     permissions:
       packages: write
       contents: read
+      id-token: write
 
     steps:
       - name: Checkout
@@ -43,5 +44,11 @@ jobs:
       - name: Publish to Github Package Registry
         run: dotnet nuget push "${{ env.package-dir }}"/**/*.nupkg
 
+      - name: NuGet login (OIDC)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ github.repository_owner }}
+
       - name: Publish to Nuget.org
-        run: dotnet nuget push "${{ env.package-dir }}"/**/*.nupkg --api-key ${{ secrets.NUGET_AUTH_TOKEN }} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push "${{ env.package-dir }}"/**/*.nupkg --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
