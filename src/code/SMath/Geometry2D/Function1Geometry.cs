@@ -22,9 +22,9 @@ public static class Function1Geometry
     {
         public static (N A, N B, N C) FromX<N>(N x, N valueInX, N slopeInX)
             where N : INumberBase<N>
-            => x != N.Zero
+            => N.IsFinite(slopeInX)
                 ? (-slopeInX, N.One, slopeInX * x - valueInX)
-                : (N.One, N.Zero, N.Zero);
+                : (N.One, N.Zero, -x);
 
         public static class Slope
         {

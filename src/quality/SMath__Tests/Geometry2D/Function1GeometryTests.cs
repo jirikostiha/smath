@@ -40,4 +40,31 @@ public class Function1GeometryTests
         Assert.Equal(b, tl.B, 6);
         Assert.Equal(c, tl.C, 6);
     }
+
+    [Fact]
+    public void Sine_NormalLineAtOrigin_FiniteSlope()
+    {
+        // Regression: the vertical-line branch was keyed on 'x == 0' instead of
+        // an infinite slope. At x == 0 the sine normal has a finite slope (-1),
+        // so the result must be the real normal line y = -x  ->  (1, 1, 0),
+        // not the y-axis (1, 0, 0).
+        var nl = Function1Geometry.NormalLine.FromX(0d, Sine.Eval(0d),
+            Function1Geometry.NormalLine.Slope.FromX(Sine.DerivativeEval(0d)));
+
+        Assert.Equal(1d, nl.A, 6);
+        Assert.Equal(1d, nl.B, 6);
+        Assert.Equal(0d, nl.C, 6);
+    }
+
+    [Fact]
+    public void NormalLine_VerticalAtNonZeroX_UsesPointX()
+    {
+        // Regression: a vertical normal (infinite slope) at x != 0 must produce
+        // the vertical line X = x  ->  (1, 0, -x), not the hardcoded (1, 0, 0).
+        var nl = Function1Geometry.NormalLine.FromX(3d, 9d, double.NegativeInfinity);
+
+        Assert.Equal(1d, nl.A, 6);
+        Assert.Equal(0d, nl.B, 6);
+        Assert.Equal(-3d, nl.C, 6);
+    }
 }
