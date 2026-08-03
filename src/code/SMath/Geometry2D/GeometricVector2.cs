@@ -84,13 +84,13 @@ public static class GeometricVector2
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static N FromCartesian<N>(N x, N y)
-            where N : ITrigonometricFunctions<N>
-            => N.Atan(y / x);
+            where N : IFloatingPointIeee754<N>
+            => N.Atan2(y, x);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static N FromCartesian<N>((N X, N Y) vector)
-            where N : ITrigonometricFunctions<N>
-            => N.Atan(vector.Y / vector.X);
+            where N : IFloatingPointIeee754<N>
+            => N.Atan2(vector.Y, vector.X);
     }
 
     /// <summary>
@@ -140,12 +140,12 @@ public static class GeometricVector2
     public static class Polar
     {
         public static (N Magnitude, N Φ1) FromCartesian<N>(N x, N y)
-            where N : IRootFunctions<N>, ITrigonometricFunctions<N>
+            where N : IFloatingPointIeee754<N>
             => (Magnitude.FromCartesian(x, y),
                 PolarAngle.FromCartesian(x, y));
 
         public static (N Magnitude, N Φ1) FromCartesian<N>((N X, N Y) vector)
-            where N : IRootFunctions<N>, ITrigonometricFunctions<N>
+            where N : IFloatingPointIeee754<N>
             => (Magnitude.FromCartesian(vector.X, vector.Y),
                 PolarAngle.FromCartesian(vector.X, vector.Y));
 

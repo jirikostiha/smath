@@ -39,6 +39,21 @@ public class GeometricVector2Tests
         Assert.Equal(Math.Sqrt(2), GeometricVector2.Distance.FromCartesian((0, 0), (1d, 1d)));
     }
 
+    [Theory]
+    // Regression: PolarAngle used Atan(y/x), which is wrong for any vector with
+    // negative x (it collapses quadrants II/III onto IV/I). Atan2 is required.
+    [InlineData(1d, 0d, 0d)]                 // +x axis
+    [InlineData(0d, 1d, Math.PI / 2d)]       // +y axis
+    [InlineData(1d, 1d, Math.PI / 4d)]       // quadrant I
+    [InlineData(-1d, 0d, Math.PI)]           // -x axis (was 0 with Atan)
+    [InlineData(-1d, -1d, -3d * Math.PI / 4d)] // quadrant III (was +pi/4 with Atan)
+    [InlineData(1d, -1d, -Math.PI / 4d)]     // quadrant IV
+    public void PolarAngle(double x, double y, double expected)
+    {
+        Assert.Equal(expected, GeometricVector2.PolarAngle.FromCartesian(x, y), 6);
+        Assert.Equal(expected, GeometricVector2.PolarAngle.FromCartesian((x, y)), 6);
+    }
+
     [Fact]
     public void NormalVector()
     {
