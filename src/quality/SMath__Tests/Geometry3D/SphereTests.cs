@@ -1,7 +1,7 @@
 ﻿using SMath.Geometry3D;
 using Xunit;
 
-namespace SMath.Geometry2D;
+namespace SMath.Geometry3D;
 
 public class SphereTests
 {
