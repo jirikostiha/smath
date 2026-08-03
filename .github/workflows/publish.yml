@@ -17,7 +17,6 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      packages: write
       contents: read
       id-token: write
 
@@ -31,18 +30,12 @@ jobs:
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '8.0.x'
-          source-url: https://nuget.pkg.github.com/jirikostiha/index.json
-        env:
-           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish
         run: dotnet publish "${{ env.sln-path }}" -c Release
 
       - name: Pack
         run: dotnet pack "${{ env.sln-path }}" -c Release -o "${{ env.package-dir }}" --no-build
-
-      - name: Publish to Github Package Registry
-        run: dotnet nuget push "${{ env.package-dir }}"/**/*.nupkg
 
       - name: NuGet login (OIDC)
         uses: NuGet/login@v1
