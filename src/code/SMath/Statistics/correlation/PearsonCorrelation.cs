@@ -173,7 +173,7 @@ public static class PearsonCorrelation
             if (lag < NInt.Zero)
                 y = iy < 0
                     ? numbers2[0]
-                    : iy < numbers2.Count - iy
+                    : iy < numbers2.Count
                         ? numbers2[iy]
                         : numbers2[numbers2.Count - 1];
             else
