@@ -355,9 +355,17 @@ public static class Line
             /// <summary>
             /// Length of a line segment determined by two points.
             /// </summary>
-            public static N FromTwoPints<N>((N X, N Y) p1, (N X, N Y) p2)
+            public static N FromTwoPoints<N>((N X, N Y) p1, (N X, N Y) p2)
                 where N : IRootFunctions<N>
                 => PT.Hypotenuse(p2.X - p1.X, p2.Y - p1.Y);
+
+            /// <summary>
+            /// Length of a line segment determined by two points.
+            /// </summary>
+            [Obsolete("Misspelled name, use FromTwoPoints instead.")]
+            public static N FromTwoPints<N>((N X, N Y) p1, (N X, N Y) p2)
+                where N : IRootFunctions<N>
+                => FromTwoPoints(p1, p2);
         }
 
         /// <summary>

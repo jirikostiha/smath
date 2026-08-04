@@ -15,6 +15,16 @@ public class LineSegmentTests
         Assert.Equal(slope, Line.Segment.Slope.FromTwoPoints((p1x, p1y), (p2x, p2y)));
     }
 
+    [Theory]
+    [InlineData(0, 0, 1, 0, 1)]
+    [InlineData(0, 0, 0, 1, 1)]
+    [InlineData(0, 0, 3, 4, 5)]
+    [InlineData(1, 1, 1, 1, 0)]
+    public void Length_FromTwoPoints(double p1x, double p1y, double p2x, double p2y, double length)
+    {
+        Assert.Equal(length, Line.Segment.Length.FromTwoPoints((p1x, p1y), (p2x, p2y)), 6);
+    }
+
     [Fact]
     public void Parallel_ToXAxis_FromThreePoints()
     {
