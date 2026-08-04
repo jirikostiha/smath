@@ -14,7 +14,7 @@
 
 ## Overview
 
-SMath is a math library built on .NET 7 [generic math](https://learn.microsoft.com/en-us/dotnet/standard/generics/math), offering a comprehensive set of static types for working with 2D geometry and statistics.  
+SMath is a math library built on .NET 7 [generic math](https://learn.microsoft.com/en-us/dotnet/standard/generics/math), offering a comprehensive set of static types for working with 2D geometry, grids, pathfinding and statistics.  
 
 
 ## Features
@@ -38,6 +38,42 @@ Handle 2D geometric computations with ease. Available types and operations inclu
 - **Rectangles**  
   - Vertices  
   - Operations: Perimeter  
+- **Aabb** (axis aligned bounding box)  
+  - Construction: FromCenter, FromSize, FromPoints, Union, Intersection, Swept  
+  - Queries: Contains, Overlaps, ClosestPoint, Distance, Penetration  
+  - Continuous collision: RayIntersection, Sweep (slab method)  
+- **Interpolation**  
+  - Linear, Bilinear, Angular (shortest way, wrapping)  
+  - Easing: SmoothStep, SmootherStep, Quadratic, Sine, ExponentialDecay (frame rate independent)  
+  - Curves: quadratic and cubic Bezier, Catmull-Rom  
+- **Steering** behaviors of an agent  
+  - Seek, Flee, Arrive, Pursue, Evade  
+  - Flocking: Separate, Cohere, Align  
+  - Steer, ClampSpeed  
+
+### Grid (2D)
+
+Row-major grid of cells addressed by a struct predicate, so a map of any layout plugs in
+without an allocation or a virtual call:
+
+- **Grid**  
+  - Index, Cell, Contains, Clamp, Wrap, neighborhood and ring enumeration  
+- **GridDirection**  
+  - Eight directions, step, opposite, turn, direction of a delta  
+- **Raster**  
+  - Line (Bresenham), ThickLine, Circle, Disc  
+  - Line of sight: IsVisible, Cast  
+  - Conversion of cells and points of a grid of a given cell size  
+
+### Pathfinding
+
+- **GridPathfinder** - A* and Dijkstra over a grid.
+  Every buffer is allocated once per instance and reused, a repeated search does not allocate.
+  Cells are stamped by a search generation instead of being cleared,
+  so a search costs the count of the visited cells, not the size of the grid.
+- **GridFloodFill** - breadth first distances, connectivity test and region labeling.
+- **FlowField** - one field of directions leading many agents to the closest target in constant time per step.
+- **Path2** - Simplify, PullString, Smooth, Length, PointAt of a found path.
 
 
 ### Statistical Analysis
@@ -83,6 +119,41 @@ var line2 = Circle.TangentLine.FromAngle(radius: 5f, angle: MathF.PI / 4f);
 // Find tangent points from a circle
 var tangentPoints = Circle.TangentPoint.FromPoint(radius: 2d, (4, 4));
 var secantLine = Line.FromTwoPoints(tangentPoints.Value.Point1, tangentPoints.Value.Point2);
+```
+
+### Pathfinding over a grid
+
+```cs
+using SMath.Grid2D;
+using SMath.Pathfinding;
+
+// any map plugs in as a struct predicate, no allocation and no virtual call
+readonly struct Map : IGridPredicate
+{
+    private readonly bool[] _walls;
+    private readonly int _width;
+
+    public Map(bool[] walls, int width) => (_walls, _width) = (walls, width);
+
+    public bool Test(int x, int y) => !_walls[(y * _width) + x];
+}
+
+var map = new Map(walls, width);
+var pathfinder = new GridPathfinder(width, height); // allocate once, reuse forever
+
+if (pathfinder.FindPath(start: (0, 0), target: (99, 99), map, GridConnectivity.Diagonal))
+{
+    Span<(int X, int Y)> path = stackalloc (int X, int Y)[pathfinder.PathCellCount];
+    var count = pathfinder.GetPath(path);
+
+    // drop the staircase artifacts of a grid search
+    count = Path2.PullString(path[..count], new GridNegatedPredicate<Map>(map));
+}
+
+// many agents heading to one target are cheaper over a flow field
+pathfinder.Fill(target, new GridPassabilityCost<Map>(map), distances);
+FlowField.FromDistances(distances, width, height, directions);
+var step = FlowField.Next(directions, width, agentCell);
 ```
 
 ### Statistical Calculations
