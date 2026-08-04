@@ -222,6 +222,75 @@ public static class Point2
     }
 
     /// <summary>
+    /// Get all coordinates whose Manhattan or taxicab distance from the center point
+    /// falls within the inclusive range [<paramref name="minDistance"/>, <paramref name="maxDistance"/>].
+    /// </summary>
+    /// <remarks>
+    /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
+    /// </remarks>
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesInManhattanDistanceRange<NInt>(
+        (NInt X, NInt Y) center, NInt minDistance, NInt maxDistance)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (maxDistance < NInt.Zero || maxDistance < minDistance)
+            yield break;
+
+        var min = NInt.Max(minDistance, NInt.Zero);
+
+        for (var dy = -maxDistance; dy <= maxDistance; dy++)
+        {
+            var y = center.Y + dy;
+            var absDy = NInt.Abs(dy);
+            var dxMax = maxDistance - absDy;
+            for (var dx = -dxMax; dx <= dxMax; dx++)
+            {
+                if (NInt.Abs(dx) + absDy < min)
+                    continue;
+
+                yield return (center.X + dx, y);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Get all coordinates whose Manhattan or taxicab distance from the center point
+    /// falls within the inclusive range [<paramref name="minDistance"/>, <paramref name="maxDistance"/>],
+    /// limited by bounds.
+    /// </summary>
+    /// <remarks>
+    /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
+    /// </remarks>
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesInManhattanDistanceRange<NInt>(
+        (NInt X, NInt Y) center, NInt minDistance, NInt maxDistance,
+        (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (maxDistance < NInt.Zero || maxDistance < minDistance)
+            yield break;
+
+        var min = NInt.Max(minDistance, NInt.Zero);
+
+        for (var dy = -maxDistance; dy <= maxDistance; dy++)
+        {
+            var y = center.Y + dy;
+            if (y < bottomLimit.Y || y > topLimit.Y)
+                continue;
+
+            var absDy = NInt.Abs(dy);
+            var dxMax = maxDistance - absDy;
+            for (var dx = -dxMax; dx <= dxMax; dx++)
+            {
+                if (NInt.Abs(dx) + absDy < min)
+                    continue;
+
+                var x = center.X + dx;
+                if (x >= bottomLimit.X && x <= topLimit.X)
+                    yield return (x, y);
+            }
+        }
+    }
+
+    /// <summary>
     /// Get all coordinates at exact Chebyshev distance from the center point.
     /// </summary>
     /// <remarks>
@@ -349,5 +418,71 @@ public static class Point2
         for (var x = minX; x <= maxX; x++)
             for (var y = minY; y <= maxY; y++)
                 yield return (x, y);
+    }
+
+    /// <summary>
+    /// Get all coordinates whose Chebyshev distance from the center point
+    /// falls within the inclusive range [<paramref name="minDistance"/>, <paramref name="maxDistance"/>].
+    /// </summary>
+    /// <remarks>
+    /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
+    /// </remarks>
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesInChebyshevDistanceRange<NInt>(
+        (NInt X, NInt Y) center, NInt minDistance, NInt maxDistance)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (maxDistance < NInt.Zero || maxDistance < minDistance)
+            yield break;
+
+        var min = NInt.Max(minDistance, NInt.Zero);
+
+        var minX = center.X - maxDistance;
+        var maxX = center.X + maxDistance;
+        var minY = center.Y - maxDistance;
+        var maxY = center.Y + maxDistance;
+
+        for (var x = minX; x <= maxX; x++)
+        {
+            for (var y = minY; y <= maxY; y++)
+            {
+                var chebyshev = NInt.Max(NInt.Abs(x - center.X), NInt.Abs(y - center.Y));
+                if (chebyshev >= min)
+                    yield return (x, y);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Get all coordinates whose Chebyshev distance from the center point
+    /// falls within the inclusive range [<paramref name="minDistance"/>, <paramref name="maxDistance"/>],
+    /// limited by bounds.
+    /// </summary>
+    /// <remarks>
+    /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
+    /// </remarks>
+    public static IEnumerable<(NInt X, NInt Y)> CoordinatesInChebyshevDistanceRange<NInt>(
+        (NInt X, NInt Y) center, NInt minDistance, NInt maxDistance,
+        (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (maxDistance < NInt.Zero || maxDistance < minDistance)
+            yield break;
+
+        var min = NInt.Max(minDistance, NInt.Zero);
+
+        var minX = NInt.Max(center.X - maxDistance, bottomLimit.X);
+        var maxX = NInt.Min(center.X + maxDistance, topLimit.X);
+        var minY = NInt.Max(center.Y - maxDistance, bottomLimit.Y);
+        var maxY = NInt.Min(center.Y + maxDistance, topLimit.Y);
+
+        for (var x = minX; x <= maxX; x++)
+        {
+            for (var y = minY; y <= maxY; y++)
+            {
+                var chebyshev = NInt.Max(NInt.Abs(x - center.X), NInt.Abs(y - center.Y));
+                if (chebyshev >= min)
+                    yield return (x, y);
+            }
+        }
     }
 }
