@@ -176,8 +176,9 @@ public static class Line
                     var e1 = GeometricVector2.Direction.FromCartesian(spoint1, spoint2);
                     var e2 = GeometricVector2.Direction.FromCartesian(spoint1, point);
                     var dp = GeometricVector2.DotProduct.FromCartesian(e1, e2);
-                    var len = GeometricVector2.Magnitude.FromCartesian(e1);
-                    var len2 = len * len;
+                    // the squared magnitude is the dot product with itself,
+                    // taking a square root just to square it back loses precision
+                    var len2 = GeometricVector2.DotProduct.FromCartesian(e1, e1);
                     var projection = (spoint1.X + (dp * e1.X) / len2,
                                       spoint1.Y + (dp * e1.Y) / len2);
 
