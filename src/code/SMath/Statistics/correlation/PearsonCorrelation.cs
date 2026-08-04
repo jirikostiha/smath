@@ -14,12 +14,9 @@ public static class PearsonCorrelation
 {
     public static double Eval<N>(IEnumerable<N> aSequence, IEnumerable<N> bSequence)
          where N : INumberBase<N>
-    {
-        if (aSequence.Count() != bSequence.Count())
-            throw new ArgumentException("Inconsistent length of sequences.");
-
-        return Evaluate(aSequence, bSequence);
-    }
+         // the length check is done within the single pass of Covariance.Evaluate,
+         // enumerating the sequences twice would re-evaluate lazy pipelines
+         => Evaluate(aSequence, bSequence);
 
     public static double Eval<N>(ICollection<N> aSequence, ICollection<N> bSequence)
         where N : INumberBase<N>
