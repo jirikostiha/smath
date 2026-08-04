@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Xunit;
+﻿using Xunit;
 using Xunit.Sdk;
 
 namespace SMath.Geometry2D;
@@ -54,28 +53,21 @@ public class LineAndPointTests
 
     private static class TestData
     {
-        public static IEnumerable<object[]> Projection()
-        {
-            yield return new object[] { (-1d, 0d), (1d, 0d), (-1d, 0d), (-1d, 0d), "Identical to first point on x-axis" };
-            yield return new object[] { (-1d, 0d), (1d, 0d), (1d, 0d), (1d, 0d), "identical to second point on x-axis" };
-            yield return new object[] { (-1d, 0d), (1d, 0d), (0d, 0d), (0d, 0d), "on line (x-axis)" };
-            yield return new object[] { (-1d, 0d), (1d, 0d), (-1d, 1d), (-1d, 0d), "above first point on x-axis" };
-            yield return new object[] { (-1d, 0d), (1d, 0d), (0d, 1d), (0d, 0d), "above the center point (origin) on x-axis" };
-            yield return new object[] { (-1d, 0d), (1d, 0d), (1d, 1d), (1d, 0d), "above second point on x-axis" };
-            yield return new object[] { (-1d, 0d), (1d, 0d), (-2d, 0d), (-2d, 0d), "inline before first point" };
-            yield return new object[] { (-1d, 0d), (1d, 0d), (2d, 0d), (2d, 0d), "inline after second point" };
-            yield return new object[] { (0d, 0d), (0d, 2d), (1d, 1d), (0d, 1d), "right to the first point on y-axis" };
-            yield return new object[] { (0d, 2d), (2d, 0d), (0d, 0d), (1d, 1d), "" };
-        }
-
         public static TheoryData<
             ((double X, double Y) P1, (double X, double Y) P2),
             (double X, double Y), (double X, double Y),
             string> ProjectionData => new()
         {
-            { ((-1d, 0d), (1d, 0d)), (-1d, 0d), (-1d, 0d), "Identical to first point on x-axis" },
-            //(-1d, 0d), (1d, 0d), (-1d, 0d), (-1d, 0d), "Identical to first point on x-axis" };
-            //(-1d, 0d), (1d, 0d), (1d, 0d), (1d, 0d), "identical to second point on x-axis" };
+            { ((-1d, 0d), (1d, 0d)), (-1d, 0d), (-1d, 0d), "identical to first point on x-axis" },
+            { ((-1d, 0d), (1d, 0d)), (1d, 0d), (1d, 0d), "identical to second point on x-axis" },
+            { ((-1d, 0d), (1d, 0d)), (0d, 0d), (0d, 0d), "on line (x-axis)" },
+            { ((-1d, 0d), (1d, 0d)), (-1d, 1d), (-1d, 0d), "above first point on x-axis" },
+            { ((-1d, 0d), (1d, 0d)), (0d, 1d), (0d, 0d), "above the center point (origin) on x-axis" },
+            { ((-1d, 0d), (1d, 0d)), (1d, 1d), (1d, 0d), "above second point on x-axis" },
+            { ((-1d, 0d), (1d, 0d)), (-2d, 0d), (-2d, 0d), "inline before first point" },
+            { ((-1d, 0d), (1d, 0d)), (2d, 0d), (2d, 0d), "inline after second point" },
+            { ((0d, 0d), (0d, 2d)), (1d, 1d), (0d, 1d), "right to the first point on y-axis" },
+            { ((0d, 2d), (2d, 0d)), (0d, 0d), (1d, 1d), "origin onto the descending diagonal" },
         };
     }
 }

@@ -78,8 +78,6 @@ public class CircleTests
     {
         var points = Circle.TangentPoint.FromPoint(radius, (pX, pY));
 
-        var s = Line.FromTwoPoints(points.Value.Point1, points.Value.Point2);
-
         Assert.NotNull(points);
         Assert.Equal(x1, points.Value.Point1.X, 6);
         Assert.Equal(y1, points.Value.Point1.Y, 6);

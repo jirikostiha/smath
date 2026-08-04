@@ -20,7 +20,7 @@ public class LineAndLineTests
 
     [Theory]
     [InlineData(1, 0, 0, 1, 0, 0)] // identical to y-axis
-    [InlineData(1, 1, 0, 1, 1, 0)] // identical to x-axis
+    [InlineData(1, 1, 0, 1, 1, 0)] // identical, both are y = -x
     [InlineData(1, 1, -2, 1, 1, -2)] // identical
     [InlineData(1, 1, -2, 1, 1, -3)] // parallel
     public void Intersection_FromGeneralForm_DoesNotExist(double a1, double b1, double c1, double a2, double b2, double c2)
