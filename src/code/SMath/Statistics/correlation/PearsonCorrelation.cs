@@ -128,6 +128,50 @@ public static class PearsonCorrelation
             foreach (var lag in lags)
                 yield return (lag, PearsonCorrelation.EvalPerf(aSequence, bSequence, lag));
         }
+
+        /// <summary>
+        /// Allocation free cross-correlation. Coefficients are written into <paramref name="destination"/>
+        /// in the order of <paramref name="lags"/>. Sub-sequences are sliced, not copied.
+        /// </summary>
+        /// <returns> Count of written coefficients. </returns>
+        public static int Eval<N, NInt>(ReadOnlySpan<N> aSequence, ReadOnlySpan<N> bSequence,
+            ReadOnlySpan<NInt> lags, Span<double> destination)
+            where N : INumberBase<N>
+            where NInt : IBinaryInteger<NInt>
+        {
+            if (aSequence.Length != bSequence.Length)
+                throw new ArgumentException("Inconsistent length of sequences.");
+            if (destination.Length < lags.Length)
+                throw new ArgumentException("Destination is too short.", nameof(destination));
+
+            for (int i = 0; i < lags.Length; i++)
+            {
+                var lag = int.CreateChecked(lags[i]);
+                destination[i] = lag >= 0
+                    ? PearsonCorrelation.Eval(aSequence[..(aSequence.Length - lag)], bSequence[lag..])
+                    : PearsonCorrelation.Eval(aSequence[int.Abs(lag)..], bSequence[..(bSequence.Length - int.Abs(lag))]);
+            }
+
+            return lags.Length;
+        }
+
+        /// <summary>
+        /// Allocation free cross-correlation using the product-moment formula.
+        /// </summary>
+        /// <returns> Count of written coefficients. </returns>
+        public static int EvalPerf<N, NInt>(ReadOnlySpan<N> aSequence, ReadOnlySpan<N> bSequence,
+            ReadOnlySpan<NInt> lags, Span<double> destination)
+            where N : INumberBase<N>
+            where NInt : IBinaryInteger<NInt>
+        {
+            if (destination.Length < lags.Length)
+                throw new ArgumentException("Destination is too short.", nameof(destination));
+
+            for (int i = 0; i < lags.Length; i++)
+                destination[i] = PearsonCorrelation.EvalPerf(aSequence, bSequence, lags[i]);
+
+            return lags.Length;
+        }
     }
 
     /// <summary>
@@ -163,6 +207,25 @@ public static class PearsonCorrelation
             foreach (var lag in lags)
                 yield return (lag, PearsonCorrelation.EvalPerf(sequence, sequence, lag));
         }
+
+        /// <summary>
+        /// Allocation free auto-correlation. Coefficients are written into <paramref name="destination"/>
+        /// in the order of <paramref name="lags"/>. Sub-sequences are sliced, not copied.
+        /// </summary>
+        /// <returns> Count of written coefficients. </returns>
+        public static int Eval<N, NInt>(ReadOnlySpan<N> sequence, ReadOnlySpan<NInt> lags, Span<double> destination)
+            where N : INumberBase<N>
+            where NInt : IBinaryInteger<NInt>
+            => Cross.Eval(sequence, sequence, lags, destination);
+
+        /// <summary>
+        /// Allocation free auto-correlation using the product-moment formula.
+        /// </summary>
+        /// <returns> Count of written coefficients. </returns>
+        public static int EvalPerf<N, NInt>(ReadOnlySpan<N> sequence, ReadOnlySpan<NInt> lags, Span<double> destination)
+            where N : INumberBase<N>
+            where NInt : IBinaryInteger<NInt>
+            => Cross.EvalPerf(sequence, sequence, lags, destination);
     }
 
     /// <summary>
