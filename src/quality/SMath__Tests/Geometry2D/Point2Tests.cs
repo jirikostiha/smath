@@ -183,4 +183,21 @@ public class Point2Tests
 
         Assert.Equal(12, coords.Length);
     }
+
+    [Fact]
+    public void CoordinatesUpToChebyshevDistance_ZeroDistance_ContainsCenter()
+    {
+        // Regression: the guard was 'distance < 1', so the zero distance case
+        // returned nothing although the center is documented to be included.
+        Assert.Equal(new[] { (1, 1) }, Point2.CoordinatesUpToChebyshevDistance((1, 1), 0).ToArray());
+        Assert.Equal(new[] { (1, 1) }, Point2.CoordinatesUpToChebyshevDistance((1, 1), 0, (0, 0), (2, 2)).ToArray());
+    }
+
+    [Fact]
+    public void CoordinatesUpToChebyshevDistance_ZeroDistance_IsConsistentWithManhattan()
+    {
+        Assert.Equal(
+            Point2.CoordinatesUpToManhattanDistance((1, 1), 0).ToArray(),
+            Point2.CoordinatesUpToChebyshevDistance((1, 1), 0).ToArray());
+    }
 }

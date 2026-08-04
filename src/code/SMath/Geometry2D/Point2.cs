@@ -314,7 +314,7 @@ public static class Point2
     public static IEnumerable<(NInt X, NInt Y)> CoordinatesUpToChebyshevDistance<NInt>((NInt X, NInt Y) center, NInt distance)
         where NInt : IBinaryInteger<NInt>
     {
-        if (distance < NInt.One)
+        if (distance < NInt.Zero)
             yield break;
 
         var minX = center.X - distance;
@@ -338,7 +338,7 @@ public static class Point2
         (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
         where NInt : IBinaryInteger<NInt>
     {
-        if (distance < NInt.One)
+        if (distance < NInt.Zero)
             yield break;
 
         var minX = NInt.Max(center.X - distance, bottomLimit.X);
