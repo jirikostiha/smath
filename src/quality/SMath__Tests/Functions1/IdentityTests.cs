@@ -24,6 +24,21 @@ public class IdentityTests
     }
 
     [Fact]
+    public void NumberDomain_WorksForIntegerTypes()
+    {
+        // Regression: NumberDomain/NumberImage were constrained to IFloatingPointIeee754,
+        // so the "any number type" overloads could not be used with integer types at all,
+        // unlike the very same members on Power2 and Sine.
+        var domain = Identity.NumberDomain<int>();
+        Assert.Equal(int.MinValue, domain.Min);
+        Assert.Equal(int.MaxValue, domain.Max);
+
+        var image = Identity.NumberImage<int>();
+        Assert.Equal(int.MinValue, image.Min);
+        Assert.Equal(int.MaxValue, image.Max);
+    }
+
+    [Fact]
     public void NumberImage_IsFullRange()
     {
         var image = Identity.NumberImage<double>();
