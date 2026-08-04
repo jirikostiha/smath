@@ -1,0 +1,34 @@
+<Solution>
+  <Folder Name="/ci/">
+    <File Path="../.github/dependabot.yml" />
+    <File Path="../.github/workflows/analyse-code.yml" />
+    <File Path="../.github/workflows/auto-approve.yml" />
+    <File Path="../.github/workflows/benchmark.yml" />
+    <File Path="../.github/workflows/build.yml" />
+    <File Path="../.github/workflows/clean-history.yml" />
+    <File Path="../.github/workflows/lint-code.yml" />
+    <File Path="../.github/workflows/lint-commit.yml" />
+    <File Path="../.github/workflows/publish.yml" />
+    <File Path="../.github/workflows/release.yml" />
+  </Folder>
+  <Folder Name="/ci/configs/">
+    <File Path="../.github/commitlint_config.mjs" />
+    <File Path="../.github/dependabot.yml" />
+  </Folder>
+  <Folder Name="/doc/">
+    <File Path="../readme.md" />
+  </Folder>
+  <Folder Name="/quality/">
+    <Project Path="quality/SMath__Benchmarks/SMath__Benchmarks.csproj" />
+    <Project Path="quality/SMath__Tests/SMath__Tests.csproj" />
+  </Folder>
+  <Folder Name="/solution items/">
+    <File Path="../.gitattributes" />
+    <File Path="../.gitignore" />
+    <File Path="../LICENSE" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path=".editorconfig" />
+  </Folder>
+  <Project Path="code/SMath/SMath.csproj" />
+</Solution>
