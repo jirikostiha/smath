@@ -117,10 +117,11 @@ public static class Line
         /// <summary>
         /// The y-intercept of a line in general form.
         /// </summary>
-        public static N GeneralForm<N>((N A, N B, N C) line)
+        public static N FromGeneralForm<N>((N A, N B, N C) line)
             where N : IUnaryNegationOperators<N, N>, IDivisionOperators<N, N, N>
             => -line.C / line.B;
     }
+
 
     /// <summary>
     /// Normal line to a given line.
