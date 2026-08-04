@@ -225,6 +225,27 @@ public static class GeometricVector2
     }
 
     /// <summary>
+    /// Reflection of a vector about a normal.
+    /// </summary>
+    /// <remarks>
+    /// <a href="https://en.wikipedia.org/wiki/Reflection_(mathematics)">Wikipedia</a>
+    /// </remarks>
+    public static class Reflection
+    {
+        /// <summary>
+        /// Reflect a vector about a unit normal. The normal is expected to be normalized.
+        /// v' = v - 2*(v·n)*n
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static (N X, N Y) FromCartesian<N>((N X, N Y) vector, (N X, N Y) unitNormal)
+            where N : IAdditionOperators<N, N, N>, ISubtractionOperators<N, N, N>, IMultiplyOperators<N, N, N>, INumberBase<N>
+        {
+            var twoDot = (N.One + N.One) * (vector.X * unitNormal.X + vector.Y * unitNormal.Y);
+            return (vector.X - twoDot * unitNormal.X, vector.Y - twoDot * unitNormal.Y);
+        }
+    }
+
+    /// <summary>
     /// Dot product or scalar product.
     /// </summary>
     public static class DotProduct

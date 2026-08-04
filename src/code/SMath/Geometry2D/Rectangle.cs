@@ -22,6 +22,36 @@ public static class Rectangle
     /// <summary> Schläfli symbol </summary>
     public const string SchlafliSymbol = "{} x {}";
 
+    /// <summary>
+    /// Determine whether a point lies inside an axis-aligned rectangle
+    /// defined by its origin (bottom-left corner) and size. Edges are inclusive.
+    /// </summary>
+    public static bool Contains<N>((N X, N Y) origin, (N X, N Y) size, (N X, N Y) point)
+        where N : INumber<N>
+    {
+        var maxX = origin.X + size.X;
+        var maxY = origin.Y + size.Y;
+
+        return point.X >= origin.X && point.X <= maxX
+            && point.Y >= origin.Y && point.Y <= maxY;
+    }
+
+    /// <summary>
+    /// Determine whether a point lies inside an axis-aligned rectangle
+    /// defined by two opposite corners. Edges are inclusive and the corners may be given in any order.
+    /// </summary>
+    public static bool ContainsByCorners<N>((N X, N Y) corner1, (N X, N Y) corner2, (N X, N Y) point)
+        where N : INumber<N>
+    {
+        var minX = N.Min(corner1.X, corner2.X);
+        var maxX = N.Max(corner1.X, corner2.X);
+        var minY = N.Min(corner1.Y, corner2.Y);
+        var maxY = N.Max(corner1.Y, corner2.Y);
+
+        return point.X >= minX && point.X <= maxX
+            && point.Y >= minY && point.Y <= maxY;
+    }
+
     public static (N X, N Y) Vertex1<N>()
         where N : IFloatingPoint<N>
         => (N.Zero, N.Zero);
