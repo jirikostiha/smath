@@ -1,15 +1,15 @@
 name: Benchmarks
 
 env:
-  sln-path: "./src/smath.sln"
+  sln-path: "./src/smath.slnx"
 
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'src/code/**'
-      - '!src/**.sln' # ignore sln changes
+      - "src/code/**"
+      - "!src/**.slnx" # ignore sln changes
 
 permissions:
   contents: write
@@ -26,7 +26,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '7.0.x'
+          dotnet-version: "8.0.x"
 
       - name: .NET Info
         run: dotnet --info
@@ -37,24 +37,24 @@ jobs:
       - name: Find Summary File
         id: find_summary_report_file
         run: |
-            file_path=$(find . -type f -name "*report-full-compressed.json" -exec basename {} \; | head -n 1)
-            echo "file path: $file_path"
-            echo "file_path=$file_path" >> $GITHUB_OUTPUT
+          file_path=$(find . -type f -name "*report-full-compressed.json" -exec basename {} \; | head -n 1)
+          echo "file path: $file_path"
+          echo "file_path=$file_path" >> $GITHUB_OUTPUT
 
       - name: Print File Path
         run: |
-            echo "file: ${{steps.find_summary_report_file.outputs.file_path}}"
-            echo "path: benchmarks/results/${{ steps.find_summary_report_file.outputs.file_path }}"
+          echo "file: ${{steps.find_summary_report_file.outputs.file_path}}"
+          echo "path: benchmarks/results/${{ steps.find_summary_report_file.outputs.file_path }}"
 
       - name: Store benchmark result
         uses: rhysd/github-action-benchmark@v1
         with:
           name: Benchmark.Net
-          tool: 'benchmarkdotnet'
+          tool: "benchmarkdotnet"
           output-file-path: "benchmarks/results/${{steps.find_summary_report_file.outputs.file_path}}"
           github-token: ${{ secrets.GITHUB_TOKEN }}
           auto-push: true
-          alert-threshold: '200%'
+          alert-threshold: "200%"
           comment-on-alert: true
           gh-pages-branch: main
           benchmark-data-dir-path: docs/dev/bench

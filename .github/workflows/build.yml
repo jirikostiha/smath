@@ -1,14 +1,14 @@
 name: Build # integration build
 
 env:
-  sln-path: "./src/smath.sln"
+  sln-path: "./src/smath.slnx"
 
 on:
   workflow_dispatch:
   push:
     paths:
-      - 'src/**'
-      - '!src/**.sln' # ignore sln changes
+      - "src/**"
+      - "!src/**.slnx" # ignore sln changes
 
 jobs:
   build:
@@ -21,7 +21,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: "8.0.x"
 
       - name: .NET Info
         run: dotnet --info

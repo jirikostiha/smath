@@ -1,7 +1,7 @@
 name: Release
 
 env:
-  sln-path: "./src/smath.sln"
+  sln-path: "./src/smath.slnx"
   build-dir: "build"
 
 on:
@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag'
+        description: "Tag"
         required: true
 
 jobs:
@@ -21,7 +21,7 @@ jobs:
 
     strategy:
       matrix:
-        dotnet-version: [ '8.0.x' ]
+        dotnet-version: ["8.0.x"]
 
     steps:
       - name: Checkout
@@ -54,7 +54,7 @@ jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
-    needs: [ build ]
+    needs: [build]
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
