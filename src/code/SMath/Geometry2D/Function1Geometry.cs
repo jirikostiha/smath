@@ -39,11 +39,17 @@ public static class Function1Geometry
         public static IEnumerable<(N X, N Y)> FromCount<N, NInt>(Func<N, N> function, N from, N to, NInt count)
             where N : INumberBase<N>, IComparisonOperators<N, N, bool>
             where NInt : IBinaryInteger<NInt>
-            => FromStep(function, from, to, (to - from) / N.CreateChecked(count));
+            => count <= NInt.Zero
+                ? Enumerable.Empty<(N X, N Y)>()
+                : FromStep(function, from, to, (to - from) / N.CreateChecked(count));
 
         public static IEnumerable<(N X, N Y)> FromStep<N>(Func<N, N> function, N from, N to, N xstep)
             where N : INumberBase<N>, IComparisonOperators<N, N, bool>
         {
+            // a non positive (or undefined) step never reaches 'to' and would loop forever
+            if (!(xstep > N.Zero))
+                yield break;
+
             for (N x = from; x < to; x += xstep)
                 yield return (x, function(x));
         }

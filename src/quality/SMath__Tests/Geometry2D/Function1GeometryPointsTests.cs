@@ -31,4 +31,28 @@ public class Function1GeometryPointsTests
         Assert.Equal(2, points.Length);
         Assert.Equal(new[] { 2d, 4d }, points.Select(p => p.X));
     }
+
+    [Theory]
+    // Regression: a non positive step never advances past 'to', the enumeration
+    // used to spin forever instead of yielding nothing.
+    [InlineData(0d)]
+    [InlineData(-1d)]
+    public void FromStep_NonPositiveStep_IsEmpty(double xstep)
+    {
+        Assert.Empty(Function1Geometry.Points.FromStep<double>(x => x, 0d, 10d, xstep));
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-3)]
+    public void FromCount_NonPositiveCount_IsEmpty(int count)
+    {
+        Assert.Empty(Function1Geometry.Points.FromCount<double, int>(x => x, 0d, 10d, count));
+    }
+
+    [Fact]
+    public void FromStep_FromGreaterThanTo_IsEmpty()
+    {
+        Assert.Empty(Function1Geometry.Points.FromStep<double>(x => x, 10d, 0d, 1d));
+    }
 }
