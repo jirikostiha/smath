@@ -35,4 +35,26 @@ public static class Product
 
         return product;
     }
+
+    public static N Eval<N>(ReadOnlySpan<N> factors)
+        where N : INumberBase<N>
+    {
+        N product = N.One;
+        foreach (var number in factors)
+            product *= number;
+
+        return product;
+    }
+
+    public static N Eval<N, NInt>(ReadOnlySpan<N> factors, out NInt count)
+        where N : INumberBase<N>
+        where NInt : IBinaryInteger<NInt>
+    {
+        N product = N.One;
+        count = NInt.CreateChecked(factors.Length);
+        foreach (var number in factors)
+            product *= number;
+
+        return product;
+    }
 }
