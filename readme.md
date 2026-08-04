@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="\src\code\SMath\icon.png"" alt="SMath" width="50"/>
+  <img src="src/code/SMath/icon.png" alt="SMath" width="50"/>
 </p>
 
 # SMath  
@@ -21,7 +21,7 @@ SMath is a math library built on .NET 7 [generic math](https://learn.microsoft.c
 
 ### Generic Math Capabilities  
 
-Leverages .NET 7’s new generic math features, allowing type-safe mathematical operations on various numeric types.
+Leverages .NET 7's new generic math features, allowing type-safe mathematical operations on various numeric types.
 
 ### Geometry (2D)
 
@@ -88,10 +88,13 @@ var secantLine = Line.FromTwoPoints(tangentPoints.Value.Point1, tangentPoints.Va
 ### Statistical Calculations
 
 ```cs
+using SMath.Statistics;
+
 // Example of calculating variance
 var values = new double[] { 1, 2, 3, 4, 5 };
-double variance = Statistics.Variance(values);
-Console.WriteLine($"Variance: {variance}");
+double sampleVariance = Variance.Sample.Eval(values);
+double populationVariance = Variance.Population.Eval(values);
+Console.WriteLine($"Variance: {sampleVariance}");
 ```
 
 ## Contributing
