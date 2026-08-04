@@ -485,4 +485,223 @@ public static class Point2
             }
         }
     }
+
+    /// <summary>
+    /// Count of coordinates at exact Manhattan distance from a center point. Unbounded.
+    /// </summary>
+    /// <remarks> The taxicab circle has 4*distance coordinates, distance 0 gives the center only. </remarks>
+    public static NInt ManhattanCircleCount<NInt>(NInt distance)
+        where NInt : IBinaryInteger<NInt>
+        => distance < NInt.Zero
+            ? NInt.Zero
+            : distance == NInt.Zero
+                ? NInt.One
+                : NInt.CreateChecked(4) * distance;
+
+    /// <summary>
+    /// Count of coordinates up to the Manhattan distance from a center point, center included. Unbounded.
+    /// </summary>
+    /// <remarks> The taxicab disk has 2*d^2 + 2*d + 1 coordinates. </remarks>
+    public static NInt ManhattanDiskCount<NInt>(NInt distance)
+        where NInt : IBinaryInteger<NInt>
+        => distance < NInt.Zero
+            ? NInt.Zero
+            : NInt.CreateChecked(2) * distance * distance + NInt.CreateChecked(2) * distance + NInt.One;
+
+    /// <summary>
+    /// Count of coordinates at exact Chebyshev distance from a center point. Unbounded.
+    /// </summary>
+    /// <remarks> The Chebyshev ring has 8*distance coordinates, distance 0 gives the center only. </remarks>
+    public static NInt ChebyshevRingCount<NInt>(NInt distance)
+        where NInt : IBinaryInteger<NInt>
+        => distance < NInt.Zero
+            ? NInt.Zero
+            : distance == NInt.Zero
+                ? NInt.One
+                : NInt.CreateChecked(8) * distance;
+
+    /// <summary>
+    /// Count of coordinates up to the Chebyshev distance from a center point, center included. Unbounded.
+    /// </summary>
+    /// <remarks> The Chebyshev square has (2*d + 1)^2 coordinates. </remarks>
+    public static NInt ChebyshevSquareCount<NInt>(NInt distance)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (distance < NInt.Zero)
+            return NInt.Zero;
+
+        var side = NInt.CreateChecked(2) * distance + NInt.One;
+        return side * side;
+    }
+
+    /// <summary>
+    /// Write all coordinates at exact Manhattan distance from the center point into a destination buffer.
+    /// Allocation free alternative to the enumerable overload.
+    /// </summary>
+    /// <returns> Count of written coordinates. </returns>
+    /// <exception cref="ArgumentException"> Destination is too short. </exception>
+    public static int CoordinatesAtManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance,
+        Span<(NInt X, NInt Y)> destination)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (distance < NInt.One)
+            return 0;
+
+        var count = 0;
+        for (var dy = -distance; dy <= distance; dy++)
+        {
+            var dx = distance - NInt.Abs(dy);
+            var y = center.Y + dy;
+
+            if (count >= destination.Length)
+                throw new ArgumentException("Destination is too short.", nameof(destination));
+            destination[count++] = (center.X - dx, y);
+
+            if (dx != NInt.Zero) // dx == 0 would write the very same coordinate twice
+            {
+                if (count >= destination.Length)
+                    throw new ArgumentException("Destination is too short.", nameof(destination));
+                destination[count++] = (center.X + dx, y);
+            }
+        }
+
+        return count;
+    }
+
+    /// <summary>
+    /// Write all coordinates up to the Manhattan distance from the center point into a destination buffer.
+    /// Center is included. Allocation free alternative to the enumerable overload.
+    /// </summary>
+    /// <returns> Count of written coordinates. </returns>
+    /// <exception cref="ArgumentException"> Destination is too short. </exception>
+    public static int CoordinatesUpToManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance,
+        Span<(NInt X, NInt Y)> destination)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (distance < NInt.Zero)
+            return 0;
+
+        var count = 0;
+        for (var dy = -distance; dy <= distance; dy++)
+        {
+            var y = center.Y + dy;
+            var dxMax = distance - NInt.Abs(dy);
+            for (var dx = -dxMax; dx <= dxMax; dx++)
+            {
+                if (count >= destination.Length)
+                    throw new ArgumentException("Destination is too short.", nameof(destination));
+
+                destination[count++] = (center.X + dx, y);
+            }
+        }
+
+        return count;
+    }
+
+    /// <summary>
+    /// Write all coordinates up to the Manhattan distance from the center point, limited by bounds,
+    /// into a destination buffer. Center is included. Allocation free alternative to the enumerable overload.
+    /// </summary>
+    /// <returns> Count of written coordinates. </returns>
+    /// <exception cref="ArgumentException"> Destination is too short. </exception>
+    public static int CoordinatesUpToManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance,
+        (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit, Span<(NInt X, NInt Y)> destination)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (distance < NInt.Zero)
+            return 0;
+
+        var count = 0;
+        for (var dy = -distance; dy <= distance; dy++)
+        {
+            var y = center.Y + dy;
+            if (y < bottomLimit.Y || y > topLimit.Y)
+                continue;
+
+            var dxMax = distance - NInt.Abs(dy);
+            for (var dx = -dxMax; dx <= dxMax; dx++)
+            {
+                var x = center.X + dx;
+                if (x < bottomLimit.X || x > topLimit.X)
+                    continue;
+
+                if (count >= destination.Length)
+                    throw new ArgumentException("Destination is too short.", nameof(destination));
+
+                destination[count++] = (x, y);
+            }
+        }
+
+        return count;
+    }
+
+    /// <summary>
+    /// Write all coordinates whose Manhattan distance from the center point falls within the inclusive
+    /// range [<paramref name="minDistance"/>, <paramref name="maxDistance"/>] into a destination buffer.
+    /// Allocation free alternative to the enumerable overload.
+    /// </summary>
+    /// <returns> Count of written coordinates. </returns>
+    /// <exception cref="ArgumentException"> Destination is too short. </exception>
+    public static int CoordinatesInManhattanDistanceRange<NInt>((NInt X, NInt Y) center,
+        NInt minDistance, NInt maxDistance, Span<(NInt X, NInt Y)> destination)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (maxDistance < NInt.Zero || maxDistance < minDistance)
+            return 0;
+
+        var min = NInt.Max(minDistance, NInt.Zero);
+        var count = 0;
+
+        for (var dy = -maxDistance; dy <= maxDistance; dy++)
+        {
+            var y = center.Y + dy;
+            var absDy = NInt.Abs(dy);
+            var dxMax = maxDistance - absDy;
+            for (var dx = -dxMax; dx <= dxMax; dx++)
+            {
+                if (NInt.Abs(dx) + absDy < min)
+                    continue;
+
+                if (count >= destination.Length)
+                    throw new ArgumentException("Destination is too short.", nameof(destination));
+
+                destination[count++] = (center.X + dx, y);
+            }
+        }
+
+        return count;
+    }
+
+    /// <summary>
+    /// Write all coordinates up to the Chebyshev distance from the center point into a destination buffer.
+    /// Center is included. Allocation free alternative to the enumerable overload.
+    /// </summary>
+    /// <returns> Count of written coordinates. </returns>
+    /// <exception cref="ArgumentException"> Destination is too short. </exception>
+    public static int CoordinatesUpToChebyshevDistance<NInt>((NInt X, NInt Y) center, NInt distance,
+        Span<(NInt X, NInt Y)> destination)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (distance < NInt.Zero)
+            return 0;
+
+        var minX = center.X - distance;
+        var maxX = center.X + distance;
+        var minY = center.Y - distance;
+        var maxY = center.Y + distance;
+
+        var count = 0;
+        for (var x = minX; x <= maxX; x++)
+        {
+            for (var y = minY; y <= maxY; y++)
+            {
+                if (count >= destination.Length)
+                    throw new ArgumentException("Destination is too short.", nameof(destination));
+
+                destination[count++] = (x, y);
+            }
+        }
+
+        return count;
+    }
 }
