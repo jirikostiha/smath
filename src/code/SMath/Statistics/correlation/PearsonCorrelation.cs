@@ -62,10 +62,14 @@ public static class PearsonCorrelation
         SumXYX2Y2XY(aSequence, bSequence, out N sumX, out N sumY, out N sumX2, out N sumY2, out N sumXY, lag);
         var n = double.CreateChecked(aSequence.Count);
 
+        // the sums are widened before multiplying, the product of two N sums can overflow N
+        var x = double.CreateChecked(sumX);
+        var y = double.CreateChecked(sumY);
+
         // replace by call to std dev?
-        var aStDev = double.Sqrt(double.CreateChecked(sumX2) / n - double.CreateChecked(sumX * sumX) / n / n);
-        var bStDev = double.Sqrt(double.CreateChecked(sumY2) / n - double.CreateChecked(sumY * sumY) / n / n);
-        var covariance = double.CreateChecked(sumXY) / n - double.CreateChecked(sumX * sumY) / n / n;
+        var aStDev = double.Sqrt(double.CreateChecked(sumX2) / n - x * x / n / n);
+        var bStDev = double.Sqrt(double.CreateChecked(sumY2) / n - y * y / n / n);
+        var covariance = double.CreateChecked(sumXY) / n - x * y / n / n;
 
         // a constant sequence has no deviation, the coefficient is undefined then
         var denominator = aStDev * bStDev;

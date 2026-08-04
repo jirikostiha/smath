@@ -51,7 +51,8 @@ public static class Covariance
             }
         }
 
-        return (double.CreateChecked(sumS1S2) - double.CreateChecked(sumS1 * sumS2)
+        // the sums are widened before multiplying, the product of two N sums can overflow N
+        return (double.CreateChecked(sumS1S2) - double.CreateChecked(sumS1) * double.CreateChecked(sumS2)
             / double.CreateChecked(count))
             / double.CreateChecked(count - 1);
     }
@@ -75,7 +76,8 @@ public static class Covariance
             sumS1S2 += a * b;
         }
 
-        return (double.CreateChecked(sumS1S2) - double.CreateChecked(sumS1 * sumS2)
+        // the sums are widened before multiplying, the product of two N sums can overflow N
+        return (double.CreateChecked(sumS1S2) - double.CreateChecked(sumS1) * double.CreateChecked(sumS2)
             / double.CreateChecked(aSequence.Length))
             / double.CreateChecked(aSequence.Length - 1);
     }
