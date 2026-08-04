@@ -17,13 +17,16 @@ public static class Variance
         where N : INumberBase<N>
     {
         var mean = ArithmeticMean.Eval(sequence);
-        var sum = Summation.Eval(
-            sequence.Select(n =>
-            {
-                var diff = double.CreateChecked(n) - mean;
-                return diff * diff;
-            }),
-            out count);
+        // deliberately not using LINQ Select, it would allocate a closure and an iterator
+        // and add a delegate call per element
+        double sum = 0;
+        count = 0;
+        foreach (var n in sequence)
+        {
+            var diff = double.CreateChecked(n) - mean;
+            sum += diff * diff;
+            count++;
+        }
 
         return sum;
     }
