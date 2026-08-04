@@ -290,7 +290,8 @@ public static class Line
         public static class Points
         {
             /// <summary>
-            /// Get points on a ray determined by origin point and angle.
+            /// Get points on a ray starting in the origin of coordinates and going in the direction of the angle.
+            /// The first point is one step away from the origin.
             /// </summary>
             public static IEnumerable<(N X, N Y)> Get<N>(N angle, N step, int count)
                 where N : ITrigonometricFunctions<N>
@@ -413,7 +414,8 @@ public static class Line
         public static class Parallel
         {
             /// <summary>
-            /// Get a point which is with s2p1 line segment parallel to (s1p1, s1p2).
+            /// Get a point which forms, together with the seed point, a line segment
+            /// parallel to the segment (point1, point2).
             /// </summary>
             public static (N X, N Y) FromThreePoints<N>((N X, N Y) point1, (N X, N Y) point2, (N X, N Y) seedPoint)
                 where N : INumberBase<N>
