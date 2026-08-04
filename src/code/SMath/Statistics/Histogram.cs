@@ -28,7 +28,8 @@ public static class Histogram
 
         foreach (var number in numbers)
         {
-            for (int i = 0; i < bins.Length; i++)
+            // the last bin has no upper bound, everything above the last bound falls into it
+            for (int i = 0; i < bounds.Count; i++)
             {
                 if (number < bins[i].Bound)
                 {
@@ -53,7 +54,8 @@ public static class Histogram
 
         foreach (var number in numbers)
         {
-            for (int i = 0; i < bins.Length; i++)
+            // the last bin has no upper bound, everything above the last bound falls into it
+            for (int i = 0; i < bounds.Count; i++)
             {
                 if (number <= bins[i].Bound)
                 {
