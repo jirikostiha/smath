@@ -140,6 +140,43 @@ public class Point2Tests
     }
 
     [Fact]
+    public void CoordinatesAtChebyshevDistanceWithTopLimitSmallerThanDistance_KeepsCoordsOnTheLimit()
+    {
+        // Regression: the right edge was emitted up to 'y < min(maxY, topLimit.Y)'.
+        // When the top edge itself is clipped away the exclusive bound dropped the
+        // coordinate lying exactly on the top limit.
+        var coords = Point2.CoordinatesAtChebyshevDistance((1, 1), 2, (0, 0), (5, 2)).ToArray();
+
+        Assert.Equal(3, coords.Length);
+        Assert.Contains((3, 0), coords);
+        Assert.Contains((3, 1), coords);
+        Assert.Contains((3, 2), coords);
+    }
+
+    [Theory]
+    // Regression: every edge was guarded on one side of the limits only, so a ring
+    // lying completely outside the box still emitted its out of bounds coordinates.
+    [InlineData(1, 10)]  // above the top limit
+    [InlineData(1, -10)] // below the bottom limit
+    [InlineData(10, 1)]  // right of the top limit
+    [InlineData(-10, 1)] // left of the bottom limit
+    public void CoordinatesAtChebyshevDistanceWithCenterOutOfLimits_NoCoords(int centerX, int centerY)
+    {
+        var coords = Point2.CoordinatesAtChebyshevDistance((centerX, centerY), 1, (0, 0), (5, 5)).ToArray();
+
+        Assert.Empty(coords);
+    }
+
+    [Fact]
+    public void CoordinatesAtChebyshevDistanceWithLimitsWiderThanDistance_SameAsWithoutLimits()
+    {
+        var unlimited = Point2.CoordinatesAtChebyshevDistance((1, 1), 2).ToArray();
+        var limited = Point2.CoordinatesAtChebyshevDistance((1, 1), 2, (-100, -100), (100, 100)).ToArray();
+
+        Assert.Equal(unlimited, limited);
+    }
+
+    [Fact]
     public void CoordinatesUpToChebyshevDistanceWithLimits()
     {
         var coords = Point2.CoordinatesUpToChebyshevDistance((1, 1), 2, (0, -1), (2, 2)).ToArray();

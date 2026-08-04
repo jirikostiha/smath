@@ -269,27 +269,37 @@ public static class Point2
         var minY = center.Y - distance;
         var maxY = center.Y + distance;
 
-        if (minY >= bottomLimit.Y)
+        // horizontal edges carry the corners, vertical edges are emitted without them
+        var edgeMinX = NInt.Max(minX, bottomLimit.X);
+        var edgeMaxX = NInt.Min(maxX, topLimit.X);
+        var edgeMinY = NInt.Max(minY + NInt.One, bottomLimit.Y);
+        var edgeMaxY = NInt.Min(maxY - NInt.One, topLimit.Y);
+
+        // bottom edge
+        if (minY >= bottomLimit.Y && minY <= topLimit.Y)
         {
-            for (var x = NInt.Max(minX, bottomLimit.X); x <= NInt.Min(maxX, topLimit.X); x++)
+            for (var x = edgeMinX; x <= edgeMaxX; x++)
                 yield return (x, minY);
         }
 
-        if (maxX <= topLimit.X)
+        // right edge
+        if (maxX >= bottomLimit.X && maxX <= topLimit.X)
         {
-            for (var y = NInt.Max(minY + NInt.One, bottomLimit.Y); y < NInt.Min(maxY, topLimit.Y); y++)
+            for (var y = edgeMinY; y <= edgeMaxY; y++)
                 yield return (maxX, y);
         }
 
-        if (maxY <= topLimit.Y)
+        // top edge
+        if (maxY >= bottomLimit.Y && maxY <= topLimit.Y)
         {
-            for (var x = NInt.Min(maxX, topLimit.X); x >= NInt.Max(minX, bottomLimit.X); x--)
+            for (var x = edgeMaxX; x >= edgeMinX; x--)
                 yield return (x, maxY);
         }
 
-        if (minX >= bottomLimit.X)
+        // left edge
+        if (minX >= bottomLimit.X && minX <= topLimit.X)
         {
-            for (var y = NInt.Min(maxY - NInt.One, topLimit.Y); y > NInt.Max(minY, bottomLimit.Y); y--)
+            for (var y = edgeMaxY; y >= edgeMinY; y--)
                 yield return (minX, y);
         }
     }
