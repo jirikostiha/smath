@@ -54,6 +54,34 @@ public class GeometricVector2Tests
         Assert.Equal(expected, GeometricVector2.PolarAngle.FromCartesian((x, y)), 6);
     }
 
+    [Theory]
+    // Regression: the polar magnitude used the law of cosines at the angle between
+    // the vectors, which yields the magnitude of their difference, not of their sum.
+    [InlineData(1d, 1d, 0d, 2d)]              // same direction
+    [InlineData(1d, 1d, Math.PI, 0d)]         // opposite directions
+    [InlineData(3d, 4d, Math.PI / 2d, 5d)]    // perpendicular
+    [InlineData(1d, 1d, Math.PI / 2d, 1.4142135623730951d)]
+    public void MagnitudeFromTwoPolarVectors_IsMagnitudeOfSum(double magnitude1, double magnitude2, double angle, double expected)
+    {
+        Assert.Equal(expected, GeometricVector2.Magnitude.FromTwoPolarVectors(magnitude1, magnitude2, angle), 6);
+    }
+
+    [Theory]
+    [InlineData(2d, Math.PI / 6d, 3d, 2d * Math.PI / 3d)]
+    [InlineData(1d, 0d, 1d, Math.PI / 2d)]
+    [InlineData(5d, -Math.PI / 4d, 2d, Math.PI)]
+    public void MagnitudeFromPolarVectors_EqualsCartesianSum(double magnitude1, double angle1, double magnitude2, double angle2)
+    {
+        var cartesian1 = GeometricVector2.Cartesian.FromPolar(magnitude1, angle1);
+        var cartesian2 = GeometricVector2.Cartesian.FromPolar(magnitude2, angle2);
+        var expected = GeometricVector2.Magnitude.FromCartesianVectors(cartesian1, cartesian2);
+
+        Assert.Equal(
+            expected,
+            GeometricVector2.Magnitude.FromPolarVectors((magnitude1, angle1), (magnitude2, angle2)),
+            6);
+    }
+
     [Fact]
     public void NormalVector()
     {

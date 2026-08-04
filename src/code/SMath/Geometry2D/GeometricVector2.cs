@@ -38,18 +38,23 @@ public static class GeometricVector2
             => FromCartesian(Cartesian.FromCartesianVectors(vectors));
 
         /// <summary>
-        /// Calculate magnitude of two vectors determined in polar coordinate system.
+        /// Calculate magnitude of sum of two vectors determined in polar coordinate system
+        /// by their magnitudes and the angle between them.
         /// </summary>
+        /// <remarks>
+        /// The parallelogram rule gives |v1+v2|^2 = m1^2 + m2^2 + 2*m1*m2*cos(angle),
+        /// which is the law of cosines taken at the supplementary angle.
+        /// </remarks>
         public static N FromTwoPolarVectors<N>(N magnitude1, N magnitude2, N angle)
             where N : ITrigonometricFunctions<N>, IRootFunctions<N>
-            => PT.Cosine(magnitude1, magnitude2, -angle);
+            => PT.Cosine(magnitude1, magnitude2, N.Pi - angle);
 
         /// <summary>
         /// Calculate magnitude of sum of two vectors determined in polar coordinate system.
         /// </summary>
         public static N FromPolarVectors<N>((N Magnitude, N Angle) vector1, (N Magnitude, N Angle) vector2)
             where N : ITrigonometricFunctions<N>, IRootFunctions<N>
-            => PT.Cosine(vector1.Magnitude, vector2.Magnitude, vector1.Angle - vector2.Angle);
+            => FromTwoPolarVectors(vector1.Magnitude, vector2.Magnitude, vector1.Angle - vector2.Angle);
     }
 
     /// <summary>
