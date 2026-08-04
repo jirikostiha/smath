@@ -1,12 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<!-- Common properties -->
+<Project>
+
+	<!-- Common properties shared across all projects -->
 	<PropertyGroup>
-		<!-- SolutionDir is not defined when building projects explicitly -->
-		<SolutionDir Condition=" '$(SolutionDir)' == '' ">$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), MySolution.sln))\</SolutionDir>
-		<!-- Output paths -->
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Deterministic>true</Deterministic>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisLevel>latest-recommended</AnalysisLevel>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+	</PropertyGroup>
+
+	<!-- Shared package / repository metadata -->
+	<PropertyGroup>
+		<Authors>Jiri Kostiha</Authors>
+		<Company />
+		<Copyright>Copyright © 2022 Jiri Kostiha</Copyright>
+		<RepositoryUrl>https://github.com/jirikostiha/smath</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+	</PropertyGroup>
+
+	<!-- Output paths -->
+	<PropertyGroup>
 		<BaseOutputPath>..\..\..\asm\$(MSBuildProjectName)\bin\</BaseOutputPath>
 		<BaseIntermediateOutputPath>..\..\..\asm\$(MSBuildProjectName)\obj\</BaseIntermediateOutputPath>
-		<Deterministic>true</Deterministic>
 	</PropertyGroup>
+
 </Project>
