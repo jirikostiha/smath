@@ -65,12 +65,11 @@ public static class PearsonCorrelation
         // replace by call to std dev?
         var aStDev = double.Sqrt(double.CreateChecked(sumX2) / n - double.CreateChecked(sumX * sumX) / n / n);
         var bStDev = double.Sqrt(double.CreateChecked(sumY2) / n - double.CreateChecked(sumY * sumY) / n / n);
-        var covariance = (double.CreateChecked(sumXY) / n - double.CreateChecked(sumX * sumY) / n / n);
-        if (covariance == 0)
-            return 0;
+        var covariance = double.CreateChecked(sumXY) / n - double.CreateChecked(sumX * sumY) / n / n;
 
+        // a constant sequence has no deviation, the coefficient is undefined then
         var denominator = aStDev * bStDev;
-        return denominator != 0 ? covariance / denominator : 1;
+        return denominator != 0 ? covariance / denominator : double.NaN;
     }
 
     /// <summary>

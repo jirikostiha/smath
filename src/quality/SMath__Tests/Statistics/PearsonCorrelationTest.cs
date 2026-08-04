@@ -132,5 +132,15 @@ public class PearsonCorrelationTest
 
         Assert.Equal(expected, PearsonCorrelation.EvalPerf(a, b, -1), 6);
     }
+
+    [Theory]
+    [MemberData(nameof(PearsonCorrelationData.SameValues), MemberType = typeof(PearsonCorrelationData))]
+    public void EvalArrayPerf_SameValues(int[] aSequence, int[] bSequence, double expected)
+    {
+        // Regression: a constant sequence has no deviation, so the coefficient cannot
+        // be decided. EvalPerf used to report 1 (perfect correlation) instead of NaN,
+        // which contradicted the plain Eval on the very same data.
+        Assert.Equal(expected, PearsonCorrelation.EvalPerf(aSequence, bSequence, 0), 6);
+    }
     #endregion
 }
