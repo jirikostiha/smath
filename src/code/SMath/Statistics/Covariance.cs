@@ -13,12 +13,9 @@ public static class Covariance
 {
     public static double Eval<N>(IEnumerable<N> aSequence, IEnumerable<N> bSequence, out long count)
         where N : INumberBase<N>
-    {
-        if (aSequence.Count() != bSequence.Count())
-            throw new ArgumentException("Inconsistent length of sequences.");
-
-        return Evaluate(aSequence, bSequence, out count);
-    }
+        // the length check is done within the single pass of Evaluate,
+        // enumerating the sequences twice would re-evaluate lazy pipelines
+        => Evaluate(aSequence, bSequence, out count);
 
     public static double Eval<N>(ICollection<N> aSequence, ICollection<N> bSequence)
         where N : INumberBase<N>
@@ -40,8 +37,18 @@ public static class Covariance
         using (var aEnumerator = aSequence.GetEnumerator())
         using (var bEnumerator = bSequence.GetEnumerator())
         {
-            while (aEnumerator.MoveNext() && bEnumerator.MoveNext())
+            while (true)
             {
+                var aMoved = aEnumerator.MoveNext();
+                var bMoved = bEnumerator.MoveNext();
+
+                // one sequence ran out sooner than the other
+                if (aMoved != bMoved)
+                    throw new ArgumentException("Inconsistent length of sequences.");
+
+                if (!aMoved)
+                    break;
+
                 var a = aEnumerator.Current;
                 var b = bEnumerator.Current;
                 sumS1 += a;
