@@ -11,12 +11,15 @@ namespace SMath.Statistics;
 public static class Histogram
 {
     /// <summary>
-    /// Get histogram.
-    /// bin bounds indices: ---<0--<1----<2---<
+    /// Get histogram. A number falls into the first bin whose bound it is strictly below.
+    /// bin bounds indices: ---&lt;0--&lt;1----&lt;2---
     /// </summary>
     /// <param name="numbers"> data </param>
-    /// <param name="bounds"> exclusive bin bounds </param>
-    /// <returns></returns>
+    /// <param name="bounds"> exclusive bin bounds, expected in ascending order </param>
+    /// <returns>
+    /// One bin more than there are bounds. The trailing bin collects everything at or above
+    /// the last bound, it is not upper bounded and its <c>Bound</c> carries no meaning.
+    /// </returns>
     public static (N Bound, NInt Count)[] GetExclusive<N, NInt>(IEnumerable<N> numbers, IList<N> bounds)
         where N : INumberBase<N>, IComparisonOperators<N, N, bool>
         where NInt : IBinaryInteger<NInt>
@@ -44,6 +47,16 @@ public static class Histogram
         return bins;
     }
 
+    /// <summary>
+    /// Get histogram. A number falls into the first bin whose bound it does not exceed.
+    /// bin bounds indices: ---0]--1]----2]---
+    /// </summary>
+    /// <param name="numbers"> data </param>
+    /// <param name="bounds"> inclusive bin bounds, expected in ascending order </param>
+    /// <returns>
+    /// One bin more than there are bounds. The trailing bin collects everything above
+    /// the last bound, it is not upper bounded and its <c>Bound</c> carries no meaning.
+    /// </returns>
     public static (N Bound, NInt Count)[] GetInclusive<N, NInt>(IEnumerable<N> numbers, IList<N> bounds)
         where N : INumberBase<N>, IComparisonOperators<N, N, bool>
         where NInt : IBinaryInteger<NInt>

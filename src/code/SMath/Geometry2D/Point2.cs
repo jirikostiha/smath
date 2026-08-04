@@ -134,7 +134,7 @@ public static class Point2
             var y = center.Y + dy;
 
             yield return (center.X - dx, y);
-            if (dx != NInt.Zero) // zabránění duplicitního výpisu při dx == 0
+            if (dx != NInt.Zero) // dx == 0 would yield the very same coordinate twice
                 yield return (center.X + dx, y);
         }
     }
@@ -164,7 +164,7 @@ public static class Point2
             {
                 if (x1 >= bottomLimit.X && x1 <= topLimit.X)
                     yield return (x1, y);
-                if (x2 != x1 && x2 >= bottomLimit.X && x2 <= topLimit.X) // Zabránění duplikátům
+                if (x2 != x1 && x2 >= bottomLimit.X && x2 <= topLimit.X) // skip the duplicate at dx == 0
                     yield return (x2, y);
             }
         }
