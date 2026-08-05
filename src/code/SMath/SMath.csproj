@@ -3,8 +3,6 @@
   <PropertyGroup>
     <!-- Must remain on .NET 7 (generic math baseline) -->
     <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <NoWarn>CA1725,CA1716,CS1591,CA1715</NoWarn>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
