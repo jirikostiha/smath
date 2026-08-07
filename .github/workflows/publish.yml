@@ -33,10 +33,10 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Publish
-        run: dotnet publish "${{ env.sln-path }}" -c Release
+        run: dotnet publish "${{ env.sln-path }}" -c Release -p:ContinuousIntegrationBuild=true
 
       - name: Pack
-        run: dotnet pack "${{ env.sln-path }}" -c Release -o "${{ env.package-dir }}" --no-build
+        run: dotnet pack "${{ env.sln-path }}" -c Release -o "${{ env.package-dir }}" --no-build -p:ContinuousIntegrationBuild=true
 
       - name: NuGet login (OIDC)
         uses: NuGet/login@v1
