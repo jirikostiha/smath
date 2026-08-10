@@ -88,6 +88,51 @@ public static class Rectangle
         where N : IFloatingPoint<N>
         => (N.CreateTruncating(0.75), N.CreateTruncating(0.75));
 
+    /// <summary>
+    /// Determine the origin (bottom-left corner) and size of an inner rectangle obtained by
+    /// repeatedly descending into quadrants of an axis-aligned rectangle.
+    /// <para>
+    /// Each quadrant is identified by a two-digit code <c>XY</c> where <c>X</c> is the column
+    /// (1 = left, 2 = right) and <c>Y</c> is the row (1 = bottom, 2 = top), matching
+    /// <see cref="Quadrant11Center{N}"/>, <see cref="Quadrant21Center{N}"/>,
+    /// <see cref="Quadrant12Center{N}"/> and <see cref="Quadrant22Center{N}"/>.
+    /// Every code halves the rectangle in both dimensions and moves the origin into the
+    /// selected quadrant; each subsequent code selects a quadrant of the previous inner rectangle.
+    /// </para>
+    /// An empty sequence returns the original rectangle unchanged.
+    /// </summary>
+    /// <param name="origin">Origin (bottom-left corner) of the outer rectangle.</param>
+    /// <param name="size">Size of the outer rectangle.</param>
+    /// <param name="quadrants">Quadrant codes (11, 21, 12 or 22), one per nesting level.</param>
+    /// <exception cref="ArgumentOutOfRangeException">A code is not one of 11, 21, 12 or 22.</exception>
+    public static ((N X, N Y) Origin, (N X, N Y) Size) Quadrant<N>(
+        (N X, N Y) origin, (N X, N Y) size, params int[] quadrants)
+        where N : INumber<N>
+    {
+        ArgumentNullException.ThrowIfNull(quadrants);
+
+        var two = N.CreateTruncating(2);
+        var currentOrigin = origin;
+        var currentSize = size;
+
+        foreach (var quadrant in quadrants)
+        {
+            var column = quadrant / 10;
+            var row = quadrant % 10;
+
+            if (column is < 1 or > 2 || row is < 1 or > 2)
+                throw new ArgumentOutOfRangeException(nameof(quadrants),
+                    quadrant, "Quadrant code must be one of 11, 21, 12 or 22.");
+
+            currentSize = (currentSize.X / two, currentSize.Y / two);
+            currentOrigin = (
+                currentOrigin.X + N.CreateTruncating(column - 1) * currentSize.X,
+                currentOrigin.Y + N.CreateTruncating(row - 1) * currentSize.Y);
+        }
+
+        return (currentOrigin, currentSize);
+    }
+
     public static class Perimeter
     {
         public static N FromEdges<N>(N a, N b)
