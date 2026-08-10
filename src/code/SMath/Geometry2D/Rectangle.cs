@@ -90,44 +90,45 @@ public static class Rectangle
 
     /// <summary>
     /// Determine the origin (bottom-left corner) and size of an inner rectangle obtained by
-    /// repeatedly descending into quadrants of an axis-aligned rectangle.
+    /// repeatedly descending into quadrants of an axis-aligned rectangle centered at the origin (0, 0).
     /// <para>
-    /// Each quadrant is identified by a two-digit code <c>XY</c> where <c>X</c> is the column
-    /// (1 = left, 2 = right) and <c>Y</c> is the row (1 = bottom, 2 = top), matching
-    /// <see cref="Quadrant11Center{N}"/>, <see cref="Quadrant21Center{N}"/>,
-    /// <see cref="Quadrant12Center{N}"/> and <see cref="Quadrant22Center{N}"/>.
-    /// Every code halves the rectangle in both dimensions and moves the origin into the
-    /// selected quadrant; each subsequent code selects a quadrant of the previous inner rectangle.
+    /// Quadrants are numbered 1..4 in the usual mathematical order, counter-clockwise starting
+    /// from the upper right: 1 = top-right, 2 = top-left, 3 = bottom-left, 4 = bottom-right.
+    /// Every number halves the rectangle in both dimensions and moves into the selected quadrant;
+    /// each subsequent number selects a quadrant of the previous inner rectangle.
     /// </para>
-    /// An empty sequence returns the original rectangle unchanged.
+    /// An empty sequence returns the original centered rectangle (origin at <c>-size / 2</c>).
     /// </summary>
-    /// <param name="origin">Origin (bottom-left corner) of the outer rectangle.</param>
-    /// <param name="size">Size of the outer rectangle.</param>
-    /// <param name="quadrants">Quadrant codes (11, 21, 12 or 22), one per nesting level.</param>
-    /// <exception cref="ArgumentOutOfRangeException">A code is not one of 11, 21, 12 or 22.</exception>
+    /// <param name="size">Size of the outer rectangle, centered at (0, 0).</param>
+    /// <param name="quadrants">Quadrant numbers (1, 2, 3 or 4), one per nesting level.</param>
+    /// <exception cref="ArgumentOutOfRangeException">A number is not in the range 1..4.</exception>
     public static ((N X, N Y) Origin, (N X, N Y) Size) Quadrant<N>(
-        (N X, N Y) origin, (N X, N Y) size, params int[] quadrants)
+        (N X, N Y) size, params int[] quadrants)
         where N : INumber<N>
     {
         ArgumentNullException.ThrowIfNull(quadrants);
 
         var two = N.CreateTruncating(2);
-        var currentOrigin = origin;
         var currentSize = size;
+        // the rectangle is centered at the origin, so its bottom-left corner is at -size / 2
+        (N X, N Y) currentOrigin = (N.Zero - size.X / two, N.Zero - size.Y / two);
 
         foreach (var quadrant in quadrants)
         {
-            var column = quadrant / 10;
-            var row = quadrant % 10;
-
-            if (column is < 1 or > 2 || row is < 1 or > 2)
-                throw new ArgumentOutOfRangeException(nameof(quadrants),
-                    quadrant, "Quadrant code must be one of 11, 21, 12 or 22.");
+            var (right, top) = quadrant switch
+            {
+                1 => (true, true),
+                2 => (false, true),
+                3 => (false, false),
+                4 => (true, false),
+                _ => throw new ArgumentOutOfRangeException(nameof(quadrants),
+                    quadrant, "Quadrant number must be 1, 2, 3 or 4."),
+            };
 
             currentSize = (currentSize.X / two, currentSize.Y / two);
             currentOrigin = (
-                currentOrigin.X + N.CreateTruncating(column - 1) * currentSize.X,
-                currentOrigin.Y + N.CreateTruncating(row - 1) * currentSize.Y);
+                right ? currentOrigin.X + currentSize.X : currentOrigin.X,
+                top ? currentOrigin.Y + currentSize.Y : currentOrigin.Y);
         }
 
         return (currentOrigin, currentSize);
