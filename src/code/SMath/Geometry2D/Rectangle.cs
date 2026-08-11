@@ -109,19 +109,19 @@ public static class Rectangle
     /// </remarks>
     public static ((N X, N Y) Origin, (N X, N Y) Size) Quadrant<N>(
         (N X, N Y) size, IEnumerable<int> quadrants)
-        where N : INumber<N>
+        where N : IFloatingPoint<N>
     {
         ArgumentNullException.ThrowIfNull(quadrants);
 
-        var two = N.CreateTruncating(2);
-        var currentSize = size;
-        // the rectangle is centered at the origin, so its bottom-left corner is at -size / 2
-        (N X, N Y) origin = (N.Zero - size.X / two, N.Zero - size.Y / two);
+        var half = N.CreateTruncating(0.5);
+        var scale = N.One;    // 2^-depth, ends up as the size scale
+        var weightX = -half;  // origin.X == size.X * weightX (starts at the centered -size/2)
+        var weightY = -half;
 
         foreach (var quadrant in quadrants)
-            Descend(quadrant, two, ref origin, ref currentSize);
+            Descend(quadrant, half, ref scale, ref weightX, ref weightY);
 
-        return (origin, currentSize);
+        return Assemble(size, scale, weightX, weightY);
     }
 
     /// <summary>
@@ -134,39 +134,47 @@ public static class Rectangle
     /// <exception cref="ArgumentOutOfRangeException">A number is not in the range 1..4.</exception>
     public static ((N X, N Y) Origin, (N X, N Y) Size) Quadrant<N>(
         (N X, N Y) size, ReadOnlySpan<int> quadrants)
-        where N : INumber<N>
+        where N : IFloatingPoint<N>
     {
-        var two = N.CreateTruncating(2);
-        var currentSize = size;
-        // the rectangle is centered at the origin, so its bottom-left corner is at -size / 2
-        (N X, N Y) origin = (N.Zero - size.X / two, N.Zero - size.Y / two);
+        var half = N.CreateTruncating(0.5);
+        var scale = N.One;
+        var weightX = -half;
+        var weightY = -half;
 
         foreach (var quadrant in quadrants)
-            Descend(quadrant, two, ref origin, ref currentSize);
+            Descend(quadrant, half, ref scale, ref weightX, ref weightY);
 
-        return (origin, currentSize);
+        return Assemble(size, scale, weightX, weightY);
     }
 
-    /// <summary> Halve the rectangle and move its origin into the selected quadrant. </summary>
+    /// <summary>
+    /// Accumulate one descent step as dimensionless weights: halve the running
+    /// <paramref name="scale"/> (a power of two, never a division) and add it to the
+    /// axis weights of the selected quadrant. The size is applied once in <see cref="Assemble"/>.
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void Descend<N>(int quadrant, N two, ref (N X, N Y) origin, ref (N X, N Y) size)
-        where N : INumber<N>
+    private static void Descend<N>(int quadrant, N half, ref N scale, ref N weightX, ref N weightY)
+        where N : IFloatingPoint<N>
     {
-        var (right, top) = quadrant switch
+        scale *= half;
+        switch (quadrant)
         {
-            1 => (true, true),
-            2 => (false, true),
-            3 => (false, false),
-            4 => (true, false),
-            _ => throw new ArgumentOutOfRangeException(nameof(quadrant),
-                quadrant, "Quadrant number must be 1, 2, 3 or 4."),
-        };
-
-        size = (size.X / two, size.Y / two);
-        origin = (
-            right ? origin.X + size.X : origin.X,
-            top ? origin.Y + size.Y : origin.Y);
+            case 1: weightX += scale; weightY += scale; break; // top-right
+            case 2: weightY += scale; break;                   // top-left
+            case 3: break;                                     // bottom-left
+            case 4: weightX += scale; break;                   // bottom-right
+            default:
+                throw new ArgumentOutOfRangeException(nameof(quadrant), quadrant,
+                    "Quadrant number must be 1, 2, 3 or 4.");
+        }
     }
+
+    /// <summary> Scale the accumulated weights back to the outer rectangle's size. </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static ((N X, N Y) Origin, (N X, N Y) Size) Assemble<N>(
+        (N X, N Y) size, N scale, N weightX, N weightY)
+        where N : IFloatingPoint<N>
+        => ((size.X * weightX, size.Y * weightY), (size.X * scale, size.Y * scale));
 
     public static class Perimeter
     {
