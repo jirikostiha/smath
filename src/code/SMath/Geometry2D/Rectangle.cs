@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace SMath.Geometry2D;
 
@@ -87,6 +88,93 @@ public static class Rectangle
     public static (N X, N Y) Quadrant22Center<N>()
         where N : IFloatingPoint<N>
         => (N.CreateTruncating(0.75), N.CreateTruncating(0.75));
+
+    /// <summary>
+    /// Determine the origin (bottom-left corner) and size of an inner rectangle obtained by
+    /// repeatedly descending into quadrants of an axis-aligned rectangle centered at the origin (0, 0).
+    /// <para>
+    /// Quadrants are numbered 1..4 in the usual mathematical order, counter-clockwise starting
+    /// from the upper right: 1 = top-right, 2 = top-left, 3 = bottom-left, 4 = bottom-right.
+    /// Every number halves the rectangle in both dimensions and moves into the selected quadrant;
+    /// each subsequent number selects a quadrant of the previous inner rectangle.
+    /// </para>
+    /// An empty sequence returns the original centered rectangle (origin at <c>-size / 2</c>).
+    /// </summary>
+    /// <param name="size">Size of the outer rectangle, centered at (0, 0).</param>
+    /// <param name="quadrants">Quadrant numbers (1, 2, 3 or 4), one per nesting level.</param>
+    /// <exception cref="ArgumentOutOfRangeException">A number is not in the range 1..4.</exception>
+    /// <remarks>
+    /// Reusable overload that accepts any sequence; it is enumerated exactly once.
+    /// Prefer the <see cref="ReadOnlySpan{T}"/> overload on hot paths.
+    /// </remarks>
+    public static ((N X, N Y) Origin, (N X, N Y) Size) Quadrant<N>(
+        (N X, N Y) size, IEnumerable<int> quadrants)
+        where N : IFloatingPoint<N>
+    {
+        ArgumentNullException.ThrowIfNull(quadrants);
+
+        var half = N.CreateTruncating(0.5);
+        var scale = N.One;    // 2^-depth, ends up as the size scale
+        var weightX = -half;  // origin.X == size.X * weightX (starts at the centered -size/2)
+        var weightY = -half;
+
+        foreach (var quadrant in quadrants)
+            Descend(quadrant, half, ref scale, ref weightX, ref weightY);
+
+        return Assemble(size, scale, weightX, weightY);
+    }
+
+    /// <summary>
+    /// Allocation-free, span based counterpart of
+    /// <see cref="Quadrant{N}(ValueTuple{N, N}, IEnumerable{int})"/> for hot paths;
+    /// the quadrant numbers are read straight from the span.
+    /// </summary>
+    /// <param name="size">Size of the outer rectangle, centered at (0, 0).</param>
+    /// <param name="quadrants">Quadrant numbers (1, 2, 3 or 4), one per nesting level.</param>
+    /// <exception cref="ArgumentOutOfRangeException">A number is not in the range 1..4.</exception>
+    public static ((N X, N Y) Origin, (N X, N Y) Size) Quadrant<N>(
+        (N X, N Y) size, ReadOnlySpan<int> quadrants)
+        where N : IFloatingPoint<N>
+    {
+        var half = N.CreateTruncating(0.5);
+        var scale = N.One;
+        var weightX = -half;
+        var weightY = -half;
+
+        foreach (var quadrant in quadrants)
+            Descend(quadrant, half, ref scale, ref weightX, ref weightY);
+
+        return Assemble(size, scale, weightX, weightY);
+    }
+
+    /// <summary>
+    /// Accumulate one descent step as dimensionless weights: halve the running
+    /// <paramref name="scale"/> (a power of two, never a division) and add it to the
+    /// axis weights of the selected quadrant. The size is applied once in <see cref="Assemble"/>.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void Descend<N>(int quadrant, N half, ref N scale, ref N weightX, ref N weightY)
+        where N : IFloatingPoint<N>
+    {
+        scale *= half;
+        switch (quadrant)
+        {
+            case 1: weightX += scale; weightY += scale; break; // top-right
+            case 2: weightY += scale; break;                   // top-left
+            case 3: break;                                     // bottom-left
+            case 4: weightX += scale; break;                   // bottom-right
+            default:
+                throw new ArgumentOutOfRangeException(nameof(quadrant), quadrant,
+                    "Quadrant number must be 1, 2, 3 or 4.");
+        }
+    }
+
+    /// <summary> Scale the accumulated weights back to the outer rectangle's size. </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static ((N X, N Y) Origin, (N X, N Y) Size) Assemble<N>(
+        (N X, N Y) size, N scale, N weightX, N weightY)
+        where N : IFloatingPoint<N>
+        => ((size.X * weightX, size.Y * weightY), (size.X * scale, size.Y * scale));
 
     public static class Perimeter
     {
