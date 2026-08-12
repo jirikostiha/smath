@@ -30,7 +30,7 @@ jobs:
         run: dotnet restore "${{ env.sln-path }}"
 
       - name: Build debug
-        run: dotnet build "${{ env.sln-path }}" --no-restore -c Debug
+        run: dotnet build "${{ env.sln-path }}" --no-restore -c Debug -p:ContinuousIntegrationBuild=true
 
       - name: Test
         run: dotnet test "${{ env.sln-path }}" --no-build --logger "trx;LogFileName=test-results.trx" || true
