@@ -641,4 +641,57 @@ public static class Point3
             }
         }
     }
+
+    /// <summary>
+    /// Count of coordinates at exact Manhattan distance from a center point. Unbounded.
+    /// </summary>
+    /// <remarks> The taxicab sphere, an octahedron surface, has 4*d^2 + 2 coordinates, distance 0 gives the center only. </remarks>
+    public static NInt ManhattanSphereCount<NInt>(NInt distance)
+        where NInt : IBinaryInteger<NInt>
+        => distance < NInt.Zero
+            ? NInt.Zero
+            : distance == NInt.Zero
+                ? NInt.One
+                : NInt.CreateChecked(4) * distance * distance + NInt.CreateChecked(2);
+
+    /// <summary>
+    /// Count of coordinates up to the Manhattan distance from a center point, center included. Unbounded.
+    /// </summary>
+    /// <remarks> The taxicab ball, a solid octahedron, has (2*d + 1) * (2*d^2 + 2*d + 3) / 3 coordinates. </remarks>
+    public static NInt ManhattanBallCount<NInt>(NInt distance)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (distance < NInt.Zero)
+            return NInt.Zero;
+
+        var two = NInt.CreateChecked(2);
+        return (two * distance + NInt.One) * (two * distance * distance + two * distance + NInt.CreateChecked(3))
+            / NInt.CreateChecked(3);
+    }
+
+    /// <summary>
+    /// Count of coordinates at exact Chebyshev distance from a center point. Unbounded.
+    /// </summary>
+    /// <remarks> The Chebyshev shell, a cube surface, has 24*d^2 + 2 coordinates, distance 0 gives the center only. </remarks>
+    public static NInt ChebyshevShellCount<NInt>(NInt distance)
+        where NInt : IBinaryInteger<NInt>
+        => distance < NInt.Zero
+            ? NInt.Zero
+            : distance == NInt.Zero
+                ? NInt.One
+                : NInt.CreateChecked(24) * distance * distance + NInt.CreateChecked(2);
+
+    /// <summary>
+    /// Count of coordinates up to the Chebyshev distance from a center point, center included. Unbounded.
+    /// </summary>
+    /// <remarks> The Chebyshev cube has (2*d + 1)^3 coordinates. </remarks>
+    public static NInt ChebyshevCubeCount<NInt>(NInt distance)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (distance < NInt.Zero)
+            return NInt.Zero;
+
+        var side = NInt.CreateChecked(2) * distance + NInt.One;
+        return side * side * side;
+    }
 }

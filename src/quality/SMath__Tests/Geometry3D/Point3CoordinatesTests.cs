@@ -279,4 +279,56 @@ public class Point3CoordinatesTests
             })),
             Sorted(coords));
     }
+
+    [Theory]
+    [InlineData(-1, 0)]
+    [InlineData(0, 1)]
+    [InlineData(1, 6)]
+    [InlineData(2, 18)]
+    [InlineData(3, 38)]
+    public void ManhattanSphereCount(int distance, int count)
+    {
+        Assert.Equal(count, Point3.ManhattanSphereCount(distance));
+
+        if (distance >= 1)
+            Assert.Equal(count, Point3.CoordinatesAtManhattanDistance(Center, distance).Count());
+    }
+
+    [Theory]
+    [InlineData(-1, 0)]
+    [InlineData(0, 1)]
+    [InlineData(1, 7)]
+    [InlineData(2, 25)]
+    [InlineData(3, 63)]
+    public void ManhattanBallCount(int distance, int count)
+    {
+        Assert.Equal(count, Point3.ManhattanBallCount(distance));
+        Assert.Equal(count, Point3.CoordinatesUpToManhattanDistance(Center, distance).Count());
+    }
+
+    [Theory]
+    [InlineData(-1, 0)]
+    [InlineData(0, 1)]
+    [InlineData(1, 26)]
+    [InlineData(2, 98)]
+    [InlineData(3, 218)]
+    public void ChebyshevShellCount(int distance, int count)
+    {
+        Assert.Equal(count, Point3.ChebyshevShellCount(distance));
+
+        if (distance >= 1)
+            Assert.Equal(count, Point3.CoordinatesAtChebyshevDistance(Center, distance).Count());
+    }
+
+    [Theory]
+    [InlineData(-1, 0)]
+    [InlineData(0, 1)]
+    [InlineData(1, 27)]
+    [InlineData(2, 125)]
+    [InlineData(3, 343)]
+    public void ChebyshevCubeCount(int distance, int count)
+    {
+        Assert.Equal(count, Point3.ChebyshevCubeCount(distance));
+        Assert.Equal(count, Point3.CoordinatesUpToChebyshevDistance(Center, distance).Count());
+    }
 }
