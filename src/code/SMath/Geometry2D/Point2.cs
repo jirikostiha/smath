@@ -152,21 +152,19 @@ public static class Point2
         if (distance < NInt.One)
             yield break;
 
-        for (var dy = -distance; dy <= distance; dy++)
+        // the limits clamp the traversed range, so no coordinate outside of them is ever visited
+        var maxY = NInt.Min(center.Y + distance, topLimit.Y);
+        for (var y = NInt.Max(center.Y - distance, bottomLimit.Y); y <= maxY; y++)
         {
-            var dx = distance - NInt.Abs(dy);
+            var dx = distance - NInt.Abs(y - center.Y);
 
             var x1 = center.X - dx;
             var x2 = center.X + dx;
-            var y = center.Y + dy;
 
-            if (y >= bottomLimit.Y && y <= topLimit.Y)
-            {
-                if (x1 >= bottomLimit.X && x1 <= topLimit.X)
-                    yield return (x1, y);
-                if (x2 != x1 && x2 >= bottomLimit.X && x2 <= topLimit.X) // skip the duplicate at dx == 0
-                    yield return (x2, y);
-            }
+            if (x1 >= bottomLimit.X && x1 <= topLimit.X)
+                yield return (x1, y);
+            if (x2 != x1 && x2 >= bottomLimit.X && x2 <= topLimit.X) // skip the duplicate at dx == 0
+                yield return (x2, y);
         }
     }
 
@@ -184,10 +182,12 @@ public static class Point2
         {
             var y = center.Y + dy;
             var dxMax = distance - NInt.Abs(dy);
-            for (var dx = -dxMax; dx <= dxMax; dx++)
-            {
-                yield return (center.X + dx, y);
-            }
+
+            // the bound is hoisted out of the loop condition, an iterator holds its locals
+            // in fields and would reevaluate the expression for every single coordinate
+            var maxX = center.X + dxMax;
+            for (var x = center.X - dxMax; x <= maxX; x++)
+                yield return (x, y);
         }
     }
 
@@ -205,19 +205,15 @@ public static class Point2
         if (distance < NInt.Zero)
             yield break;
 
-        for (var dy = -distance; dy <= distance; dy++)
+        // the limits clamp the traversed ranges, so every visited coordinate is also yielded
+        var maxY = NInt.Min(center.Y + distance, topLimit.Y);
+        for (var y = NInt.Max(center.Y - distance, bottomLimit.Y); y <= maxY; y++)
         {
-            var y = center.Y + dy;
-            if (y < bottomLimit.Y || y > topLimit.Y)
-                continue;
+            var dxMax = distance - NInt.Abs(y - center.Y);
 
-            var dxMax = distance - NInt.Abs(dy);
-            for (var dx = -dxMax; dx <= dxMax; dx++)
-            {
-                var x = center.X + dx;
-                if (x >= bottomLimit.X && x <= topLimit.X)
-                    yield return (x, y);
-            }
+            var maxX = NInt.Min(center.X + dxMax, topLimit.X);
+            for (var x = NInt.Max(center.X - dxMax, bottomLimit.X); x <= maxX; x++)
+                yield return (x, y);
         }
     }
 
@@ -612,24 +608,21 @@ public static class Point2
             return 0;
 
         var count = 0;
-        for (var dy = -distance; dy <= distance; dy++)
+        var maxY = NInt.Min(center.Y + distance, topLimit.Y);
+        for (var y = NInt.Max(center.Y - distance, bottomLimit.Y); y <= maxY; y++)
         {
-            var y = center.Y + dy;
-            if (y < bottomLimit.Y || y > topLimit.Y)
-                continue;
+            var dxMax = distance - NInt.Abs(y - center.Y);
 
-            var dxMax = distance - NInt.Abs(dy);
-            for (var dx = -dxMax; dx <= dxMax; dx++)
-            {
-                var x = center.X + dx;
-                if (x < bottomLimit.X || x > topLimit.X)
-                    continue;
+            var lowX = NInt.Max(center.X - dxMax, bottomLimit.X);
+            var highX = NInt.Min(center.X + dxMax, topLimit.X);
 
-                if (count >= destination.Length)
-                    throw new ArgumentException("Destination is too short.", nameof(destination));
+            // the run length is known, so the capacity is checked once per run
+            var runLength = highX >= lowX ? highX - lowX + NInt.One : NInt.Zero;
+            if (NInt.CreateSaturating(destination.Length - count) < runLength)
+                throw new ArgumentException("Destination is too short.", nameof(destination));
 
+            for (var x = lowX; x <= highX; x++)
                 destination[count++] = (x, y);
-            }
         }
 
         return count;
