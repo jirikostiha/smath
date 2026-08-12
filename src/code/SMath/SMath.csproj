@@ -11,8 +11,8 @@
   <PropertyGroup>
     <Product>SMath</Product>
     <Title>SMath</Title>
-    <Version>1.2.0</Version>
-    <Description>Alternative math library based on .NET 7 generic math.</Description>
+    <Version>1.3.0</Version>
+    <Description>Alternative math library based on .NET generic math.</Description>
     <PackageTags>math; generic-math; geometry; combinatorics; statistics; vectors; csharp</PackageTags>
     <PackageProjectUrl>https://github.com/jirikostiha/smath</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
