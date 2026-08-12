@@ -331,4 +331,91 @@ public class Point3CoordinatesTests
         Assert.Equal(count, Point3.ChebyshevCubeCount(distance));
         Assert.Equal(count, Point3.CoordinatesUpToChebyshevDistance(Center, distance).Count());
     }
+
+    [Fact]
+    public void CoordinatesAtManhattanDistance_IntoBuffer_MatchesTheEnumerableOverload()
+    {
+        const int distance = 3;
+        var buffer = new (int X, int Y, int Z)[Point3.ManhattanSphereCount(distance)];
+
+        var count = Point3.CoordinatesAtManhattanDistance(Center, distance, buffer);
+
+        Assert.Equal(buffer.Length, count);
+        Assert.Equal(Point3.CoordinatesAtManhattanDistance(Center, distance).ToArray(), buffer[..count]);
+    }
+
+    [Fact]
+    public void CoordinatesUpToManhattanDistance_IntoBuffer_MatchesTheEnumerableOverload()
+    {
+        const int distance = 3;
+        var buffer = new (int X, int Y, int Z)[Point3.ManhattanBallCount(distance)];
+
+        var count = Point3.CoordinatesUpToManhattanDistance(Center, distance, buffer);
+
+        Assert.Equal(buffer.Length, count);
+        Assert.Equal(Point3.CoordinatesUpToManhattanDistance(Center, distance).ToArray(), buffer[..count]);
+    }
+
+    [Fact]
+    public void CoordinatesUpToManhattanDistanceWithLimits_IntoBuffer_MatchesTheEnumerableOverload()
+    {
+        const int distance = 3;
+        var bottom = (0, 0, 0);
+        var top = (3, 3, 2);
+        var buffer = new (int X, int Y, int Z)[Point3.ManhattanBallCount(distance)];
+
+        var count = Point3.CoordinatesUpToManhattanDistance(Center, distance, bottom, top, buffer);
+
+        Assert.Equal(
+            Point3.CoordinatesUpToManhattanDistance(Center, distance, bottom, top).ToArray(),
+            buffer[..count]);
+    }
+
+    [Fact]
+    public void CoordinatesInManhattanDistanceRange_IntoBuffer_MatchesTheEnumerableOverload()
+    {
+        var buffer = new (int X, int Y, int Z)[Point3.ManhattanBallCount(3)];
+
+        var count = Point3.CoordinatesInManhattanDistanceRange(Center, 2, 3, buffer);
+
+        Assert.Equal(
+            Point3.CoordinatesInManhattanDistanceRange(Center, 2, 3).ToArray(),
+            buffer[..count]);
+    }
+
+    [Fact]
+    public void CoordinatesUpToChebyshevDistance_IntoBuffer_MatchesTheEnumerableOverload()
+    {
+        const int distance = 2;
+        var buffer = new (int X, int Y, int Z)[Point3.ChebyshevCubeCount(distance)];
+
+        var count = Point3.CoordinatesUpToChebyshevDistance(Center, distance, buffer);
+
+        Assert.Equal(buffer.Length, count);
+        Assert.Equal(Point3.CoordinatesUpToChebyshevDistance(Center, distance).ToArray(), buffer[..count]);
+    }
+
+    [Fact]
+    public void Coordinates_IntoTooShortBuffer_Throws()
+    {
+        var buffer = new (int X, int Y, int Z)[3];
+
+        Assert.Throws<ArgumentException>(() => { Point3.CoordinatesAtManhattanDistance(Center, 2, buffer); });
+        Assert.Throws<ArgumentException>(() => { Point3.CoordinatesUpToManhattanDistance(Center, 2, buffer); });
+        Assert.Throws<ArgumentException>(() => { Point3.CoordinatesUpToManhattanDistance(Center, 2, (0, 0, 0), (5, 5, 5), buffer); });
+        Assert.Throws<ArgumentException>(() => { Point3.CoordinatesInManhattanDistanceRange(Center, 0, 2, buffer); });
+        Assert.Throws<ArgumentException>(() => { Point3.CoordinatesUpToChebyshevDistance(Center, 2, buffer); });
+    }
+
+    [Fact]
+    public void Coordinates_IntoBuffer_OfNonPositiveDistance_WritesNothing()
+    {
+        var buffer = new (int X, int Y, int Z)[1];
+
+        Assert.Equal(0, Point3.CoordinatesAtManhattanDistance(Center, 0, buffer));
+        Assert.Equal(0, Point3.CoordinatesUpToManhattanDistance(Center, -1, buffer));
+        Assert.Equal(0, Point3.CoordinatesUpToManhattanDistance(Center, -1, (0, 0, 0), (5, 5, 5), buffer));
+        Assert.Equal(0, Point3.CoordinatesInManhattanDistanceRange(Center, 3, 2, buffer));
+        Assert.Equal(0, Point3.CoordinatesUpToChebyshevDistance(Center, -1, buffer));
+    }
 }
