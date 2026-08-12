@@ -40,12 +40,17 @@ buffer with the matching count helper and reuse or `stackalloc` it.
 | Area | Types |
 | --- | --- |
 | Geometry 2D | `Point2`, `Line` (ray, segment, projection, intersection), `Circle` (arc, chord, sector, segment, tangents), `Ellipse`, `Rectangle`, `GeometricVector2` (polar/cartesian, normals, reflection, dot and cross product), `Function1Geometry` (tangent and normal lines) |
-| Geometry 3D | `Point3`, `Sphere`, `Cuboid` (octants, surface, volume, space diagonal) |
+| Geometry 3D | `Point3` (distances, neighbors, grid traversal), `Sphere`, `Cuboid` (octants, surface, volume, space diagonal) |
 | Statistics | `ArithmeticMean`, `Variance`, `StandardDeviation`, `Covariance`, `PearsonCorrelation` (cross and auto correlation), `Histogram` |
 | General | `Summation`, `Product`, `Determinant`, `PythagorasTheorem`, single variable functions (`Sine`, `Cosine`, `Tangent`, `Cotangent`, `Power2`, `Power3`, `Identity`) |
 
 Distance metrics available on `Point2` and `Point3`: Euclidean, Manhattan, Chebyshev and
-Minkowski.
+Minkowski, plus Canberra in 3D.
+
+Both points also generate integer coordinates by metric: neighbors, the coordinates at an exact
+distance, up to a distance or within a distance range, optionally limited by bounds. In 2D these
+are the taxicab circle and disk and the Chebyshev ring and square, in 3D the taxicab sphere and
+ball, an octahedron, and the Chebyshev shell and cube.
 
 ## Setup
 
@@ -104,6 +109,23 @@ foreach (var coordinate in buffer[..count])
 {
     // visit each coordinate within the taxicab disk
 }
+```
+
+The same in three dimensions, walking a solid octahedron of voxels:
+
+```cs
+using SMath.Geometry3D;
+
+var origin = (X: 0, Y: 0, Z: 0);
+
+Span<(int X, int Y, int Z)> voxels = stackalloc (int X, int Y, int Z)[Point3.ManhattanBallCount(radius)];
+var voxelCount = Point3.CoordinatesUpToManhattanDistance(origin, radius, voxels);
+
+// only the shell, or the 26 neighbors of a voxel
+var shell = Point3.CoordinatesAtChebyshevDistance(origin, radius);
+var neighbors = Point3.AxialNeighbors(origin)
+    .Concat(Point3.EdgeNeighbors(origin))
+    .Concat(Point3.DiagonalNeighbors(origin));
 ```
 
 Cross correlation over a range of lags, writing into a caller owned buffer:
