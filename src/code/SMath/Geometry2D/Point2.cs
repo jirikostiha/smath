@@ -238,12 +238,26 @@ public static class Point2
             var y = center.Y + dy;
             var absDy = NInt.Abs(dy);
             var dxMax = maxDistance - absDy;
-            for (var dx = -dxMax; dx <= dxMax; dx++)
-            {
-                if (NInt.Abs(dx) + absDy < min)
-                    continue;
+            var lowX = center.X - dxMax;
+            var highX = center.X + dxMax;
 
-                yield return (center.X + dx, y);
+            // the row is inside the minimum only where |dx| < inner, a contiguous gap around
+            // the center, so the row is emitted as two runs instead of being filtered
+            var inner = min - absDy;
+            if (inner <= NInt.Zero)
+            {
+                for (var x = lowX; x <= highX; x++)
+                    yield return (x, y);
+            }
+            else
+            {
+                var lowEnd = center.X - inner;
+                for (var x = lowX; x <= lowEnd; x++)
+                    yield return (x, y);
+
+                var highStart = center.X + inner;
+                for (var x = highStart; x <= highX; x++)
+                    yield return (x, y);
             }
         }
     }
@@ -266,21 +280,30 @@ public static class Point2
 
         var min = NInt.Max(minDistance, NInt.Zero);
 
-        for (var dy = -maxDistance; dy <= maxDistance; dy++)
+        var maxY = NInt.Min(center.Y + maxDistance, topLimit.Y);
+        for (var y = NInt.Max(center.Y - maxDistance, bottomLimit.Y); y <= maxY; y++)
         {
-            var y = center.Y + dy;
-            if (y < bottomLimit.Y || y > topLimit.Y)
-                continue;
-
-            var absDy = NInt.Abs(dy);
+            var absDy = NInt.Abs(y - center.Y);
             var dxMax = maxDistance - absDy;
-            for (var dx = -dxMax; dx <= dxMax; dx++)
-            {
-                if (NInt.Abs(dx) + absDy < min)
-                    continue;
+            var lowX = NInt.Max(center.X - dxMax, bottomLimit.X);
+            var highX = NInt.Min(center.X + dxMax, topLimit.X);
 
-                var x = center.X + dx;
-                if (x >= bottomLimit.X && x <= topLimit.X)
+            // the gap where the row is inside the minimum is contiguous, so the row is
+            // emitted as two clamped runs instead of being filtered coordinate by coordinate
+            var inner = min - absDy;
+            if (inner <= NInt.Zero)
+            {
+                for (var x = lowX; x <= highX; x++)
+                    yield return (x, y);
+            }
+            else
+            {
+                var lowEnd = NInt.Min(center.X - inner, highX);
+                for (var x = lowX; x <= lowEnd; x++)
+                    yield return (x, y);
+
+                var highStart = NInt.Max(center.X + inner, lowX);
+                for (var x = highStart; x <= highX; x++)
                     yield return (x, y);
             }
         }
@@ -437,12 +460,26 @@ public static class Point2
         var minY = center.Y - maxDistance;
         var maxY = center.Y + maxDistance;
 
+        // the gap of a column that falls inside the minimum is the same for every column
+        var gapEnd = center.Y - min;
+        var gapStart = center.Y + min;
+
         for (var x = minX; x <= maxX; x++)
         {
-            for (var y = minY; y <= maxY; y++)
+            // once the column is at or beyond the minimum, all of it qualifies and not a
+            // single coordinate of it needs its distance evaluated
+            if (NInt.Abs(x - center.X) >= min)
             {
-                var chebyshev = NInt.Max(NInt.Abs(x - center.X), NInt.Abs(y - center.Y));
-                if (chebyshev >= min)
+                for (var y = minY; y <= maxY; y++)
+                    yield return (x, y);
+            }
+            else
+            {
+                // the column crosses the minimum, the part inside it is skipped as a whole
+                for (var y = minY; y <= gapEnd; y++)
+                    yield return (x, y);
+
+                for (var y = gapStart; y <= maxY; y++)
                     yield return (x, y);
             }
         }
@@ -471,12 +508,24 @@ public static class Point2
         var minY = NInt.Max(center.Y - maxDistance, bottomLimit.Y);
         var maxY = NInt.Min(center.Y + maxDistance, topLimit.Y);
 
+        // the gap of a column that falls inside the minimum is the same for every column,
+        // clamped to the limits so that the runs around it stay within them
+        var gapEnd = NInt.Min(center.Y - min, maxY);
+        var gapStart = NInt.Max(center.Y + min, minY);
+
         for (var x = minX; x <= maxX; x++)
         {
-            for (var y = minY; y <= maxY; y++)
+            if (NInt.Abs(x - center.X) >= min)
             {
-                var chebyshev = NInt.Max(NInt.Abs(x - center.X), NInt.Abs(y - center.Y));
-                if (chebyshev >= min)
+                for (var y = minY; y <= maxY; y++)
+                    yield return (x, y);
+            }
+            else
+            {
+                for (var y = minY; y <= gapEnd; y++)
+                    yield return (x, y);
+
+                for (var y = gapStart; y <= maxY; y++)
                     yield return (x, y);
             }
         }
@@ -633,6 +682,9 @@ public static class Point2
     /// range [<paramref name="minDistance"/>, <paramref name="maxDistance"/>] into a destination buffer.
     /// Allocation free alternative to the enumerable overload.
     /// </summary>
+    /// <remarks>
+    /// Size the buffer with <c>ManhattanDiskCount(maxDistance) - ManhattanDiskCount(minDistance - 1)</c>.
+    /// </remarks>
     /// <returns> Count of written coordinates. </returns>
     /// <exception cref="ArgumentException"> Destination is too short. </exception>
     public static int CoordinatesInManhattanDistanceRange<NInt>((NInt X, NInt Y) center,
@@ -643,22 +695,35 @@ public static class Point2
             return 0;
 
         var min = NInt.Max(minDistance, NInt.Zero);
-        var count = 0;
 
+        // the disk up to the minimum is the part that is left out, so the count is known up front
+        if (NInt.CreateSaturating(destination.Length) < ManhattanDiskCount(maxDistance) - ManhattanDiskCount(min - NInt.One))
+            throw new ArgumentException("Destination is too short.", nameof(destination));
+
+        var count = 0;
         for (var dy = -maxDistance; dy <= maxDistance; dy++)
         {
             var y = center.Y + dy;
             var absDy = NInt.Abs(dy);
             var dxMax = maxDistance - absDy;
-            for (var dx = -dxMax; dx <= dxMax; dx++)
+            var lowX = center.X - dxMax;
+            var highX = center.X + dxMax;
+
+            var inner = min - absDy;
+            if (inner <= NInt.Zero)
             {
-                if (NInt.Abs(dx) + absDy < min)
-                    continue;
+                for (var x = lowX; x <= highX; x++)
+                    destination[count++] = (x, y);
+            }
+            else
+            {
+                var lowEnd = center.X - inner;
+                for (var x = lowX; x <= lowEnd; x++)
+                    destination[count++] = (x, y);
 
-                if (count >= destination.Length)
-                    throw new ArgumentException("Destination is too short.", nameof(destination));
-
-                destination[count++] = (center.X + dx, y);
+                var highStart = center.X + inner;
+                for (var x = highStart; x <= highX; x++)
+                    destination[count++] = (x, y);
             }
         }
 
