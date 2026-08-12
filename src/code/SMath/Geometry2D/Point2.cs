@@ -592,22 +592,20 @@ public static class Point2
         if (distance < NInt.One)
             return 0;
 
+        // the count is known up front, so the capacity is checked once instead of on every write
+        if (NInt.CreateSaturating(destination.Length) < ManhattanCircleCount(distance))
+            throw new ArgumentException("Destination is too short.", nameof(destination));
+
         var count = 0;
         for (var dy = -distance; dy <= distance; dy++)
         {
             var dx = distance - NInt.Abs(dy);
             var y = center.Y + dy;
 
-            if (count >= destination.Length)
-                throw new ArgumentException("Destination is too short.", nameof(destination));
             destination[count++] = (center.X - dx, y);
 
             if (dx != NInt.Zero) // dx == 0 would write the very same coordinate twice
-            {
-                if (count >= destination.Length)
-                    throw new ArgumentException("Destination is too short.", nameof(destination));
                 destination[count++] = (center.X + dx, y);
-            }
         }
 
         return count;
@@ -626,18 +624,17 @@ public static class Point2
         if (distance < NInt.Zero)
             return 0;
 
+        if (NInt.CreateSaturating(destination.Length) < ManhattanDiskCount(distance))
+            throw new ArgumentException("Destination is too short.", nameof(destination));
+
         var count = 0;
         for (var dy = -distance; dy <= distance; dy++)
         {
             var y = center.Y + dy;
             var dxMax = distance - NInt.Abs(dy);
-            for (var dx = -dxMax; dx <= dxMax; dx++)
-            {
-                if (count >= destination.Length)
-                    throw new ArgumentException("Destination is too short.", nameof(destination));
-
-                destination[count++] = (center.X + dx, y);
-            }
+            var maxX = center.X + dxMax;
+            for (var x = center.X - dxMax; x <= maxX; x++)
+                destination[count++] = (x, y);
         }
 
         return count;
@@ -743,6 +740,9 @@ public static class Point2
         if (distance < NInt.Zero)
             return 0;
 
+        if (NInt.CreateSaturating(destination.Length) < ChebyshevSquareCount(distance))
+            throw new ArgumentException("Destination is too short.", nameof(destination));
+
         var minX = center.X - distance;
         var maxX = center.X + distance;
         var minY = center.Y - distance;
@@ -750,15 +750,8 @@ public static class Point2
 
         var count = 0;
         for (var x = minX; x <= maxX; x++)
-        {
             for (var y = minY; y <= maxY; y++)
-            {
-                if (count >= destination.Length)
-                    throw new ArgumentException("Destination is too short.", nameof(destination));
-
                 destination[count++] = (x, y);
-            }
-        }
 
         return count;
     }
