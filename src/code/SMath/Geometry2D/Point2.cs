@@ -82,6 +82,7 @@ public static class Point2
     /// <remarks>
     /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
     /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static N ChebyshevDistance<N>((N X, N Y) point)
         where N : INumber<N>
         => N.Max(N.Abs(point.X), N.Abs(point.Y));
@@ -92,6 +93,7 @@ public static class Point2
     /// <remarks>
     /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
     /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static N ChebyshevDistance<N>((N X, N Y) point1, (N X, N Y) point2)
         where N : INumber<N>
         => N.Max(N.Abs(point1.X - point2.X), N.Abs(point1.Y - point2.Y));
