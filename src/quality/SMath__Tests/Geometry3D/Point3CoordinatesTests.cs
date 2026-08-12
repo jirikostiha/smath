@@ -25,6 +25,15 @@ public class Point3CoordinatesTests
         && c.Z >= bottom.Z && c.Z <= top.Z;
 
     [Fact]
+    public void CoordinatesAtManhattanDistance_OfOne_AreTheAxialNeighbors()
+    {
+        var coords = Point3.CoordinatesAtManhattanDistance(Center, 1).ToArray();
+
+        Assert.Equal(6, coords.Length);
+        Assert.Equal(Sorted(Point3.AxialNeighbors(Center)), Sorted(coords));
+    }
+
+    [Fact]
     public void CoordinatesAtManhattanDistance_FormsTheOctahedronSurface()
     {
         var coords = Point3.CoordinatesAtManhattanDistance(Center, 2).ToArray();

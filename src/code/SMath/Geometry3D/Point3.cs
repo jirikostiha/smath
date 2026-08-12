@@ -9,6 +9,61 @@ namespace SMath.Geometry3D;
 public static class Point3
 {
     /// <summary>
+    /// Get the neighbors in axes directions. The six coordinates sharing a face with the point.
+    /// </summary>
+    public static IEnumerable<(NInt X, NInt Y, NInt Z)> AxialNeighbors<NInt>((NInt X, NInt Y, NInt Z) point)
+        where NInt : IBinaryInteger<NInt>
+    {
+        yield return (point.X + NInt.One, point.Y, point.Z);
+        yield return (point.X - NInt.One, point.Y, point.Z);
+        yield return (point.X, point.Y + NInt.One, point.Z);
+        yield return (point.X, point.Y - NInt.One, point.Z);
+        yield return (point.X, point.Y, point.Z + NInt.One);
+        yield return (point.X, point.Y, point.Z - NInt.One);
+    }
+
+    /// <summary>
+    /// Get the neighbors in edge directions. The twelve coordinates sharing an edge with the point,
+    /// that is the ones offset in exactly two axes.
+    /// </summary>
+    public static IEnumerable<(NInt X, NInt Y, NInt Z)> EdgeNeighbors<NInt>((NInt X, NInt Y, NInt Z) point)
+        where NInt : IBinaryInteger<NInt>
+    {
+        // the four edges around each axis
+        yield return (point.X + NInt.One, point.Y + NInt.One, point.Z);
+        yield return (point.X + NInt.One, point.Y - NInt.One, point.Z);
+        yield return (point.X - NInt.One, point.Y + NInt.One, point.Z);
+        yield return (point.X - NInt.One, point.Y - NInt.One, point.Z);
+
+        yield return (point.X + NInt.One, point.Y, point.Z + NInt.One);
+        yield return (point.X + NInt.One, point.Y, point.Z - NInt.One);
+        yield return (point.X - NInt.One, point.Y, point.Z + NInt.One);
+        yield return (point.X - NInt.One, point.Y, point.Z - NInt.One);
+
+        yield return (point.X, point.Y + NInt.One, point.Z + NInt.One);
+        yield return (point.X, point.Y + NInt.One, point.Z - NInt.One);
+        yield return (point.X, point.Y - NInt.One, point.Z + NInt.One);
+        yield return (point.X, point.Y - NInt.One, point.Z - NInt.One);
+    }
+
+    /// <summary>
+    /// Get the neighbors in diagonal directions. The eight coordinates sharing only a vertex with the
+    /// point, that is the ones offset in all three axes.
+    /// </summary>
+    public static IEnumerable<(NInt X, NInt Y, NInt Z)> DiagonalNeighbors<NInt>((NInt X, NInt Y, NInt Z) point)
+        where NInt : IBinaryInteger<NInt>
+    {
+        yield return (point.X + NInt.One, point.Y + NInt.One, point.Z + NInt.One);
+        yield return (point.X + NInt.One, point.Y + NInt.One, point.Z - NInt.One);
+        yield return (point.X + NInt.One, point.Y - NInt.One, point.Z + NInt.One);
+        yield return (point.X + NInt.One, point.Y - NInt.One, point.Z - NInt.One);
+        yield return (point.X - NInt.One, point.Y + NInt.One, point.Z + NInt.One);
+        yield return (point.X - NInt.One, point.Y + NInt.One, point.Z - NInt.One);
+        yield return (point.X - NInt.One, point.Y - NInt.One, point.Z + NInt.One);
+        yield return (point.X - NInt.One, point.Y - NInt.One, point.Z - NInt.One);
+    }
+
+    /// <summary>
     /// Euclidean distance of the point and origin.
     /// </summary>
     /// <remarks>
