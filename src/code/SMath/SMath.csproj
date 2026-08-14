@@ -1,17 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="..\..\..\product_version.props" />
+
   <PropertyGroup>
-    <!-- Must remain on .NET 7 (generic math baseline) -->
     <TargetFramework>net7.0</TargetFramework>
     <NoWarn>CA1725,CA1716,CS1591,CA1715</NoWarn>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <!-- Package metadata -->
   <PropertyGroup>
     <Product>SMath</Product>
     <Title>SMath</Title>
-    <Version>1.3.0</Version>
     <Description>Alternative math library based on .NET generic math.</Description>
     <PackageTags>math; generic-math; geometry; combinatorics; statistics; vectors; csharp</PackageTags>
     <PackageProjectUrl>https://github.com/jirikostiha/smath</PackageProjectUrl>
