@@ -88,3 +88,13 @@ jobs:
           delete_tags: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    name: Publish
+    needs: [release]
+    uses: ./.github/workflows/publish.yml
+    with:
+      tag: ${{ inputs.tag || github.ref_name }}
+    permissions:
+      contents: read
+      id-token: write
