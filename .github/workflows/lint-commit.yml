@@ -1,14 +1,22 @@
 name: Commit Lint
 
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   commit-lint:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
     steps:
       - uses: actions/checkout@v7
         with:
@@ -22,12 +30,3 @@ jobs:
       - name: Check no !fixup commits
         if: ${{ github.event_name == 'pull_request' }}
         uses: 13rac1/block-fixup-merge-action@v2.0.0
-
-      - name: Delete workflow logs
-        uses: Mattraks/delete-workflow-runs@v2
-        with:
-          token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          delete_workflow_pattern: ${{ github.workflow }}
-          retain_days: 3
-          keep_minimum_runs: 3

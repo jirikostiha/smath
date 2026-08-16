@@ -1,7 +1,8 @@
 name: Benchmarks
 
 env:
-  sln-path: "./src/smath.slnx"
+  benchmark-project: "src/quality/SMath__Benchmarks"
+  results-dir: "benchmarks/results" # ArtifactsPath configured in Program.cs
 
 on:
   workflow_dispatch:
@@ -9,11 +10,13 @@ on:
     branches: [main]
     paths:
       - "src/code/**"
-      - "!src/**.slnx" # ignore sln changes
 
 permissions:
   contents: write
   deployments: write
+
+concurrency: # queue runs, they push results to main
+  group: ${{ github.workflow }}
 
 jobs:
   benchmark:
@@ -24,34 +27,24 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v6
-        with:
-          dotnet-version: "8.0.x"
-
-      - name: .NET Info
-        run: dotnet --info
+        uses: ./.github/actions/setup-dotnet
 
       - name: Run benchmark
-        run: cd src/quality/SMath__Benchmarks && dotnet run -c Release --exporters json --filter '*'
+        run: dotnet run -c Release --exporters json --filter '*'
+        working-directory: ${{ env.benchmark-project }}
 
-      - name: Find Summary File
-        id: find_summary_report_file
+      - name: Find summary report
+        id: summary
         run: |
-          file_path=$(find . -type f -name "*report-full-compressed.json" -exec basename {} \; | head -n 1)
-          echo "file path: $file_path"
-          echo "file_path=$file_path" >> $GITHUB_OUTPUT
-
-      - name: Print File Path
-        run: |
-          echo "file: ${{steps.find_summary_report_file.outputs.file_path}}"
-          echo "path: benchmarks/results/${{ steps.find_summary_report_file.outputs.file_path }}"
+          file=$(basename "$(find "${{ env.results-dir }}" -type f -name '*report-full-compressed.json' | head -n 1)")
+          echo "report=${{ env.results-dir }}/$file" >> $GITHUB_OUTPUT
 
       - name: Store benchmark result
         uses: rhysd/github-action-benchmark@v1
         with:
           name: Benchmark.Net
           tool: "benchmarkdotnet"
-          output-file-path: "benchmarks/results/${{steps.find_summary_report_file.outputs.file_path}}"
+          output-file-path: ${{ steps.summary.outputs.report }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           auto-push: true
           alert-threshold: "200%"

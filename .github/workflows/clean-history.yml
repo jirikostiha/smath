@@ -1,4 +1,4 @@
-name: History Cleanup
+name: History Cleanup # single source of truth for workflow run retention
 
 on:
   workflow_dispatch:
@@ -8,6 +8,8 @@ on:
 jobs:
   cleanup:
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
 
     steps:
       - name: Delete workflow runs

@@ -3,34 +3,39 @@ name: Code Analysis
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
       - 'src/**.cs'
   pull_request:
-    branches: [ main ]
+    branches: [main]
     paths:
       - 'src/**.cs'
   schedule:
     - cron: '40 14 * * 6'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'csharp' ]
+    permissions:
+      contents: read
+      security-events: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
 
+      - name: Setup .NET
+        uses: ./.github/actions/setup-dotnet
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
         with:
-          languages: ${{ matrix.language }}
+          languages: csharp
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v4
