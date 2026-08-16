@@ -1,45 +1,92 @@
-name: Build # integration build
-
-env:
-  sln-path: "./src/smath.slnx"
+name: Build # single source of truth for build, test and pack
 
 on:
   workflow_dispatch:
+    inputs:
+      configuration:
+        description: "Build configuration"
+        type: choice
+        options: [Debug, Release]
+        default: Debug
+  workflow_call:
+    inputs:
+      configuration:
+        description: "Build configuration"
+        type: string
+        default: Debug
+      ref:
+        description: "Git ref to build"
+        type: string
+        default: ""
+      artifacts:
+        description: "Pack and upload binaries and packages"
+        type: boolean
+        default: false
   push:
     paths:
       - "src/**"
       - "!src/**.slnx" # ignore sln changes
 
+concurrency:
+  group: ${{ github.workflow }}-${{ inputs.ref || github.ref }}-${{ inputs.configuration || 'Debug' }}
+  cancel-in-progress: true
+
+env:
+  solution: "./src/smath.slnx"
+  configuration: ${{ inputs.configuration || 'Debug' }}
+  binaries-dir: "asm/SMath/bin" # BaseOutputPath from src/Directory.Build.props
+  packages-dir: "packages"
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
 
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.ref }}
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v6
-        with:
-          dotnet-version: "8.0.x"
-
-      - name: .NET Info
-        run: dotnet --info
+        uses: ./.github/actions/setup-dotnet
 
       - name: Restore dependencies
-        run: dotnet restore "${{ env.sln-path }}"
+        run: dotnet restore "${{ env.solution }}"
 
-      - name: Build debug
-        run: dotnet build "${{ env.sln-path }}" --no-restore -c Debug -p:ContinuousIntegrationBuild=true
+      - name: Build ${{ env.configuration }}
+        run: dotnet build "${{ env.solution }}" --no-restore -c ${{ env.configuration }} -p:ContinuousIntegrationBuild=true
 
       - name: Test
-        run: dotnet test "${{ env.sln-path }}" --no-build --logger "trx;LogFileName=test-results.trx" || true
+        run: dotnet test "${{ env.solution }}" --no-build -c ${{ env.configuration }} --logger "trx;LogFileName=test-results.trx"
 
-      - name: Test Report
-        uses: dorny/test-reporter@v3
+      - name: Test report
         if: always()
+        uses: dorny/test-reporter@v3
         with:
-          name: Tests ${{ matrix.dotnet-version }}
+          name: Tests ${{ env.configuration }}
           path: "**/test-results.trx"
           reporter: dotnet-trx
           fail-on-error: true
+
+      - name: Pack
+        if: inputs.artifacts
+        run: dotnet pack "${{ env.solution }}" --no-build -c ${{ env.configuration }} -o "${{ env.packages-dir }}" -p:ContinuousIntegrationBuild=true
+
+      - name: Upload artifact - binaries
+        if: inputs.artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: binaries
+          path: "${{ env.binaries-dir }}/${{ env.configuration }}"
+          retention-days: 90
+
+      - name: Upload artifact - packages
+        if: inputs.artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: packages
+          path: "${{ env.packages-dir }}"
+          retention-days: 90
