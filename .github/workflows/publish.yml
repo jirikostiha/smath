@@ -1,8 +1,7 @@
 name: Publish
 
 env:
-  sln-path: "./src/smath.slnx"
-  package-dir: "packages"
+  packages-dir: "packages"
 
 on:
   workflow_call:
@@ -11,15 +10,38 @@ on:
         description: "Tag"
         required: true
         type: string
+      build:
+        description: "Build packages; off when the caller already built them in this run"
+        type: boolean
+        default: false
   workflow_dispatch:
     inputs:
       tag:
         description: "Tag"
         required: true
+      build:
+        description: "Build packages from the tag"
+        type: boolean
+        default: true
 
 jobs:
-  publish:
+  build:
+    name: Build packages
+    if: inputs.build
+    uses: ./.github/workflows/build.yml
+    with:
+      configuration: Release
+      ref: ${{ inputs.tag }}
+      artifacts: true
+    permissions:
+      contents: read
+      checks: write
+
+  push:
+    name: Push to NuGet
     runs-on: ubuntu-latest
+    needs: [build]
+    if: ${{ !failure() && !cancelled() }} # build is skipped when packages already exist
     environment: production
     permissions:
       contents: read
@@ -32,15 +54,13 @@ jobs:
           ref: ${{ inputs.tag }}
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v6
+        uses: ./.github/actions/setup-dotnet
+
+      - name: Download artifact - packages
+        uses: actions/download-artifact@v8
         with:
-          dotnet-version: "8.0.x"
-
-      - name: Publish
-        run: dotnet publish "${{ env.sln-path }}" -c Release -p:ContinuousIntegrationBuild=true
-
-      - name: Pack
-        run: dotnet pack "${{ env.sln-path }}" -c Release -o "${{ env.package-dir }}" --no-build -p:ContinuousIntegrationBuild=true
+          name: packages
+          path: "${{ env.packages-dir }}"
 
       - name: NuGet login (OIDC)
         uses: NuGet/login@v1
@@ -49,4 +69,4 @@ jobs:
           user: jiri
 
       - name: Publish to Nuget.org
-        run: dotnet nuget push "${{ env.package-dir }}"/**/*.nupkg --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push "${{ env.packages-dir }}/*.nupkg" --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
