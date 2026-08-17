@@ -1,6 +1,5 @@
 <Solution>
   <Folder Name="/ci/">
-    <File Path="../.github/actions/setup-dotnet/action.yml" />
     <File Path="../.github/dependabot.yml" />
     <File Path="../.github/workflows/analyse-code.yml" />
     <File Path="../.github/workflows/auto-approve.yml" />

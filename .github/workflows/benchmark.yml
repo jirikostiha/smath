@@ -1,9 +1,5 @@
 name: Benchmarks
 
-env:
-  benchmark-project: "src/quality/SMath__Benchmarks"
-  results-dir: "benchmarks/results" # ArtifactsPath configured in Program.cs
-
 on:
   workflow_dispatch:
   push:
@@ -11,43 +7,14 @@ on:
     paths:
       - "src/code/**"
 
-permissions:
-  contents: write
-  deployments: write
-
-concurrency: # queue runs, they push results to main
+concurrency:
   group: ${{ github.workflow }}
 
 jobs:
   benchmark:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Setup .NET
-        uses: ./.github/actions/setup-dotnet
-
-      - name: Run benchmark
-        run: dotnet run -c Release --exporters json --filter '*'
-        working-directory: ${{ env.benchmark-project }}
-
-      - name: Find summary report
-        id: summary
-        run: |
-          file=$(basename "$(find "${{ env.results-dir }}" -type f -name '*report-full-compressed.json' | head -n 1)")
-          echo "report=${{ env.results-dir }}/$file" >> $GITHUB_OUTPUT
-
-      - name: Store benchmark result
-        uses: rhysd/github-action-benchmark@v1
-        with:
-          name: Benchmark.Net
-          tool: "benchmarkdotnet"
-          output-file-path: ${{ steps.summary.outputs.report }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          auto-push: true
-          alert-threshold: "200%"
-          comment-on-alert: true
-          gh-pages-branch: main
-          benchmark-data-dir-path: docs/dev/bench
+    uses: jirikostiha/ci/.github/workflows/benchmark.yml@v1
+    permissions:
+      contents: write
+      deployments: write
+    with:
+      project: src/quality/SMath__Benchmarks
