@@ -75,4 +75,15 @@ public class BinaryIntegerExtensionTests
     {
         Assert.Equal(number, gray.FromGrayCode());
     }
+
+    [Theory]
+    [InlineData(2, 0, 1)]
+    [InlineData(2, 1, 2)]
+    [InlineData(2, 10, 1024)]
+    [InlineData(3, 3, 27)]
+    [InlineData(5, 0, 1)]
+    public void Pow_Int(int number, int exp, int expected)
+    {
+        Assert.Equal(expected, number.Pow(exp));
+    }
 }

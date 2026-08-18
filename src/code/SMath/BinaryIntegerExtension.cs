@@ -43,4 +43,17 @@ public static class BinaryIntegerExtension
 
         return result;
     }
+
+    /// <summary>
+    /// Raises <paramref name="number"/> to a non-negative integer power <paramref name="exp"/>.
+    /// </summary>
+    public static N Pow<N>(this N number, N exp)
+        where N : IBinaryInteger<N>
+    {
+        var product = N.One;
+        for (var i = N.Zero; i < exp; i++)
+            product *= number;
+
+        return product;
+    }
 }
