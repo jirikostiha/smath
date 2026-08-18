@@ -243,6 +243,67 @@ public static class GeometricVector2
             var twoDot = (N.One + N.One) * (vector.X * unitNormal.X + vector.Y * unitNormal.Y);
             return (vector.X - twoDot * unitNormal.X, vector.Y - twoDot * unitNormal.Y);
         }
+
+        /// <summary>
+        /// Reflect a point across a line parallel to the x-axis at height <paramref name="y"/>.
+        /// </summary>
+        public static class ToX
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static (N X, N Y) FromCartesian<N>((N X, N Y) point, N y)
+                where N : INumberBase<N>
+                => (point.X, N.CreateChecked(2) * y - point.Y);
+        }
+
+        /// <summary>
+        /// Reflect a point across a line parallel to the y-axis at abscissa <paramref name="x"/>.
+        /// </summary>
+        public static class ToY
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static (N X, N Y) FromCartesian<N>((N X, N Y) point, N x)
+                where N : INumberBase<N>
+                => (N.CreateChecked(2) * x - point.X, point.Y);
+        }
+
+        /// <summary>
+        /// Reflect a point across an arbitrary line.
+        /// </summary>
+        public static class ToLine
+        {
+            /// <summary>
+            /// Reflect a point across the line through the origin with the given direction vector.
+            /// </summary>
+            public static (N X, N Y) FromCartesian<N>((N X, N Y) point, (N X, N Y) directionVector)
+                where N : INumberBase<N>
+            {
+                var (dx, dy) = directionVector;
+                var t = (point.X * dx + point.Y * dy) / (dx * dx + dy * dy);
+                var two = N.CreateChecked(2);
+                return (two * t * dx - point.X, two * t * dy - point.Y);
+            }
+
+            /// <summary>
+            /// Reflect a point across the line through two points.
+            /// When both points coincide the line degenerates to a point and the
+            /// result is the point reflection about it.
+            /// </summary>
+            public static (N X, N Y) FromCartesian<N>((N X, N Y) point, (N X, N Y) linePointA, (N X, N Y) linePointB)
+                where N : INumberBase<N>
+            {
+                var two = N.CreateChecked(2);
+                var dx = linePointB.X - linePointA.X;
+                var dy = linePointB.Y - linePointA.Y;
+                var denominator = dx * dx + dy * dy;
+
+                if (denominator == N.Zero)
+                    return (two * linePointA.X - point.X, two * linePointA.Y - point.Y);
+
+                var t = ((point.X - linePointA.X) * dx + (point.Y - linePointA.Y) * dy) / denominator;
+                return (two * (linePointA.X + t * dx) - point.X,
+                        two * (linePointA.Y + t * dy) - point.Y);
+            }
+        }
     }
 
     /// <summary>

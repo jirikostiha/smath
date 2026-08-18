@@ -119,4 +119,49 @@ public class GeometricVector2Tests
         Assert.Equal(ex, rx, 9);
         Assert.Equal(ey, ry, 9);
     }
+
+    [Theory]
+    [InlineData(1d, 1d, 0d, 1d, -1d)]     // across x-axis
+    [InlineData(1d, 1d, 2d, 1d, 3d)]      // across y = 2
+    [InlineData(3d, -4d, -1d, 3d, 2d)]    // across y = -1
+    public void ReflectionToX(double x, double y, double lineY, double ex, double ey)
+    {
+        var (rx, ry) = GeometricVector2.Reflection.ToX.FromCartesian((x, y), lineY);
+        Assert.Equal(ex, rx, 9);
+        Assert.Equal(ey, ry, 9);
+    }
+
+    [Theory]
+    [InlineData(1d, 1d, 0d, -1d, 1d)]     // across y-axis
+    [InlineData(1d, 1d, 2d, 3d, 1d)]      // across x = 2
+    [InlineData(-4d, 3d, -1d, 2d, 3d)]    // across x = -1
+    public void ReflectionToY(double x, double y, double lineX, double ex, double ey)
+    {
+        var (rx, ry) = GeometricVector2.Reflection.ToY.FromCartesian((x, y), lineX);
+        Assert.Equal(ex, rx, 9);
+        Assert.Equal(ey, ry, 9);
+    }
+
+    [Theory]
+    [InlineData(1d, 1d, 1d, 0d, 1d, -1d)] // across x-axis direction
+    [InlineData(1d, 1d, 0d, 1d, -1d, 1d)] // across y-axis direction
+    [InlineData(1d, 0d, 1d, 1d, 0d, 1d)]  // across diagonal y = x
+    public void ReflectionToLine_ThroughOrigin(double x, double y, double dx, double dy, double ex, double ey)
+    {
+        var (rx, ry) = GeometricVector2.Reflection.ToLine.FromCartesian((x, y), (dx, dy));
+        Assert.Equal(ex, rx, 9);
+        Assert.Equal(ey, ry, 9);
+    }
+
+    [Theory]
+    [InlineData(2d, 3d, 0d, 0d, 1d, 0d, 2d, -3d)]  // across x-axis (two points)
+    [InlineData(2d, 3d, 0d, 0d, 0d, 1d, -2d, 3d)]  // across y-axis (two points)
+    [InlineData(1d, 0d, 0d, 0d, 1d, 1d, 0d, 1d)]   // across y = x
+    [InlineData(3d, 3d, 1d, 1d, 1d, 1d, -1d, -1d)] // degenerate line -> point reflection about (1,1)
+    public void ReflectionToLine_TwoPoints(double x, double y, double ax, double ay, double bx, double by, double ex, double ey)
+    {
+        var (rx, ry) = GeometricVector2.Reflection.ToLine.FromCartesian((x, y), (ax, ay), (bx, by));
+        Assert.Equal(ex, rx, 9);
+        Assert.Equal(ey, ry, 9);
+    }
 }
