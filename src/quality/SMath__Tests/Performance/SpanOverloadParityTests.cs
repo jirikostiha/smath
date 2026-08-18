@@ -162,6 +162,51 @@ public class SpanOverloadParityTests
     }
 
     [Fact]
+    public void SpearmanRankCorrelation_SpanMatchesEnumerable()
+        => Assert.Equal(
+            SpearmanRankCorrelation.Eval(SampleA.AsEnumerable(), SampleB.AsEnumerable()),
+            SpearmanRankCorrelation.Eval<double>(SampleA, SampleB),
+            12);
+
+    [Fact]
+    public void SpearmanRankCorrelation_InconsistentLengthThrows()
+    {
+        var shorter = SampleB.Take(SampleB.Length - 1);
+
+        Assert.Throws<ArgumentException>(() => SpearmanRankCorrelation.Eval(SampleA.AsEnumerable(), shorter));
+    }
+
+    [Fact]
+    public void KendallCorrelation_SpanMatchesEnumerable()
+        => Assert.Equal(
+            KendallCorrelation.Eval(SampleA.AsEnumerable(), SampleB.AsEnumerable()),
+            KendallCorrelation.Eval<double>(SampleA, SampleB),
+            12);
+
+    [Fact]
+    public void KendallCorrelation_InconsistentLengthThrows()
+    {
+        var shorter = SampleB.Take(SampleB.Length - 1);
+
+        Assert.Throws<ArgumentException>(() => KendallCorrelation.Eval(SampleA.AsEnumerable(), shorter));
+    }
+
+    [Fact]
+    public void CramerCorrelation_SpanMatchesEnumerable()
+        => Assert.Equal(
+            CramerCorrelation.Eval(SampleA.AsEnumerable(), SampleB.AsEnumerable()),
+            CramerCorrelation.Eval<double>(SampleA, SampleB),
+            12);
+
+    [Fact]
+    public void CramerCorrelation_InconsistentLengthThrows()
+    {
+        var shorter = SampleB.Take(SampleB.Length - 1);
+
+        Assert.Throws<ArgumentException>(() => CramerCorrelation.Eval(SampleA.AsEnumerable(), shorter));
+    }
+
+    [Fact]
     public void PearsonCorrelation_EvalPerfSpanMatchesList()
     {
         foreach (var lag in new[] { -3, -1, 0, 1, 3 })
