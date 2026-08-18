@@ -40,10 +40,7 @@ jobs:
           path: "${{ env.binaries-dir }}"
 
       - name: Zip binaries
-        uses: vimtor/action-zip@v1
-        with:
-          files: "${{ env.binaries-dir }}"
-          dest: binaries.zip
+        run: zip -r binaries.zip "${{ env.binaries-dir }}"
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v3

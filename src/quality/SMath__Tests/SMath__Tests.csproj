@@ -7,6 +7,9 @@
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
 		<UseAppHost>true</UseAppHost>
+		<!-- Test assembly and Method_Scenario_Expected names use underscores by convention (CA1707).
+		     Inline constant arrays are idiomatic in xUnit [InlineData]/[MemberData] cases (CA1861). -->
+		<NoWarn>$(NoWarn);CA1707;CA1861</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
