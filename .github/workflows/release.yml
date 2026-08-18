@@ -54,7 +54,7 @@ jobs:
           draft: false
           generate_release_notes: true
           files: binaries.zip
-          token: ${{ secrets.GITHUB_PACKAGE_PUSH_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Remove old releases
         uses: dev-drprasad/delete-older-releases@v0.3.4
