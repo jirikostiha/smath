@@ -1,5 +1,7 @@
-﻿namespace Wayout.Mathematics.Functions
+namespace Wayout.Mathematics.Functions
 {
+    using SMath.Functions1;
+
     /// <summary>
     /// Booth's function
     /// </summary>
@@ -8,7 +10,7 @@
     /// </remarks>
     public static class BoothFunction
     {
-        public static double f(double x1, double x2) => Power2.f(x1 + 2 * x2 - 7) + Power2.f(2 * x1 + x2 - 5);
+        public static double f(double x1, double x2) => Power2.Eval(x1 + 2 * x2 - 7) + Power2.Eval(2 * x1 + x2 - 5);
 
         public const double GlobalMinX1 = 1;
         public const double GlobalMinX2 = 3;

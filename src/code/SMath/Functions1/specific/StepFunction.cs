@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 
 namespace SMath.Functions1
 {
@@ -26,7 +26,7 @@ namespace SMath.Functions1
         public const double DomainX1Max = double.PositiveInfinity;
 
         /// <inheritdoc />
-        public const string PlainTextFormula = "Ya, x1 < C; Yb, x1 > C; P, x1 = C";
+        public static string PlainTextFormula => "Ya, x1 < C; Yb, x1 > C; P, x1 = C";
 
         public static N Eval<N>(N x1, N c, N p, N ya, N yb)
             where N : INumberBase<N>, IComparisonOperators<N, N, bool>

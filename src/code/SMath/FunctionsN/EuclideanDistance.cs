@@ -1,7 +1,8 @@
-﻿namespace SMath.FunctionsN
+namespace SMath.FunctionsN
 {
     using System.Collections.Generic;
     using System.Linq;
+    using SMath.Functions1;
 
     /// <summary>
     /// Euclidean distance.
@@ -13,10 +14,10 @@
     public static class EuclideanDistance
     {
         public static double f(IEnumerable<double> xs)
-            => Root2.f(xs.Sum(x => Power2.f(x)));
+            => Wayout.Mathematics.Functions.Root2.f(xs.Sum(x => Power2.Eval(x)));
 
         public static double Eval(double x1, double x2)
-            => PythagorasTheorem.Hypotenuse(x1, x2);
+            => PT.Hypotenuse(x1, x2);
 
         public static double f(double x1, double x2, double x3)
             => PT.Hypotenuse(x1, x2, x3);

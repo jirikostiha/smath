@@ -1,9 +1,10 @@
-﻿namespace SMath.FunctionsN
+namespace SMath.FunctionsN
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using SMath.Functions1;
     using static System.Math;
 
     /// <summary>
@@ -29,7 +30,7 @@
             double sum = 0;
 
             for (int i = 0; i < xs.Count - 1; i++)
-                sum += b * (xs[i+1] - Power2.f(xs[i])) + Power2.f(a - xs[i]);
+                sum += b * (xs[i+1] - Power2.Eval(xs[i])) + Power2.Eval(a - xs[i]);
 
             return sum;
         }

@@ -1,4 +1,4 @@
-﻿namespace SMath.FunctionsN
+namespace SMath.FunctionsN
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -28,8 +28,8 @@
             where N : INumberBase<N>
             => N.Abs(p1x1 - p2x1) + N.Abs(p1x2 - p2x2);
 
-        public static N f(IEnumerable<double> xs)
+        public static N f<N>(IEnumerable<N> xs)
             where N : INumberBase<N>
-            => Summation.f(xs.Select(x => Abs(x)));
+            => Summation.Eval(xs.Select(N.Abs));
     }
 }

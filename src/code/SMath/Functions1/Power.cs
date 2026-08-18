@@ -1,4 +1,4 @@
-﻿namespace Wayout.Mathematics.Functions
+namespace Wayout.Mathematics.Functions
 {
     using System;
 
@@ -13,67 +13,6 @@
     //    public static double f(double x1, double exponent) => Math.Pow(x1, exponent);
     //}
 
-    /// <summary>
-    /// Square function
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Square_(algebra)">wikipedia</a>
-    /// <a href="https://en.wikipedia.org/wiki/Exponentiation#Power_functions">wikipedia</a>
-    /// </remarks>
-    public static class Power2
-    {
-        public const double DomainMin = double.NegativeInfinity;
-        public const double DomainMax = double.PositiveInfinity;
-
-        public const double ImageMin = 0;
-        public const double ImageMax = double.PositiveInfinity;
-
-        public const bool IsEven = true;
-        public const bool IsOdd = false;
-
-        public const double InterceptsX1At = 0;
-
-        public const double MinimumX1 = 0;
-        public const double MinimumX2 = 0;
-
-        public static double f(double x1) => x1 * x1;
-        public static int f(int x1) => x1 * x1;
-        public static long f(long x1) => x1 * x1;
-
-        //todo Samples(from, to, step) samplovani dat 
-
-
-        public const string Formula = "x1^2";
-    }
-
-    /// <summary>
-    /// Cube function
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Cube_(algebra)">wikipedia</a>
-    /// </remarks>
-    public static class Power3
-    {
-        public const double DomainMin = double.NegativeInfinity;
-        public const double DomainMax = double.PositiveInfinity;
-
-        public const double ImageMin = 0;
-        public const double ImageMax = double.PositiveInfinity;
-
-        public const bool IsEven = false;
-        public const bool IsOdd = true;
-
-        //public const double InterceptsX1At = 0;
-
-        //public const double MinimumX1 = 0;
-        //public const double MinimumX2 = 0;
-
-        public static double f(double x1) => x1 * x1 * x1;
-        public static int f(int x1) => x1 * x1 * x1;
-        public static long f(long x1) => x1 * x1 * x1;
-
-        public const string Formula = "x1^3";
-    }
 
     public static class Power4
     {

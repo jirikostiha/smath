@@ -1,7 +1,8 @@
-﻿namespace SMath.FunctionsN
+namespace SMath.FunctionsN
 {
     using System.Collections.Generic;
     using System.Linq;
+    using static System.Math;
 
     /// <summary>
     /// Hamming distance.

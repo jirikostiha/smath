@@ -1,6 +1,7 @@
-﻿namespace Wayout.Mathematics.Functions
+namespace Wayout.Mathematics.Functions
 {
     using System;
+    using SMath.Functions1;
 
     /// <summary>
     /// Gausian function
@@ -11,7 +12,7 @@
     public static class GausianFunction
     {
         public static double f(double x1, double a, double b, double c)
-            => a * Pow(E, -(Power2.f(x1 - b) / (2 * Power2.f(c))));
+            => a * Math.Pow(Math.E, -(Power2.Eval(x1 - b) / (2 * Power2.Eval(c))));
 
         public const string Formula = "A * e^-(((x1 - B)^2) / (2 * C^2))";
     }

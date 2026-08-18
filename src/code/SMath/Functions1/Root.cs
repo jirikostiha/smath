@@ -1,6 +1,7 @@
-﻿namespace Wayout.Mathematics.Functions
+namespace Wayout.Mathematics.Functions
 {
     using System;
+    using static System.Math;
 
     /// <summary>
     /// Square root function
