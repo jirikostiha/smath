@@ -101,5 +101,5 @@ public static class NumberCollections
 internal sealed class TestClass
 {
     public int Num { get; set; }
-    public string Title { get; set; }
+    public string? Title { get; set; }
 }
