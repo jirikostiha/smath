@@ -269,4 +269,31 @@ public static class GeometricVector2
             where N : ISubtractionOperators<N, N, N>, IMultiplyOperators<N, N, N>
             => (vector1.X * vector2.Y) - (vector1.Y * vector2.X);
     }
+
+    /// <summary>
+    /// Rotation in the plane.
+    /// </summary>
+    /// <remarks>
+    /// <a href="https://en.wikipedia.org/wiki/Rotation_(mathematics)">Wikipedia</a>
+    /// </remarks>
+    public static class Rotation
+    {
+        /// <summary>
+        /// Rotate a vector counterclockwise around the origin by an angle in radians.
+        /// </summary>
+        public static (N X, N Y) FromCartesian<N>((N X, N Y) vector, N angle)
+            where N : ITrigonometricFunctions<N>
+            => ((vector.X * N.Cos(angle)) - (vector.Y * N.Sin(angle)),
+                (vector.X * N.Sin(angle)) + (vector.Y * N.Cos(angle)));
+
+        /// <summary>
+        /// Rotate a point counterclockwise around a center point by an angle in radians.
+        /// </summary>
+        public static (N X, N Y) FromCartesian<N>((N X, N Y) point, (N X, N Y) center, N angle)
+            where N : ITrigonometricFunctions<N>
+        {
+            var (dx, dy) = FromCartesian((point.X - center.X, point.Y - center.Y), angle);
+            return (center.X + dx, center.Y + dy);
+        }
+    }
 }

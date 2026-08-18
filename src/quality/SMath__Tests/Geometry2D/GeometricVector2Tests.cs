@@ -91,4 +91,32 @@ public class GeometricVector2Tests
         Assert.Equal((0d, -1d), GeometricVector2.Normal2.FromCartesian(1d, 0d));
         Assert.Equal((1d, -1d), GeometricVector2.Normal2.FromCartesian(1d, 1d));
     }
+
+    [Theory]
+    [InlineData(1d, 0d, 0d, 1d, 0d)]                 // no rotation
+    [InlineData(1d, 0d, Math.PI / 2d, 0d, 1d)]       // +x -> +y
+    [InlineData(1d, 0d, Math.PI, -1d, 0d)]           // +x -> -x
+    [InlineData(0d, 1d, Math.PI / 2d, -1d, 0d)]      // +y -> -x
+    public void RotationAroundOrigin(double x, double y, double angle, double ex, double ey)
+    {
+        var (rx, ry) = GeometricVector2.Rotation.FromCartesian((x, y), angle);
+        Assert.Equal(ex, rx, 9);
+        Assert.Equal(ey, ry, 9);
+    }
+
+    [Theory]
+    // Ported from the retired `vector` branch CartesianCoords.Rotate cases.
+    [InlineData(0d, 0d, 0d, 0d, 0d, 0d, 0d)]         // zero point, zero center
+    [InlineData(0d, 0d, 0d, 0d, Math.PI, 0d, 0d)]    // zero point, zero center
+    [InlineData(1d, 0d, 0d, 0d, 0d, 1d, 0d)]         // around origin
+    [InlineData(2d, 0d, 0d, 0d, Math.PI, -2d, 0d)]   // around origin
+    [InlineData(4d, 4d, 0d, 0d, Math.PI, -4d, -4d)]  // around origin
+    [InlineData(2d, 1d, 1d, 1d, Math.PI, 0d, 1d)]    // around Q1 point
+    [InlineData(3d, -3d, 3d, 0d, Math.PI, 3d, 3d)]   // around Q4 point
+    public void RotationAroundCenter(double x, double y, double cx, double cy, double angle, double ex, double ey)
+    {
+        var (rx, ry) = GeometricVector2.Rotation.FromCartesian((x, y), (cx, cy), angle);
+        Assert.Equal(ex, rx, 9);
+        Assert.Equal(ey, ry, 9);
+    }
 }
