@@ -214,6 +214,95 @@ public static class Circle
                     }
                 }
             }
+
+            /// <summary>
+            /// Relations of a circle perimeter and another circle.
+            /// </summary>
+            public static class Circle
+            {
+                /// <summary>
+                /// Shortest distance between two circle perimeters. Zero when the perimeters intersect.
+                /// </summary>
+                public static class Distance
+                {
+                    /// <summary>
+                    /// Distance between a perimeter of a circle centered in origin and another circle.
+                    /// </summary>
+                    public static N FromRadius<N>(N radius, (N X, N Y) otherCenter, N otherRadius)
+                        where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
+                        => FromRadius((N.Zero, N.Zero), radius, otherCenter, otherRadius);
+
+                    /// <summary>
+                    /// Distance between a perimeter of a circle centered in <paramref name="center"/> and another circle.
+                    /// </summary>
+                    public static N FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) otherCenter, N otherRadius)
+                        where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
+                    {
+                        var centerDistance = PT.Hypotenuse(otherCenter.X - center.X, otherCenter.Y - center.Y);
+                        // gap when the circles are separated, and gap when one circle is nested in the other
+                        var outer = centerDistance - radius - otherRadius;
+                        var inner = N.Abs(radius - otherRadius) - centerDistance;
+                        var gap = outer > inner ? outer : inner;
+                        return gap > N.Zero ? gap : N.Zero;
+                    }
+                }
+
+                /// <summary>
+                /// Intersection points of two circle perimeters.
+                /// </summary>
+                /// <remarks>
+                /// <a href="https://mathworld.wolfram.com/Circle-CircleIntersection.html">Wolfram Mathworld</a>
+                /// </remarks>
+                public static class Intersection
+                {
+                    /// <summary>
+                    /// Intersection points of a perimeter of a circle centered in origin and another circle.
+                    /// </summary>
+                    /// <returns>
+                    ///     null: the circles do not meet, one contains the other, or they coincide;
+                    ///     two equal points: the circles are tangent;
+                    ///     two points: the circles cross.
+                    /// </returns>
+                    public static ((N X, N Y) Point1, (N X, N Y) Point2)? FromRadius<N>(N radius, (N X, N Y) otherCenter, N otherRadius)
+                        where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
+                        => FromRadius((N.Zero, N.Zero), radius, otherCenter, otherRadius);
+
+                    /// <summary>
+                    /// Intersection points of a perimeter of a circle centered in <paramref name="center"/> and another circle.
+                    /// </summary>
+                    /// <returns>
+                    ///     null: the circles do not meet, one contains the other, or they coincide;
+                    ///     two equal points: the circles are tangent;
+                    ///     two points: the circles cross.
+                    /// </returns>
+                    public static ((N X, N Y) Point1, (N X, N Y) Point2)? FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) otherCenter, N otherRadius)
+                        where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
+                    {
+                        var dx = otherCenter.X - center.X;
+                        var dy = otherCenter.Y - center.Y;
+                        var centerDistance = PT.Hypotenuse(dx, dy);
+                        if (centerDistance == N.Zero
+                            || centerDistance > radius + otherRadius
+                            || centerDistance < N.Abs(radius - otherRadius))
+                            return null;
+
+                        // distance from the center to the radical line along the center-to-center direction
+                        var a = ((centerDistance * centerDistance) + (radius * radius) - (otherRadius * otherRadius))
+                            / (N.CreateChecked(2) * centerDistance);
+                        var half2 = (radius * radius) - (a * a);
+                        var half = half2 > N.Zero ? N.Sqrt(half2) : N.Zero;
+                        // unit vector from the center towards the other center
+                        var ux = dx / centerDistance;
+                        var uy = dy / centerDistance;
+                        // midpoint of the chord shared by the two perimeters
+                        var midX = center.X + (a * ux);
+                        var midY = center.Y + (a * uy);
+                        return (
+                            (midX - (half * uy), midY + (half * ux)),
+                            (midX + (half * uy), midY - (half * ux)));
+                    }
+                }
+            }
         }
     }
 
@@ -289,6 +378,35 @@ public static class Circle
                     public static bool FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) point)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                         => PT.Hypotenuse(point.X - center.X, point.Y - center.Y) <= radius;
+                }
+            }
+
+            /// <summary>
+            /// Relations of a circle region and another circle.
+            /// </summary>
+            public static class Circle
+            {
+                /// <summary>
+                /// Shortest distance between two circle regions. Zero when the regions overlap.
+                /// </summary>
+                public static class Distance
+                {
+                    /// <summary>
+                    /// Distance between a region of a circle centered in origin and another circle.
+                    /// </summary>
+                    public static N FromRadius<N>(N radius, (N X, N Y) otherCenter, N otherRadius)
+                        where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
+                        => FromRadius((N.Zero, N.Zero), radius, otherCenter, otherRadius);
+
+                    /// <summary>
+                    /// Distance between a region of a circle centered in <paramref name="center"/> and another circle.
+                    /// </summary>
+                    public static N FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) otherCenter, N otherRadius)
+                        where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
+                    {
+                        var gap = PT.Hypotenuse(otherCenter.X - center.X, otherCenter.Y - center.Y) - radius - otherRadius;
+                        return gap > N.Zero ? gap : N.Zero;
+                    }
                 }
             }
         }
