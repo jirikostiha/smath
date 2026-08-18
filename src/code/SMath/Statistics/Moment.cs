@@ -1,55 +1,92 @@
-﻿namespace SMath.Statistics
+using System.Numerics;
+
+namespace SMath.Statistics;
+
+/// <summary>
+/// Central moment of a data set.
+/// </summary>
+/// <remarks>
+/// <a href="https://en.wikipedia.org/wiki/Central_moment">Wikipedia</a>
+/// </remarks>
+public static class Moment
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Numerics;
-
-    /// <summary>
-    /// moment ?? ma oznaceni?
-    /// </summary>
-    public static class Moment
+    public static double Eval<N>(IEnumerable<N> sequence, int degree)
+        where N : INumberBase<N>
     {
-        public static double Eval<N>(IEnumerable<N> sequence, int degree)
-            where N : INumberBase<N>
+        if (degree < 1) throw new ArgumentOutOfRangeException(nameof(degree));
+
+        var mean = ArithmeticMean.Eval(sequence);
+        double sum = 0;
+        int count = 0;
+
+        foreach (var n in sequence)
         {
-            //https://code.msdn.microsoft.com/Basic-C-Statistics-Library-26ac5403/sourcecode?fileId=145263&pathId=196059644
-
-            var mean = ArithmeticMean.Eval(sequence);
-            var sum = Summation.Eval(sequence.Select(n => double.Pow(double.CreateChecked(n) - mean, double.CreateChecked(degree))), out int count);
-
-            return sum / double.CreateChecked(count);
+            var diff = double.CreateChecked(n) - mean;
+            sum += double.Pow(diff, degree);
+            count++;
         }
+
+        if (count == 0) return double.NaN;
+
+        return sum / count;
     }
 
-    /// <summary>
-    /// Standardized moment.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Standardized_moment">wikipedia</a>
-    /// </remarks>
-    public static class StandardizedMoment
+    public static double Eval<N>(ReadOnlySpan<N> sequence, int degree)
+        where N : INumberBase<N>
     {
-        public static N Eval<N>(IEnumerable<N> sequence, int degree)
-            where N : INumberBase<N>
-        {
-            switch (degree)
-            {
-                case 1:
-                    return N.Zero;
-                case 2:
-                    return N.One;
-                //case 3:
-                    //return Skewness.f(sequence); //?
-                //case 4:
-                    //return Kurtosis.f(sequence); //?
-                    //case 5:
-                    //  return Hyperskewness.f(sequence);
-                    //case 6:
-                    //  return Hypertailedness.f(sequence);
-            }
+        if (degree < 1) throw new ArgumentOutOfRangeException(nameof(degree));
+        if (sequence.Length == 0) return double.NaN;
 
-            throw new ArgumentOutOfRangeException(nameof(degree));
+        var mean = ArithmeticMean.Eval(sequence);
+        double sum = 0;
+
+        for (int i = 0; i < sequence.Length; i++)
+        {
+            var diff = double.CreateChecked(sequence[i]) - mean;
+            sum += double.Pow(diff, degree);
         }
+
+        return sum / sequence.Length;
+    }
+}
+
+/// <summary>
+/// Standardized moment of a data set.
+/// </summary>
+/// <remarks>
+/// <a href="https://en.wikipedia.org/wiki/Standardized_moment">Wikipedia</a>
+/// </remarks>
+public static class StandardizedMoment
+{
+    public static double Eval<N>(IEnumerable<N> sequence, int degree)
+        where N : INumberBase<N>
+    {
+        if (degree < 1) throw new ArgumentOutOfRangeException(nameof(degree));
+        if (degree == 1) return 0d;
+        if (degree == 2) return 1d;
+
+        var mk = Moment.Eval(sequence, degree);
+        var m2 = Moment.Eval(sequence, 2);
+
+        var stdev = double.Sqrt(m2);
+        if (stdev == 0) return double.NaN;
+
+        return mk / double.Pow(stdev, degree);
+    }
+
+    public static double Eval<N>(ReadOnlySpan<N> sequence, int degree)
+        where N : INumberBase<N>
+    {
+        if (degree < 1) throw new ArgumentOutOfRangeException(nameof(degree));
+        if (degree == 1) return 0d;
+        if (degree == 2) return 1d;
+
+        var mk = Moment.Eval(sequence, degree);
+        var m2 = Moment.Eval(sequence, 2);
+
+        var stdev = double.Sqrt(m2);
+        if (stdev == 0) return double.NaN;
+
+        return mk / double.Pow(stdev, degree);
     }
 }

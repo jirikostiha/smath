@@ -1,18 +1,20 @@
-﻿namespace SMath.Statistics
-{
-    using System.Collections.Generic;
+using System.Numerics;
 
-    /// <summary>
-    /// Skewness
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Kurtosis">wikipedia</a>
-    /// </remarks>
-    public static class Skewness
-    {
-        public static double f(IEnumerable<double> sequence)
-        {
-            return 0;
-        }
-    }
+namespace SMath.Statistics;
+
+/// <summary>
+/// Skewness.
+/// </summary>
+/// <remarks>
+/// <a href="https://en.wikipedia.org/wiki/Skewness">Wikipedia</a>
+/// </remarks>
+public static class Skewness
+{
+    public static double Eval<N>(IEnumerable<N> sequence)
+        where N : INumberBase<N>
+        => StandardizedMoment.Eval(sequence, 3);
+
+    public static double Eval<N>(ReadOnlySpan<N> sequence)
+        where N : INumberBase<N>
+        => StandardizedMoment.Eval(sequence, 3);
 }

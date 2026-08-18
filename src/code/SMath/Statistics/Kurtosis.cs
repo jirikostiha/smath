@@ -1,35 +1,37 @@
-﻿using System.Numerics;
+using System.Numerics;
 
-namespace SMath.Statistics
+namespace SMath.Statistics;
+
+/// <summary>
+/// Kurtosis.
+/// </summary>
+/// <remarks>
+/// <a href="https://en.wikipedia.org/wiki/Kurtosis">Wikipedia</a>
+/// </remarks>
+public static class Kurtosis
 {
-    /// <summary>
-    /// Kurtosis.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Kurtosis">wikipedia</a>
-    /// </remarks>
-    public static class Kurtosis
-    {
-        public static double Eval<N>(IEnumerable<N> numbers)
-            where N : IPowerFunctions<N>
-        {
-             var m2 = Moment.Eval(numbers, 2);
-             var m4 = Moment.Eval(numbers, 4);
+    public static double Eval<N>(IEnumerable<N> numbers)
+        where N : INumberBase<N>
+        => StandardizedMoment.Eval(numbers, 4);
 
-             return m4 / (m2 * m2);
-        }
-    }
+    public static double Eval<N>(ReadOnlySpan<N> numbers)
+        where N : INumberBase<N>
+        => StandardizedMoment.Eval(numbers, 4);
+}
 
-    /// <summary>
-    /// Excess kurtosis
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Kurtosis#Excess_kurtosis">wikipedia</a>
-    /// </remarks>
-    public static class ExcessKurtosis
-    {
-        public static double Eval<N>(IEnumerable<N> sequence)
-            where N : IPowerFunctions<N>
-            => Kurtosis.Eval(sequence) - 3d;
-    }
+/// <summary>
+/// Excess kurtosis.
+/// </summary>
+/// <remarks>
+/// <a href="https://en.wikipedia.org/wiki/Kurtosis#Excess_kurtosis">Wikipedia</a>
+/// </remarks>
+public static class ExcessKurtosis
+{
+    public static double Eval<N>(IEnumerable<N> sequence)
+        where N : INumberBase<N>
+        => Kurtosis.Eval(sequence) - 3d;
+
+    public static double Eval<N>(ReadOnlySpan<N> sequence)
+        where N : INumberBase<N>
+        => Kurtosis.Eval(sequence) - 3d;
 }
