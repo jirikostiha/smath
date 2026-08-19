@@ -36,7 +36,7 @@ public class MomentsAndKurtosisTest
     {
         var data = new double[] { 1, 2, 3, 4, 5 };
         Assert.Equal(0.0, Skewness.Eval(data), 6);
-        Assert.Equal(0.0, Skewness.Eval(new ReadOnlySpan<double>(data), 6), 6);
+        Assert.Equal(0.0, Skewness.Eval(new ReadOnlySpan<double>(data)), 6);
     }
 
     [Fact]
