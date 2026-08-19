@@ -52,15 +52,6 @@ distance, up to a distance or within a distance range, optionally limited by bou
 are the taxicab circle and disk and the Chebyshev ring and square, in 3D the taxicab sphere and
 ball, an octahedron, and the Chebyshev shell and cube.
 
-## Setup
-
-```xml
-<PackageReference Include="SMath" Version="X.X.X" />
-```
-
-Replace `X.X.X` with the current version from [NuGet](https://www.nuget.org/packages/SMath).
-The package targets `net7.0` and runs on any newer runtime.
-
 ## Usage
 
 Geometry, with the numeric type inferred from the arguments:
