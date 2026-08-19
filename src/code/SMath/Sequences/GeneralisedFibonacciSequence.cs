@@ -10,32 +10,64 @@ namespace SMath.Sequences;
 /// </remarks>
 public static class GeneralisedFibonacciSequence
 {
+    public static string PlainTextFormula => "a(n) = a(n - 1) + a(n - 2)";
+
     /// <summary>
-    /// Enumerate the first <paramref name="count"/> terms given the two initial terms
-    /// <paramref name="a"/> and <paramref name="b"/>.
+    /// Term at the one based position <paramref name="n"/>.
     /// </summary>
-    public static IEnumerable<N> Terms<N, NInt>(N a, N b, NInt count)
-        where N : INumberBase<N>, IComparisonOperators<N, N, bool>
-        where NInt : IBinaryInteger<NInt>
+    /// <exception cref="ArgumentOutOfRangeException"> Position is not a positive number. </exception>
+    public static N Term<N>(N first, N second, int n)
+        where N : INumberBase<N>
     {
-        yield return a;
-        if (count == NInt.One)
-            yield break;
+        if (n <= 0)
+            throw new ArgumentOutOfRangeException(nameof(n), "Position has to be a positive number.");
 
-        yield return b;
-        if (count == NInt.CreateChecked(2))
-            yield break;
+        var previous = first;
+        var current = second;
+        for (int i = 1; i < n; i++)
+            (previous, current) = (current, previous + current);
 
-        var n = N.CreateChecked(3);
-        var limit = N.CreateChecked(count);
-        while (n <= limit)
+        return previous;
+    }
+
+    /// <summary>
+    /// Enumerate the first <paramref name="count"/> terms.
+    /// </summary>
+    public static IEnumerable<N> Terms<N>(N first, N second, int count)
+        where N : INumberBase<N>
+    {
+        var previous = first;
+        var current = second;
+        for (int n = 1; n <= count; n++)
         {
-            var current = a + b;
-            yield return current;
-
-            a = b;
-            b = current;
-            n++;
+            yield return previous;
+            (previous, current) = (current, previous + current);
         }
+    }
+
+    /// <summary>
+    /// Write the first <paramref name="count"/> terms into a destination buffer.
+    /// Allocation free alternative to the enumerable overload.
+    /// </summary>
+    /// <returns> Count of written terms. </returns>
+    /// <exception cref="ArgumentException"> Destination is too short. </exception>
+    public static int Terms<N>(N first, N second, int count, Span<N> destination)
+        where N : INumberBase<N>
+    {
+        if (count <= 0)
+            return 0;
+
+        if (destination.Length < count)
+            throw new ArgumentException("Destination is too short.", nameof(destination));
+
+        var previous = first;
+        var current = second;
+        for (int n = 1; n <= count; n++)
+        {
+            destination[n - 1] = previous;
+            (previous, current) = (current, previous + current);
+        }
+
+        return count;
     }
 }

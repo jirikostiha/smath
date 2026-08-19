@@ -14,6 +14,24 @@ public class PermutationsWithRepetitionTest
         Assert.Equal(expected, PermutationsWithRepetition.Count(n, k));
     }
 
+    [Theory]
+    [MemberData(nameof(CountForTuple1FromN))]
+    [MemberData(nameof(CountForTuple2FromN))]
+    [MemberData(nameof(CountForTuple3FromN))]
+    [MemberData(nameof(CountForTuple4FromN))]
+    public void Tuples_CountMatchesCount(int n, int k, int expected)
+    {
+        Assert.Equal(expected, PermutationsWithRepetition.Tuples(n, k).Count());
+    }
+
+    [Fact]
+    public void Tuples_AreInLexicographicOrder()
+    {
+        Assert.Equal(
+            new[] { new[] { 0, 0 }, new[] { 0, 1 }, new[] { 1, 0 }, new[] { 1, 1 } },
+            PermutationsWithRepetition.Tuples(2, 2).ToArray());
+    }
+
     #region data
     public static IEnumerable<object[]> CountForTuple1FromN()
     {

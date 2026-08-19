@@ -45,6 +45,36 @@ public class CombinationsTest
         Assert.Equal(expected, tuples.Distinct().Count());
     }
 
+    [Theory]
+    [MemberData(nameof(CountForTuple1FromN))]
+    [MemberData(nameof(CountForTuple2FromN))]
+    [MemberData(nameof(CountForTuple3FromN))]
+    [MemberData(nameof(CountForTuple4FromN))]
+    public void Tuples_CountMatchesCount(int n, int k, int expected)
+    {
+        Assert.Equal(expected, Combinations.Tuples(n, k).Count());
+    }
+
+    [Fact]
+    public void Tuples_AreInLexicographicOrder()
+    {
+        Assert.Equal(
+            new[] { new[] { 0, 1 }, new[] { 0, 2 }, new[] { 0, 3 }, new[] { 1, 2 }, new[] { 1, 3 }, new[] { 2, 3 } },
+            Combinations.Tuples(4, 2).ToArray());
+    }
+
+    [Fact]
+    public void Tuples_MatchTheFixedSizeOverloads()
+    {
+        Assert.Equal(
+            Combinations.Tuple2(5).Select(tuple => new[] { tuple.Index1, tuple.Index2 }).ToArray(),
+            Combinations.Tuples(5, 2).ToArray());
+
+        Assert.Equal(
+            Combinations.Tuple3(5).Select(tuple => new[] { tuple.Index1, tuple.Index2, tuple.Index3 }).ToArray(),
+            Combinations.Tuples(5, 3).ToArray());
+    }
+
     #region data
     public static IEnumerable<object[]> CountForN()
     {
