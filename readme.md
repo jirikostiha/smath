@@ -41,7 +41,7 @@ buffer with the matching count helper and reuse or `stackalloc` it.
 | --- | --- |
 | Geometry 2D | `Point2`, `Line` (ray, segment, projection, intersection), `Circle` (arc, chord, sector, segment, tangents, distance, intersection), `Ellipse`, `Parabola` (focus, directrix, tangent and normal lines), `Rectangle` (containment, quadrants), `GeometricVector2` (polar/cartesian, normals, rotation, reflection, dot and cross product), `Function1Geometry` (tangent and normal lines) |
 | Geometry 3D | `Point3` (distances, neighbors, grid traversal), `Sphere`, `Cuboid` (octants, surface, volume, space diagonal) |
-| Statistics | `ArithmeticMean`, `Variance`, `StandardDeviation`, `Covariance`, `PearsonCorrelation` (cross and auto correlation), `SpearmanRankCorrelation`, `KendallCorrelation`, `CramerCorrelation`, `Histogram` |
+| Statistics | `ArithmeticMean` (also weighted), `GeometricMean`, `HarmonicMean`, `QuadraticMean`, `CubicMean`, `GeneralizedMean`, `Median`, `Mode`, `Variance`, `StandardDeviation`, `Moment` (central and standardized), `Skewness`, `Kurtosis` (also excess), `Covariance`, `PearsonCorrelation` (cross, auto and weighted correlation), `SpearmanRankCorrelation`, `KendallCorrelation`, `CramerCorrelation`, `Histogram` |
 | General | `ListExtension` (kth smallest/largest element via quickselect), `Summation`, `Product`, `Determinant`, `PythagorasTheorem`, single variable functions (`Sine`, `Cosine`, `Tangent`, `Cotangent`, `Power2`, `Power3`, `Identity`) |
 
 Distance metrics available on `Point2` and `Point3`: Euclidean, Manhattan, Chebyshev and
@@ -92,6 +92,10 @@ var deviation = StandardDeviation.Sample.Eval(values);
 
 double[] other = [2, 1, 4, 3, 5];
 var correlation = PearsonCorrelation.Eval<double>(values, other);
+
+// pairs counted in proportion to their weight, the weights need not sum to one
+double[] weights = [1, 1, 2, 3, 5];
+var weightedCorrelation = PearsonCorrelation.Weighted.Eval<double>(values, other, weights);
 ```
 
 Grid traversal without allocating, using a count helper to size the buffer:
