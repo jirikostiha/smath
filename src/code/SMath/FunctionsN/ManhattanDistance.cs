@@ -3,51 +3,51 @@ using System.Numerics;
 namespace SMath.FunctionsN;
 
 /// <summary>
-/// Euclidean distance in n dimensions.
+/// Manhattan or taxicab distance in n dimensions.
 /// </summary>
 /// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Euclidean_distance">Wikipedia</a>
-/// <a href="https://xlinux.nist.gov/dads/HTML/euclidndstnc.html">NIST</a>
+/// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
+/// <a href="https://xlinux.nist.gov/dads/HTML/manhattanDistance.html">NIST</a>
 /// </remarks>
-public static class EuclideanDistance
+public static class ManhattanDistance
 {
     /// <summary>
     /// String representation of the function.
     /// </summary>
     public static string PlainTextFormula
-        => "sqrt(sum(xi^2))";
+        => "sum(|xi|)";
 
     /// <summary>
-    /// Euclidean distance of a point and the origin.
+    /// Manhattan distance of a point and the origin.
     /// </summary>
     public static N Eval<N>(IEnumerable<N> point)
-        where N : IRootFunctions<N>
+        where N : INumberBase<N>
     {
         var sum = N.Zero;
         foreach (var coordinate in point)
-            sum += coordinate * coordinate;
+            sum += N.Abs(coordinate);
 
-        return N.Sqrt(sum);
+        return sum;
     }
 
     /// <summary>
-    /// Euclidean distance of a point and the origin.
+    /// Manhattan distance of a point and the origin.
     /// </summary>
     public static N Eval<N>(ReadOnlySpan<N> point)
-        where N : IRootFunctions<N>
+        where N : INumberBase<N>
     {
         var sum = N.Zero;
         for (int i = 0; i < point.Length; i++)
-            sum += point[i] * point[i];
+            sum += N.Abs(point[i]);
 
-        return N.Sqrt(sum);
+        return sum;
     }
 
     /// <summary>
-    /// Euclidean distance of two points.
+    /// Manhattan distance of two points.
     /// </summary>
     public static N Eval<N>(IEnumerable<N> point1, IEnumerable<N> point2)
-        where N : IRootFunctions<N>
+        where N : INumberBase<N>
     {
         var sum = N.Zero;
 
@@ -66,30 +66,26 @@ public static class EuclideanDistance
                 if (!moved1)
                     break;
 
-                var difference = enumerator1.Current - enumerator2.Current;
-                sum += difference * difference;
+                sum += N.Abs(enumerator1.Current - enumerator2.Current);
             }
         }
 
-        return N.Sqrt(sum);
+        return sum;
     }
 
     /// <summary>
-    /// Euclidean distance of two points.
+    /// Manhattan distance of two points.
     /// </summary>
     public static N Eval<N>(ReadOnlySpan<N> point1, ReadOnlySpan<N> point2)
-        where N : IRootFunctions<N>
+        where N : INumberBase<N>
     {
         if (point1.Length != point2.Length)
             throw new ArgumentException("Inconsistent length of sequences.");
 
         var sum = N.Zero;
         for (int i = 0; i < point1.Length; i++)
-        {
-            var difference = point1[i] - point2[i];
-            sum += difference * difference;
-        }
+            sum += N.Abs(point1[i] - point2[i]);
 
-        return N.Sqrt(sum);
+        return sum;
     }
 }

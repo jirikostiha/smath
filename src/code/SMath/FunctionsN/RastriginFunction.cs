@@ -1,38 +1,91 @@
-﻿namespace SMath.FunctionsN
+using System.Numerics;
+using SMath.Functions1;
+
+namespace SMath.FunctionsN;
+
+/// <summary>
+/// Rastrigin function in n dimensions.
+/// </summary>
+/// <remarks>
+/// A non convex non linear multimodal function used as a performance test problem for
+/// optimization algorithms. The large search space and the large number of regularly
+/// distributed local minima make it a hard problem.
+/// <a href="https://en.wikipedia.org/wiki/Rastrigin_function">Wikipedia</a>
+/// <a href="https://www.sfu.ca/~ssurjano/rastr.html">Simon Fraser University</a>
+/// </remarks>
+public static class RastriginFunction
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
-    using static System.Math;
+    /// <summary>
+    /// String representation of the function.
+    /// </summary>
+    public static string PlainTextFormula
+        => "a*n + sum(xi^2 - a*cos(2*pi*xi))";
 
     /// <summary>
-    /// A RastriginFunction function is a non-convex non-linear multimodal function.
-    /// See <a href="http://en.wikipedia.org/wiki/Rastrigin_function">this</a> for more info.
+    /// Commonly used value of the amplitude parameter.
     /// </summary>
-    /// <remarks>
-    /// In mathematical optimization, the RastriginFunction function is a non-convex function used as 
-    /// a performance test problem for optimization algorithms. It is a typical example of non-linear 
-    /// multimodal function. This function is a fairly difficult problem due to its large search space 
-    /// and its large number of local minima.
-    /// It is defined by:
-    /// f(x) = A n + \sum_{i=1}^n x_i^2 - A\cos(2 \pi x_i)
-    /// where A = 10, n is number of dimmensions 
-    /// It has a global minimum at x=0 where f(x)=0.
-    /// http://tracer.lcc.uma.es/problems/rastrigin/rastrigin.html
-    /// http://www.ft.utb.cz/people/zelinka/soma/   
-    /// </remarks>
-    public static class RastriginFunction
+    public static N DefaultAmplitude<N>()
+        where N : INumberBase<N>
+        => N.CreateChecked(10);
+
+    /// <summary>
+    /// Value of the global minimum. It is attained at the origin for any amplitude.
+    /// </summary>
+    public static N GlobalMinimum<N>()
+        where N : INumberBase<N>
+        => N.Zero;
+
+    /// <summary>
+    /// Evaluates the function value.
+    /// </summary>
+    /// <param name="point"> Coordinates of the point. </param>
+    /// <param name="a"> Amplitude of the modulation. </param>
+    public static N Eval<N>(IEnumerable<N> point, N a)
+        where N : ITrigonometricFunctions<N>
     {
-        public static double f(IList<double> xs, double a = 10) => a * xs.Count + xs.Sum(x => x*x -a * Cos(2 * PI * x));
+        var doublePi = N.CreateChecked(2) * N.Pi;
+        var sum = N.Zero;
+        var dimensions = N.Zero;
 
-        public static double f(double x1, double x2, double a = 10)
-           => 2*a + x1*x1 + x2*x2 - a * (Cos(2 * PI * x1) + Cos(2 * PI * x2));
+        foreach (var coordinate in point)
+        {
+            sum += Power2.Eval(coordinate) - (a * N.Cos(doublePi * coordinate));
+            dimensions++;
+        }
 
-        public const double GlobalMinX1 = 0;
-
-        public const string Formula2 = "";
-
-        public const string FormulaN = "n*A + sum([x² - A*cos(2*π*x)])";
+        return (a * dimensions) + sum;
     }
+
+    /// <summary>
+    /// Evaluates the function value with the default amplitude.
+    /// </summary>
+    /// <param name="point"> Coordinates of the point. </param>
+    public static N Eval<N>(IEnumerable<N> point)
+        where N : ITrigonometricFunctions<N>
+        => Eval(point, DefaultAmplitude<N>());
+
+    /// <summary>
+    /// Evaluates the function value.
+    /// </summary>
+    /// <param name="point"> Coordinates of the point. </param>
+    /// <param name="a"> Amplitude of the modulation. </param>
+    public static N Eval<N>(ReadOnlySpan<N> point, N a)
+        where N : ITrigonometricFunctions<N>
+    {
+        var doublePi = N.CreateChecked(2) * N.Pi;
+        var sum = N.Zero;
+
+        for (int i = 0; i < point.Length; i++)
+            sum += Power2.Eval(point[i]) - (a * N.Cos(doublePi * point[i]));
+
+        return (a * N.CreateChecked(point.Length)) + sum;
+    }
+
+    /// <summary>
+    /// Evaluates the function value with the default amplitude.
+    /// </summary>
+    /// <param name="point"> Coordinates of the point. </param>
+    public static N Eval<N>(ReadOnlySpan<N> point)
+        where N : ITrigonometricFunctions<N>
+        => Eval(point, DefaultAmplitude<N>());
 }
