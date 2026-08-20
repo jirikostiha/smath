@@ -40,10 +40,7 @@ jobs:
           path: "${{ env.binaries-dir }}"
 
       - name: Zip binaries
-        uses: vimtor/action-zip@v1
-        with:
-          files: "${{ env.binaries-dir }}"
-          dest: binaries.zip
+        run: zip -r binaries.zip "${{ env.binaries-dir }}"
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v3
@@ -54,7 +51,7 @@ jobs:
           draft: false
           generate_release_notes: true
           files: binaries.zip
-          token: ${{ secrets.GITHUB_PACKAGE_PUSH_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Remove old releases
         uses: dev-drprasad/delete-older-releases@v0.3.4
@@ -73,3 +70,4 @@ jobs:
     permissions:
       contents: read
       id-token: write
+      checks: write

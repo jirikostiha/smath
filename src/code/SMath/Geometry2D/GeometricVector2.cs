@@ -245,7 +245,7 @@ public static class GeometricVector2
         }
 
         /// <summary>
-        /// Reflect a point across a line parallel to the x-axis at height <paramref name="y"/>.
+        /// Reflect a point across a line parallel to the x-axis at height <c>y</c>.
         /// </summary>
         public static class ToX
         {
@@ -256,7 +256,7 @@ public static class GeometricVector2
         }
 
         /// <summary>
-        /// Reflect a point across a line parallel to the y-axis at abscissa <paramref name="x"/>.
+        /// Reflect a point across a line parallel to the y-axis at abscissa <c>x</c>.
         /// </summary>
         public static class ToY
         {
