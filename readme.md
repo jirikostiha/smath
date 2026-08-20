@@ -39,22 +39,28 @@ next to `IEnumerable<T>`, avoiding enumerator allocation and interface dispatch 
 Coordinate generators additionally offer buffer filling overloads, so a caller can size a
 buffer with the matching count helper and reuse or `stackalloc` it.
 
+## Installation
+
+```sh
+dotnet add package SMath
+```
+
 ## Contents
 
 | Area | Types |
 | --- | --- |
-| Geometry 2D | `Point2`, `Line` (ray, segment, projection, intersection), `Circle` (arc, chord, sector, segment, tangents, distance, intersection), `Ellipse`, `Hyperbola` (foci, directrices, asymptotes), `Parabola` (focus, directrix, tangent and normal lines), `Polygon` (shoelace area, centroid, point containment, regular polygons), `Triangle` (equilateral, isosceles and right), `Rectangle` (containment, quadrants), `Square`, `Rhombus`, `RegularHexagon`, `GeometricVector2` (polar/cartesian, normals, rotation, reflection, dot and cross product), `Function1Geometry` (tangent and normal lines) |
-| Geometry 3D | `Point3` (distances, neighbors, grid traversal), `Sphere`, `Cuboid` (octants, surface, volume, space diagonal) |
-| General | `Summation`, `Product`, `Determinant`, `PythagorasTheorem` |
-| Statistics | `ArithmeticMean` (also weighted), `GeometricMean`, `HarmonicMean`, `QuadraticMean`, `CubicMean`, `GeneralizedMean`, `Median`, `Mode`, `Variance`, `StandardDeviation`, `Moment` (central and standardized), `Skewness`, `Kurtosis` (also excess), `Covariance`, `PearsonCorrelation` (cross, auto and weighted correlation), `SpearmanRankCorrelation`, `KendallCorrelation`, `CramerCorrelation`, `Histogram` |
-| Combinatorics | `Permutations`, `PermutationsWithRepetition`, `Combinations`, `CombinationsWithRepetition`, each counting and enumerating the index tuples |
+| Geometry 1D | `LineSegment` |
+| Geometry 2D | `Point2`, `Line` (ray, segment, projection, intersection), `Circle` (arc, chord, sector, segment, tangents, distance, intersection), `Ellipse`, `Hyperbola`, `Parabola`, `Polygon` (shoelace area, centroid, containment), `Triangle` (equilateral, isosceles, right), `Rectangle`, `Square`, `Rhombus`, `RegularHexagon`, `GeometricVector2` (polar/cartesian, normals, rotation, reflection, dot/cross product), `Function1Geometry` |
+| Geometry 3D | `Point3` (distances, neighbors, grid traversal), `Sphere`, `SphereCap`, `BallCap`, `SphericalShell`, `Ellipsoid`, `Cuboid` |
+| Statistics | `ArithmeticMean` (also weighted), `GeometricMean`, `HarmonicMean`, `QuadraticMean`, `CubicMean`, `GeneralizedMean`, `Median`, `Mode`, `Variance`, `StandardDeviation`, `Moment`, `Skewness`, `Kurtosis`, `Covariance`, `PearsonCorrelation` (cross, auto, weighted), `SpearmanRankCorrelation`, `KendallCorrelation`, `CramerCorrelation`, `Histogram` |
+| Combinatorics | `Permutations`, `PermutationsWithRepetition`, `Combinations`, `CombinationsWithRepetition` |
 | Sequences | `ArithmeticSequence`, `GeometricSequence`, `FibonacciSequence`, `GeneralisedFibonacciSequence`, `CollatzConjecture` |
-| Series | `ArithmeticSeries`, `GeometricSeries` (partial sums and the limit) |
+| Series | `ArithmeticSeries`, `GeometricSeries` |
 | Expansions | `BinomialCoefficient`, `PascalsTriangle` |
-| General | `ListExtension` (kth smallest/largest element via quickselect), `Summation`, `Product`, `Factorial` (plain, falling and rising), `Determinant`, `PythagorasTheorem`, single variable functions (`Sine`, `Cosine`, `Tangent`, `Cotangent`, `Power2`, `Power3`, `Identity`) |
-| Functions of one variable | `Identity`, `Sine`, `Cosine`, `Tangent`, `Cotangent`, `Power2` to `Power8`, `Root2` to `Root8`, `Reciprocal` (also of the square and the square root), `Exponential`, `NaturalExponential`, `Logarithm` (also common, natural and binary), `Polynomial`, `SigmoidFunction`, `BipolarSigmoid`, `LogisticFunction`, `GaussianFunction`, `SignFunction`, `StepFunction`, `UnitStepFunction` |
-| Distances in n dimensions | `EuclideanDistance`, `ManhattanDistance`, `ChebyshevDistance`, `HammingDistance` |
-| Optimization test functions | `AckleyFunction`, `BoothFunction` in two dimensions, `RastriginFunction`, `RosenbrockFunction` in n dimensions |
+| Functions (1D) | `Identity`, `Sine`, `Cosine`, `Tangent`, `Cotangent`, `Power2` to `Power8`, `Root2` to `Root8`, `Reciprocal`, `Exponential`, `NaturalExponential`, `Logarithm`, `Polynomial`, `SigmoidFunction`, `BipolarSigmoid`, `LogisticFunction`, `GaussianFunction`, `SignFunction`, `StepFunction`, `UnitStepFunction` |
+| Functions (2D & nD) | `AckleyFunction`, `BoothFunction`, `RastriginFunction`, `RosenbrockFunction` |
+| Distances (nD) | `EuclideanDistance`, `ManhattanDistance`, `ChebyshevDistance`, `HammingDistance` |
+| General & Extensions | `BinaryIntegerExtension` (Hamming distance, Gray code, GCD, Pow), `Factorial`, `Determinant`, `PythagorasTheorem`, `Summation` |
 
 Distance metrics available on `Point2` and `Point3`: Euclidean, Manhattan, Chebyshev and
 Minkowski, plus Canberra in 3D.
