@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 
 namespace SMath.Geometry2D;
 
@@ -122,14 +122,18 @@ public static class Circle
                     /// </summary>
                     public static bool FromRadius<N>(N radius, (N X, N Y) point)
                         where N : IRootFunctions<N>
-                        => PT.Hypotenuse(point.X, point.Y) == radius;
+                        => (point.X * point.X + point.Y * point.Y) == radius * radius;
 
                     /// <summary>
                     /// Determines whether a point lies on a perimeter of a circle centered in <paramref name="center"/>.
                     /// </summary>
                     public static bool FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) point)
                         where N : IRootFunctions<N>
-                        => PT.Hypotenuse(point.X - center.X, point.Y - center.Y) == radius;
+                    {
+                        var dx = point.X - center.X;
+                        var dy = point.Y - center.Y;
+                        return (dx * dx + dy * dy) == radius * radius;
+                    }
                 }
             }
 

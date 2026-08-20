@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Numerics;
 
 namespace SMath.Geometry2D;
@@ -91,9 +91,9 @@ public static class Line
         /// </summary>
         public static N FromAngle<N>(N angle)
             where N : IFloatingPointIeee754<N>, ITrigonometricFunctions<N>
-            => angle != N.Pi / N.CreateChecked(2)
-            ? N.Tan(angle)
-            : N.PositiveInfinity;
+            => angle == N.Pi / N.CreateChecked(2) || N.Abs(N.Cos(angle)) < N.CreateChecked(1e-15)
+            ? N.PositiveInfinity
+            : N.Tan(angle);
     }
 
     /// <summary>
