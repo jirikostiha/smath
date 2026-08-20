@@ -11,7 +11,7 @@
 [![Code Analysis](https://github.com/jirikostiha/smath/actions/workflows/analyse-code.yml/badge.svg)](https://github.com/jirikostiha/smath/actions/workflows/analyse-code.yml)
 [![Code Lint](https://github.com/jirikostiha/smath/actions/workflows/lint-code.yml/badge.svg)](https://github.com/jirikostiha/smath/actions/workflows/lint-code.yml)
 
-Geometry and statistics for .NET, written against
+Geometry, statistics and combinatorics for .NET, written against
 [generic math](https://learn.microsoft.com/en-us/dotnet/standard/generics/math).
 Every formula is generic over the numeric type, so the same call site works for `double`,
 `float`, `decimal` or `Half` without overloads or casting.
@@ -42,7 +42,11 @@ buffer with the matching count helper and reuse or `stackalloc` it.
 | Geometry 2D | `Point2`, `Line` (ray, segment, projection, intersection), `Circle` (arc, chord, sector, segment, tangents), `Ellipse`, `Parabola` (focus, directrix, tangent and normal lines), `Rectangle`, `GeometricVector2` (polar/cartesian, normals, reflection, dot and cross product), `Function1Geometry` (tangent and normal lines) |
 | Geometry 3D | `Point3` (distances, neighbors, grid traversal), `Sphere`, `Cuboid` (octants, surface, volume, space diagonal) |
 | Statistics | `ArithmeticMean`, `Variance`, `StandardDeviation`, `Covariance`, `PearsonCorrelation` (cross and auto correlation), `SpearmanRankCorrelation`, `KendallCorrelation`, `CramerCorrelation`, `Histogram` |
-| General | `Summation`, `Product`, `Determinant`, `PythagorasTheorem`, single variable functions (`Sine`, `Cosine`, `Tangent`, `Cotangent`, `Power2`, `Power3`, `Identity`) |
+| Combinatorics | `Permutations`, `PermutationsWithRepetition`, `Combinations`, `CombinationsWithRepetition`, each counting and enumerating the index tuples |
+| Sequences | `ArithmeticSequence`, `GeometricSequence`, `FibonacciSequence`, `GeneralisedFibonacciSequence`, `CollatzConjecture` |
+| Series | `ArithmeticSeries`, `GeometricSeries` (partial sums and the limit) |
+| Expansions | `BinomialCoefficient`, `PascalsTriangle` |
+| General | `Summation`, `Product`, `Factorial` (plain, falling and rising), `Determinant`, `PythagorasTheorem`, single variable functions (`Sine`, `Cosine`, `Tangent`, `Cotangent`, `Power2`, `Power3`, `Identity`) |
 
 Distance metrics available on `Point2` and `Point3`: Euclidean, Manhattan, Chebyshev and
 Minkowski, plus Canberra in 3D.
@@ -92,6 +96,38 @@ var deviation = StandardDeviation.Sample.Eval(values);
 
 double[] other = [2, 1, 4, 3, 5];
 var correlation = PearsonCorrelation.Eval<double>(values, other);
+```
+
+Counting and enumerating, with the counts evaluated so that only the result has to fit
+into the number type:
+
+```cs
+using SMath.Combinatorics;
+using SMath.Expansions;
+
+var hands = Combinations.Count(52, 5);           // 2598960
+var wide = BinomialCoefficient.Eval(60L, 30L);   // the factorial form would overflow a long
+var draws = PermutationsWithRepetition.Count(6, 3);
+
+foreach (var indices in Combinations.Tuples(5, 3))
+{
+    // every 3 element combination of the indices 0 to 4, in lexicographic order
+}
+```
+
+Sequences and their partial sums, over a sequence type of your choice:
+
+```cs
+using SMath.Sequences;
+using SMath.Series;
+
+var fibonacci = FibonacciSequence.Terms<long>(10);
+var term = GeometricSequence.Term(initial: 8d, ratio: 0.5, n: 4);
+var sum = GeometricSeries.Term(initial: 8d, ratio: 0.5, n: 4);
+var limit = GeometricSeries.Limit(initial: 8d, ratio: 0.5);
+
+Span<double> buffer = stackalloc double[16];
+var count = ArithmeticSequence.Terms(initial: 1d, difference: 2d, count: 16, destination: buffer);
 ```
 
 Grid traversal without allocating, using a count helper to size the buffer:

@@ -45,14 +45,30 @@ public static class BinaryIntegerExtension
     }
 
     /// <summary>
-    /// Raises <paramref name="number"/> to a non-negative integer power <paramref name="exp"/>.
+    /// Raises <paramref name="number"/> to a non negative integer power <paramref name="exp"/>.
     /// </summary>
+    /// <remarks>
+    /// Evaluated by squaring, so the count of multiplications is logarithmic in the exponent.
+    /// <a href="https://en.wikipedia.org/wiki/Exponentiation_by_squaring">Wikipedia</a>
+    /// </remarks>
+    /// <exception cref="ArgumentOutOfRangeException"> Exponent is negative. </exception>
     public static N Pow<N>(this N number, N exp)
         where N : IBinaryInteger<N>
     {
+        if (N.IsNegative(exp))
+            throw new ArgumentOutOfRangeException(nameof(exp), "Exponent cannot be negative.");
+
         var product = N.One;
-        for (var i = N.Zero; i < exp; i++)
-            product *= number;
+        var factor = number;
+        while (exp > N.Zero)
+        {
+            if (N.IsOddInteger(exp))
+                product *= factor;
+
+            exp >>= 1;
+            if (exp > N.Zero)
+                factor *= factor;
+        }
 
         return product;
     }

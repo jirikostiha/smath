@@ -21,6 +21,33 @@ public class PermutationsTest
         Assert.Equal(expected, Permutations.Count(n, k));
     }
 
+    [Theory]
+    [MemberData(nameof(CountForTuple1FromN))]
+    [MemberData(nameof(CountForTuple2FromN))]
+    [MemberData(nameof(CountForTuple3FromN))]
+    [MemberData(nameof(CountForTuple4FromN))]
+    public void Tuples_CountMatchesCount(int n, int k, int expected)
+    {
+        Assert.Equal(expected, Permutations.Tuples(n, k).Count());
+    }
+
+    [Fact]
+    public void Tuples_AreInLexicographicOrder()
+    {
+        Assert.Equal(
+            new[] { new[] { 0, 1 }, new[] { 0, 2 }, new[] { 1, 0 }, new[] { 1, 2 }, new[] { 2, 0 }, new[] { 2, 1 } },
+            Permutations.Tuples(3, 2).ToArray());
+    }
+
+    [Fact]
+    public void Tuples_AreDistinctAndWithoutRepetition()
+    {
+        var tuples = Permutations.Tuples(4, 3).ToArray();
+
+        Assert.All(tuples, tuple => Assert.Equal(tuple.Length, tuple.Distinct().Count()));
+        Assert.Equal(tuples.Length, tuples.Select(tuple => string.Join(',', tuple)).Distinct().Count());
+    }
+
     #region data
     public static IEnumerable<object[]> CountForN()
     {
