@@ -30,6 +30,17 @@ public class PascalsTriangleTest
             Assert.Equal(BinomialCoefficient.Eval((long)rowNumber, k), row[k]);
     }
 
+    [Fact]
+    public void Row_DoesNotOverflowOnThePartialProduct()
+    {
+        // the plain recurrence overflows an int within this row, although every number of it fits
+        const int rowNumber = 30;
+        var row = PascalsTriangle.Row<int>(rowNumber);
+
+        for (int k = 0; k < row.Length; k++)
+            Assert.Equal(BinomialCoefficient.Eval(rowNumber, k), row[k]);
+    }
+
     [Theory]
     [InlineData(-1, 0)]
     [InlineData(0, 1)]
