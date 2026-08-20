@@ -23,7 +23,7 @@ public class CombinationsTest
 
     [Theory]
     [MemberData(nameof(CountForTuple2FromN))]
-    public void Tuple2(int n, int k, int expected)
+    public void Tuple2(int n, int expected)
     {
         var tuples = Combinations.Tuple2(n).ToArray();
         Assert.Equal(expected, tuples.Distinct().Count());
@@ -31,7 +31,7 @@ public class CombinationsTest
 
     [Theory]
     [MemberData(nameof(CountForTuple3FromN))]
-    public void Tuple3(int n, int k, int expected)
+    public void Tuple3(int n, int expected)
     {
         var tuples = Combinations.Tuple3(n).ToArray();
         Assert.Equal(expected, tuples.Distinct().Count());
@@ -39,7 +39,7 @@ public class CombinationsTest
 
     [Theory]
     [MemberData(nameof(CountForTuple4FromN))]
-    public void Tuple4(int n, int k, int expected)
+    public void Tuple4(int n, int expected)
     {
         var tuples = Combinations.Tuple4(n).ToArray();
         Assert.Equal(expected, tuples.Distinct().Count());
