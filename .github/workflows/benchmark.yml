@@ -18,3 +18,4 @@ jobs:
       deployments: write
     with:
       project: src/quality/SMath__Benchmarks
+      results-dir: benchmarks/results
