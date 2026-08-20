@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace SMath.Functions1;
 
@@ -55,11 +56,16 @@ public class Power4 : IMathFunction
         => N.Zero;
 
     /// <inheritdoc />
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static N Eval<N>(N x)
         where N : IMultiplyOperators<N, N, N>
-        => x * x * x * x;
+    {
+        var x2 = x * x;
+        return x2 * x2;
+    }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static N DerivativeEval<N>(N x)
         where N : INumberBase<N>
-        => N.CreateChecked(4) * x * x * x;
+        => N.CreateChecked(4) * (x * x * x);
 }

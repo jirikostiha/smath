@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace SMath;
 
@@ -35,27 +36,26 @@ public static class Summation
         return sum;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static N Eval<N>(ReadOnlySpan<N> summands)
          where N : INumberBase<N>
     {
         var sum = N.Zero;
-        foreach (var summand in summands)
-            sum += summand;
+        for (int i = 0; i < summands.Length; i++)
+            sum += summands[i];
 
         return sum;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static N Eval<N, NInt>(ReadOnlySpan<N> summands, out NInt count)
         where N : INumberBase<N>
         where NInt : IBinaryInteger<NInt>
     {
+        count = NInt.CreateChecked(summands.Length);
         var sum = N.Zero;
-        count = NInt.Zero;
-        foreach (var summand in summands)
-        {
-            sum += summand;
-            count++;
-        }
+        for (int i = 0; i < summands.Length; i++)
+            sum += summands[i];
 
         return sum;
     }
