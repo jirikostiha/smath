@@ -43,6 +43,7 @@ buffer with the matching count helper and reuse or `stackalloc` it.
 | Geometry 3D | `Point3` (distances, neighbors, grid traversal), `Sphere`, `Cuboid` (octants, surface, volume, space diagonal) |
 | Statistics | `ArithmeticMean` (also weighted), `GeometricMean`, `HarmonicMean`, `QuadraticMean`, `CubicMean`, `GeneralizedMean`, `Median`, `Mode`, `Variance`, `StandardDeviation`, `Moment` (central and standardized), `Skewness`, `Kurtosis` (also excess), `Covariance`, `PearsonCorrelation` (cross, auto and weighted correlation), `SpearmanRankCorrelation`, `KendallCorrelation`, `CramerCorrelation`, `Histogram` |
 | General | `ListExtension` (kth smallest/largest element via quickselect), `Summation`, `Product`, `Determinant`, `PythagorasTheorem`, single variable functions (`Sine`, `Cosine`, `Tangent`, `Cotangent`, `Power2`, `Power3`, `Identity`) |
+| General | `Summation`, `Product`, `Determinant`, `PythagorasTheorem`, single variable functions (`Sine`, `Cosine`, `Tangent`, `Cotangent`, `Power2`, `Power3`, `Identity`) |
 
 Distance metrics available on `Point2` and `Point3`: Euclidean, Manhattan, Chebyshev and
 Minkowski, plus Canberra in 3D.
