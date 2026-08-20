@@ -30,9 +30,44 @@ public static class PearsonCorrelation
     internal static double Evaluate<N>(IEnumerable<N> aSequence, IEnumerable<N> bSequence)
         where N : INumberBase<N>
     {
-        return Covariance.Evaluate(aSequence, bSequence, out _)
-            / (StandardDeviation.FromVariance(Variance.Sample.Eval(aSequence))
-            * StandardDeviation.FromVariance(Variance.Sample.Eval(bSequence)));
+        double meanA = 0;
+        double meanB = 0;
+        double momentA = 0;
+        double momentB = 0;
+        double coMoment = 0;
+        long count = 0;
+
+        using var aEnumerator = aSequence.GetEnumerator();
+        using var bEnumerator = bSequence.GetEnumerator();
+
+        while (true)
+        {
+            var aMoved = aEnumerator.MoveNext();
+            var bMoved = bEnumerator.MoveNext();
+
+            if (aMoved != bMoved)
+                throw new ArgumentException("Inconsistent length of sequences.");
+
+            if (!aMoved)
+                break;
+
+            count++;
+            double a = double.CreateChecked(aEnumerator.Current);
+            double b = double.CreateChecked(bEnumerator.Current);
+            double deltaA = a - meanA;
+            double deltaB = b - meanB;
+            meanA += deltaA / count;
+            meanB += deltaB / count;
+            momentA += deltaA * (a - meanA);
+            momentB += deltaB * (b - meanB);
+            coMoment += deltaA * (b - meanB);
+        }
+
+        if (count < 2)
+            return double.NaN;
+
+        double denominator = double.Sqrt(momentA * momentB);
+        return denominator != 0 ? coMoment / denominator : double.NaN;
     }
 
     public static double Eval<N>(ReadOnlySpan<N> aSequence, ReadOnlySpan<N> bSequence)
@@ -41,9 +76,31 @@ public static class PearsonCorrelation
         if (aSequence.Length != bSequence.Length)
             throw new ArgumentException("Inconsistent length of sequences.");
 
-        return Covariance.Eval(aSequence, bSequence)
-            / (StandardDeviation.FromVariance(Variance.Sample.Eval(aSequence))
-            * StandardDeviation.FromVariance(Variance.Sample.Eval(bSequence)));
+        if (aSequence.Length < 2)
+            return double.NaN;
+
+        double meanA = 0;
+        double meanB = 0;
+        double momentA = 0;
+        double momentB = 0;
+        double coMoment = 0;
+
+        for (int i = 0; i < aSequence.Length; i++)
+        {
+            int count = i + 1;
+            double a = double.CreateChecked(aSequence[i]);
+            double b = double.CreateChecked(bSequence[i]);
+            double deltaA = a - meanA;
+            double deltaB = b - meanB;
+            meanA += deltaA / count;
+            meanB += deltaB / count;
+            momentA += deltaA * (a - meanA);
+            momentB += deltaB * (b - meanB);
+            coMoment += deltaA * (b - meanB);
+        }
+
+        double denominator = double.Sqrt(momentA * momentB);
+        return denominator != 0 ? coMoment / denominator : double.NaN;
     }
 
     /// <summary>

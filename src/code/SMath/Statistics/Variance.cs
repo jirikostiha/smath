@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace SMath.Statistics;
@@ -16,34 +16,38 @@ public static class Variance
     private static double PreEvaluate<N>(IEnumerable<N> sequence, out int count)
         where N : INumberBase<N>
     {
-        var mean = ArithmeticMean.Eval(sequence);
-        // deliberately not using LINQ Select, it would allocate a closure and an iterator
-        // and add a delegate call per element
-        double sum = 0;
+        double mean = 0;
+        double moment = 0;
         count = 0;
+
         foreach (var n in sequence)
         {
-            var diff = double.CreateChecked(n) - mean;
-            sum += diff * diff;
             count++;
+            double x = double.CreateChecked(n);
+            double delta = x - mean;
+            mean += delta / count;
+            moment += delta * (x - mean);
         }
 
-        return sum;
+        return moment;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static double PreEvaluate<N>(ReadOnlySpan<N> sequence)
         where N : INumberBase<N>
     {
-        var mean = ArithmeticMean.Eval(sequence);
-        double sum = 0;
+        double mean = 0;
+        double moment = 0;
+
         for (int i = 0; i < sequence.Length; i++)
         {
-            var diff = double.CreateChecked(sequence[i]) - mean;
-            sum += diff * diff;
+            double x = double.CreateChecked(sequence[i]);
+            double delta = x - mean;
+            mean += delta / (i + 1);
+            moment += delta * (x - mean);
         }
 
-        return sum;
+        return moment;
     }
 
     /// <summary>

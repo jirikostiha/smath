@@ -29,9 +29,9 @@ public static class Covariance
     internal static double Evaluate<N>(IEnumerable<N> aSequence, IEnumerable<N> bSequence, out long count)
         where N : INumberBase<N>
     {
-        var sumS1 = N.Zero;
-        var sumS2 = N.Zero;
-        var sumS1S2 = N.Zero;
+        double sumS1 = 0;
+        double sumS2 = 0;
+        double sumS1S2 = 0;
         count = 0;
 
         using (var aEnumerator = aSequence.GetEnumerator())
@@ -49,8 +49,8 @@ public static class Covariance
                 if (!aMoved)
                     break;
 
-                var a = aEnumerator.Current;
-                var b = bEnumerator.Current;
+                var a = double.CreateChecked(aEnumerator.Current);
+                var b = double.CreateChecked(bEnumerator.Current);
                 sumS1 += a;
                 sumS2 += b;
                 sumS1S2 += a * b;
@@ -58,10 +58,7 @@ public static class Covariance
             }
         }
 
-        // the sums are widened before multiplying, the product of two N sums can overflow N
-        return (double.CreateChecked(sumS1S2) - double.CreateChecked(sumS1) * double.CreateChecked(sumS2)
-            / double.CreateChecked(count))
-            / double.CreateChecked(count - 1);
+        return (sumS1S2 - sumS1 * sumS2 / count) / (count - 1);
     }
 
     public static double Eval<N>(ReadOnlySpan<N> aSequence, ReadOnlySpan<N> bSequence)
@@ -70,22 +67,19 @@ public static class Covariance
         if (aSequence.Length != bSequence.Length)
             throw new ArgumentException("Inconsistent length of sequences.");
 
-        var sumS1 = N.Zero;
-        var sumS2 = N.Zero;
-        var sumS1S2 = N.Zero;
+        double sumS1 = 0;
+        double sumS2 = 0;
+        double sumS1S2 = 0;
 
         for (int i = 0; i < aSequence.Length; i++)
         {
-            var a = aSequence[i];
-            var b = bSequence[i];
+            var a = double.CreateChecked(aSequence[i]);
+            var b = double.CreateChecked(bSequence[i]);
             sumS1 += a;
             sumS2 += b;
             sumS1S2 += a * b;
         }
 
-        // the sums are widened before multiplying, the product of two N sums can overflow N
-        return (double.CreateChecked(sumS1S2) - double.CreateChecked(sumS1) * double.CreateChecked(sumS2)
-            / double.CreateChecked(aSequence.Length))
-            / double.CreateChecked(aSequence.Length - 1);
+        return (sumS1S2 - sumS1 * sumS2 / aSequence.Length) / (aSequence.Length - 1);
     }
 }
