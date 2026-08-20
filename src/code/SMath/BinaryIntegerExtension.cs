@@ -43,4 +43,49 @@ public static class BinaryIntegerExtension
 
         return result;
     }
+
+    /// <summary>
+    /// Greatest common divisor of two numbers.
+    /// </summary>
+    /// <remarks>
+    /// Shared by the formulas which reduce a fraction before multiplying it out.
+    /// <a href="https://en.wikipedia.org/wiki/Euclidean_algorithm">Wikipedia</a>
+    /// </remarks>
+    internal static N GreatestCommonDivisor<N>(N number, N otherNumber)
+        where N : IBinaryInteger<N>
+    {
+        while (otherNumber != N.Zero)
+            (number, otherNumber) = (otherNumber, number % otherNumber);
+
+        return number;
+    }
+
+    /// <summary>
+    /// Raises <paramref name="number"/> to a non negative integer power <paramref name="exp"/>.
+    /// </summary>
+    /// <remarks>
+    /// Evaluated by squaring, so the count of multiplications is logarithmic in the exponent.
+    /// <a href="https://en.wikipedia.org/wiki/Exponentiation_by_squaring">Wikipedia</a>
+    /// </remarks>
+    /// <exception cref="ArgumentOutOfRangeException"> Exponent is negative. </exception>
+    public static N Pow<N>(this N number, N exp)
+        where N : IBinaryInteger<N>
+    {
+        if (N.IsNegative(exp))
+            throw new ArgumentOutOfRangeException(nameof(exp), "Exponent cannot be negative.");
+
+        var product = N.One;
+        var factor = number;
+        while (exp > N.Zero)
+        {
+            if (N.IsOddInteger(exp))
+                product *= factor;
+
+            exp >>= 1;
+            if (exp > N.Zero)
+                factor *= factor;
+        }
+
+        return product;
+    }
 }

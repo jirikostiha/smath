@@ -75,4 +75,33 @@ public class BinaryIntegerExtensionTests
     {
         Assert.Equal(number, gray.FromGrayCode());
     }
+
+    [Theory]
+    [InlineData(2, 0, 1)]
+    [InlineData(2, 1, 2)]
+    [InlineData(2, 10, 1024)]
+    [InlineData(3, 3, 27)]
+    [InlineData(5, 0, 1)]
+    [InlineData(0, 0, 1)]
+    [InlineData(0, 5, 0)]
+    [InlineData(1, 30, 1)]
+    [InlineData(-2, 3, -8)]
+    [InlineData(-2, 4, 16)]
+    [InlineData(7, 9, 40353607)]
+    public void Pow_Int(int number, int exp, int expected)
+    {
+        Assert.Equal(expected, number.Pow(exp));
+    }
+
+    [Fact]
+    public void Pow_Long()
+    {
+        Assert.Equal(1152921504606846976L, 2L.Pow(60L));
+    }
+
+    [Fact]
+    public void Pow_NegativeExponentThrows()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => 2.Pow(-1));
+    }
 }
