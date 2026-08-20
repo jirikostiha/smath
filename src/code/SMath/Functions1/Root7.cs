@@ -3,14 +3,13 @@ using System.Numerics;
 namespace SMath.Functions1;
 
 /// <summary>
-/// General logarithm function.
+/// Seventh root function.
 /// </summary>
 /// <remarks>
-/// It is the inverse of the exponential function.
-/// The function is defined for positive numbers only.
-/// <a href="https://en.wikipedia.org/wiki/Logarithm">Wikipedia</a>
+/// The function is defined for all real numbers, the root of a negative number is negative.
+/// <a href="https://en.wikipedia.org/wiki/Nth_root">Wikipedia</a>
 /// </remarks>
-public class Logarithm : IMathFunction
+public class Root7 : IMathFunction
 {
     /// <inheritdoc />
     public static bool IsEven
@@ -18,7 +17,7 @@ public class Logarithm : IMathFunction
 
     /// <inheritdoc />
     public static bool IsOdd
-        => false;
+        => true;
 
     /// <inheritdoc />
     public static bool IsContinuous
@@ -26,17 +25,17 @@ public class Logarithm : IMathFunction
 
     /// <inheritdoc />
     public static string PlainTextFormula
-        => "log(x, b)";
+        => "x^(1/7)";
 
     /// <inheritdoc />
     public static (N Min, N Max) Domain<N>()
         where N : IFloatingPointIeee754<N>
-        => (N.Zero, N.PositiveInfinity);
+        => (N.NegativeInfinity, N.PositiveInfinity);
 
     /// <inheritdoc />
     public static (N Min, N Max) NumberDomain<N>()
         where N : INumberBase<N>, IMinMaxValue<N>
-        => (N.Zero, N.MaxValue);
+        => (N.MinValue, N.MaxValue);
 
     /// <inheritdoc />
     public static (N Min, N Max) Image<N>()
@@ -57,11 +56,11 @@ public class Logarithm : IMathFunction
         => N.NegativeInfinity;
 
     /// <inheritdoc />
-    public static N Eval<N>(N x, N @base)
-        where N : ILogarithmicFunctions<N>
-        => N.Log(x, @base);
+    public static N Eval<N>(N x)
+        where N : IRootFunctions<N>
+        => N.RootN(x, 7);
 
-    public static N DerivativeEval<N>(N x, N @base)
-        where N : ILogarithmicFunctions<N>
-        => N.One / (x * N.Log(@base));
+    public static N DerivativeEval<N>(N x)
+        where N : IRootFunctions<N>
+        => N.One / (N.CreateChecked(7) * Power6.Eval(N.RootN(x, 7)));
 }

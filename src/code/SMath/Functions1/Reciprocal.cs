@@ -3,14 +3,13 @@ using System.Numerics;
 namespace SMath.Functions1;
 
 /// <summary>
-/// General logarithm function.
+/// Reciprocal or multiplicative inverse function.
 /// </summary>
 /// <remarks>
-/// It is the inverse of the exponential function.
-/// The function is defined for positive numbers only.
-/// <a href="https://en.wikipedia.org/wiki/Logarithm">Wikipedia</a>
+/// Function is not continuous. It has a vertical asymptote at zero, which is not in the domain.
+/// <a href="https://en.wikipedia.org/wiki/Multiplicative_inverse">Wikipedia</a>
 /// </remarks>
-public class Logarithm : IMathFunction
+public class Reciprocal : IMathFunction
 {
     /// <inheritdoc />
     public static bool IsEven
@@ -18,25 +17,25 @@ public class Logarithm : IMathFunction
 
     /// <inheritdoc />
     public static bool IsOdd
-        => false;
-
-    /// <inheritdoc />
-    public static bool IsContinuous
         => true;
 
     /// <inheritdoc />
+    public static bool IsContinuous
+        => false;
+
+    /// <inheritdoc />
     public static string PlainTextFormula
-        => "log(x, b)";
+        => "1/x";
 
     /// <inheritdoc />
     public static (N Min, N Max) Domain<N>()
         where N : IFloatingPointIeee754<N>
-        => (N.Zero, N.PositiveInfinity);
+        => (N.NegativeInfinity, N.PositiveInfinity);
 
     /// <inheritdoc />
     public static (N Min, N Max) NumberDomain<N>()
         where N : INumberBase<N>, IMinMaxValue<N>
-        => (N.Zero, N.MaxValue);
+        => (N.MinValue, N.MaxValue);
 
     /// <inheritdoc />
     public static (N Min, N Max) Image<N>()
@@ -57,11 +56,11 @@ public class Logarithm : IMathFunction
         => N.NegativeInfinity;
 
     /// <inheritdoc />
-    public static N Eval<N>(N x, N @base)
-        where N : ILogarithmicFunctions<N>
-        => N.Log(x, @base);
+    public static N Eval<N>(N x)
+        where N : INumberBase<N>
+        => N.One / x;
 
-    public static N DerivativeEval<N>(N x, N @base)
-        where N : ILogarithmicFunctions<N>
-        => N.One / (x * N.Log(@base));
+    public static N DerivativeEval<N>(N x)
+        where N : INumberBase<N>
+        => -N.One / Power2.Eval(x);
 }

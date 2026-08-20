@@ -3,14 +3,14 @@ using System.Numerics;
 namespace SMath.Functions1;
 
 /// <summary>
-/// General logarithm function.
+/// Common logarithm function.
 /// </summary>
 /// <remarks>
-/// It is the inverse of the exponential function.
+/// It is a special case of the logarithm function with the base equal to ten.
 /// The function is defined for positive numbers only.
-/// <a href="https://en.wikipedia.org/wiki/Logarithm">Wikipedia</a>
+/// <a href="https://en.wikipedia.org/wiki/Common_logarithm">Wikipedia</a>
 /// </remarks>
-public class Logarithm : IMathFunction
+public class CommonLogarithm : IMathFunction
 {
     /// <inheritdoc />
     public static bool IsEven
@@ -26,7 +26,7 @@ public class Logarithm : IMathFunction
 
     /// <inheritdoc />
     public static string PlainTextFormula
-        => "log(x, b)";
+        => "log10(x)";
 
     /// <inheritdoc />
     public static (N Min, N Max) Domain<N>()
@@ -57,11 +57,11 @@ public class Logarithm : IMathFunction
         => N.NegativeInfinity;
 
     /// <inheritdoc />
-    public static N Eval<N>(N x, N @base)
+    public static N Eval<N>(N x)
         where N : ILogarithmicFunctions<N>
-        => N.Log(x, @base);
+        => N.Log10(x);
 
-    public static N DerivativeEval<N>(N x, N @base)
+    public static N DerivativeEval<N>(N x)
         where N : ILogarithmicFunctions<N>
-        => N.One / (x * N.Log(@base));
+        => N.One / (x * N.Log(N.CreateChecked(10)));
 }

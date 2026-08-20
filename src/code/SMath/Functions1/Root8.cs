@@ -3,14 +3,13 @@ using System.Numerics;
 namespace SMath.Functions1;
 
 /// <summary>
-/// General logarithm function.
+/// Eighth root function.
 /// </summary>
 /// <remarks>
-/// It is the inverse of the exponential function.
-/// The function is defined for positive numbers only.
-/// <a href="https://en.wikipedia.org/wiki/Logarithm">Wikipedia</a>
+/// The function is defined for non negative numbers only.
+/// <a href="https://en.wikipedia.org/wiki/Nth_root">Wikipedia</a>
 /// </remarks>
-public class Logarithm : IMathFunction
+public class Root8 : IMathFunction
 {
     /// <inheritdoc />
     public static bool IsEven
@@ -26,7 +25,7 @@ public class Logarithm : IMathFunction
 
     /// <inheritdoc />
     public static string PlainTextFormula
-        => "log(x, b)";
+        => "x^(1/8)";
 
     /// <inheritdoc />
     public static (N Min, N Max) Domain<N>()
@@ -41,27 +40,27 @@ public class Logarithm : IMathFunction
     /// <inheritdoc />
     public static (N Min, N Max) Image<N>()
         where N : IFloatingPointIeee754<N>
-        => (N.NegativeInfinity, N.PositiveInfinity);
+        => (N.Zero, N.PositiveInfinity);
 
     /// <inheritdoc />
     public static (N Min, N Max) NumberImage<N>()
         where N : INumberBase<N>, IMinMaxValue<N>
-        => (N.MinValue, N.MaxValue);
+        => (N.Zero, N.MaxValue);
 
     public static N GlobalMaximum<N>()
         where N : IFloatingPointIeee754<N>
         => N.PositiveInfinity;
 
     public static N GlobalMinimum<N>()
-        where N : IFloatingPointIeee754<N>
-        => N.NegativeInfinity;
+        where N : INumberBase<N>
+        => N.Zero;
 
     /// <inheritdoc />
-    public static N Eval<N>(N x, N @base)
-        where N : ILogarithmicFunctions<N>
-        => N.Log(x, @base);
+    public static N Eval<N>(N x)
+        where N : IRootFunctions<N>
+        => N.RootN(x, 8);
 
-    public static N DerivativeEval<N>(N x, N @base)
-        where N : ILogarithmicFunctions<N>
-        => N.One / (x * N.Log(@base));
+    public static N DerivativeEval<N>(N x)
+        where N : IRootFunctions<N>
+        => N.One / (N.CreateChecked(8) * Power7.Eval(N.RootN(x, 8)));
 }

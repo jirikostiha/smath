@@ -3,14 +3,15 @@ using System.Numerics;
 namespace SMath.Functions1;
 
 /// <summary>
-/// General logarithm function.
+/// General exponential function.
+/// The variable is the exponent, the base is a parameter.
 /// </summary>
 /// <remarks>
-/// It is the inverse of the exponential function.
-/// The function is defined for positive numbers only.
-/// <a href="https://en.wikipedia.org/wiki/Logarithm">Wikipedia</a>
+/// Properties of the function hold for a positive base other than one.
+/// <a href="https://en.wikipedia.org/wiki/Exponential_function">Wikipedia</a>
+/// <a href="https://en.wikipedia.org/wiki/Exponentiation">Wikipedia</a>
 /// </remarks>
-public class Logarithm : IMathFunction
+public class Exponential : IMathFunction
 {
     /// <inheritdoc />
     public static bool IsEven
@@ -26,42 +27,45 @@ public class Logarithm : IMathFunction
 
     /// <inheritdoc />
     public static string PlainTextFormula
-        => "log(x, b)";
+        => "b^x";
 
     /// <inheritdoc />
     public static (N Min, N Max) Domain<N>()
         where N : IFloatingPointIeee754<N>
-        => (N.Zero, N.PositiveInfinity);
+        => (N.NegativeInfinity, N.PositiveInfinity);
 
     /// <inheritdoc />
     public static (N Min, N Max) NumberDomain<N>()
         where N : INumberBase<N>, IMinMaxValue<N>
-        => (N.Zero, N.MaxValue);
+        => (N.MinValue, N.MaxValue);
 
     /// <inheritdoc />
     public static (N Min, N Max) Image<N>()
         where N : IFloatingPointIeee754<N>
-        => (N.NegativeInfinity, N.PositiveInfinity);
+        => (N.Zero, N.PositiveInfinity);
 
     /// <inheritdoc />
     public static (N Min, N Max) NumberImage<N>()
         where N : INumberBase<N>, IMinMaxValue<N>
-        => (N.MinValue, N.MaxValue);
+        => (N.Zero, N.MaxValue);
 
     public static N GlobalMaximum<N>()
         where N : IFloatingPointIeee754<N>
         => N.PositiveInfinity;
 
+    /// <summary>
+    /// Infimum of the function. It is not attained for any real number.
+    /// </summary>
     public static N GlobalMinimum<N>()
-        where N : IFloatingPointIeee754<N>
-        => N.NegativeInfinity;
+        where N : INumberBase<N>
+        => N.Zero;
 
     /// <inheritdoc />
     public static N Eval<N>(N x, N @base)
-        where N : ILogarithmicFunctions<N>
-        => N.Log(x, @base);
+        where N : IPowerFunctions<N>
+        => N.Pow(@base, x);
 
     public static N DerivativeEval<N>(N x, N @base)
-        where N : ILogarithmicFunctions<N>
-        => N.One / (x * N.Log(@base));
+        where N : IPowerFunctions<N>, ILogarithmicFunctions<N>
+        => N.Pow(@base, x) * N.Log(@base);
 }
