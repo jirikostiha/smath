@@ -39,9 +39,10 @@ buffer with the matching count helper and reuse or `stackalloc` it.
 
 | Area | Types |
 | --- | --- |
-| Geometry 2D | `Point2`, `Line` (ray, segment, projection, intersection), `Circle` (arc, chord, sector, segment, tangents), `Ellipse`, `Parabola` (focus, directrix, tangent and normal lines), `Rectangle`, `GeometricVector2` (polar/cartesian, normals, reflection, dot and cross product), `Function1Geometry` (tangent and normal lines) |
+| Geometry 2D | `Point2`, `Line` (ray, segment, projection, intersection), `Circle` (arc, chord, sector, segment, tangents, distance, intersection), `Ellipse`, `Parabola` (focus, directrix, tangent and normal lines), `Rectangle` (containment, quadrants), `GeometricVector2` (polar/cartesian, normals, rotation, reflection, dot and cross product), `Function1Geometry` (tangent and normal lines) |
 | Geometry 3D | `Point3` (distances, neighbors, grid traversal), `Sphere`, `Cuboid` (octants, surface, volume, space diagonal) |
 | Statistics | `ArithmeticMean` (also weighted), `GeometricMean`, `HarmonicMean`, `QuadraticMean`, `CubicMean`, `GeneralizedMean`, `Median`, `Mode`, `Variance`, `StandardDeviation`, `Moment` (central and standardized), `Skewness`, `Kurtosis` (also excess), `Covariance`, `PearsonCorrelation` (cross, auto and weighted correlation), `SpearmanRankCorrelation`, `KendallCorrelation`, `CramerCorrelation`, `Histogram` |
+| General | `ListExtension` (kth smallest/largest element via quickselect), `Summation`, `Product`, `Determinant`, `PythagorasTheorem`, single variable functions (`Sine`, `Cosine`, `Tangent`, `Cotangent`, `Power2`, `Power3`, `Identity`) |
 | General | `Summation`, `Product`, `Determinant`, `PythagorasTheorem`, single variable functions (`Sine`, `Cosine`, `Tangent`, `Cotangent`, `Power2`, `Power3`, `Identity`) |
 
 Distance metrics available on `Point2` and `Point3`: Euclidean, Manhattan, Chebyshev and
@@ -51,15 +52,6 @@ Both points also generate integer coordinates by metric: neighbors, the coordina
 distance, up to a distance or within a distance range, optionally limited by bounds. In 2D these
 are the taxicab circle and disk and the Chebyshev ring and square, in 3D the taxicab sphere and
 ball, an octahedron, and the Chebyshev shell and cube.
-
-## Setup
-
-```xml
-<PackageReference Include="SMath" Version="X.X.X" />
-```
-
-Replace `X.X.X` with the current version from [NuGet](https://www.nuget.org/packages/SMath).
-The package targets `net7.0` and runs on any newer runtime.
 
 ## Usage
 

@@ -12,7 +12,7 @@ public static class Program
     {
         Console.WriteLine("directory: " + Directory.GetCurrentDirectory());
 
-        if (!Directory.GetCurrentDirectory().EndsWith(typeof(Program).Assembly.GetName().Name ?? string.Empty))
+        if (!Directory.GetCurrentDirectory().EndsWith(typeof(Program).Assembly.GetName().Name ?? string.Empty, StringComparison.Ordinal))
         {
             //HACK: workaround for executing from VS because the output path of binaries is in different folder than usual
             Directory.SetCurrentDirectory(Path.GetDirectoryName(GetSourceFilePathName()) ?? string.Empty);
