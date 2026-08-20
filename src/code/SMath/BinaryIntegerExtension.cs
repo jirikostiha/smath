@@ -45,6 +45,22 @@ public static class BinaryIntegerExtension
     }
 
     /// <summary>
+    /// Greatest common divisor of two numbers.
+    /// </summary>
+    /// <remarks>
+    /// Shared by the formulas which reduce a fraction before multiplying it out.
+    /// <a href="https://en.wikipedia.org/wiki/Euclidean_algorithm">Wikipedia</a>
+    /// </remarks>
+    internal static N GreatestCommonDivisor<N>(N number, N otherNumber)
+        where N : IBinaryInteger<N>
+    {
+        while (otherNumber != N.Zero)
+            (number, otherNumber) = (otherNumber, number % otherNumber);
+
+        return number;
+    }
+
+    /// <summary>
     /// Raises <paramref name="number"/> to a non negative integer power <paramref name="exp"/>.
     /// </summary>
     /// <remarks>

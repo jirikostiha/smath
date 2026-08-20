@@ -33,6 +33,16 @@ public class BinomialCoefficientTest
             Assert.Equal(BinomialCoefficient.Eval(20, k), BinomialCoefficient.Eval(20, 20 - k));
     }
 
+    [Theory]
+    [InlineData(30, 15, 155117520)]
+    [InlineData(33, 16, 1166803110)]
+    public void Eval_DoesNotOverflowOnThePartialProduct(int n, int k, int expected)
+    {
+        // the plain multiplicative formula overflows an int on the last steps,
+        // although the result itself fits
+        Assert.Equal(expected, BinomialCoefficient.Eval(n, k));
+    }
+
     [Fact]
     public void Eval_DoesNotOverflowOnTheFactorials()
     {

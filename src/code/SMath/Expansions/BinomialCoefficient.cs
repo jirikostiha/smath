@@ -18,8 +18,9 @@ public static class BinomialCoefficient
     /// Zero for a negative argument or for k greater than n.
     /// </summary>
     /// <remarks>
-    /// Evaluated by the multiplicative formula, so only the result itself has to fit
-    /// into the number type. The factorial form overflows a 64 bit integer already for n = 21.
+    /// Evaluated by the reduced multiplicative formula, so only the result itself has to fit
+    /// into the number type. The factorial form overflows a 64 bit integer already for n = 21
+    /// and the plain multiplicative one overflows for a result over MaxValue / k.
     /// </remarks>
     public static NInt Eval<NInt>(NInt n, NInt k)
         where NInt : IBinaryInteger<NInt>
@@ -33,8 +34,18 @@ public static class BinomialCoefficient
 
         var coefficient = NInt.One;
         for (var i = NInt.One; i <= k; i++)
-            // the partial product is always divisible by i, so it stays exact in integer arithmetic
-            coefficient = coefficient * (n - k + i) / i;
+        {
+            var factor = n - k + i;
+            var divisor = i;
+
+            // the fraction is reduced before it is multiplied out, so no intermediate value
+            // grows over the result, and what is left of the divisor divides the factor exactly
+            var common = BinaryIntegerExtension.GreatestCommonDivisor(coefficient, divisor);
+            coefficient /= common;
+            divisor /= common;
+
+            coefficient *= factor / divisor;
+        }
 
         return coefficient;
     }

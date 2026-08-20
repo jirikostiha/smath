@@ -65,9 +65,17 @@ public static class PascalsTriangle
 
         destination[0] = baseNumber;
         for (int index = 0; index < length - 1; index++)
-            // every number follows from the previous one, C(n,k+1) == C(n,k) * (n - k) / (k + 1)
-            destination[index + 1] = destination[index]
-                * NInt.CreateChecked(rowNumber - index) / NInt.CreateChecked(index + 1);
+        {
+            // every number follows from the previous one, C(n,k+1) == C(n,k) * (n - k) / (k + 1),
+            // reduced before it is multiplied out so that no intermediate value grows over the row
+            var previous = destination[index];
+            var factor = NInt.CreateChecked(rowNumber - index);
+            var divisor = NInt.CreateChecked(index + 1);
+
+            var common = BinaryIntegerExtension.GreatestCommonDivisor(previous, divisor);
+
+            destination[index + 1] = previous / common * (factor / (divisor / common));
+        }
 
         return length;
     }
