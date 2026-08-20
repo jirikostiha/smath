@@ -39,7 +39,7 @@ buffer with the matching count helper and reuse or `stackalloc` it.
 
 | Area | Types |
 | --- | --- |
-| Geometry 2D | `Point2`, `Line` (ray, segment, projection, intersection), `Circle` (arc, chord, sector, segment, tangents), `Ellipse`, `Parabola` (focus, directrix, tangent and normal lines), `Rectangle`, `GeometricVector2` (polar/cartesian, normals, reflection, dot and cross product), `Function1Geometry` (tangent and normal lines) |
+| Geometry 2D | `Point2`, `Line` (ray, segment, projection, intersection), `Circle` (arc, chord, sector, segment, tangents, distance, intersection), `Ellipse`, `Hyperbola` (foci, directrices, asymptotes), `Parabola` (focus, directrix, tangent and normal lines), `Polygon` (shoelace area, centroid, point containment, regular polygons), `Triangle` (equilateral, isosceles and right), `Rectangle` (containment, quadrants), `Square`, `Rhombus`, `RegularHexagon`, `GeometricVector2` (polar/cartesian, normals, rotation, reflection, dot and cross product), `Function1Geometry` (tangent and normal lines) |
 | Geometry 3D | `Point3` (distances, neighbors, grid traversal), `Sphere`, `Cuboid` (octants, surface, volume, space diagonal) |
 | Statistics | `ArithmeticMean`, `Variance`, `StandardDeviation`, `Covariance`, `PearsonCorrelation` (cross and auto correlation), `SpearmanRankCorrelation`, `KendallCorrelation`, `CramerCorrelation`, `Histogram` |
 | Combinatorics | `Permutations`, `PermutationsWithRepetition`, `Combinations`, `CombinationsWithRepetition`, each counting and enumerating the index tuples |
@@ -55,15 +55,6 @@ Both points also generate integer coordinates by metric: neighbors, the coordina
 distance, up to a distance or within a distance range, optionally limited by bounds. In 2D these
 are the taxicab circle and disk and the Chebyshev ring and square, in 3D the taxicab sphere and
 ball, an octahedron, and the Chebyshev shell and cube.
-
-## Setup
-
-```xml
-<PackageReference Include="SMath" Version="X.X.X" />
-```
-
-Replace `X.X.X` with the current version from [NuGet](https://www.nuget.org/packages/SMath).
-The package targets `net7.0` and runs on any newer runtime.
 
 ## Usage
 
@@ -96,6 +87,10 @@ var deviation = StandardDeviation.Sample.Eval(values);
 
 double[] other = [2, 1, 4, 3, 5];
 var correlation = PearsonCorrelation.Eval<double>(values, other);
+
+// pairs counted in proportion to their weight, the weights need not sum to one
+double[] weights = [1, 1, 2, 3, 5];
+var weightedCorrelation = PearsonCorrelation.Weighted.Eval<double>(values, other, weights);
 ```
 
 Counting and enumerating, with the counts evaluated so that only the result has to fit
