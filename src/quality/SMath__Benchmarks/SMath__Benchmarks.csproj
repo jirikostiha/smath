@@ -5,6 +5,10 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<RootNamespace>SMath</RootNamespace>
 		<IsPackable>false</IsPackable>
+		<!-- BenchmarkDotNet requires public instance methods (CA1822) and uses
+		     underscore naming by convention for assembly, type and member names (CA1707).
+		     Benchmark methods are deliberately named after the types they compare (CA1720). -->
+		<NoWarn>$(NoWarn);CA1707;CA1822;CA1720</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>

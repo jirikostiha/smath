@@ -243,6 +243,67 @@ public static class GeometricVector2
             var twoDot = (N.One + N.One) * (vector.X * unitNormal.X + vector.Y * unitNormal.Y);
             return (vector.X - twoDot * unitNormal.X, vector.Y - twoDot * unitNormal.Y);
         }
+
+        /// <summary>
+        /// Reflect a point across a line parallel to the x-axis at height <c>y</c>.
+        /// </summary>
+        public static class ToX
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static (N X, N Y) FromCartesian<N>((N X, N Y) point, N y)
+                where N : INumberBase<N>
+                => (point.X, N.CreateChecked(2) * y - point.Y);
+        }
+
+        /// <summary>
+        /// Reflect a point across a line parallel to the y-axis at abscissa <c>x</c>.
+        /// </summary>
+        public static class ToY
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public static (N X, N Y) FromCartesian<N>((N X, N Y) point, N x)
+                where N : INumberBase<N>
+                => (N.CreateChecked(2) * x - point.X, point.Y);
+        }
+
+        /// <summary>
+        /// Reflect a point across an arbitrary line.
+        /// </summary>
+        public static class ToLine
+        {
+            /// <summary>
+            /// Reflect a point across the line through the origin with the given direction vector.
+            /// </summary>
+            public static (N X, N Y) FromCartesian<N>((N X, N Y) point, (N X, N Y) directionVector)
+                where N : INumberBase<N>
+            {
+                var (dx, dy) = directionVector;
+                var t = (point.X * dx + point.Y * dy) / (dx * dx + dy * dy);
+                var two = N.CreateChecked(2);
+                return (two * t * dx - point.X, two * t * dy - point.Y);
+            }
+
+            /// <summary>
+            /// Reflect a point across the line through two points.
+            /// When both points coincide the line degenerates to a point and the
+            /// result is the point reflection about it.
+            /// </summary>
+            public static (N X, N Y) FromCartesian<N>((N X, N Y) point, (N X, N Y) linePointA, (N X, N Y) linePointB)
+                where N : INumberBase<N>
+            {
+                var two = N.CreateChecked(2);
+                var dx = linePointB.X - linePointA.X;
+                var dy = linePointB.Y - linePointA.Y;
+                var denominator = dx * dx + dy * dy;
+
+                if (denominator == N.Zero)
+                    return (two * linePointA.X - point.X, two * linePointA.Y - point.Y);
+
+                var t = ((point.X - linePointA.X) * dx + (point.Y - linePointA.Y) * dy) / denominator;
+                return (two * (linePointA.X + t * dx) - point.X,
+                        two * (linePointA.Y + t * dy) - point.Y);
+            }
+        }
     }
 
     /// <summary>
@@ -268,5 +329,32 @@ public static class GeometricVector2
         public static N FromCartesian<N>((N X, N Y) vector1, (N X, N Y) vector2)
             where N : ISubtractionOperators<N, N, N>, IMultiplyOperators<N, N, N>
             => (vector1.X * vector2.Y) - (vector1.Y * vector2.X);
+    }
+
+    /// <summary>
+    /// Rotation in the plane.
+    /// </summary>
+    /// <remarks>
+    /// <a href="https://en.wikipedia.org/wiki/Rotation_(mathematics)">Wikipedia</a>
+    /// </remarks>
+    public static class Rotation
+    {
+        /// <summary>
+        /// Rotate a vector counterclockwise around the origin by an angle in radians.
+        /// </summary>
+        public static (N X, N Y) FromCartesian<N>((N X, N Y) vector, N angle)
+            where N : ITrigonometricFunctions<N>
+            => ((vector.X * N.Cos(angle)) - (vector.Y * N.Sin(angle)),
+                (vector.X * N.Sin(angle)) + (vector.Y * N.Cos(angle)));
+
+        /// <summary>
+        /// Rotate a point counterclockwise around a center point by an angle in radians.
+        /// </summary>
+        public static (N X, N Y) FromCartesian<N>((N X, N Y) point, (N X, N Y) center, N angle)
+            where N : ITrigonometricFunctions<N>
+        {
+            var (dx, dy) = FromCartesian((point.X - center.X, point.Y - center.Y), angle);
+            return (center.X + dx, center.Y + dy);
+        }
     }
 }
