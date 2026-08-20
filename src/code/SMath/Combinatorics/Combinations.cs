@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using SMath.Expansions;
 
 namespace SMath.Combinatorics;
@@ -19,16 +19,19 @@ public static class Combinations
     /// <remarks> Sum of all k-combinations of n, 2^n - 1. </remarks>
     public static NInt Count<NInt>(NInt n)
         where NInt : IBinaryInteger<NInt>
-        => n <= NInt.Zero
-            ? NInt.Zero
-            : (NInt.One << int.CreateChecked(n)) - NInt.One;
+    {
+        if (n <= NInt.Zero)
+            return NInt.Zero;
+
+        return (NInt.One << int.CreateChecked(n)) - NInt.One;
+    }
 
     /// <summary>
     /// Counts k-combinations of <paramref name="n"/>.
     /// </summary>
     public static NInt Count<NInt>(NInt n, NInt k)
         where NInt : IBinaryInteger<NInt>
-        => n >= k && k > NInt.Zero
+        => n >= k && !NInt.IsNegative(k) && !NInt.IsNegative(n)
             ? BinomialCoefficient.Eval(n, k)
             : NInt.Zero;
 
@@ -38,6 +41,9 @@ public static class Combinations
     public static IEnumerable<(NInt Index1, NInt Index2)> Tuple2<NInt>(NInt n)
         where NInt : IBinaryInteger<NInt>
     {
+        if (n < NInt.CreateChecked(2))
+            yield break;
+
         for (var i = NInt.Zero; i < n - NInt.One; i++)
             for (var j = i + NInt.One; j < n; j++)
                 yield return (i, j);
@@ -49,8 +55,12 @@ public static class Combinations
     public static IEnumerable<(NInt Index1, NInt Index2, NInt Index3)> Tuple3<NInt>(NInt n)
         where NInt : IBinaryInteger<NInt>
     {
-        for (var i = NInt.Zero; i < n - NInt.One; i++)
-            for (var j = i + NInt.One; j < n; j++)
+        var two = NInt.CreateChecked(2);
+        if (n < NInt.CreateChecked(3))
+            yield break;
+
+        for (var i = NInt.Zero; i < n - two; i++)
+            for (var j = i + NInt.One; j < n - NInt.One; j++)
                 for (var k = j + NInt.One; k < n; k++)
                     yield return (i, j, k);
     }
@@ -61,9 +71,14 @@ public static class Combinations
     public static IEnumerable<(NInt Index1, NInt Index2, NInt Index3, NInt Index4)> Tuple4<NInt>(NInt n)
         where NInt : IBinaryInteger<NInt>
     {
-        for (var i = NInt.Zero; i < n - NInt.One; i++)
-            for (var j = i + NInt.One; j < n; j++)
-                for (var k = j + NInt.One; k < n; k++)
+        var two = NInt.CreateChecked(2);
+        var three = NInt.CreateChecked(3);
+        if (n < NInt.CreateChecked(4))
+            yield break;
+
+        for (var i = NInt.Zero; i < n - three; i++)
+            for (var j = i + NInt.One; j < n - two; j++)
+                for (var k = j + NInt.One; k < n - NInt.One; k++)
                     for (var l = k + NInt.One; l < n; l++)
                         yield return (i, j, k, l);
     }

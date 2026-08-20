@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 
 namespace SMath.Combinatorics;
 
@@ -17,7 +17,7 @@ public static class PermutationsWithRepetition
     /// <remarks> n^k. </remarks>
     public static NInt Count<NInt>(NInt n, NInt k)
         where NInt : IBinaryInteger<NInt>
-        => n > NInt.Zero && k > NInt.Zero
+        => !NInt.IsNegative(n) && !NInt.IsNegative(k) && (n > NInt.Zero || k == NInt.Zero)
             ? n.Pow(k)
             : NInt.Zero;
 

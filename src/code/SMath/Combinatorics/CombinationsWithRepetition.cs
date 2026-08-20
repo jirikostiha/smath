@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using SMath.Expansions;
 
 namespace SMath.Combinatorics;
@@ -19,8 +19,8 @@ public static class CombinationsWithRepetition
     /// <remarks> C(n + k - 1, k). </remarks>
     public static NInt Count<NInt>(NInt n, NInt k)
         where NInt : IBinaryInteger<NInt>
-        => n > NInt.Zero && k > NInt.Zero
-            ? BinomialCoefficient.Eval(n + k - NInt.One, k)
+        => !NInt.IsNegative(n) && !NInt.IsNegative(k) && (n > NInt.Zero || k == NInt.Zero)
+            ? (k == NInt.Zero ? NInt.One : BinomialCoefficient.Eval(n + k - NInt.One, k))
             : NInt.Zero;
 
     /// <summary>

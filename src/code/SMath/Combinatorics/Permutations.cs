@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 
 namespace SMath.Combinatorics;
 
@@ -43,7 +43,7 @@ public static class Permutations
     /// </remarks>
     public static NInt Count<NInt>(NInt n, NInt k)
         where NInt : IBinaryInteger<NInt>
-        => n >= k && k > NInt.Zero
+        => n >= k && !NInt.IsNegative(k) && !NInt.IsNegative(n)
             ? Factorial.Falling.Eval(n, k)
             : NInt.Zero;
 

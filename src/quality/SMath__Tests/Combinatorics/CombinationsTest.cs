@@ -1,4 +1,4 @@
-﻿using Xunit;
+using Xunit;
 
 namespace SMath.Combinatorics;
 
@@ -21,9 +21,17 @@ public class CombinationsTest
         Assert.Equal(expected, Combinations.Count(n, k));
     }
 
+    [Fact]
+    public void Count_KZero_ReturnsOne()
+    {
+        Assert.Equal(1, Combinations.Count(5, 0));
+        Assert.Equal(1, Combinations.Count(0, 0));
+        Assert.Equal(0, Combinations.Count(-1, 0));
+    }
+
     [Theory]
     [MemberData(nameof(CountForTuple2FromN))]
-    public void Tuple2(int n, int expected)
+    public void Tuple2(int n, int _, int expected)
     {
         var tuples = Combinations.Tuple2(n).ToArray();
         Assert.Equal(expected, tuples.Distinct().Count());
@@ -31,7 +39,7 @@ public class CombinationsTest
 
     [Theory]
     [MemberData(nameof(CountForTuple3FromN))]
-    public void Tuple3(int n, int expected)
+    public void Tuple3(int n, int _, int expected)
     {
         var tuples = Combinations.Tuple3(n).ToArray();
         Assert.Equal(expected, tuples.Distinct().Count());
@@ -39,7 +47,7 @@ public class CombinationsTest
 
     [Theory]
     [MemberData(nameof(CountForTuple4FromN))]
-    public void Tuple4(int n, int expected)
+    public void Tuple4(int n, int _, int expected)
     {
         var tuples = Combinations.Tuple4(n).ToArray();
         Assert.Equal(expected, tuples.Distinct().Count());
