@@ -1,72 +1,29 @@
 name: Publish
 
-env:
-  packages-dir: "packages"
-
 on:
-  workflow_call:
-    inputs:
-      tag:
-        description: "Tag"
-        required: true
-        type: string
-      build:
-        description: "Build packages; off when the caller already built them in this run"
-        type: boolean
-        default: false
   workflow_dispatch:
     inputs:
       tag:
-        description: "Tag"
+        description: "Tag to build and publish"
         required: true
-      build:
-        description: "Build packages from the tag"
-        type: boolean
-        default: true
 
 jobs:
   build:
-    name: Build packages
-    if: inputs.build
-    uses: ./.github/workflows/build.yml
-    with:
-      configuration: Release
-      ref: ${{ inputs.tag }}
-      artifacts: true
+    uses: jirikostiha/ci/.github/workflows/dotnet-build.yml@v1
     permissions:
       contents: read
       checks: write
+    with:
+      solution: ./src/smath.slnx
+      configuration: Release
+      ref: ${{ inputs.tag }}
+      artifacts: true
 
-  push:
-    name: Push to NuGet
-    runs-on: ubuntu-latest
-    needs: [build]
-    if: ${{ !failure() && !cancelled() }} # build is skipped when packages already exist
-    environment: production
+  publish:
+    needs: build
+    uses: jirikostiha/ci/.github/workflows/nuget-publish.yml@v1
     permissions:
       contents: read
       id-token: write
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          ref: ${{ inputs.tag }}
-
-      - name: Setup .NET
-        uses: ./.github/actions/setup-dotnet
-
-      - name: Download artifact - packages
-        uses: actions/download-artifact@v8
-        with:
-          name: packages
-          path: "${{ env.packages-dir }}"
-
-      - name: NuGet login (OIDC)
-        uses: NuGet/login@v1
-        id: login
-        with:
-          user: jiri
-
-      - name: Publish to Nuget.org
-        run: dotnet nuget push "${{ env.packages-dir }}/*.nupkg" --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+    with:
+      user: jiri
