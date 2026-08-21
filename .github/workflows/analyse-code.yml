@@ -5,13 +5,13 @@ on:
   push:
     branches: [main]
     paths:
-      - 'src/**.cs'
+      - "src/**.cs"
   pull_request:
     branches: [main]
     paths:
-      - 'src/**.cs'
+      - "src/**.cs"
   schedule:
-    - cron: '40 14 * * 6'
+    - cron: "40 14 * * 6"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -19,26 +19,9 @@ concurrency:
 
 jobs:
   analyze:
-    name: Analyze
-    runs-on: ubuntu-latest
+    uses: jirikostiha/ci/.github/workflows/code-analysis.yml@v1
     permissions:
       contents: read
       security-events: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-
-      - name: Setup .NET
-        uses: ./.github/actions/setup-dotnet
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
-        with:
-          languages: csharp
-
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v4
-
-      - name: CodeQL Analysis
-        uses: github/codeql-action/analyze@v4
+    with:
+      language: csharp
