@@ -5,11 +5,11 @@ on:
   push:
     branches: [main]
     paths:
-      - "src/**.cs"
+      - "src/**/*.cs"
   pull_request:
     branches: [main]
     paths:
-      - "src/**.cs"
+      - "src/**/*.cs"
   schedule:
     - cron: "40 14 * * 6"
 
