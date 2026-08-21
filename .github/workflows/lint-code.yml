@@ -3,31 +3,18 @@ name: Code Lint
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'src/**.cs'
+      - "src/**.cs"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  run-linters:
-    name: Run source code linters
-    runs-on: ubuntu-latest
+  lint:
+    uses: jirikostiha/ci/.github/workflows/lint-code.yml@v1
     permissions:
       contents: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-
-      - name: Run code linters with auto fix
-        uses: wearerequired/lint-action@v3
-        with:
-          commit_message: "style: code style issues with ${linter}"
-          dotnet_format: true
-          dotnet_format_dir: src
-          dotnet_format_auto_fix: true
-          auto_fix: true
-          git_name: "C# linter"
+    with:
+      dir: src
