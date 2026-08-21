@@ -18,6 +18,7 @@ jobs:
       configuration: Release
       ref: ${{ inputs.tag }}
       artifacts: true
+      binaries-path: asm/SMath/bin
 
   publish:
     needs: build
