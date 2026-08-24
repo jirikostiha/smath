@@ -11,7 +11,7 @@ on:
         required: true
 
 jobs:
-  build: # build + test + pack Release once, artifacts flow downstream
+  build:
     uses: jirikostiha/ci/.github/workflows/dotnet-build.yml@v1
     permissions:
       contents: read
@@ -23,6 +23,23 @@ jobs:
       artifacts: true
       binaries-path: artf/SMath/bin
 
+  benchmark:
+    needs: build
+    uses: jirikostiha/ci/.github/workflows/benchmark.yml@v1
+    permissions:
+      contents: write
+      deployments: write
+    with:
+      project: src/quality/SMath__Benchmarks
+
+  docs:
+    needs: [build, benchmark]
+    uses: jirikostiha/ci/.github/workflows/docs.yml@v1
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
   release:
     needs: build
     uses: jirikostiha/ci/.github/workflows/gh-release.yml@v1
@@ -32,7 +49,7 @@ jobs:
       tag: ${{ inputs.tag || github.ref_name }}
 
   publish:
-    needs: release
+    needs: [release, docs]
     uses: jirikostiha/ci/.github/workflows/nuget-publish.yml@v1
     permissions:
       contents: read
