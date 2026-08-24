@@ -38,6 +38,11 @@
         "files": [
           "icon.png"
         ]
+      },
+      {
+        "files": [
+          "public/**"
+        ]
       }
     ],
     "output": "_site",
