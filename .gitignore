@@ -60,3 +60,8 @@ _ReSharper*/
 *.nuget.targets
 project.lock.json
 project.assets.json
+
+#---docfx---
+docs/web/_site/
+docs/web/api/*.yml
+docs/web/api/.manifest

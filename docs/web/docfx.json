@@ -1,0 +1,60 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.json",
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../../src/code/SMath",
+          "files": [
+            "SMath.csproj"
+          ]
+        }
+      ],
+      "dest": "api",
+      "includePrivateMembers": false
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "api/**.yml",
+          "api/index.md"
+        ]
+      },
+      {
+        "files": [
+          "toc.yml",
+          "index.md"
+        ],
+        "exclude": [
+          "_site/**"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "src": "../../src/code/SMath",
+        "files": [
+          "icon.png"
+        ]
+      }
+    ],
+    "output": "_site",
+    "globalMetadata": {
+      "_appName": "SMath",
+      "_appTitle": "SMath Documentation",
+      "_appLogoPath": "icon.png",
+      "_appFaviconPath": "icon.png",
+      "_enableSearch": true,
+      "_gitContribute": {
+        "repo": "https://github.com/jirikostiha/smath",
+        "branch": "main"
+      }
+    },
+    "template": [
+      "default",
+      "modern"
+    ]
+  }
+}
