@@ -25,7 +25,7 @@
       {
         "files": [
           "toc.yml",
-          "index.md"
+          "*.md"
         ],
         "exclude": [
           "_site/**"
@@ -41,7 +41,8 @@
       },
       {
         "files": [
-          "public/**"
+          "public/**",
+          "benchmarks/**"
         ]
       }
     ],
