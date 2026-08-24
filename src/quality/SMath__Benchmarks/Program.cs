@@ -1,4 +1,5 @@
-﻿using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Exporters.Json;
 using BenchmarkDotNet.Running;
 using System.Runtime.CompilerServices;
 
@@ -20,13 +21,10 @@ public static class Program
         }
 
         ManualConfig config = ManualConfig.Create(DefaultConfig.Instance.WithArtifactsPath("./../../../benchmarks"))
+            .AddExporter(JsonExporter.FullCompressed)
             .WithOption(ConfigOptions.JoinSummary, true)
             .WithOption(ConfigOptions.DisableLogFile, true);
 
-        BenchmarkRunner.Run(typeof(Program).Assembly, config);
-
-        //BenchmarkRunner.Run<Sine_Eval_Benchmark>(config);
-        //BenchmarkRunner.Run<PT_Hypotenuse_Benchmark>(config);
-        //BenchmarkRunner.Run<PearsonCorrelation_Benchmark>(config);
+        BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args, config);
     }
 }
