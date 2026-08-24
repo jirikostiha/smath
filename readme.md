@@ -10,11 +10,16 @@
 [![Build](https://github.com/jirikostiha/smath/actions/workflows/build.yml/badge.svg)](https://github.com/jirikostiha/smath/actions/workflows/build.yml)
 [![Code Analysis](https://github.com/jirikostiha/smath/actions/workflows/analyse-code.yml/badge.svg)](https://github.com/jirikostiha/smath/actions/workflows/analyse-code.yml)
 [![Code Lint](https://github.com/jirikostiha/smath/actions/workflows/lint-code.yml/badge.svg)](https://github.com/jirikostiha/smath/actions/workflows/lint-code.yml)
+[![Documentation](https://img.shields.io/badge/docs-DocFX-blue.svg)](https://jirikostiha.github.io/smath/)
 
 Geometry, statistics and combinatorics for .NET, written against
 [generic math](https://learn.microsoft.com/en-us/dotnet/standard/generics/math).
 Every formula is generic over the numeric type, so the same call site works for `double`,
 `float`, `decimal` or `Half` without overloads or casting.
+
+## Documentation
+
+Full API reference, guides, and performance benchmarks are available on the [Documentation Website](https://jirikostiha.github.io/smath/).
 
 ## Design
 

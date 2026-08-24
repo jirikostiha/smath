@@ -13,7 +13,7 @@
     <Title>SMath</Title>
     <Description>Alternative math library based on .NET generic math.</Description>
     <PackageTags>math; generic-math; geometry; combinatorics; statistics; vectors; csharp</PackageTags>
-    <PackageProjectUrl>https://github.com/jirikostiha/smath</PackageProjectUrl>
+    <PackageProjectUrl>https://jirikostiha.github.io/smath/</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
