@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "src/code/**"
+      - "!src/**.slnx"
 
 concurrency:
   group: ${{ github.workflow }}
@@ -18,4 +19,3 @@ jobs:
       deployments: write
     with:
       project: src/quality/SMath__Benchmarks
-      results-dir: benchmarks/results

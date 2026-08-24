@@ -8,6 +8,7 @@
 [Rr]elease/
 [Rr]eleases/
 [Bb]enchmarks/
+BenchmarkDotNet.Artifacts/
 
 #---binaries---
 *.dll
