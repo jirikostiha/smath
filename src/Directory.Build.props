@@ -23,8 +23,8 @@
 
 	<!-- Output paths -->
 	<PropertyGroup>
-		<BaseOutputPath>..\..\..\asm\$(MSBuildProjectName)\bin\</BaseOutputPath>
-		<BaseIntermediateOutputPath>..\..\..\asm\$(MSBuildProjectName)\obj\</BaseIntermediateOutputPath>
+		<BaseOutputPath>..\..\..\artf\$(MSBuildProjectName)\bin\</BaseOutputPath>
+		<BaseIntermediateOutputPath>..\..\..\artf\$(MSBuildProjectName)\obj\</BaseIntermediateOutputPath>
 	</PropertyGroup>
 
 </Project>
