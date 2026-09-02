@@ -18,6 +18,14 @@ public static class NumericTuple2Extension
         (a.X + b.X, a.Y + b.Y);
 
     /// <summary>
+    /// Subtract two vectors.
+    /// </summary>
+    public static (N X, N Y) Subtract<N>(this (N X, N Y) a, (N X, N Y) b)
+        where N : ISubtractionOperators<N, N, N>
+        =>
+        (a.X - b.X, a.Y - b.Y);
+
+    /// <summary>
     /// Multiply vector by int scalar.
     /// </summary>
     public static (N X, N Y) Multiply<N>(this (N X, N Y) a, N scalar)

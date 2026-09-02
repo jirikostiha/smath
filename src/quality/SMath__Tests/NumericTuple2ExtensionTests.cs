@@ -13,6 +13,14 @@ public class NumericTuple2ExtensionTests
     }
 
     [Fact]
+    public void Subtract()
+    {
+        var a = (5d, 7d);
+        var b = (2d, 3d);
+        Assert.Equal((3d, 4d), a.Subtract(b));
+    }
+
+    [Fact]
     public void Multiply()
     {
         var a = (2d, 3d);
