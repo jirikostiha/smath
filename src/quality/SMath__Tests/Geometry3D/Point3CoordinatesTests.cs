@@ -405,6 +405,29 @@ public class Point3CoordinatesTests
     }
 
     [Fact]
+    public void CoordinatesAtChebyshevDistance_IntoBuffer_MatchesTheEnumerableOverload()
+    {
+        const int distance = 2;
+        var buffer = new (int X, int Y, int Z)[Point3.ChebyshevShellCount(distance)];
+
+        var count = Point3.CoordinatesAtChebyshevDistance(Center, distance, buffer);
+
+        Assert.Equal(buffer.Length, count);
+        Assert.Equal(Point3.CoordinatesAtChebyshevDistance(Center, distance).ToArray(), buffer[..count]);
+    }
+
+    [Fact]
+    public void CoordinatesInChebyshevDistanceRange_IntoBuffer_MatchesTheEnumerableOverload()
+    {
+        var buffer = new (int X, int Y, int Z)[Point3.ChebyshevCubeCount(3) - Point3.ChebyshevCubeCount(1)];
+
+        var count = Point3.CoordinatesInChebyshevDistanceRange(Center, 2, 3, buffer);
+
+        Assert.Equal(buffer.Length, count);
+        Assert.Equal(Point3.CoordinatesInChebyshevDistanceRange(Center, 2, 3).ToArray(), buffer[..count]);
+    }
+
+    [Fact]
     public void Coordinates_IntoTooShortBuffer_Throws()
     {
         var buffer = new (int X, int Y, int Z)[3];
@@ -414,6 +437,8 @@ public class Point3CoordinatesTests
         Assert.Throws<ArgumentException>(() => { Point3.CoordinatesUpToManhattanDistance(Center, 2, (0, 0, 0), (5, 5, 5), buffer); });
         Assert.Throws<ArgumentException>(() => { Point3.CoordinatesInManhattanDistanceRange(Center, 0, 2, buffer); });
         Assert.Throws<ArgumentException>(() => { Point3.CoordinatesUpToChebyshevDistance(Center, 2, buffer); });
+        Assert.Throws<ArgumentException>(() => { Point3.CoordinatesAtChebyshevDistance(Center, 2, buffer); });
+        Assert.Throws<ArgumentException>(() => { Point3.CoordinatesInChebyshevDistanceRange(Center, 1, 2, buffer); });
     }
 
     [Fact]

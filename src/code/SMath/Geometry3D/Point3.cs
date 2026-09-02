@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace SMath.Geometry3D;
@@ -949,6 +949,112 @@ public static class Point3
             for (var y = minY; y <= maxY; y++)
                 for (var z = minZ; z <= maxZ; z++)
                     destination[count++] = (x, y, z);
+
+        return count;
+    }
+
+    /// <summary>
+    /// Write all coordinates at exact Chebyshev distance from the center point into a destination buffer.
+    /// They form the surface of a cube. Allocation free alternative to the enumerable overload.
+    /// </summary>
+    /// <returns> Count of written coordinates. </returns>
+    /// <exception cref="ArgumentException"> Destination is too short. </exception>
+    public static int CoordinatesAtChebyshevDistance<NInt>((NInt X, NInt Y, NInt Z) center, NInt distance,
+        Span<(NInt X, NInt Y, NInt Z)> destination)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (distance < NInt.One)
+            return 0;
+
+        if (NInt.CreateSaturating(destination.Length) < ChebyshevShellCount(distance))
+            throw new ArgumentException("Destination is too short.", nameof(destination));
+
+        var minX = center.X - distance;
+        var maxX = center.X + distance;
+        var minY = center.Y - distance;
+        var maxY = center.Y + distance;
+        var minZ = center.Z - distance;
+        var maxZ = center.Z + distance;
+
+        var count = 0;
+        for (var z = minZ; z <= maxZ; z++)
+        {
+            if (z == minZ || z == maxZ)
+            {
+                for (var x = minX; x <= maxX; x++)
+                    for (var y = minY; y <= maxY; y++)
+                        destination[count++] = (x, y, z);
+            }
+            else
+            {
+                for (var x = minX; x <= maxX; x++)
+                    destination[count++] = (x, minY, z);
+
+                for (var y = minY + NInt.One; y < maxY; y++)
+                    destination[count++] = (maxX, y, z);
+
+                for (var x = maxX; x >= minX; x--)
+                    destination[count++] = (x, maxY, z);
+
+                for (var y = maxY - NInt.One; y > minY; y--)
+                    destination[count++] = (minX, y, z);
+            }
+        }
+
+        return count;
+    }
+
+    /// <summary>
+    /// Write all coordinates whose Chebyshev distance from the center point falls within the inclusive
+    /// range [<paramref name="minDistance"/>, <paramref name="maxDistance"/>] into a destination buffer.
+    /// Allocation free alternative to the enumerable overload.
+    /// </summary>
+    /// <returns> Count of written coordinates. </returns>
+    /// <exception cref="ArgumentException"> Destination is too short. </exception>
+    public static int CoordinatesInChebyshevDistanceRange<NInt>((NInt X, NInt Y, NInt Z) center,
+        NInt minDistance, NInt maxDistance, Span<(NInt X, NInt Y, NInt Z)> destination)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (maxDistance < NInt.Zero || maxDistance < minDistance)
+            return 0;
+
+        var min = NInt.Max(minDistance, NInt.Zero);
+
+        if (NInt.CreateSaturating(destination.Length) < ChebyshevCubeCount(maxDistance) - ChebyshevCubeCount(min - NInt.One))
+            throw new ArgumentException("Destination is too short.", nameof(destination));
+
+        var minX = center.X - maxDistance;
+        var maxX = center.X + maxDistance;
+        var minY = center.Y - maxDistance;
+        var maxY = center.Y + maxDistance;
+        var minZ = center.Z - maxDistance;
+        var maxZ = center.Z + maxDistance;
+
+        var gapEnd = center.Z - min;
+        var gapStart = center.Z + min;
+
+        var count = 0;
+        for (var x = minX; x <= maxX; x++)
+        {
+            var xOutside = NInt.Abs(x - center.X) >= min;
+
+            for (var y = minY; y <= maxY; y++)
+            {
+                if (xOutside || NInt.Abs(y - center.Y) >= min)
+                {
+                    for (var z = minZ; z <= maxZ; z++)
+                        destination[count++] = (x, y, z);
+                }
+                else
+                {
+                    for (var z = minZ; z <= gapEnd; z++)
+                        destination[count++] = (x, y, z);
+
+                    for (var z = gapStart; z <= maxZ; z++)
+                        destination[count++] = (x, y, z);
+                }
+            }
+        }
 
         return count;
     }

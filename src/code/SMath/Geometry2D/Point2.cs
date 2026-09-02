@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace SMath.Geometry2D;
@@ -754,6 +754,91 @@ public static class Point2
         for (var x = minX; x <= maxX; x++)
             for (var y = minY; y <= maxY; y++)
                 destination[count++] = (x, y);
+
+        return count;
+    }
+
+    /// <summary>
+    /// Write all coordinates at exact Chebyshev distance from the center point into a destination buffer.
+    /// Allocation free alternative to the enumerable overload.
+    /// </summary>
+    /// <returns> Count of written coordinates. </returns>
+    /// <exception cref="ArgumentException"> Destination is too short. </exception>
+    public static int CoordinatesAtChebyshevDistance<NInt>((NInt X, NInt Y) center, NInt distance,
+        Span<(NInt X, NInt Y)> destination)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (distance < NInt.One)
+            return 0;
+
+        if (NInt.CreateSaturating(destination.Length) < ChebyshevRingCount(distance))
+            throw new ArgumentException("Destination is too short.", nameof(destination));
+
+        var minX = center.X - distance;
+        var maxX = center.X + distance;
+        var minY = center.Y - distance;
+        var maxY = center.Y + distance;
+
+        var count = 0;
+        for (var x = minX; x <= maxX; x++)
+            destination[count++] = (x, minY);
+
+        for (var y = minY + NInt.One; y < maxY; y++)
+            destination[count++] = (maxX, y);
+
+        for (var x = maxX; x >= minX; x--)
+            destination[count++] = (x, maxY);
+
+        for (var y = maxY - NInt.One; y > minY; y--)
+            destination[count++] = (minX, y);
+
+        return count;
+    }
+
+    /// <summary>
+    /// Write all coordinates whose Chebyshev distance from the center point falls within the inclusive
+    /// range [<paramref name="minDistance"/>, <paramref name="maxDistance"/>] into a destination buffer.
+    /// Allocation free alternative to the enumerable overload.
+    /// </summary>
+    /// <returns> Count of written coordinates. </returns>
+    /// <exception cref="ArgumentException"> Destination is too short. </exception>
+    public static int CoordinatesInChebyshevDistanceRange<NInt>((NInt X, NInt Y) center,
+        NInt minDistance, NInt maxDistance, Span<(NInt X, NInt Y)> destination)
+        where NInt : IBinaryInteger<NInt>
+    {
+        if (maxDistance < NInt.Zero || maxDistance < minDistance)
+            return 0;
+
+        var min = NInt.Max(minDistance, NInt.Zero);
+
+        if (NInt.CreateSaturating(destination.Length) < ChebyshevSquareCount(maxDistance) - ChebyshevSquareCount(min - NInt.One))
+            throw new ArgumentException("Destination is too short.", nameof(destination));
+
+        var minX = center.X - maxDistance;
+        var maxX = center.X + maxDistance;
+        var minY = center.Y - maxDistance;
+        var maxY = center.Y + maxDistance;
+
+        var gapEnd = center.Y - min;
+        var gapStart = center.Y + min;
+
+        var count = 0;
+        for (var x = minX; x <= maxX; x++)
+        {
+            if (NInt.Abs(x - center.X) >= min)
+            {
+                for (var y = minY; y <= maxY; y++)
+                    destination[count++] = (x, y);
+            }
+            else
+            {
+                for (var y = minY; y <= gapEnd; y++)
+                    destination[count++] = (x, y);
+
+                for (var y = gapStart; y <= maxY; y++)
+                    destination[count++] = (x, y);
+            }
+        }
 
         return count;
     }

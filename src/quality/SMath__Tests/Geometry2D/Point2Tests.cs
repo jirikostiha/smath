@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Xunit;
 
 namespace SMath.Geometry2D;
@@ -199,5 +199,38 @@ public class Point2Tests
         Assert.Equal(
             Point2.CoordinatesUpToManhattanDistance((1, 1), 0).ToArray(),
             Point2.CoordinatesUpToChebyshevDistance((1, 1), 0).ToArray());
+    }
+
+    [Fact]
+    public void CoordinatesAtChebyshevDistance_IntoBuffer_MatchesTheEnumerableOverload()
+    {
+        const int distance = 2;
+        var center = (1, 1);
+        var buffer = new (int X, int Y)[Point2.ChebyshevRingCount(distance)];
+
+        var count = Point2.CoordinatesAtChebyshevDistance(center, distance, buffer);
+
+        Assert.Equal(buffer.Length, count);
+        Assert.Equal(Point2.CoordinatesAtChebyshevDistance(center, distance).ToArray(), buffer[..count]);
+    }
+
+    [Fact]
+    public void CoordinatesInChebyshevDistanceRange_IntoBuffer_MatchesTheEnumerableOverload()
+    {
+        var center = (1, 1);
+        var buffer = new (int X, int Y)[Point2.ChebyshevSquareCount(3) - Point2.ChebyshevSquareCount(1)];
+
+        var count = Point2.CoordinatesInChebyshevDistanceRange(center, 2, 3, buffer);
+
+        Assert.Equal(buffer.Length, count);
+        Assert.Equal(Point2.CoordinatesInChebyshevDistanceRange(center, 2, 3).ToArray(), buffer[..count]);
+    }
+
+    [Fact]
+    public void CoordinatesChebyshev_IntoTooShortBuffer_Throws()
+    {
+        var buffer = new (int X, int Y)[2];
+        Assert.Throws<System.ArgumentException>(() => Point2.CoordinatesAtChebyshevDistance((0, 0), 2, buffer));
+        Assert.Throws<System.ArgumentException>(() => Point2.CoordinatesInChebyshevDistanceRange((0, 0), 1, 2, buffer));
     }
 }
