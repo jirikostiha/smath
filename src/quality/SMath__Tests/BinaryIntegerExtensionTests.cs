@@ -1,20 +1,22 @@
-﻿using SMath;
+using SMath;
 using Xunit;
 
-namespace SMath.Geometry2D;
+namespace SMath;
 
 public class BinaryIntegerExtensionTests
 {
     [Theory]
     [InlineData(0, 0, 0)]
     [InlineData(int.MaxValue, int.MaxValue, 0)]
+    [InlineData(-1, -1, 0)]
     [InlineData(0, 1, 1)]
-    [InlineData(0, -1, 1)]
     [InlineData(0, 2, 1)]
     [InlineData(0, 3, 2)]
-    [InlineData(1, -1, 0)]
-    [InlineData(-1, -1, 0)]
+    [InlineData(0, -1, 32)]
+    [InlineData(1, -1, 31)]
     [InlineData(0, int.MaxValue, 31)]
+    [InlineData(int.MinValue, 0, 1)]
+    [InlineData(int.MinValue, int.MaxValue, 32)]
     public void HammingDistance_Int(int n1, int n2, int distance)
     {
         Assert.Equal(distance, n1.HammingDistanceTo(n2));

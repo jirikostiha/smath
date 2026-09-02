@@ -13,7 +13,7 @@ public static class BinaryIntegerExtension
     /// </remarks>
     public static N HammingDistanceTo<N>(this N number, N otherNumber)
         where N : IBinaryInteger<N>
-        => N.PopCount(N.Abs(number) ^ N.Abs(otherNumber));
+        => N.PopCount(number ^ otherNumber);
 
     public static N ToGrayCode<N>(this N number)
         where N : IBinaryInteger<N>, IUnsignedNumber<N>
