@@ -23,6 +23,24 @@ public class GeometricVector2Tests
         Assert.Equal(2 / Math.Sqrt(8d), GeometricVector2.Cartesian.Normalized(2d, 2d).Y, 0.00000001);
     }
 
+    [Theory]
+    [InlineData(5d, 3d, 1d, 1d)]
+    [InlineData(-5d, 3d, -1d, 1d)]
+    [InlineData(-5d, -3d, -1d, -1d)]
+    [InlineData(5d, -3d, 1d, -1d)]
+    [InlineData(0d, 0d, 0d, 0d)]
+    [InlineData(5d, 0d, 1d, 0d)]
+    [InlineData(0d, -3d, 0d, -1d)]
+    public void Quadrantized(double x, double y, double ex, double ey)
+    {
+        Assert.Equal((ex, ey), GeometricVector2.Cartesian.Quadrantized(x, y));
+        Assert.Equal((ex, ey), GeometricVector2.Cartesian.Quadrantized((x, y)));
+#pragma warning disable CS0618
+        Assert.Equal((ex, ey), GeometricVector2.Cartesian.Kvadrantized(x, y));
+        Assert.Equal((ex, ey), GeometricVector2.Cartesian.Kvadrantized((x, y)));
+#pragma warning restore CS0618
+    }
+
     [Fact]
     public void DirectionVector()
     {

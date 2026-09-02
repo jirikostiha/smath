@@ -128,15 +128,34 @@ public static class GeometricVector2
             return (vector.X / magnitude, vector.Y / magnitude);
         }
 
+        /// <summary>
+        /// Vector with components reduced to their quadrant signs (+1, -1, or 0).
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static (N X, N Y) Quadrantized<N>(N x, N y)
+            where N : INumberBase<N>
+            => (N.IsZero(x) ? N.Zero : (N.IsNegative(x) ? -N.One : N.One),
+                N.IsZero(y) ? N.Zero : (N.IsNegative(y) ? -N.One : N.One));
+
+        /// <summary>
+        /// Vector with components reduced to their quadrant signs (+1, -1, or 0).
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static (N X, N Y) Quadrantized<N>((N X, N Y) vector)
+            where N : INumberBase<N>
+            => Quadrantized(vector.X, vector.Y);
+
+        [Obsolete("Use Quadrantized instead.")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static (N X, N Y) Kvadrantized<N>(N x, N y)
             where N : INumberBase<N>
-            => (x / N.Abs(x), y / N.Abs(y));
+            => Quadrantized(x, y);
 
+        [Obsolete("Use Quadrantized instead.")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static (N X, N Y) Kvadrantized<N>((N X, N Y) vector)
             where N : INumberBase<N>
-            => (vector.X / N.Abs(vector.X), vector.Y / N.Abs(vector.Y));
+            => Quadrantized(vector);
     }
 
     /// <summary>
