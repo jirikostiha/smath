@@ -104,7 +104,7 @@ public static class PearsonCorrelation
     }
 
     /// <summary>
-    /// Pearson product-moment correlation coefficient.
+    /// Pearson product-moment correlation coefficient with edge clamping on the shifted sequence.
     /// </summary>
     public static double EvalPerf<N, NInt>(IList<N> aSequence, IList<N> bSequence, NInt lag)
          where N : INumberBase<N>
@@ -119,7 +119,7 @@ public static class PearsonCorrelation
     }
 
     /// <summary>
-    /// Pearson product-moment correlation coefficient.
+    /// Pearson product-moment correlation coefficient with edge clamping on the shifted sequence.
     /// </summary>
     public static double EvalPerf<N, NInt>(ReadOnlySpan<N> aSequence, ReadOnlySpan<N> bSequence, NInt lag)
          where N : INumberBase<N>
@@ -178,6 +178,9 @@ public static class PearsonCorrelation
             }
         }
 
+        /// <summary>
+        /// Cross-correlation using the product-moment formula with edge clamping.
+        /// </summary>
         public static IEnumerable<(NInt Lag, double Coef)> EvalPerf<N, NInt>(IList<N> aSequence, IList<N> bSequence, IEnumerable<NInt> lags)
             where N : INumberBase<N>
             where NInt : IBinaryInteger<NInt>
@@ -213,7 +216,7 @@ public static class PearsonCorrelation
         }
 
         /// <summary>
-        /// Allocation free cross-correlation using the product-moment formula.
+        /// Allocation free cross-correlation using the product-moment formula with edge clamping.
         /// </summary>
         /// <returns> Count of written coefficients. </returns>
         public static int EvalPerf<N, NInt>(ReadOnlySpan<N> aSequence, ReadOnlySpan<N> bSequence,
@@ -257,6 +260,9 @@ public static class PearsonCorrelation
             }
         }
 
+        /// <summary>
+        /// Auto-correlation using the product-moment formula with edge clamping.
+        /// </summary>
         public static IEnumerable<(NInt Lag, double Coef)> EvalPerf<N, NInt>(IList<N> sequence, IEnumerable<NInt> lags)
             where N : INumberBase<N>
             where NInt : IBinaryInteger<NInt>
@@ -276,7 +282,7 @@ public static class PearsonCorrelation
             => Cross.Eval(sequence, sequence, lags, destination);
 
         /// <summary>
-        /// Allocation free auto-correlation using the product-moment formula.
+        /// Allocation free auto-correlation using the product-moment formula with edge clamping.
         /// </summary>
         /// <returns> Count of written coefficients. </returns>
         public static int EvalPerf<N, NInt>(ReadOnlySpan<N> sequence, ReadOnlySpan<NInt> lags, Span<double> destination)

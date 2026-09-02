@@ -249,6 +249,36 @@ public class SpanOverloadParityTests
     }
 
     [Fact]
+    public void PearsonCorrelation_CrossEvalPerfSpanMatchesEnumerable()
+    {
+        int[] lags = [-2, -1, 0, 1, 2];
+
+        var expected = PearsonCorrelation.Cross.EvalPerf(SampleA, SampleB, lags).ToArray();
+
+        var actual = new double[lags.Length];
+        var written = PearsonCorrelation.Cross.EvalPerf<double, int>(SampleA, SampleB, lags, actual);
+
+        Assert.Equal(lags.Length, written);
+        for (int i = 0; i < lags.Length; i++)
+            Assert.Equal(expected[i].Coef, actual[i], 12);
+    }
+
+    [Fact]
+    public void PearsonCorrelation_AutoEvalPerfSpanMatchesEnumerable()
+    {
+        int[] lags = [-2, -1, 0, 1, 2];
+
+        var expected = PearsonCorrelation.Auto.EvalPerf(SampleA, lags).ToArray();
+
+        var actual = new double[lags.Length];
+        var written = PearsonCorrelation.Auto.EvalPerf<double, int>(SampleA, lags, actual);
+
+        Assert.Equal(lags.Length, written);
+        for (int i = 0; i < lags.Length; i++)
+            Assert.Equal(expected[i].Coef, actual[i], 12);
+    }
+
+    [Fact]
     public void PearsonCorrelation_AutoAtZeroLagIsPerfectlyCorrelated()
     {
         int[] lags = [0];
