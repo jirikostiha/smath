@@ -29,7 +29,7 @@ public static class NumericTuple2Extension
     /// Direction from one to the other vector. It is not normalized.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static (N X, N Y) Direction<N>((N X, N Y) a, (N X, N Y) b)
+    public static (N X, N Y) Direction<N>(this (N X, N Y) a, (N X, N Y) b)
         where N : ISubtractionOperators<N, N, N>
         =>
         GeometricVector2.Direction.FromCartesian(a, b);
@@ -37,7 +37,7 @@ public static class NumericTuple2Extension
     /// <summary>
     /// Magnitude/length/size/scalar of vector.
     /// </summary>
-    public static N Magnitude<N>((N X, N Y) vector)
+    public static N Magnitude<N>(this (N X, N Y) vector)
         where N : IRootFunctions<N>
         =>
         GeometricVector2.Magnitude.FromCartesian(vector);
