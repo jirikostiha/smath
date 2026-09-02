@@ -524,17 +524,18 @@ public static class Line
                         if (abc != N.Zero)
                             return false;
 
+                        var kab = GeometricVector2.DotProduct.FromCartesian(ab, ab);
+                        if (kab == N.Zero)
+                            return ac.X == N.Zero && ac.Y == N.Zero;
+
                         var kac = GeometricVector2.DotProduct.FromCartesian(ab, ac);
                         if (kac < N.Zero)
                             return false;
                         if (kac == N.Zero)
                             return true;
 
-                        var kab = GeometricVector2.DotProduct.FromCartesian(ab, ab);
                         if (kac > kab)
                             return false;
-                        if (kac == kab)
-                            return true;
 
                         return true;
                     }

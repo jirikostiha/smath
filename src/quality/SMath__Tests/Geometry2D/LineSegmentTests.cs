@@ -1,4 +1,4 @@
-﻿using Xunit;
+using Xunit;
 
 namespace SMath.Geometry2D;
 
@@ -173,6 +173,8 @@ public static class LineSegmentData
         { (0,0), (1,0), (1,0) },
         { (0, 0), (1, 0), (0.5, 0) },
         { (0, 0), (0, 1), (0, 1) },
+        { (0, 0), (0, 0), (0, 0) },
+        { (2, 3), (2, 3), (2, 3) },
     };
 
     public static TheoryData<(double X, double Y), (double X, double Y), (double X, double Y)>
@@ -182,6 +184,10 @@ public static class LineSegmentData
         { (0,0), (1,0), (2,0) },
         { (0,0), (1,0), (0.5,1) },
         { (0,0), (1,0), (0.1,-1) },
+        { (0, 0), (0, 0), (1, 0) },
+        { (0, 0), (0, 0), (0, 1) },
+        { (0, 0), (0, 0), (100, 500) },
+        { (2, 3), (2, 3), (2, 4) },
     };
 
     public static TheoryData<(double X, double Y), (double X, double Y),
