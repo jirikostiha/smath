@@ -158,6 +158,20 @@ public class LineSegmentTests
     {
         Assert.Empty(Line.Segment.Points.Get((0d, 0d), (1d, 1d), count));
     }
+
+    [Fact]
+    public void Indices_UnitSegment()
+    {
+        Assert.Equal(new double[] { 0, 0.25, 0.5, 0.75 }, Line.Segment.Indices<double>(4));
+        Assert.Empty(Line.Segment.Indices<double>(0));
+        Assert.Empty(Line.Segment.Indices<double>(-1));
+    }
+
+    [Fact]
+    public void Indices_WithLength()
+    {
+        Assert.Equal(new double[] { 0, 2.5, 5, 7.5 }, Line.Segment.Indices(4, 10d));
+    }
 }
 
 public static class LineSegmentData

@@ -340,6 +340,13 @@ public static class Line
             => ((N.Zero, N.Zero), (N.One, N.One));
 
         /// <summary>
+        /// Divides a unit line segment into equal subsegments and returns start distances.
+        /// </summary>
+        public static IEnumerable<N> Indices<N>(int count)
+            where N : INumberBase<N>
+            => Indices(count, N.One);
+
+        /// <summary>
         /// Divides a line segment into equal subsegments and returns start distances.
         /// </summary>
         public static IEnumerable<N> Indices<N>(int count, N length)
