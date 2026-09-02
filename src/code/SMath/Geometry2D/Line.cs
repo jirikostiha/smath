@@ -180,6 +180,9 @@ public static class Line
                     // the squared magnitude is the dot product with itself,
                     // taking a square root just to square it back loses precision
                     var len2 = GeometricVector2.DotProduct.FromCartesian(e1, e1);
+                    if (len2 == N.Zero)
+                        return spoint1;
+
                     var projection = (spoint1.X + (dp * e1.X) / len2,
                                       spoint1.Y + (dp * e1.Y) / len2);
 

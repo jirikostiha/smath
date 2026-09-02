@@ -1,4 +1,4 @@
-﻿using Xunit;
+using Xunit;
 using Xunit.Sdk;
 
 namespace SMath.Geometry2D;
@@ -68,6 +68,7 @@ public class LineAndPointTests
             { ((-1d, 0d), (1d, 0d)), (2d, 0d), (2d, 0d), "inline after second point" },
             { ((0d, 0d), (0d, 2d)), (1d, 1d), (0d, 1d), "right to the first point on y-axis" },
             { ((0d, 2d), (2d, 0d)), (0d, 0d), (1d, 1d), "origin onto the descending diagonal" },
+            { ((1d, 1d), (1d, 1d)), (3d, 4d), (1d, 1d), "degenerate line segment to single point" },
         };
     }
 }
