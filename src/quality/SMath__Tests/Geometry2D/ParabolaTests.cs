@@ -129,6 +129,30 @@ public class ParabolaTests
         Assert.Equal(0m, c);
     }
 
+    [Fact]
+    public void NormalLine_Slope_AtVertex_IsNegativeInfinity()
+    {
+        Assert.Equal(double.NegativeInfinity, Parabola.NormalLine.Slope.FromX(1d, 0d));
+    }
+
+    [Fact]
+    public void NormalLine_AtVertex_FloatDoesNotThrow()
+    {
+        var (a, b, c) = Parabola.NormalLine.FromX(1f, 0f);
+
+        Assert.Equal(1f, a);
+        Assert.Equal(0f, b);
+        Assert.Equal(0f, c);
+    }
+
+    [Fact]
+    public void NormalLine_NonVertex_DecimalWorks()
+    {
+        var (a, b, c) = Parabola.NormalLine.FromX(1m, 2m);
+        var point = Parabola.Point.FromX(1m, 2m);
+        Assert.Equal(0m, a * point.X + b * point.Y + c);
+    }
+
     [Theory]
     [InlineData(1d, 2d)]
     [InlineData(2d, -3d)]

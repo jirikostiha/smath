@@ -62,4 +62,25 @@ public class LineSegmentTests
         Assert.Equal(1d, LineSegment.And.Point.Distance.FromPoints(1d, 5d, 6d));
         Assert.Equal(2d, LineSegment.And.Point.Distance.FromPoints(1d, 5d, -1d));
     }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void Indexes_NonPositiveCount_ReturnsEmpty(int count)
+    {
+        Assert.Empty(LineSegment.Indexes(count, 3d));
+        Assert.Empty(LineSegment.Indices(count, 3d));
+        Assert.Empty(LineSegment.Indexes<double>(count));
+    }
+
+    [Fact]
+    public void PointDistanceAndIntersection_DegenerateSegment()
+    {
+        Assert.True(LineSegment.And.Point.Intersection.FromPoints(3d, 3d, 3d));
+        Assert.False(LineSegment.And.Point.Intersection.FromPoints(3d, 3d, 4d));
+
+        Assert.Equal(0d, LineSegment.And.Point.Distance.FromPoints(3d, 3d, 3d));
+        Assert.Equal(1d, LineSegment.And.Point.Distance.FromPoints(3d, 3d, 4d));
+        Assert.Equal(2d, LineSegment.And.Point.Distance.FromPoints(3d, 3d, 1d));
+    }
 }

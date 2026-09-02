@@ -35,6 +35,40 @@ public class BinaryIntegerExtensionTests
     }
 
     [Theory]
+    [InlineData((sbyte)0, (sbyte)0, (sbyte)0)]
+    [InlineData((sbyte)0, (sbyte)1, (sbyte)1)]
+    [InlineData((sbyte)0, (sbyte)-1, (sbyte)8)]
+    [InlineData((sbyte)1, (sbyte)-1, (sbyte)7)]
+    [InlineData(sbyte.MinValue, (sbyte)0, (sbyte)1)]
+    [InlineData(sbyte.MinValue, sbyte.MaxValue, (sbyte)8)]
+    public void HammingDistance_SByte(sbyte n1, sbyte n2, sbyte distance)
+    {
+        Assert.Equal(distance, n1.HammingDistanceTo(n2));
+    }
+
+    [Theory]
+    [InlineData(0L, 0L, 0L)]
+    [InlineData(0L, 1L, 1L)]
+    [InlineData(0L, -1L, 64L)]
+    [InlineData(1L, -1L, 63L)]
+    [InlineData(long.MinValue, 0L, 1L)]
+    [InlineData(long.MinValue, long.MaxValue, 64L)]
+    public void HammingDistance_Long(long n1, long n2, long distance)
+    {
+        Assert.Equal(distance, n1.HammingDistanceTo(n2));
+    }
+
+    [Theory]
+    [InlineData(0u, 0u, 0u)]
+    [InlineData(0u, 1u, 1u)]
+    [InlineData(0u, uint.MaxValue, 32u)]
+    [InlineData(0xAAAAAAAAu, 0x55555555u, 32u)]
+    public void HammingDistance_UInt(uint n1, uint n2, uint distance)
+    {
+        Assert.Equal(distance, n1.HammingDistanceTo(n2));
+    }
+
+    [Theory]
     [InlineData(1, 1)]
     [InlineData(2, 3)]
     [InlineData(3, 2)]

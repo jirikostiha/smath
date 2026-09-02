@@ -149,6 +149,15 @@ public class LineSegmentTests
         Assert.Equal(point.X, evalutedPoint.Value.X, 6);
         Assert.Equal(point.Y, evalutedPoint.Value.Y, 6);
     }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    [InlineData(-10)]
+    public void Points_NonPositiveCount_ReturnsEmpty(int count)
+    {
+        Assert.Empty(Line.Segment.Points.Get((0d, 0d), (1d, 1d), count));
+    }
 }
 
 public static class LineSegmentData
@@ -156,7 +165,8 @@ public static class LineSegmentData
     public static TheoryData<(double X, double Y), (double X, double Y), (double X, double Y), double>
         DistanceToPoint => new()
     {
-      //{ (0, 0), (0, 0), (0, 0), 0 }, // zero to zero
+        { (0, 0), (0, 0), (0, 0), 0 }, // zero to zero
+        { (0, 0), (0, 0), (3, 4), 5 }, // degenerate segment distance
         { (-1, 0), (1, 0), (-1, 0), 0 }, // identical to first seg point
         { (-1, 0), (1, 0), (1, 0), 0 },  // identical to second seg point
         { (-1, 0), (1, 0), (0, 0), 0 },  // on segment

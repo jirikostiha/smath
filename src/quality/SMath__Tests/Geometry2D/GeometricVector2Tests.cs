@@ -42,6 +42,22 @@ public class GeometricVector2Tests
     }
 
     [Fact]
+    public void Quadrantized_IntVector()
+    {
+        Assert.Equal((1, -1), GeometricVector2.Cartesian.Quadrantized((10, -20)));
+        Assert.Equal((0, 0), GeometricVector2.Cartesian.Quadrantized((0, 0)));
+        Assert.Equal((-1, 1), GeometricVector2.Cartesian.Quadrantized(-100, 50));
+    }
+
+    [Fact]
+    public void Quadrantized_NegativeZero()
+    {
+        Assert.Equal((0d, 0d), GeometricVector2.Cartesian.Quadrantized(-0.0, 0.0));
+        Assert.Equal((0d, 0d), GeometricVector2.Cartesian.Quadrantized(0.0, -0.0));
+        Assert.Equal((0d, 0d), GeometricVector2.Cartesian.Quadrantized(-0.0, -0.0));
+    }
+
+    [Fact]
     public void DirectionVector()
     {
         Assert.Equal((1, 0), GeometricVector2.Direction.FromCartesian((0, 0), (1d, 0)));
@@ -165,11 +181,20 @@ public class GeometricVector2Tests
     [InlineData(1d, 1d, 0d, 1d, -1d, 1d)] // across y-axis direction
     [InlineData(1d, 0d, 1d, 1d, 0d, 1d)]  // across diagonal y = x
     [InlineData(2d, 3d, 0d, 0d, -2d, -3d)] // zero direction vector -> point reflection about origin
+    [InlineData(-5d, 7d, 0d, 0d, 5d, -7d)]
+    [InlineData(0d, 0d, 0d, 0d, 0d, 0d)]
     public void ReflectionToLine_ThroughOrigin(double x, double y, double dx, double dy, double ex, double ey)
     {
         var (rx, ry) = GeometricVector2.Reflection.ToLine.FromCartesian((x, y), (dx, dy));
         Assert.Equal(ex, rx, 9);
         Assert.Equal(ey, ry, 9);
+    }
+
+    [Fact]
+    public void ReflectionToLine_ThroughOrigin_ZeroDirection_Decimal()
+    {
+        var result = GeometricVector2.Reflection.ToLine.FromCartesian((3m, -4m), (0m, 0m));
+        Assert.Equal((-3m, 4m), result);
     }
 
     [Theory]

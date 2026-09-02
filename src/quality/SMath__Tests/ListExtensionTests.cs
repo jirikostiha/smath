@@ -77,6 +77,62 @@ public class ListExtensionTests
         Assert.Equal(42, list.KthSmallestElement(1));
         Assert.Equal(42, list.KthLargestElement(1));
     }
+
+    [Fact]
+    public void NullArguments_ThrowArgumentNullException()
+    {
+        System.Collections.Generic.IList<int>? nullList = null;
+        Assert.Throws<System.ArgumentNullException>(() => nullList!.KthSmallestElement(1));
+        Assert.Throws<System.ArgumentNullException>(() => nullList!.KthLargestElement(1));
+
+        var list = new[] { 1, 2, 3 };
+        System.Func<int, int>? nullSelector = null;
+        Assert.Throws<System.ArgumentNullException>(() => list.KthSmallestElement(1, nullSelector!));
+        Assert.Throws<System.ArgumentNullException>(() => list.KthLargestElement(1, nullSelector!));
+    }
+
+    [Fact]
+    public void RangeOverload_InvalidRange_Throws()
+    {
+        var list = new[] { 10, 20, 30, 40, 50 };
+
+        Assert.Throws<System.ArgumentOutOfRangeException>(() => list.KthSmallestElement(1, -1, 3, x => x));
+        Assert.Throws<System.ArgumentOutOfRangeException>(() => list.KthSmallestElement(1, 0, 5, x => x));
+        Assert.Throws<System.ArgumentException>(() => list.KthSmallestElement(1, 3, 2, x => x));
+        Assert.Throws<System.ArgumentOutOfRangeException>(() => list.KthSmallestElement(1, 2, 4, x => x));
+        Assert.Throws<System.ArgumentOutOfRangeException>(() => list.KthSmallestElement(5, 1, 3, x => x));
+
+        Assert.Throws<System.ArgumentOutOfRangeException>(() => list.KthLargestElement(1, -1, 3, x => x));
+        Assert.Throws<System.ArgumentOutOfRangeException>(() => list.KthLargestElement(1, 0, 5, x => x));
+        Assert.Throws<System.ArgumentException>(() => list.KthLargestElement(1, 3, 2, x => x));
+        Assert.Throws<System.ArgumentOutOfRangeException>(() => list.KthLargestElement(1, 2, 4, x => x));
+        Assert.Throws<System.ArgumentOutOfRangeException>(() => list.KthLargestElement(5, 1, 3, x => x));
+    }
+
+    [Fact]
+    public void RangeOverload_ValidRange_ReturnsElement()
+    {
+        var list = new[] { 50, 40, 10, 30, 20 };
+        Assert.Equal(10, list.KthSmallestElement(2, 1, 3, x => x));
+        Assert.Equal(30, list.KthSmallestElement(3, 1, 3, x => x));
+    }
+
+    [Fact]
+    public void Duplicates_ReturnsCorrectElement()
+    {
+        var list = new[] { 3, 1, 2, 3, 3, 1 };
+        Assert.Equal(1, list.KthSmallestElement(1));
+        Assert.Equal(1, list.KthSmallestElement(2));
+        Assert.Equal(2, list.KthSmallestElement(3));
+        Assert.Equal(3, list.KthSmallestElement(4));
+        Assert.Equal(3, list.KthSmallestElement(6));
+
+        Assert.Equal(3, list.KthLargestElement(1));
+        Assert.Equal(3, list.KthLargestElement(3));
+        Assert.Equal(2, list.KthLargestElement(4));
+        Assert.Equal(1, list.KthLargestElement(5));
+        Assert.Equal(1, list.KthLargestElement(6));
+    }
 }
 
 public static class NumberCollections
