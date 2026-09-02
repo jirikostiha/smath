@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1788377025383,
+  "lastUpdate": 1788381460826,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -120,6 +120,66 @@ window.BENCHMARK_DATA = {
             "value": 41191.992135184155,
             "unit": "ns",
             "range": "± 89.89201577833218"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "85e4e18fb1bdc21455be0eef0cae6da14a88bc20",
+          "message": "feat(statistics): add Eval(IEnumerable, IEnumerable) overload to Covariance",
+          "timestamp": "2026-09-02T22:12:07+02:00",
+          "tree_id": "b01ee1f423ed1e9d14d959643a87458604e6660b",
+          "url": "https://github.com/jirikostiha/smath/commit/85e4e18fb1bdc21455be0eef0cae6da14a88bc20"
+        },
+        "date": 1788381460472,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Benchmarks.BinaryIntegerExtension_Benchmark.HammingDistance_Int",
+            "value": 8780.664210728237,
+            "unit": "ns",
+            "range": "± 1.9580851943553828"
+          },
+          {
+            "name": "SMath.Benchmarks.BinaryIntegerExtension_Benchmark.HammingDistance_Long",
+            "value": 7555.79662159511,
+            "unit": "ns",
+            "range": "± 9.743226712812882"
+          },
+          {
+            "name": "SMath.Benchmarks.BinaryIntegerExtension_Benchmark.GCD_Int",
+            "value": 98374.2153132512,
+            "unit": "ns",
+            "range": "± 19.25834492319765"
+          },
+          {
+            "name": "SMath.Benchmarks.BinaryIntegerExtension_Benchmark.Pow_Int",
+            "value": 2792.41230228969,
+            "unit": "ns",
+            "range": "± 2.203626712164545"
+          },
+          {
+            "name": "SMath.Benchmarks.BinaryIntegerExtension_Benchmark.ToGrayCode",
+            "value": 3529.2953142438614,
+            "unit": "ns",
+            "range": "± 1.9576932627666923"
+          },
+          {
+            "name": "SMath.Benchmarks.BinaryIntegerExtension_Benchmark.FromGrayCode",
+            "value": 46574.711486816406,
+            "unit": "ns",
+            "range": "± 81.89670360794106"
           }
         ]
       }
