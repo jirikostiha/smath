@@ -46,4 +46,25 @@ public class DeterminantTests
             r2c1, r2c2, r2c3,
             r3c1, r3c2, r3c3));
     }
+
+    [Fact]
+    public void FromRows_And_FromColumns_2x2()
+    {
+        Assert.Equal(-2, Determinant.FromRows((1, 2), (3, 4)));
+        Assert.Equal(-2, Determinant.FromColumns((1, 3), (2, 4)));
+    }
+
+    [Fact]
+    public void FromRows_And_FromColumns_3x3()
+    {
+        var row1 = (1, 2, 3);
+        var row2 = (4, 5, 6);
+        var row3 = (7, 8, 10);
+        Assert.Equal(-3, Determinant.FromRows(row1, row2, row3));
+
+        var col1 = (1, 4, 7);
+        var col2 = (2, 5, 8);
+        var col3 = (3, 6, 10);
+        Assert.Equal(-3, Determinant.FromColumns(col1, col2, col3));
+    }
 }
