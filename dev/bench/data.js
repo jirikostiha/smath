@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1787589612725,
+  "lastUpdate": 1788377025383,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -60,6 +60,66 @@ window.BENCHMARK_DATA = {
             "value": 41305.09359741211,
             "unit": "ns",
             "range": "± 123.79549041718055"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "510502a54317fdb838c9c374569c41bfc6f00ca0",
+          "message": "fix(geometry): add missing Span overloads for Chebyshev distance in Point2 and Point3",
+          "timestamp": "2026-09-02T21:02:41+02:00",
+          "tree_id": "56c727b0f5f97f5dacdeea54d784ff21c0cad665",
+          "url": "https://github.com/jirikostiha/smath/commit/510502a54317fdb838c9c374569c41bfc6f00ca0"
+        },
+        "date": 1788377024667,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Benchmarks.BinaryIntegerExtension_Benchmark.HammingDistance_Int",
+            "value": 7778.186155046736,
+            "unit": "ns",
+            "range": "± 3.0213053153132887"
+          },
+          {
+            "name": "SMath.Benchmarks.BinaryIntegerExtension_Benchmark.HammingDistance_Long",
+            "value": 7702.749195979191,
+            "unit": "ns",
+            "range": "± 39.358725392389566"
+          },
+          {
+            "name": "SMath.Benchmarks.BinaryIntegerExtension_Benchmark.GCD_Int",
+            "value": 87096.77580566406,
+            "unit": "ns",
+            "range": "± 42.52477470377054"
+          },
+          {
+            "name": "SMath.Benchmarks.BinaryIntegerExtension_Benchmark.Pow_Int",
+            "value": 2591.3340409596763,
+            "unit": "ns",
+            "range": "± 3.2437585218321883"
+          },
+          {
+            "name": "SMath.Benchmarks.BinaryIntegerExtension_Benchmark.ToGrayCode",
+            "value": 3135.9043818882533,
+            "unit": "ns",
+            "range": "± 18.944208408475937"
+          },
+          {
+            "name": "SMath.Benchmarks.BinaryIntegerExtension_Benchmark.FromGrayCode",
+            "value": 41191.992135184155,
+            "unit": "ns",
+            "range": "± 89.89201577833218"
           }
         ]
       }
