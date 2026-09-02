@@ -119,6 +119,16 @@ public class ParabolaTests
         Assert.Equal(0d, c);
     }
 
+    [Fact]
+    public void NormalLine_AtVertex_DecimalDoesNotThrow()
+    {
+        var (a, b, c) = Parabola.NormalLine.FromX(1m, 0m);
+
+        Assert.Equal(1m, a);
+        Assert.Equal(0m, b);
+        Assert.Equal(0m, c);
+    }
+
     [Theory]
     [InlineData(1d, 2d)]
     [InlineData(2d, -3d)]

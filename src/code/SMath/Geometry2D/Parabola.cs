@@ -121,7 +121,11 @@ public static class Parabola
         public static (N A, N B, N C) FromX<N>(N focalLength, N x)
             where N : INumberBase<N>
         {
-            var slope = Slope.FromX(focalLength, x);
+            var tangentSlope = TangentLine.Slope.FromX(focalLength, x);
+            if (tangentSlope == N.Zero)
+                return (N.One, N.Zero, -x);
+
+            var slope = -N.One / tangentSlope;
             return N.IsFinite(slope)
                 ? (-slope, N.One, slope * x - Point.YFromX(focalLength, x))
                 : (N.One, N.Zero, -x);
