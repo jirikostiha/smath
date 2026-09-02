@@ -1,4 +1,4 @@
-﻿namespace SMath.Statistics;
+namespace SMath.Statistics;
 
 using System;
 using Xunit;
@@ -10,6 +10,14 @@ public class CovarianceTest
     public void Eval(int[] seqA, int[] seqB, int expected)
     {
         var covariance = Covariance.Eval(seqA, seqB, out _);
+        Assert.Equal(expected, covariance, 6);
+    }
+
+    [Theory]
+    [MemberData(nameof(CovarianceData.Data), MemberType = typeof(CovarianceData))]
+    public void EvalEnumerable(int[] seqA, int[] seqB, int expected)
+    {
+        var covariance = Covariance.Eval((System.Collections.Generic.IEnumerable<int>)seqA, seqB);
         Assert.Equal(expected, covariance, 6);
     }
 

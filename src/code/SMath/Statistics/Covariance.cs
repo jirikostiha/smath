@@ -11,6 +11,10 @@ namespace SMath.Statistics;
 /// </remarks>
 public static class Covariance
 {
+    public static double Eval<N>(IEnumerable<N> aSequence, IEnumerable<N> bSequence)
+        where N : INumberBase<N>
+        => Evaluate(aSequence, bSequence, out _);
+
     public static double Eval<N>(IEnumerable<N> aSequence, IEnumerable<N> bSequence, out long count)
         where N : INumberBase<N>
         // the length check is done within the single pass of Evaluate,
