@@ -140,4 +140,30 @@ public class BinaryIntegerExtensionTests
     {
         Assert.Throws<ArgumentOutOfRangeException>(() => 2.Pow(-1));
     }
+
+    [Theory]
+    [InlineData(12, 18, 6)]
+    [InlineData(18, 12, 6)]
+    [InlineData(7, 13, 1)]
+    [InlineData(100, 25, 25)]
+    [InlineData(0, 5, 5)]
+    [InlineData(5, 0, 5)]
+    [InlineData(0, 0, 0)]
+    [InlineData(-12, 18, 6)]
+    [InlineData(12, -18, 6)]
+    [InlineData(-12, -18, 6)]
+    [InlineData(int.MinValue, 4, 4)]
+    [InlineData(4, int.MinValue, 4)]
+    [InlineData(int.MinValue, 1, 1)]
+    public void GreatestCommonDivisor_Int(int a, int b, int expected)
+    {
+        Assert.Equal(expected, a.GreatestCommonDivisor(b));
+    }
+
+    [Fact]
+    public void GreatestCommonDivisor_Long_MinValue()
+    {
+        Assert.Equal(8L, long.MinValue.GreatestCommonDivisor(8L));
+        Assert.Equal(8L, 8L.GreatestCommonDivisor(long.MinValue));
+    }
 }

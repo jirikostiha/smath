@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 
 namespace SMath.Expansions;
 
@@ -72,7 +72,7 @@ public static class PascalsTriangle
             var factor = NInt.CreateChecked(rowNumber - index);
             var divisor = NInt.CreateChecked(index + 1);
 
-            var common = BinaryIntegerExtension.GreatestCommonDivisor(previous, divisor);
+            var common = previous.GreatestCommonDivisor(divisor);
 
             destination[index + 1] = previous / common * (factor / (divisor / common));
         }

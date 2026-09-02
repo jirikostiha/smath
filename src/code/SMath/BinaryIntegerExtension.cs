@@ -42,13 +42,17 @@ public static class BinaryIntegerExtension
     /// <a href="https://en.wikipedia.org/wiki/Euclidean_algorithm">Wikipedia</a>
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static N GreatestCommonDivisor<N>(N number, N otherNumber)
+    public static N GreatestCommonDivisor<N>(this N number, N otherNumber)
         where N : IBinaryInteger<N>
     {
-        number = N.Abs(number);
-        otherNumber = N.Abs(otherNumber);
         while (otherNumber != N.Zero)
             (number, otherNumber) = (otherNumber, number % otherNumber);
+
+        if (number < N.Zero)
+        {
+            var positive = N.Zero - number;
+            return positive > N.Zero ? positive : number;
+        }
 
         return number;
     }

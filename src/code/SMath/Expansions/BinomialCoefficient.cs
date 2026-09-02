@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 
 namespace SMath.Expansions;
 
@@ -40,7 +40,7 @@ public static class BinomialCoefficient
 
             // the fraction is reduced before it is multiplied out, so no intermediate value
             // grows over the result, and what is left of the divisor divides the factor exactly
-            var common = BinaryIntegerExtension.GreatestCommonDivisor(coefficient, divisor);
+            var common = coefficient.GreatestCommonDivisor(divisor);
             coefficient /= common;
             divisor /= common;
 
