@@ -43,6 +43,15 @@ public class LineSegmentTests
         Assert.Equal(3d, points[2]);
     }
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    [InlineData(-5)]
+    public void PointsGet_NonPositiveCount_ReturnsEmpty(int count)
+    {
+        Assert.Empty(LineSegment.Points.Get(0d, 4d, count));
+    }
+
     [Fact]
     public void PointDistanceAndIntersection()
     {

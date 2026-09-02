@@ -91,6 +91,7 @@ public class LineSegmentTests
     public void Points()
     {
         Assert.Empty(Line.Segment.Points.Get((0d, 0d), (1d, 1d), 0));
+        Assert.Empty(Line.Segment.Points.Get((0d, 0d), (1d, 1d), -1));
 
         Assert.Collection(Line.Segment.Points.Get((0d, 0d), (1d, 1d), 1),
             item =>

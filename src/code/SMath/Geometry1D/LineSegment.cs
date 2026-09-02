@@ -62,6 +62,9 @@ public static class LineSegment
         public static IEnumerable<N> Get<N>(N point1, N point2, int count)
             where N : INumberBase<N>
         {
+            if (count <= 0)
+                yield break;
+
             var step = (point2 - point1) / N.CreateChecked(count + 1);
             for (int i = 1; i <= count; i++)
             {

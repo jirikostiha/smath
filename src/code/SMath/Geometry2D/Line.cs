@@ -398,6 +398,9 @@ public static class Line
             public static IEnumerable<(N X, N Y)> Get<N>((N X, N Y) point1, (N X, N Y) point2, int count)
                 where N : INumberBase<N>
             {
+                if (count <= 0)
+                    yield break;
+
                 var xstep = (point2.X - point1.X) / N.CreateChecked(count + 1);
                 var ystep = (point2.Y - point1.Y) / N.CreateChecked(count + 1);
                 for (int i = 1; i <= count; i++)
