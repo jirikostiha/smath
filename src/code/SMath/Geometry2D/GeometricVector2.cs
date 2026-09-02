@@ -118,14 +118,14 @@ public static class GeometricVector2
             where N : IRootFunctions<N>
         {
             var magnitude = Magnitude.FromCartesian(x, y);
-            return (x / magnitude, y / magnitude);
+            return magnitude == N.Zero ? (N.Zero, N.Zero) : (x / magnitude, y / magnitude);
         }
 
         public static (N X, N Y) Normalized<N>((N X, N Y) vector)
             where N : IRootFunctions<N>
         {
             var magnitude = Magnitude.FromCartesian(vector);
-            return (vector.X / magnitude, vector.Y / magnitude);
+            return magnitude == N.Zero ? (N.Zero, N.Zero) : (vector.X / magnitude, vector.Y / magnitude);
         }
 
         /// <summary>

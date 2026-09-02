@@ -23,6 +23,15 @@ public class GeometricVector2Tests
         Assert.Equal(2 / Math.Sqrt(8d), GeometricVector2.Cartesian.Normalized(2d, 2d).Y, 0.00000001);
     }
 
+    [Fact]
+    public void Normalized_ZeroVector()
+    {
+        Assert.Equal((0d, 0d), GeometricVector2.Cartesian.Normalized(0d, 0d));
+        Assert.Equal((0d, 0d), GeometricVector2.Cartesian.Normalized((0d, 0d)));
+        Assert.Equal((0f, 0f), GeometricVector2.Cartesian.Normalized(0f, 0f));
+        Assert.Equal((0f, 0f), GeometricVector2.Cartesian.Normalized((0f, 0f)));
+    }
+
     [Theory]
     [InlineData(5d, 3d, 1d, 1d)]
     [InlineData(-5d, 3d, -1d, 1d)]
