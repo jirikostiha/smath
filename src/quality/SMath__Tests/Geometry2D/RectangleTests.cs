@@ -38,4 +38,34 @@ public class RectangleTests
         Assert.Equal(expected, Rectangle.Perimeter.Length.FromEdges(a, b));
         Assert.Equal(expected, Rectangle.Perimeter.FromEdges(a, b));
     }
+
+    [Fact]
+    public void Perimeter_Points_Indexes_And_Indices()
+    {
+        var points = System.Linq.Enumerable.ToArray(Rectangle.Perimeter.Points.Indexes(4, 2d, 2d));
+        Assert.Equal(4, points.Length);
+        Assert.Equal((0d, 0d), points[0]);
+        Assert.Equal((2d, 0d), points[1]);
+        Assert.Equal((2d, 2d), points[2]);
+        Assert.Equal((0d, 2d), points[3]);
+
+        var indicesPoints = System.Linq.Enumerable.ToArray(Rectangle.Perimeter.Points.Indices(4, 2d, 2d));
+        Assert.Equal(points, indicesPoints);
+    }
+
+    [Fact]
+    public void Perimeter_Points_ZeroPerimeter()
+    {
+        var points = System.Linq.Enumerable.ToArray(Rectangle.Perimeter.Points.Indexes(3, 0d, 0d));
+        Assert.Equal(3, points.Length);
+        Assert.All(points, p => Assert.Equal((0d, 0d), p));
+    }
+
+    [Fact]
+    public void Perimeter_Points_NonPositiveCount()
+    {
+        Assert.Empty(Rectangle.Perimeter.Points.Indexes(0, 2d, 2d));
+        Assert.Empty(Rectangle.Perimeter.Points.Indexes(-1, 2d, 2d));
+        Assert.Empty(Rectangle.Perimeter.Points.Indices(0, 2d, 2d));
+    }
 }

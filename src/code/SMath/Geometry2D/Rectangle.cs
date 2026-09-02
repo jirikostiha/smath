@@ -207,7 +207,17 @@ public static class Rectangle
             public static IEnumerable<(N X, N Y)> Indexes<N>(int count, N a, N b)
                 where N : INumberBase<N>, IModulusOperators<N, N, N>, IComparisonOperators<N, N, bool>
             {
+                if (count <= 0)
+                    yield break;
+
                 var perimeter = Perimeter.FromEdges(a, b);
+                if (perimeter <= N.Zero)
+                {
+                    for (int i = 0; i < count; i++)
+                        yield return (N.Zero, N.Zero);
+                    yield break;
+                }
+
                 var segmentIndexes = Line.Segment.Indices(count, perimeter);
 
                 foreach (var index in segmentIndexes)
@@ -224,6 +234,10 @@ public static class Rectangle
                         yield return (N.Zero, perimeter - pos); // left edge
                 }
             }
+
+            public static IEnumerable<(N X, N Y)> Indices<N>(int count, N a, N b)
+                where N : INumberBase<N>, IModulusOperators<N, N, N>, IComparisonOperators<N, N, bool>
+                => Indexes(count, a, b);
         }
     }
 
