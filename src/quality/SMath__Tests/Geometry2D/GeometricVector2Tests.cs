@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Xunit;
 
 namespace SMath.Geometry2D;
@@ -146,6 +146,7 @@ public class GeometricVector2Tests
     [InlineData(1d, 1d, 1d, 0d, 1d, -1d)] // across x-axis direction
     [InlineData(1d, 1d, 0d, 1d, -1d, 1d)] // across y-axis direction
     [InlineData(1d, 0d, 1d, 1d, 0d, 1d)]  // across diagonal y = x
+    [InlineData(2d, 3d, 0d, 0d, -2d, -3d)] // zero direction vector -> point reflection about origin
     public void ReflectionToLine_ThroughOrigin(double x, double y, double dx, double dy, double ex, double ey)
     {
         var (rx, ry) = GeometricVector2.Reflection.ToLine.FromCartesian((x, y), (dx, dy));

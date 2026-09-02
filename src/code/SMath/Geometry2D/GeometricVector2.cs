@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace SMath.Geometry2D;
@@ -278,7 +278,11 @@ public static class GeometricVector2
                 where N : INumberBase<N>
             {
                 var (dx, dy) = directionVector;
-                var t = (point.X * dx + point.Y * dy) / (dx * dx + dy * dy);
+                var denominator = dx * dx + dy * dy;
+                if (denominator == N.Zero)
+                    return (-point.X, -point.Y);
+
+                var t = (point.X * dx + point.Y * dy) / denominator;
                 var two = N.CreateChecked(2);
                 return (two * t * dx - point.X, two * t * dy - point.Y);
             }
