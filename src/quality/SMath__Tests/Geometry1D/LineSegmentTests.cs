@@ -26,6 +26,15 @@ public class LineSegmentTests
     }
 
     [Fact]
+    public void Indices_Unit()
+    {
+        var indices = LineSegment.Indices<double>(count: 2).ToArray();
+
+        Assert.Equal(0d, indices[0]);
+        Assert.Equal(0.5d, indices[1]);
+    }
+
+    [Fact]
     public void LengthFromTwoPoints()
     {
         Assert.Equal(5d, LineSegment.Length.FromTwoPoints(2d, 7d));

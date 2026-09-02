@@ -18,6 +18,13 @@ public static class LineSegment
         => Indexes(count, N.One);
 
     /// <summary>
+    /// Divides a 1D unit line segment into equal subsegments and gets start distances.
+    /// </summary>
+    public static IEnumerable<N> Indices<N>(int count)
+        where N : INumberBase<N>
+        => Indexes(count, N.One);
+
+    /// <summary>
     /// Divides a 1D line segment of specified length into equal subsegments and gets start distances.
     /// </summary>
     public static IEnumerable<N> Indexes<N>(int count, N length)
