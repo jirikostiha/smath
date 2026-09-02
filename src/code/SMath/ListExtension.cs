@@ -12,14 +12,25 @@ public static class ListExtension
     /// </summary>
     public static T KthSmallestElement<T, N>(this IList<T> list, int k, Func<T, N> valueSelector)
         where N : IComparisonOperators<N, N, bool>
-        => list.KthSmallestElement(k, 0, list.Count - 1, valueSelector);
+    {
+        ArgumentNullException.ThrowIfNull(list);
+        ArgumentNullException.ThrowIfNull(valueSelector);
+
+        if (list.Count == 0)
+            throw new ArgumentException("List cannot be empty.", nameof(list));
+
+        if (k < 1 || k > list.Count)
+            throw new ArgumentOutOfRangeException(nameof(k), k, "Rank k has to be between 1 and list count.");
+
+        return QuickSelect(list, k - 1, 0, list.Count - 1, valueSelector, smallestFirst: true);
+    }
 
     /// <summary>
     /// Finds the kth smallest element of a list.
     /// </summary>
     public static N KthSmallestElement<N>(this IList<N> list, int k)
         where N : IComparisonOperators<N, N, bool>
-        => list.KthSmallestElement(k, 0, list.Count - 1, x => x);
+        => list.KthSmallestElement(k, x => x);
 
     /// <summary>
     /// Finds the kth smallest element within a range of a list.
@@ -38,19 +49,28 @@ public static class ListExtension
     public static T KthSmallestElement<T, N>(this IList<T> list, int k, int start, int end, Func<T, N> valueSelector)
         where N : IComparisonOperators<N, N, bool>
     {
-        if (start >= end)
-            return list[k - 1];
+        ArgumentNullException.ThrowIfNull(list);
+        ArgumentNullException.ThrowIfNull(valueSelector);
 
-        // Index where the list is split by the pivot.
-        int q = Partition(list, start, end, valueSelector, smallestFirst: true);
+        if (list.Count == 0)
+            throw new ArgumentException("List cannot be empty.", nameof(list));
 
-        // If the pivot lands at index k-1 it is the solution.
-        if (q == k - 1)
-            return list[k - 1];
-        else if (q > k - 1)
-            return KthSmallestElement(list, k, start, q - 1, valueSelector);
-        else
-            return KthSmallestElement(list, k, q + 1, end, valueSelector);
+        if (start < 0 || start >= list.Count)
+            throw new ArgumentOutOfRangeException(nameof(start), start, "Start index has to be within list bounds.");
+
+        if (end < 0 || end >= list.Count)
+            throw new ArgumentOutOfRangeException(nameof(end), end, "End index has to be within list bounds.");
+
+        if (start > end)
+            throw new ArgumentException("Start index cannot be greater than end index.");
+
+        if (k < 1 || k > list.Count)
+            throw new ArgumentOutOfRangeException(nameof(k), k, "Rank k has to be between 1 and list count.");
+
+        if (k - 1 < start || k - 1 > end)
+            throw new ArgumentOutOfRangeException(nameof(k), k, "Rank k has to be within the specified range [start + 1, end + 1].");
+
+        return QuickSelect(list, k - 1, start, end, valueSelector, smallestFirst: true);
     }
 
     /// <summary>
@@ -58,14 +78,25 @@ public static class ListExtension
     /// </summary>
     public static T KthLargestElement<T, N>(this IList<T> list, int k, Func<T, N> valueSelector)
         where N : IComparisonOperators<N, N, bool>
-        => list.KthLargestElement(k, 0, list.Count - 1, valueSelector);
+    {
+        ArgumentNullException.ThrowIfNull(list);
+        ArgumentNullException.ThrowIfNull(valueSelector);
+
+        if (list.Count == 0)
+            throw new ArgumentException("List cannot be empty.", nameof(list));
+
+        if (k < 1 || k > list.Count)
+            throw new ArgumentOutOfRangeException(nameof(k), k, "Rank k has to be between 1 and list count.");
+
+        return QuickSelect(list, k - 1, 0, list.Count - 1, valueSelector, smallestFirst: false);
+    }
 
     /// <summary>
     /// Finds the kth largest element of a list.
     /// </summary>
     public static N KthLargestElement<N>(this IList<N> list, int k)
         where N : IComparisonOperators<N, N, bool>
-        => list.KthLargestElement(k, 0, list.Count - 1, x => x);
+        => list.KthLargestElement(k, x => x);
 
     /// <summary>
     /// Finds the kth largest element within a range of a list.
@@ -84,19 +115,45 @@ public static class ListExtension
     public static T KthLargestElement<T, N>(this IList<T> list, int k, int start, int end, Func<T, N> valueSelector)
         where N : IComparisonOperators<N, N, bool>
     {
-        if (start >= end)
-            return list[k - 1];
+        ArgumentNullException.ThrowIfNull(list);
+        ArgumentNullException.ThrowIfNull(valueSelector);
 
-        // Index where the list is split by the pivot.
-        int q = Partition(list, start, end, valueSelector, smallestFirst: false);
+        if (list.Count == 0)
+            throw new ArgumentException("List cannot be empty.", nameof(list));
 
-        // If the pivot lands at index k-1 it is the solution.
-        if (q == k - 1)
-            return list[k - 1];
-        else if (q > k - 1)
-            return KthLargestElement(list, k, start, q - 1, valueSelector);
-        else
-            return KthLargestElement(list, k, q + 1, end, valueSelector);
+        if (start < 0 || start >= list.Count)
+            throw new ArgumentOutOfRangeException(nameof(start), start, "Start index has to be within list bounds.");
+
+        if (end < 0 || end >= list.Count)
+            throw new ArgumentOutOfRangeException(nameof(end), end, "End index has to be within list bounds.");
+
+        if (start > end)
+            throw new ArgumentException("Start index cannot be greater than end index.");
+
+        if (k < 1 || k > list.Count)
+            throw new ArgumentOutOfRangeException(nameof(k), k, "Rank k has to be between 1 and list count.");
+
+        if (k - 1 < start || k - 1 > end)
+            throw new ArgumentOutOfRangeException(nameof(k), k, "Rank k has to be within the specified range [start + 1, end + 1].");
+
+        return QuickSelect(list, k - 1, start, end, valueSelector, smallestFirst: false);
+    }
+
+    private static T QuickSelect<T, N>(IList<T> list, int kIndex, int start, int end, Func<T, N> valueSelector, bool smallestFirst)
+        where N : IComparisonOperators<N, N, bool>
+    {
+        while (start < end)
+        {
+            int q = Partition(list, start, end, valueSelector, smallestFirst);
+            if (q == kIndex)
+                return list[kIndex];
+            else if (q > kIndex)
+                end = q - 1;
+            else
+                start = q + 1;
+        }
+
+        return list[start];
     }
 
     /// <summary>

@@ -50,6 +50,33 @@ public class ListExtensionTests
 
         Assert.Equal("three", element.Title);
     }
+
+    [Fact]
+    public void EmptyList_ThrowsArgumentException()
+    {
+        var empty = System.Array.Empty<int>();
+        Assert.Throws<System.ArgumentException>(() => empty.KthSmallestElement(1));
+        Assert.Throws<System.ArgumentException>(() => empty.KthLargestElement(1));
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    [InlineData(5)]
+    public void InvalidK_ThrowsArgumentOutOfRangeException(int k)
+    {
+        var list = new[] { 1, 2, 3, 4 };
+        Assert.Throws<System.ArgumentOutOfRangeException>(() => list.KthSmallestElement(k));
+        Assert.Throws<System.ArgumentOutOfRangeException>(() => list.KthLargestElement(k));
+    }
+
+    [Fact]
+    public void SingleElementList_ReturnsElement()
+    {
+        var list = new[] { 42 };
+        Assert.Equal(42, list.KthSmallestElement(1));
+        Assert.Equal(42, list.KthLargestElement(1));
+    }
 }
 
 public static class NumberCollections
