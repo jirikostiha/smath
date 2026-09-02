@@ -10,7 +10,7 @@ namespace SMath.FunctionsN;
 /// A non convex function used as a performance test problem for optimization algorithms.
 /// The global minimum lies inside a long, narrow, parabolic shaped flat valley. Finding the
 /// valley is trivial, converging to the global minimum is not.
-/// The minimum is at the point whose coordinates are all equal to <c>a</c> and its value is zero.
+/// For the standard parameter <c>a = 1</c>, the global minimum is at the point whose coordinates are all equal to 1 (<c>x = (1, 1, ..., 1)</c>) and its value is zero. In two dimensions, the minimum for any <c>a</c> is at <c>(a, a^2)</c> with value zero.
 /// <a href="https://en.wikipedia.org/wiki/Rosenbrock_function">Wikipedia</a>
 /// <a href="https://www.sfu.ca/~ssurjano/rosen.html">Simon Fraser University</a>
 /// </remarks>

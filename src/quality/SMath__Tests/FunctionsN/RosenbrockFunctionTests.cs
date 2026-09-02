@@ -34,6 +34,15 @@ public class RosenbrockFunctionTests
         Assert.Equal(expected, RosenbrockFunction.Eval(x1, x2), 6);
     }
 
+    [Theory]
+    [InlineData(1d, 1d, 1d, 0d)]
+    [InlineData(2d, 2d, 4d, 0d)]
+    [InlineData(3d, 3d, 9d, 0d)]
+    public void Eval_TwoDimensions_WithCustomA_MinimumAtAAndASquared(double a, double x1, double x2, double expected)
+    {
+        Assert.Equal(expected, RosenbrockFunction.Eval(x1, x2, a, 100d), 6);
+    }
+
     [Fact]
     public void Eval_AtGlobalMinimumPoint_IsGlobalMinimum()
     {
