@@ -44,7 +44,7 @@ jobs:
 
   release:
     needs: build
-    uses: jirikostiha/ci/.github/workflows/gh-release.yml@v1
+    uses: jirikostiha/ci/.github/workflows/github-release.yml@v1
     permissions:
       contents: write
     with:

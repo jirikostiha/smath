@@ -1,15 +1,15 @@
 <Solution>
   <Folder Name="/ci/">
     <File Path="../.github/dependabot.yml" />
-    <File Path="../.github/workflows/analyse-code.yml" />
     <File Path="../.github/workflows/auto-approve.yml" />
     <File Path="../.github/workflows/benchmark.yml" />
     <File Path="../.github/workflows/build.yml" />
     <File Path="../.github/workflows/clean-history.yml" />
+    <File Path="../.github/workflows/code-analysis.yml" />
+    <File Path="../.github/workflows/github-release.yml" />
     <File Path="../.github/workflows/lint-code.yml" />
     <File Path="../.github/workflows/lint-commit.yml" />
-    <File Path="../.github/workflows/publish.yml" />
-    <File Path="../.github/workflows/release.yml" />
+    <File Path="../.github/workflows/nuget-publish.yml" />
   </Folder>
   <Folder Name="/ci/configs/">
     <File Path="../.github/commitlint_config.mjs" />
