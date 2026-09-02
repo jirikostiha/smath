@@ -22,14 +22,14 @@ public class PopulationVarianceTest
     }
 
     [Fact]
-    public void EvalArray_Empty_NoException()
+    public void EvalArray_Empty_ReturnsNaN()
     {
-        Variance.Population.Eval(Array.Empty<int>());
+        Assert.True(double.IsNaN(Variance.Population.Eval(Array.Empty<int>())));
     }
 
     [Fact]
-    public void EvalSpan_Empty_NoException()
+    public void EvalSpan_Empty_ReturnsNaN()
     {
-        Variance.Population.Eval(new ReadOnlySpan<int>(Array.Empty<int>()));
+        Assert.True(double.IsNaN(Variance.Population.Eval(new ReadOnlySpan<int>(Array.Empty<int>()))));
     }
 }

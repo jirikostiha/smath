@@ -22,14 +22,26 @@ public class SampleVarianceTest
     }
 
     [Fact]
-    public void EvalArray_Empty_NoException()
+    public void EvalArray_Empty_ReturnsNaN()
     {
-        Variance.Sample.Eval(Array.Empty<int>());
+        Assert.True(double.IsNaN(Variance.Sample.Eval(Array.Empty<int>())));
     }
 
     [Fact]
-    public void EvalSpan_Empty_NoException()
+    public void EvalSpan_Empty_ReturnsNaN()
     {
-        Variance.Sample.Eval(new ReadOnlySpan<int>(Array.Empty<int>()));
+        Assert.True(double.IsNaN(Variance.Sample.Eval(new ReadOnlySpan<int>(Array.Empty<int>()))));
+    }
+
+    [Fact]
+    public void EvalArray_SingleElement_ReturnsNaN()
+    {
+        Assert.True(double.IsNaN(Variance.Sample.Eval(new[] { 42 })));
+    }
+
+    [Fact]
+    public void EvalSpan_SingleElement_ReturnsNaN()
+    {
+        Assert.True(double.IsNaN(Variance.Sample.Eval(new ReadOnlySpan<int>(new[] { 42 }))));
     }
 }

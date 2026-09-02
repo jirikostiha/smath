@@ -57,13 +57,14 @@ public static class Variance
     {
         public static double Eval<N>(IEnumerable<N> sequence)
             where N : INumberBase<N>
-            =>
-            PreEvaluate(sequence, out int count) / (double.CreateChecked(count) - 1d);
+        {
+            var moment = PreEvaluate(sequence, out int count);
+            return count > 1 ? moment / (double.CreateChecked(count) - 1d) : double.NaN;
+        }
 
         public static double Eval<N>(ReadOnlySpan<N> sequence)
             where N : INumberBase<N>
-            =>
-            PreEvaluate(sequence) / (double.CreateChecked(sequence.Length) - 1d);
+            => sequence.Length > 1 ? PreEvaluate(sequence) / (double.CreateChecked(sequence.Length) - 1d) : double.NaN;
     }
 
     /// <summary>
@@ -73,12 +74,13 @@ public static class Variance
     {
         public static double Eval<N>(IEnumerable<N> sequence)
             where N : INumberBase<N>
-            =>
-            PreEvaluate(sequence, out int count) / double.CreateChecked(count);
+        {
+            var moment = PreEvaluate(sequence, out int count);
+            return count > 0 ? moment / double.CreateChecked(count) : double.NaN;
+        }
 
         public static double Eval<N>(ReadOnlySpan<N> sequence)
             where N : INumberBase<N>
-            =>
-            PreEvaluate(sequence) / double.CreateChecked(sequence.Length);
+            => sequence.Length > 0 ? PreEvaluate(sequence) / double.CreateChecked(sequence.Length) : double.NaN;
     }
 }
