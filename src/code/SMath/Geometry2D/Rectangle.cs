@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace SMath.Geometry2D;
@@ -19,6 +19,11 @@ public static class Rectangle
     public static N InternalAngle<N>()
         where N : ITrigonometricFunctions<N>
         => N.Pi / N.CreateTruncating(2);
+
+    /// <summary> Count of diagonals. </summary>
+    public static N DiagonalCount<N>()
+        where N : INumberBase<N>
+        => N.CreateTruncating(2);
 
     /// <summary> Schläfli symbol </summary>
     public const string SchlafliSymbol = "{} x {}";
@@ -176,11 +181,26 @@ public static class Rectangle
         where N : IFloatingPoint<N>
         => ((size.X * weightX, size.Y * weightY), (size.X * scale, size.Y * scale));
 
+    /// <summary> Diagonal of a rectangle. </summary>
+    public static class Diagonal
+    {
+        public static N FromEdges<N>(N a, N b)
+            where N : IRootFunctions<N>
+            => PT.Hypotenuse(a, b);
+    }
+
     public static class Perimeter
     {
         public static N FromEdges<N>(N a, N b)
             where N : INumberBase<N>
             => N.CreateTruncating(2) * (a + b);
+
+        public static class Length
+        {
+            public static N FromEdges<N>(N a, N b)
+                where N : INumberBase<N>
+                => Perimeter.FromEdges(a, b);
+        }
 
         public static class Points
         {
@@ -204,6 +224,22 @@ public static class Rectangle
                         yield return (N.Zero, perimeter - pos); // left edge
                 }
             }
+        }
+    }
+
+    /// <summary>
+    /// Enclosed plane region of a rectangle.
+    /// </summary>
+    public static class Region
+    {
+        /// <summary>
+        /// Enclosed plane region area of a rectangle.
+        /// </summary>
+        public static class Area
+        {
+            public static N FromEdges<N>(N a, N b)
+                where N : IMultiplyOperators<N, N, N>
+                => a * b;
         }
     }
 }
