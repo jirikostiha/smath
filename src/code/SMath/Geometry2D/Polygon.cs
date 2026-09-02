@@ -25,8 +25,10 @@ public static class Polygon
 
     /// <summary> Count of diagonals of a convex polygon. </summary>
     public static N DiagonalCount<N>(N vertices)
-        where N : INumberBase<N>
-        => vertices * (vertices - N.CreateChecked(3)) / N.CreateChecked(2);
+        where N : INumberBase<N>, IComparisonOperators<N, N, bool>
+        => vertices >= N.CreateChecked(3)
+            ? vertices * (vertices - N.CreateChecked(3)) / N.CreateChecked(2)
+            : N.Zero;
 
     /// <summary> Sum of internal angles of a simple polygon in rads. </summary>
     public static N InternalAngleSum<N>(N edges)

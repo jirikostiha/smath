@@ -28,6 +28,9 @@ public class PolygonTests
     {
         Assert.Equal(5, Polygon.EdgeCount(5));
         Assert.Equal(5, Polygon.VertexCount(5));
+        Assert.Equal(0, Polygon.DiagonalCount(0));
+        Assert.Equal(0, Polygon.DiagonalCount(1));
+        Assert.Equal(0, Polygon.DiagonalCount(2));
         Assert.Equal(0, Polygon.DiagonalCount(3));
         Assert.Equal(2, Polygon.DiagonalCount(4));
         Assert.Equal(9, Polygon.DiagonalCount(6));
