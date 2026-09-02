@@ -65,8 +65,22 @@ public static class StandardizedMoment
         if (degree == 1) return 0d;
         if (degree == 2) return 1d;
 
-        var mk = Moment.Eval(sequence, degree);
-        var m2 = Moment.Eval(sequence, 2);
+        var list = sequence as IReadOnlyList<N> ?? sequence.ToArray();
+        if (list.Count == 0) return double.NaN;
+
+        var mean = ArithmeticMean.Eval(list);
+        double sumK = 0;
+        double sum2 = 0;
+
+        for (int i = 0; i < list.Count; i++)
+        {
+            var diff = double.CreateChecked(list[i]) - mean;
+            sum2 += diff * diff;
+            sumK += double.Pow(diff, degree);
+        }
+
+        var m2 = sum2 / list.Count;
+        var mk = sumK / list.Count;
 
         var stdev = double.Sqrt(m2);
         if (stdev == 0) return double.NaN;
@@ -80,9 +94,21 @@ public static class StandardizedMoment
         if (degree < 1) throw new ArgumentOutOfRangeException(nameof(degree));
         if (degree == 1) return 0d;
         if (degree == 2) return 1d;
+        if (sequence.Length == 0) return double.NaN;
 
-        var mk = Moment.Eval(sequence, degree);
-        var m2 = Moment.Eval(sequence, 2);
+        var mean = ArithmeticMean.Eval(sequence);
+        double sumK = 0;
+        double sum2 = 0;
+
+        for (int i = 0; i < sequence.Length; i++)
+        {
+            var diff = double.CreateChecked(sequence[i]) - mean;
+            sum2 += diff * diff;
+            sumK += double.Pow(diff, degree);
+        }
+
+        var m2 = sum2 / sequence.Length;
+        var mk = sumK / sequence.Length;
 
         var stdev = double.Sqrt(m2);
         if (stdev == 0) return double.NaN;
