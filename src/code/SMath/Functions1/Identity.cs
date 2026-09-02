@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 
 namespace SMath.Functions1;
 
@@ -57,6 +57,10 @@ public class Identity : IMathFunction
     /// <inheritdoc />
     public static N Eval<N>(N x)
         => x;
+
+    public static N DerivativeEval<N>(N x)
+        where N : INumberBase<N>
+        => N.One;
 
     public static N DerivativeEval<N>()
         where N : INumberBase<N>

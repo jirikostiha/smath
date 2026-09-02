@@ -61,4 +61,14 @@ public class IdentityTests
         Assert.True(Identity.IsOdd);
         Assert.False(Identity.IsEven);
     }
+
+    [Theory]
+    [InlineData(-3d)]
+    [InlineData(0d)]
+    [InlineData(2.5d)]
+    public void DerivativeEval(double x)
+    {
+        Assert.Equal(1d, Identity.DerivativeEval(x));
+        Assert.Equal(1d, Identity.DerivativeEval<double>());
+    }
 }
