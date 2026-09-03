@@ -51,10 +51,8 @@ jobs:
       tag: ${{ inputs.tag || github.ref_name }}
 
   publish:
-    needs: [release, docs]
-    uses: jirikostiha/ci/.github/workflows/nuget-publish.yml@v1
+    needs: build
     permissions:
       contents: read
       id-token: write
-    with:
-      user: jiri
+    uses: ./.github/workflows/nuget-publish.yml
