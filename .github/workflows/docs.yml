@@ -1,8 +1,9 @@
 name: Documentation
 
 on:
-  release:
-    types: [published]
+  # Docs deploy on tag as the `docs` job of github-release.yml. This standalone
+  # entry is manual-only: a `release: published` trigger never fires for releases
+  # created with GITHUB_TOKEN, so it was dead.
   workflow_dispatch:
 
 concurrency:
