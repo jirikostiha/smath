@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1788381460826,
+  "lastUpdate": 1788810934436,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -180,6 +180,54 @@ window.BENCHMARK_DATA = {
             "value": 46574.711486816406,
             "unit": "ns",
             "range": "± 81.89670360794106"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "noreply@anthropic.com",
+            "name": "Claude",
+            "username": "claude"
+          },
+          "committer": {
+            "email": "noreply@anthropic.com",
+            "name": "Claude",
+            "username": "claude"
+          },
+          "distinct": false,
+          "id": "2c7cd7608538a0f3d1efcc1a9b50e8c8dcf81c5d",
+          "message": "docs(core): the scalar of NumericTuple2Extension.Multiply is not an int\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01NhwimhuMLn7vKoh4EiowSZ",
+          "timestamp": "2026-09-07T19:37:14Z",
+          "tree_id": "e2aba4d6eb6b3be1aed8875456e752490aaa7912",
+          "url": "https://github.com/jirikostiha/smath/commit/2c7cd7608538a0f3d1efcc1a9b50e8c8dcf81c5d"
+        },
+        "date": 1788810933840,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Functions1.PearsonCorrelation_Benchmark.EvalEnumerableOfDouble",
+            "value": 1032634.8896484375,
+            "unit": "ns",
+            "range": "± 3074.8959478488264"
+          },
+          {
+            "name": "SMath.Functions1.PearsonCorrelation_Benchmark.EvalArrayOfDouble",
+            "value": 740787.0427594866,
+            "unit": "ns",
+            "range": "± 2069.9719358289385"
+          },
+          {
+            "name": "SMath.Functions1.PearsonCorrelation_Benchmark.EvalSpanOfDouble",
+            "value": 740115.5955729167,
+            "unit": "ns",
+            "range": "± 1613.5488354946488"
+          },
+          {
+            "name": "SMath.Functions1.PearsonCorrelation_Benchmark.EvalArrayOfDoublePerf",
+            "value": 476478.6063476562,
+            "unit": "ns",
+            "range": "± 2347.272492956154"
           }
         ]
       }
