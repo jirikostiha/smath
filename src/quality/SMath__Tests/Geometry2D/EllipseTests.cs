@@ -34,11 +34,14 @@ public class EllipseTests
 
     [Theory]
     // Regression: the perimeter used the coarse pi*(3*(a+b)/2 - sqrt(a*b)) approximation,
-    // which is over 3% off for flat ellipses. Ramanujan's second approximation is used now.
+    // which is over 3% off for flat ellipses, and then Ramanujan's first approximation,
+    // which is still over 0.3% off for them. Ramanujan's second approximation is used now.
     [InlineData(2d, 1d)]
     [InlineData(5d, 3d)]
     [InlineData(3d, 2d)]
     [InlineData(10d, 1d)]
+    [InlineData(50d, 1d)]
+    [InlineData(100d, 1d)]
     public void Perimeter_FromRadius_IsCloseToArcLength(double major, double minor)
     {
         var expected = EllipseArcLength(major, minor);

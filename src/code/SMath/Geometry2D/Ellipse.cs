@@ -68,8 +68,9 @@ public static class Ellipse
         /// </summary>
         /// <remarks>
         /// The circumference of an ellipse has no closed form, this is Ramanujan's second
-        /// approximation pi * (3*(a+b) - sqrt((3a+b)*(a+3b))). It is exact for a circle and
-        /// stays below a tenth of a percent of relative error even for very flat ellipses.
+        /// approximation pi * (a+b) * (1 + 3*h / (10 + sqrt(4 - 3*h))), where h is
+        /// ((a-b)/(a+b))^2. It is exact for a circle and stays below a tenth of a percent
+        /// of relative error even for very flat ellipses.
         /// <a href="https://en.wikipedia.org/wiki/Ellipse#Circumference">Wikipedia</a>
         /// </remarks>
         public static class Length
@@ -77,9 +78,16 @@ public static class Ellipse
             public static N FromRadius<N>(N radius1, N radius2)
                 where N : IRootFunctions<N>
             {
+                var sum = radius1 + radius2;
+                if (N.IsZero(sum))
+                    return N.Zero;
+
                 var three = N.CreateChecked(3);
-                return N.Pi * (three * (radius1 + radius2)
-                    - N.Sqrt((three * radius1 + radius2) * (radius1 + three * radius2)));
+                var difference = radius1 - radius2;
+                var h = difference * difference / (sum * sum);
+
+                return N.Pi * sum * (N.One
+                    + three * h / (N.CreateChecked(10) + N.Sqrt(N.CreateChecked(4) - three * h)));
             }
         }
     }
