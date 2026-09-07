@@ -10,7 +10,7 @@ namespace SMath.Functions1;
 /// <a href="https://en.wikipedia.org/wiki/Square_root">Wikipedia</a>
 /// <a href="https://en.wikipedia.org/wiki/Nth_root">Wikipedia</a>
 /// </remarks>
-public class Root2 : IMathFunction
+public class Root2 : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />
     public static bool IsEven

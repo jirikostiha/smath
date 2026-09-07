@@ -9,7 +9,7 @@ namespace SMath.Functions1;
 /// <a href="https://en.wikipedia.org/wiki/Square_(algebra)">Wikipedia</a>
 /// <a href="https://en.wikipedia.org/wiki/Exponentiation#Power_functions">Wikipedia</a>
 /// </remarks>
-public class Power2 : IMathFunction
+public class Power2 : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />
     public static bool IsEven

@@ -11,7 +11,7 @@ namespace SMath.Functions1;
 /// <a href="https://en.wikipedia.org/wiki/Exponential_function">Wikipedia</a>
 /// <a href="https://en.wikipedia.org/wiki/Exponentiation">Wikipedia</a>
 /// </remarks>
-public class Exponential : IMathFunction
+public class Exponential : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />
     public static bool IsEven

@@ -9,7 +9,7 @@ namespace SMath.Functions1;
 /// Function is not continuous. It has vertical asymptotes at pi/2 + k*pi, where k is an integer.
 /// <a href="https://en.wikipedia.org/wiki/Trigonometric_functions#Tangent">Wikipedia</a>
 /// </remarks>
-public class Tangent : IMathFunction
+public class Tangent : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />
     public static bool IsEven

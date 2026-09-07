@@ -10,7 +10,7 @@ namespace SMath.Functions1;
 /// The function is defined for positive numbers only.
 /// <a href="https://en.wikipedia.org/wiki/Common_logarithm">Wikipedia</a>
 /// </remarks>
-public class CommonLogarithm : IMathFunction
+public class CommonLogarithm : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />
     public static bool IsEven

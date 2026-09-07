@@ -9,7 +9,7 @@ namespace SMath.Functions1;
 /// Function is not continuous. It has vertical asymptotes at k*pi, where k is an integer.
 /// <a href="https://en.wikipedia.org/wiki/Trigonometric_functions#Cotangent">Wikipedia</a>
 /// </remarks>
-public class Cotangent : IMathFunction
+public class Cotangent : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />
     public static bool IsEven

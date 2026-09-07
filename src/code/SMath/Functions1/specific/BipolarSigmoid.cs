@@ -11,7 +11,7 @@ namespace SMath.Functions1;
 /// <a href="https://en.wikipedia.org/wiki/Sigmoid_function">Wikipedia</a>
 /// <a href="https://en.wikipedia.org/wiki/Hyperbolic_functions">Wikipedia</a>
 /// </remarks>
-public class BipolarSigmoid : IMathFunction
+public class BipolarSigmoid : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />
     public static bool IsEven

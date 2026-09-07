@@ -9,7 +9,7 @@ namespace SMath.Functions1;
 /// The image of the function depends on the height parameter, therefore it is not declared here.
 /// <a href="https://en.wikipedia.org/wiki/Gaussian_function">Wikipedia</a>
 /// </remarks>
-public class GaussianFunction : IMathFunction
+public class GaussianFunction : IMathFunction, ISingleDomain
 {
     /// <inheritdoc />
     public static bool IsEven

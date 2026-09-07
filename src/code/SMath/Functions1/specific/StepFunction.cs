@@ -10,7 +10,7 @@ namespace SMath.Functions1;
 /// The image of the function depends on the value parameters, therefore it is not declared here.
 /// <a href="https://en.wikipedia.org/wiki/Step_function">Wikipedia</a>
 /// </remarks>
-public class StepFunction : IMathFunction
+public class StepFunction : IMathFunction, ISingleDomain
 {
     /// <inheritdoc />
     public static bool IsEven

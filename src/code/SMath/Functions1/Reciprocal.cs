@@ -9,7 +9,7 @@ namespace SMath.Functions1;
 /// Function is not continuous. It has a vertical asymptote at zero, which is not in the domain.
 /// <a href="https://en.wikipedia.org/wiki/Multiplicative_inverse">Wikipedia</a>
 /// </remarks>
-public class Reciprocal : IMathFunction
+public class Reciprocal : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />
     public static bool IsEven

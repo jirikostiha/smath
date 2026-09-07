@@ -9,7 +9,7 @@ namespace SMath.Functions1;
 /// The function is defined for non negative numbers only.
 /// <a href="https://en.wikipedia.org/wiki/Nth_root">Wikipedia</a>
 /// </remarks>
-public class Root6 : IMathFunction
+public class Root6 : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />
     public static bool IsEven

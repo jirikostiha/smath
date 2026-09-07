@@ -8,7 +8,7 @@ namespace SMath.Functions1;
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Identity_function">Wikipedia</a>
 /// </remarks>
-public class Identity : IMathFunction
+public class Identity : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />
     public static bool IsEven

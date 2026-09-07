@@ -10,7 +10,7 @@ namespace SMath.Functions1;
 /// The function is defined for positive numbers only.
 /// <a href="https://en.wikipedia.org/wiki/Binary_logarithm">Wikipedia</a>
 /// </remarks>
-public class BinaryLogarithm : IMathFunction
+public class BinaryLogarithm : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />
     public static bool IsEven

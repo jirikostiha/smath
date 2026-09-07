@@ -10,7 +10,7 @@ namespace SMath.Functions1;
 /// Function is not continuous. It has a jump discontinuity at zero.
 /// <a href="https://en.wikipedia.org/wiki/Sign_function">Wikipedia</a>
 /// </remarks>
-public class SignFunction : IMathFunction
+public class SignFunction : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />
     public static bool IsEven

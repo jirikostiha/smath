@@ -10,7 +10,7 @@ namespace SMath.Functions1;
 /// Function is not continuous. It has a jump discontinuity at zero.
 /// <a href="https://en.wikipedia.org/wiki/Heaviside_step_function">Wikipedia</a>
 /// </remarks>
-public class UnitStepFunction : IMathFunction
+public class UnitStepFunction : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />
     public static bool IsEven

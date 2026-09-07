@@ -9,7 +9,7 @@ namespace SMath.Functions1;
 /// The image of the function depends on the supremum parameter, therefore it is not declared here.
 /// <a href="https://en.wikipedia.org/wiki/Logistic_function">Wikipedia</a>
 /// </remarks>
-public class LogisticFunction : IMathFunction
+public class LogisticFunction : IMathFunction, ISingleDomain
 {
     /// <inheritdoc />
     public static bool IsEven

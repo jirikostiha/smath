@@ -10,7 +10,7 @@ namespace SMath.Functions1;
 /// <a href="https://en.wikipedia.org/wiki/Multiplicative_inverse">Wikipedia</a>
 /// <a href="https://en.wikipedia.org/wiki/Inverse-square_law">Wikipedia</a>
 /// </remarks>
-public class ReciprocalPower2 : IMathFunction
+public class ReciprocalPower2 : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />
     public static bool IsEven

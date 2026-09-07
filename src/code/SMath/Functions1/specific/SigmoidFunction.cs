@@ -11,7 +11,7 @@ namespace SMath.Functions1;
 /// <a href="https://en.wikipedia.org/wiki/Sigmoid_function">Wikipedia</a>
 /// <a href="https://mathworld.wolfram.com/SigmoidFunction.html">Wolfram Mathworld</a>
 /// </remarks>
-public class SigmoidFunction : IMathFunction
+public class SigmoidFunction : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />
     public static bool IsEven

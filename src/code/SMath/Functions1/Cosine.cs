@@ -8,7 +8,7 @@ namespace SMath.Functions1;
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Sine_and_cosine">Wikipedia</a>
 /// </remarks>
-public class Cosine : IMathFunction
+public class Cosine : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />
     public static bool IsEven

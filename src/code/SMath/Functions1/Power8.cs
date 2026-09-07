@@ -9,7 +9,7 @@ namespace SMath.Functions1;
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Exponentiation#Power_functions">Wikipedia</a>
 /// </remarks>
-public class Power8 : IMathFunction
+public class Power8 : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />
     public static bool IsEven

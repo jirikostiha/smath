@@ -11,7 +11,7 @@ namespace SMath.Functions1;
 /// <a href="https://en.wikipedia.org/wiki/Multiplicative_inverse">Wikipedia</a>
 /// <a href="https://en.wikipedia.org/wiki/Square_root">Wikipedia</a>
 /// </remarks>
-public class ReciprocalRoot2 : IMathFunction
+public class ReciprocalRoot2 : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />
     public static bool IsEven
