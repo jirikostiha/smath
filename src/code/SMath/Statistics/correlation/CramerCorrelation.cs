@@ -49,10 +49,9 @@ public static class CramerCorrelation
         var colIndex = new Dictionary<N, int>();
         for (int i = 0; i < n; i++)
         {
-            if (!rowIndex.ContainsKey(aValues[i]))
-                rowIndex[aValues[i]] = rowIndex.Count;
-            if (!colIndex.ContainsKey(bValues[i]))
-                colIndex[bValues[i]] = colIndex.Count;
+            // TryAdd reads the count before it inserts, so the axis stays numbered from zero
+            rowIndex.TryAdd(aValues[i], rowIndex.Count);
+            colIndex.TryAdd(bValues[i], colIndex.Count);
         }
 
         var rows = rowIndex.Count;

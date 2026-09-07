@@ -63,7 +63,8 @@ public static class SpearmanRankCorrelation
         while (i2 < n)
         {
             var j = i2;
-            while (j + 1 < n && double.Equals(values[order[j + 1]], values[order[i2]]))
+            // the instance overload takes a double, the static one would box both operands
+            while (j + 1 < n && values[order[j + 1]].Equals(values[order[i2]]))
                 j++;
 
             // tied elements share the average of their 1-based positions

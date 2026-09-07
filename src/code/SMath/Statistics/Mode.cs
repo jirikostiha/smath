@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Runtime.InteropServices;
 
 namespace SMath.Statistics;
 
@@ -18,9 +19,9 @@ public static class Mode
 
         foreach (var val in numbers)
         {
-            counts.TryGetValue(val, out int count);
+            // one hash lookup instead of the read and the write of a TryGetValue pair
+            ref var count = ref CollectionsMarshal.GetValueRefOrAddDefault(counts, val, out _);
             count++;
-            counts[val] = count;
             if (count > maxCount)
                 maxCount = count;
         }
@@ -44,10 +45,8 @@ public static class Mode
 
         for (int i = 0; i < numbers.Length; i++)
         {
-            var val = numbers[i];
-            counts.TryGetValue(val, out int count);
+            ref var count = ref CollectionsMarshal.GetValueRefOrAddDefault(counts, numbers[i], out _);
             count++;
-            counts[val] = count;
             if (count > maxCount)
                 maxCount = count;
         }

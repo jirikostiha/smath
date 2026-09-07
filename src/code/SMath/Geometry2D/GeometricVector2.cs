@@ -112,7 +112,19 @@ public static class GeometricVector2
         /// </summary>
         public static (N X, N Y) FromCartesianVectors<N>(params (N X, N Y)[] vectors)
             where N : IRootFunctions<N>
-            => (Summation.Eval(vectors.Select(v => v.X)), Summation.Eval(vectors.Select(v => v.Y)));
+        {
+            // both components are summed in the same pass, a projection per component
+            // would allocate an enumerator and a closure for each of them
+            var x = N.Zero;
+            var y = N.Zero;
+            for (int i = 0; i < vectors.Length; i++)
+            {
+                x += vectors[i].X;
+                y += vectors[i].Y;
+            }
+
+            return (x, y);
+        }
 
         public static (N X, N Y) Normalized<N>(N x, N y)
             where N : IRootFunctions<N>
