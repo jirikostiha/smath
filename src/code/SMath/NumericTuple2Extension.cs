@@ -26,7 +26,7 @@ public static class NumericTuple2Extension
         (a.X - b.X, a.Y - b.Y);
 
     /// <summary>
-    /// Multiply vector by int scalar.
+    /// Multiply vector by a scalar.
     /// </summary>
     public static (N X, N Y) Multiply<N>(this (N X, N Y) a, N scalar)
         where N : IMultiplyOperators<N, N, N>
