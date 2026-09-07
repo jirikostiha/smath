@@ -60,6 +60,24 @@ public class MomentsAndKurtosisTest
         Assert.Equal(0.0, result, 6);
     }
 
+    [Fact]
+    public void CentralMoment_SinglePassLazySequence_Succeeds()
+    {
+        var data = new double[] { 1, 2, 3, 4, 5 };
+        var onceOnly = new SinglePassEnumerable<double>(data);
+
+        // the mean and the deviations both need the data, the sequence must still be read once
+        var result = Moment.Eval(onceOnly, 2);
+        Assert.Equal(Variance.Population.Eval(data), result, 6);
+    }
+
+    [Fact]
+    public void CentralMoment_Empty_ReturnsNaN()
+    {
+        Assert.True(double.IsNaN(Moment.Eval(Array.Empty<double>(), 2)));
+        Assert.True(double.IsNaN(Moment.Eval(ReadOnlySpan<double>.Empty, 2)));
+    }
+
     [Theory]
     [InlineData(1)]
     [InlineData(2)]

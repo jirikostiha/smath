@@ -15,20 +15,21 @@ public static class Moment
     {
         if (degree < 1) throw new ArgumentOutOfRangeException(nameof(degree));
 
-        var mean = ArithmeticMean.Eval(sequence);
-        double sum = 0;
-        int count = 0;
+        // the mean and the deviations need two passes over the data, so a sequence which
+        // cannot be enumerated twice is buffered instead of being walked a second time
+        var list = sequence as IReadOnlyList<N> ?? sequence.ToArray();
+        if (list.Count == 0) return double.NaN;
 
-        foreach (var n in sequence)
+        var mean = ArithmeticMean.Eval(list);
+        double sum = 0;
+
+        for (int i = 0; i < list.Count; i++)
         {
-            var diff = double.CreateChecked(n) - mean;
+            var diff = double.CreateChecked(list[i]) - mean;
             sum += double.Pow(diff, degree);
-            count++;
         }
 
-        if (count == 0) return double.NaN;
-
-        return sum / count;
+        return sum / list.Count;
     }
 
     public static double Eval<N>(ReadOnlySpan<N> sequence, int degree)
