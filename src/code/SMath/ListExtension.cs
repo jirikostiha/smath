@@ -139,47 +139,88 @@ public static class ListExtension
         return QuickSelect(list, k - 1, start, end, valueSelector, smallestFirst: false);
     }
 
+    /// <summary>
+    /// Quickselect narrowed by a three way partition around a median of three pivot.
+    /// </summary>
+    /// <remarks>
+    /// A single pivot partition around a fixed element degrades to a quadratic number of
+    /// comparisons on the two inputs which occur the most in practice, an already ordered
+    /// range and a range of repeated values. The median of three keeps the ordered range
+    /// split in half, and collapsing the run equal to the pivot in one step takes the
+    /// repeated values out of the recursion altogether, so both stay linear.
+    /// </remarks>
     private static T QuickSelect<T, N>(IList<T> list, int kIndex, int start, int end, Func<T, N> valueSelector, bool smallestFirst)
         where N : IComparisonOperators<N, N, bool>
     {
         while (start < end)
         {
-            int q = Partition(list, start, end, valueSelector, smallestFirst);
-            if (q == kIndex)
-                return list[kIndex];
-            else if (q > kIndex)
-                end = q - 1;
+            var pivot = valueSelector(list[MedianOfThree(list, start, end, valueSelector, smallestFirst)]);
+
+            // [start, lower) precedes the pivot, [lower, upper] equals it, (upper, end] follows it
+            int lower = start;
+            int index = start;
+            int upper = end;
+            while (index <= upper)
+            {
+                var value = valueSelector(list[index]);
+                if (Precedes(value, pivot, smallestFirst))
+                {
+                    Swap(list, lower, index);
+                    lower++;
+                    index++;
+                }
+                else if (Precedes(pivot, value, smallestFirst))
+                {
+                    Swap(list, index, upper);
+                    upper--;
+                }
+                else
+                    index++;
+            }
+
+            // the whole run equal to the pivot is in its final place, so it is never revisited
+            if (kIndex < lower)
+                end = lower - 1;
+            else if (kIndex > upper)
+                start = upper + 1;
             else
-                start = q + 1;
+                return list[kIndex];
         }
 
         return list[start];
     }
 
     /// <summary>
-    /// Lomuto partition around the last element as pivot. When <paramref name="smallestFirst"/>
-    /// is true elements are arranged in ascending order relative to the pivot, otherwise descending.
+    /// Index of the median of the first, the middle and the last element of the range.
     /// </summary>
-    private static int Partition<T, N>(IList<T> list, int p, int r, Func<T, N> valueSelector, bool smallestFirst)
+    private static int MedianOfThree<T, N>(IList<T> list, int start, int end, Func<T, N> valueSelector, bool smallestFirst)
         where N : IComparisonOperators<N, N, bool>
     {
-        var pivot = valueSelector(list[r]);
-        int i = p - 1;
+        int middle = start + ((end - start) / 2);
+        var first = valueSelector(list[start]);
+        var center = valueSelector(list[middle]);
+        var last = valueSelector(list[end]);
 
-        for (int j = p; j < r; j++)
+        if (Precedes(first, center, smallestFirst))
         {
-            var value = valueSelector(list[j]);
-            if (smallestFirst ? value <= pivot : value >= pivot)
-            {
-                i++;
-                Swap(list, i, j);
-            }
-        }
-        i++;
-        Swap(list, i, r);
+            if (Precedes(center, last, smallestFirst))
+                return middle;
 
-        return i;
+            return Precedes(first, last, smallestFirst) ? end : start;
+        }
+
+        if (Precedes(first, last, smallestFirst))
+            return start;
+
+        return Precedes(center, last, smallestFirst) ? end : middle;
     }
+
+    /// <summary>
+    /// Whether <paramref name="value"/> comes before <paramref name="other"/> in the requested order.
+    /// </summary>
+    private static bool Precedes<N>(N value, N other, bool smallestFirst)
+        where N : IComparisonOperators<N, N, bool>
+        => smallestFirst ? value < other : value > other;
 
     private static void Swap<T>(IList<T> list, int i, int j)
         => (list[i], list[j]) = (list[j], list[i]);

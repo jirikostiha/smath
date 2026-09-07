@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace SMath;
@@ -132,6 +133,41 @@ public class ListExtensionTests
         Assert.Equal(2, list.KthLargestElement(4));
         Assert.Equal(1, list.KthLargestElement(5));
         Assert.Equal(1, list.KthLargestElement(6));
+    }
+
+    [Theory]
+    // the inputs a single pivot partition around a fixed element degrades to a quadratic
+    // number of comparisons on, which would need about count^2/2 selector calls
+    [InlineData(true, 1)]
+    [InlineData(true, 2500)]
+    [InlineData(true, 5000)]
+    [InlineData(false, 1)]
+    [InlineData(false, 2500)]
+    [InlineData(false, 5000)]
+    public void OrderedInput_StaysLinear(bool ascending, int k)
+    {
+        const int count = 5000;
+        var ordered = Enumerable.Range(0, count);
+        var list = (ascending ? ordered : ordered.Reverse()).ToList();
+        var calls = 0;
+
+        var result = list.KthSmallestElement(k, x => { calls++; return x; });
+
+        Assert.Equal(k - 1, result);
+        Assert.True(calls < 50 * count, $"{calls} selector calls for {count} ordered elements");
+    }
+
+    [Fact]
+    public void RepeatedValues_StayLinear()
+    {
+        const int count = 5000;
+        var list = Enumerable.Repeat(7, count).ToList();
+        var calls = 0;
+
+        var result = list.KthSmallestElement(count / 2, x => { calls++; return x; });
+
+        Assert.Equal(7, result);
+        Assert.True(calls < 50 * count, $"{calls} selector calls for {count} equal elements");
     }
 }
 
