@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1788810934436,
+  "lastUpdate": 1788814320313,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -228,6 +228,54 @@ window.BENCHMARK_DATA = {
             "value": 476478.6063476562,
             "unit": "ns",
             "range": "± 2347.272492956154"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "noreply@anthropic.com",
+            "name": "Claude",
+            "username": "claude"
+          },
+          "committer": {
+            "email": "noreply@anthropic.com",
+            "name": "Claude",
+            "username": "claude"
+          },
+          "distinct": false,
+          "id": "c48eb57e25ef53d4edba361a7ae102e1c78ca16d",
+          "message": "ci: install the .NET SDK on session start for Claude Code on the web\n\nA web session starts from a container without a .NET SDK, so build, format\nand test are all unavailable until one is installed by hand. The usual\nroute does not work here either: dot.net/v1/dotnet-install.sh redirects to\nbuilds.dotnet.microsoft.com, which the egress policy rejects, and the\nUbuntu feed carries 8.0 only, while src/smath.slnx needs 9.0.200 or newer\nand LangVersion is latest. packages.microsoft.com is reachable and carries\nthe current SDK.\n\nThe hook takes it from there, then warms the package cache so the first\nbuild of the session does not spend its time restoring. It is a no-op\noutside the remote container and when the SDK is already installed.\n\nValidated from a purged container: a cold run installs the SDK in 22\nseconds, a second run short circuits, a local run exits without touching\nanything, dotnet format reports no changes and the suite passes 2031 of\n2031.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01NhwimhuMLn7vKoh4EiowSZ",
+          "timestamp": "2026-09-07T20:16:37Z",
+          "tree_id": "7ab8ce5aa18237f87e88fa8cb8d025d7587ae71e",
+          "url": "https://github.com/jirikostiha/smath/commit/c48eb57e25ef53d4edba361a7ae102e1c78ca16d"
+        },
+        "date": 1788814319832,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Functions1.PearsonCorrelation_Benchmark.EvalEnumerableOfDouble",
+            "value": 1016874.9962439904,
+            "unit": "ns",
+            "range": "± 2611.423507655191"
+          },
+          {
+            "name": "SMath.Functions1.PearsonCorrelation_Benchmark.EvalArrayOfDouble",
+            "value": 733867.8773018973,
+            "unit": "ns",
+            "range": "± 3297.7049197225438"
+          },
+          {
+            "name": "SMath.Functions1.PearsonCorrelation_Benchmark.EvalSpanOfDouble",
+            "value": 728436.3485576923,
+            "unit": "ns",
+            "range": "± 879.1898403941043"
+          },
+          {
+            "name": "SMath.Functions1.PearsonCorrelation_Benchmark.EvalArrayOfDoublePerf",
+            "value": 465157.1122721354,
+            "unit": "ns",
+            "range": "± 4752.52055288032"
           }
         ]
       }
