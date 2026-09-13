@@ -1,65 +1,93 @@
 <#
 .SYNOPSIS
-Bumps the product version.
+Bumps the product version and sets the stage suffix.
 
 .DESCRIPTION
-Bumps either the Build or Minor version in product_version.props.
+Increments the build or minor part of the product version and optionally sets
+or clears the stage suffix. The file carrying the version is discovered
+automatically and both conventions are supported — a dedicated
+product_version.props, or the version held in a project or props file. See
+Get-VersionFile in Common.ps1.
 
 .PARAMETER Minor
-If set, bumps the minor version and resets build to 0. Otherwise, bumps the build version.
+Bumps the minor version and resets the build part to zero. Without it the build
+part is incremented.
+
+.PARAMETER NoBump
+Leaves the version prefix alone. Use it to change only the suffix.
+
+.PARAMETER Suffix
+The stage suffix to set, for example dev, rc or rel.
+
+.PARAMETER ClearSuffix
+Clears the stage suffix.
 
 .PARAMETER VersionFile
-The path to the version properties file. Defaults to "..\product_version.props".
+An explicit path to the version file, overriding discovery.
 
 .EXAMPLE
 .\Bump-Version.ps1
-Bumps the build version (e.g., 1.4.1 -> 1.4.2).
+Bumps the build version, for example 1.4.1 to 1.4.2.
 
 .EXAMPLE
-.\Bump-Version.ps1 -Minor
-Bumps the minor version (e.g., 1.4.1 -> 1.5.0).
+.\Bump-Version.ps1 -Minor -Suffix dev
+Bumps the minor version and marks it as a development build, for example 1.4.1 to 1.5.0-dev.
+
+.EXAMPLE
+.\Bump-Version.ps1 -NoBump -ClearSuffix
+Promotes the current version to a release by dropping the suffix.
 #>
+<#---
+name: Bump-Version
+kind: cmd
+description: Increments the product version and sets or clears the stage suffix. Use when preparing a release.
+profiles: [dotnet]
+version: 2.0
+---#>
 [CmdletBinding(SupportsShouldProcess)]
 param(
     [switch] $Minor,
-    [string] $VersionFile = "..\product_version.props"
+    [switch] $NoBump,
+    [string] $Suffix,
+    [switch] $ClearSuffix,
+    [string] $VersionFile = (Join-Path $PSScriptRoot ".." "product_version.props")
 )
 
 . (Join-Path $PSScriptRoot "Common.ps1")
 
-$scriptName = "bump product version"
-$scriptVersion = "1.5"
-$category = @("dotnet")
-
-if (-not (Test-Path $VersionFile)) {
-    $errorMsg = ("Version file not found: {0}" -f $VersionFile)
-    throw $errorMsg
+if ($ClearSuffix -and $PSBoundParameters.ContainsKey('Suffix')) {
+    throw "-Suffix and -ClearSuffix contradict each other; pass only one."
 }
 
-$fullPath = (Resolve-Path $VersionFile).Path
-$fileLink = Get-Hyperlink -Path $fullPath -Text $VersionFile
+$current = Get-ProductVersion -Path $VersionFile
+$old = $current.Prefix
 
-[xml]$versionFileXml = Get-Content $VersionFile -Raw
-$versionText = $versionFileXml.Project.PropertyGroup.VersionPrefix
-
-try {
-    $oldVersion = [version]$versionText
-} catch {
-    $errorMsg = ("Invalid version format in file: '{0}'" -f $versionText)
-    throw $errorMsg
+$new = if ($NoBump) {
+    $old
+}
+elseif ($Minor) {
+    [version] ("{0}.{1}.0" -f $old.Major, ($old.Minor + 1))
+}
+else {
+    [version] ("{0}.{1}.{2}" -f $old.Major, $old.Minor, ($old.Build + 1))
 }
 
-$newVersion = if ($Minor) {
-    [version]"$($oldVersion.Major).$($oldVersion.Minor + 1).0"
-} else {
-    [version]"$($oldVersion.Major).$($oldVersion.Minor).$($oldVersion.Build + 1)"
+$newSuffix = if ($ClearSuffix) {
+    ""
+}
+elseif ($PSBoundParameters.ContainsKey('Suffix')) {
+    $Suffix
+}
+else {
+    $current.Suffix
 }
 
-Write-Host "Bumping file: $fileLink" -ForegroundColor Cyan
-Write-Host "$oldVersion -> $newVersion" -ForegroundColor Yellow
+$newDisplay = if ($newSuffix) { "$new-$newSuffix" } else { "$new" }
 
-if ($PSCmdlet.ShouldProcess($VersionFile, "Bump version from $oldVersion to $newVersion")) {
-    $versionFileXml.Project.PropertyGroup.VersionPrefix = $newVersion.ToString()
-    $versionFileXml.Save($fullPath)
-    Write-Host "Version bumped successfully." -ForegroundColor Green
+Write-Host ("Updating file: {0}" -f (Get-Hyperlink -Path $current.Path)) -ForegroundColor Cyan
+Write-Host ("{0} -> {1}" -f $current.Display, $newDisplay) -ForegroundColor Yellow
+
+if ($PSCmdlet.ShouldProcess($current.Path, "Set version to $newDisplay")) {
+    Set-ProductVersion -Path $current.Path -Prefix $new -Suffix $newSuffix -Confirm:$false
+    Write-Host "Version updated successfully." -ForegroundColor Green
 }

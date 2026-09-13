@@ -3,55 +3,56 @@
 Tags the current commit with the product version.
 
 .DESCRIPTION
-Reads the version from product_version.props and creates a git tag for the current commit, then pushes all tags to the remote repository.
-
-.PARAMETER VersionFile
-The path to the version properties file. Defaults to "..\product_version.props".
+Reads the product version, creates an annotated tag such as v1.4.2 or
+v1.4.2-rc for the current commit and pushes the tags. The file carrying the
+version is discovered automatically; see Get-VersionFile in Common.ps1.
 
 .PARAMETER Suffix
-The version suffix to use for the tag. If provided, it overrides the version suffix in the properties file.
+The stage suffix to use in the tag, overriding the one in the version file.
+
+.PARAMETER VersionFile
+An explicit path to the version file, overriding discovery.
+
+.PARAMETER NoPush
+Creates the tag locally without pushing it.
 
 .EXAMPLE
 .\Tag-Commit.ps1
-Tags the current commit with the product version.
+Tags the current commit with the product version and pushes the tag.
+
+.EXAMPLE
+.\Tag-Commit.ps1 -Suffix rc
+Tags the current commit as a release candidate.
 #>
+<#---
+name: Tag-Commit
+kind: cmd
+description: Tags the current commit with the product version and pushes the tag. Use when publishing a release.
+profiles: [dotnet]
+version: 2.0
+---#>
 [CmdletBinding(SupportsShouldProcess)]
 param(
-    [string] $VersionFile = "..\product_version.props",
-    [string] $Suffix
+    [string] $Suffix,
+    [string] $VersionFile = (Join-Path $PSScriptRoot ".." "product_version.props"),
+    [switch] $NoPush
 )
 
 . (Join-Path $PSScriptRoot "Common.ps1")
 
-$scriptName = "tag commit"
-$scriptVersion = "1.1"
-$category = @("git")
+$current = Get-ProductVersion -Path $VersionFile
 
-if (-not (Test-Path $VersionFile)) {
-    throw "Version file not found: $VersionFile"
-}
+$tagSuffix = if ($PSBoundParameters.ContainsKey('Suffix')) { $Suffix } else { $current.Suffix }
+$tag = if ($tagSuffix) { "v$($current.Prefix)-$tagSuffix" } else { "v$($current.Prefix)" }
 
-$fullPath = (Resolve-Path $VersionFile).Path
-$fileLink = Get-Hyperlink -Path $fullPath -Text $VersionFile
+if ($PSCmdlet.ShouldProcess($current.Path, "Publish tag $tag")) {
+    Write-Host ("Tagging commit {0} using file: {1}" -f $tag, (Get-Hyperlink -Path $current.Path)) -ForegroundColor Cyan
 
-[xml]$versionFileXml = Get-Content $VersionFile -Raw
-$versionPrefix = $versionFileXml.Project.PropertyGroup.VersionPrefix
-$versionSuffix = $versionFileXml.Project.PropertyGroup.VersionSuffix
-
-if ($PSBoundParameters.ContainsKey('Suffix')) {
-    $versionSuffix = $Suffix
-}
-
-if (-not [string]::IsNullOrEmpty($versionSuffix)) {
-    $tag = "v$versionPrefix-$versionSuffix"
-}
-else {
-    $tag = "v$versionPrefix"
-}
-
-Write-Verbose "Publishing tag $tag"
-if ($PSCmdlet.ShouldProcess($VersionFile, "Publish tag $tag")) {
-    Write-Host "Tagging commit $tag using file: $fileLink" -ForegroundColor Cyan
     git tag $tag
-    git push origin --tags
+    if ($LASTEXITCODE -ne 0) { throw ("git tag failed (exit code: {0})." -f $LASTEXITCODE) }
+
+    if (-not $NoPush) {
+        git push origin --tags
+        if ($LASTEXITCODE -ne 0) { throw ("git push failed (exit code: {0})." -f $LASTEXITCODE) }
+    }
 }

@@ -1,33 +1,42 @@
 <#
 .SYNOPSIS
-Cleans Git merge artifacts.
+Removes Git merge leftovers.
 
 .DESCRIPTION
-Searches for and removes all files with the .orig extension recursively under the specified root directory.
+Searches for .orig files recursively under the given root and removes them.
+Git leaves these behind after a conflicted merge and they are never wanted.
 
 .PARAMETER Root
-The root directory to start searching from. Defaults to the parent directory.
+The directory to search. Defaults to the repository root, independent of the
+current working directory.
 
 .EXAMPLE
 .\Clean-OrigFiles.ps1
-Cleans all .orig files in the repository.
+Removes all .orig files in the repository.
 
 .EXAMPLE
-.\Clean-OrigFiles.ps1 -Root "C:\Projects\MyRepo"
-Cleans .orig files in a specific path.
+.\Clean-OrigFiles.ps1 -WhatIf
+Lists the files that would be removed without touching them.
 #>
+<#---
+name: Clean-OrigFiles
+kind: cmd
+description: Removes the .orig files Git leaves behind after a conflicted merge. Supports -WhatIf and -Root.
+version: 2.0
+---#>
 [CmdletBinding(SupportsShouldProcess)]
 param(
-    [string] $Root = (Get-Item .).Parent.FullName
+    [string] $Root = (Join-Path $PSScriptRoot "..")
 )
 
-$scriptName = "delete all *.orig files"
-$scriptVersion = "1.1"
-$category = @("dotnet")
+. (Join-Path $PSScriptRoot "Common.ps1")
 
-Get-ChildItem -Path $Root -Recurse -File -Filter *.orig -ErrorAction SilentlyContinue | ForEach-Object {
-    if ($PSCmdlet.ShouldProcess($_.FullName, "Remove file")) {
-        Write-Host "Removing file: $($_.FullName)" -ForegroundColor Yellow
-        Remove-Item -Force -Path $_.FullName
+if ([string]::IsNullOrWhiteSpace($Root)) { $Root = (Join-Path $PSScriptRoot "..") }
+
+Get-ChildItem -LiteralPath $Root -Recurse -File -Filter *.orig -ErrorAction SilentlyContinue |
+    ForEach-Object {
+        if ($PSCmdlet.ShouldProcess($_.FullName, "Remove file")) {
+            Write-Host "Removing file: $($_.FullName)" -ForegroundColor Yellow
+            Remove-Item -LiteralPath $_.FullName -Force
+        }
     }
-}

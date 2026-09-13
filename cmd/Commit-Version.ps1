@@ -1,45 +1,54 @@
 <#
 .SYNOPSIS
-Commits and pushes the current version.
+Commits and pushes the current product version.
 
 .DESCRIPTION
-Reads the version from product_version.props, stages the file, commits it, and pushes to the remote repository.
+Stages the file carrying the product version, commits it with a conventional
+message and pushes. The file is discovered automatically; see Get-VersionFile
+in Common.ps1.
 
 .PARAMETER VersionFile
-The path to the version properties file. Defaults to "..\product_version.props".
+An explicit path to the version file, overriding discovery.
+
+.PARAMETER NoPush
+Commits without pushing, leaving the push to the caller.
 
 .EXAMPLE
 .\Commit-Version.ps1
 Commits and pushes the current version.
+
+.EXAMPLE
+.\Commit-Version.ps1 -NoPush
+Commits the version but leaves the branch unpushed.
 #>
+<#---
+name: Commit-Version
+kind: cmd
+description: Commits and pushes the file carrying the product version. Use after bumping a version.
+profiles: [dotnet]
+version: 2.0
+---#>
 [CmdletBinding(SupportsShouldProcess)]
 param(
-    [string] $VersionFile = (Join-Path $PSScriptRoot ".." "product_version.props")
+    [string] $VersionFile = (Join-Path $PSScriptRoot ".." "product_version.props"),
+    [switch] $NoPush
 )
 
 . (Join-Path $PSScriptRoot "Common.ps1")
 
-$scriptDescription = "commit product version file"
-$scriptVersion = "1.2"
-$category = @("dotnet", "git")
+$current = Get-ProductVersion -Path $VersionFile
 
-$fullPath = (Get-Item $VersionFile).FullName
-$fileLink = Get-Hyperlink -Path $fullPath -Text $VersionFile
+if ($PSCmdlet.ShouldProcess($current.Path, "Commit version $($current.Display)")) {
+    Write-Host ("Committing version {0} using file: {1}" -f $current.Display, (Get-Hyperlink -Path $current.Path)) -ForegroundColor Cyan
 
-[xml]$versionFileXml = Get-Content $VersionFile
-$versionText = $versionFileXml.Project.PropertyGroup.VersionPrefix
-try {
-    $version = [version]$versionText
-} catch {
-    $errorMsg = ("Invalid VersionPrefix format: '{0}'" -f $versionText)
-    throw $errorMsg
-}
+    git add -- $current.Path
+    if ($LASTEXITCODE -ne 0) { throw ("git add failed (exit code: {0})." -f $LASTEXITCODE) }
 
-Write-Verbose "Publishing product version $version"
+    git commit -m ("product: bump to version {0}" -f $current.Display)
+    if ($LASTEXITCODE -ne 0) { throw ("git commit failed (exit code: {0})." -f $LASTEXITCODE) }
 
-if ($PSCmdlet.ShouldProcess($VersionFile, "Commit version $version")) {
-    Write-Host "Committing version $version using file: $fileLink" -ForegroundColor Cyan
-    git add $VersionFile
-    git commit -m "product: bump to $version"
-    git push
+    if (-not $NoPush) {
+        git push
+        if ($LASTEXITCODE -ne 0) { throw ("git push failed (exit code: {0})." -f $LASTEXITCODE) }
+    }
 }
