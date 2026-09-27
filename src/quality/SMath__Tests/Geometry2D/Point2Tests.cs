@@ -233,4 +233,15 @@ public class Point2Tests
         Assert.Throws<System.ArgumentException>(() => Point2.CoordinatesAtChebyshevDistance((0, 0), 2, buffer));
         Assert.Throws<System.ArgumentException>(() => Point2.CoordinatesInChebyshevDistanceRange((0, 0), 1, 2, buffer));
     }
+
+    [Fact]
+    public void CoordinatesAtChebyshevDistance_UnsignedRingTouchingZero_Terminates()
+    {
+        // the descending loops wrapped around below zero and never ended for an unsigned type
+        var center = (1u, 1u);
+
+        Assert.Equal(8, Point2.CoordinatesAtChebyshevDistance(center, 1u).Take(100).Count());
+        Assert.Equal(8, Point2.CoordinatesAtChebyshevDistance(center, 1u, (0u, 0u), (5u, 5u)).Take(100).Count());
+        Assert.Equal(8, Point2.CoordinatesAtChebyshevDistance(center, 1u, new (uint X, uint Y)[8]));
+    }
 }

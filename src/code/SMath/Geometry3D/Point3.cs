@@ -458,7 +458,9 @@ public static class Point3
                 for (var y = minY + NInt.One; y < maxY; y++)
                     yield return (maxX, y, z);
 
-                for (var x = maxX; x >= minX; x--)
+                // the upper bound check stops the loop once x wraps around below the lowest value of an unsigned type
+
+                for (var x = maxX; x >= minX && x <= maxX; x--)
                     yield return (x, maxY, z);
 
                 for (var y = maxY - NInt.One; y > minY; y--)
@@ -524,14 +526,16 @@ public static class Point3
                 // top edge
                 if (maxY >= bottomLimit.Y && maxY <= topLimit.Y)
                 {
-                    for (var x = edgeMaxX; x >= edgeMinX; x--)
+                    // the upper bound check stops the loop once x wraps around below the lowest value of an unsigned type
+                    for (var x = edgeMaxX; x >= edgeMinX && x <= edgeMaxX; x--)
                         yield return (x, maxY, z);
                 }
 
                 // left edge
                 if (minX >= bottomLimit.X && minX <= topLimit.X)
                 {
-                    for (var y = edgeMaxY; y >= edgeMinY; y--)
+                    // the upper bound check stops the loop once y wraps around below the lowest value of an unsigned type
+                    for (var y = edgeMaxY; y >= edgeMinY && y <= edgeMaxY; y--)
                         yield return (minX, y, z);
                 }
             }
@@ -993,7 +997,9 @@ public static class Point3
                 for (var y = minY + NInt.One; y < maxY; y++)
                     destination[count++] = (maxX, y, z);
 
-                for (var x = maxX; x >= minX; x--)
+                // the upper bound check stops the loop once x wraps around below the lowest value of an unsigned type
+
+                for (var x = maxX; x >= minX && x <= maxX; x--)
                     destination[count++] = (x, maxY, z);
 
                 for (var y = maxY - NInt.One; y > minY; y--)

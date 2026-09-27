@@ -57,4 +57,15 @@ public class Point3Tests
     {
         Assert.Equal(distance, Point3.CanberraDistance((x1, y1, z1), (x2, y2, z2)), 6);
     }
+
+    [Fact]
+    public void CoordinatesAtChebyshevDistance_UnsignedShellTouchingZero_Terminates()
+    {
+        // the descending loops wrapped around below zero and never ended for an unsigned type
+        var center = (1u, 1u, 1u);
+
+        Assert.Equal(26, Point3.CoordinatesAtChebyshevDistance(center, 1u).Take(1000).Count());
+        Assert.Equal(26, Point3.CoordinatesAtChebyshevDistance(center, 1u, (0u, 0u, 0u), (5u, 5u, 5u)).Take(1000).Count());
+        Assert.Equal(26, Point3.CoordinatesAtChebyshevDistance(center, 1u, new (uint X, uint Y, uint Z)[26]));
+    }
 }
