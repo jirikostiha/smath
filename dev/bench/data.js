@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1788814320313,
+  "lastUpdate": 1790528667677,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -276,6 +276,42 @@ window.BENCHMARK_DATA = {
             "value": 465157.1122721354,
             "unit": "ns",
             "range": "± 4752.52055288032"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "4fa7405b4897afdedce95d5f5f2516989f9bff52",
+          "message": "fix: CoordinatesAtChebyshevDistance - stop descending loops at zero for unsigned types\n\nA loop running down to a lower bound of zero wrapped around and never ended for an unsigned type, e.g. center (1u, 1u) at distance 1u.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+          "timestamp": "2026-09-27T18:48:00+02:00",
+          "tree_id": "71ffec262a0ab00f5d9fd31b613fccd3a1752851",
+          "url": "https://github.com/jirikostiha/smath/commit/4fa7405b4897afdedce95d5f5f2516989f9bff52"
+        },
+        "date": 1790528666982,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Benchmarks.SpearmanCorrelation_Benchmark.Eval_ReadOnlySpan",
+            "value": 19397.227931096004,
+            "unit": "ns",
+            "range": "± 49.08979605302319"
+          },
+          {
+            "name": "SMath.Benchmarks.SpearmanCorrelation_Benchmark.Eval_IEnumerable",
+            "value": 21750.101122174943,
+            "unit": "ns",
+            "range": "± 62.435182370904585"
           }
         ]
       }
