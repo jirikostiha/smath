@@ -33,10 +33,7 @@ public static class Covariance
     internal static double Evaluate<N>(IEnumerable<N> aSequence, IEnumerable<N> bSequence, out long count)
         where N : INumberBase<N>
     {
-        double sumS1 = 0;
-        double sumS2 = 0;
-        double sumS1S2 = 0;
-        count = 0;
+        var accumulator = default(CoMomentAccumulator);
 
         using (var aEnumerator = aSequence.GetEnumerator())
         using (var bEnumerator = bSequence.GetEnumerator())
@@ -53,16 +50,14 @@ public static class Covariance
                 if (!aMoved)
                     break;
 
-                var a = double.CreateChecked(aEnumerator.Current);
-                var b = double.CreateChecked(bEnumerator.Current);
-                sumS1 += a;
-                sumS2 += b;
-                sumS1S2 += a * b;
-                count++;
+                accumulator.Add(
+                    double.CreateChecked(aEnumerator.Current),
+                    double.CreateChecked(bEnumerator.Current));
             }
         }
 
-        return (sumS1S2 - sumS1 * sumS2 / count) / (count - 1);
+        count = accumulator.Count;
+        return accumulator.SampleCovariance;
     }
 
     public static double Eval<N>(ReadOnlySpan<N> aSequence, ReadOnlySpan<N> bSequence)
@@ -71,19 +66,10 @@ public static class Covariance
         if (aSequence.Length != bSequence.Length)
             throw new ArgumentException("Inconsistent length of sequences.");
 
-        double sumS1 = 0;
-        double sumS2 = 0;
-        double sumS1S2 = 0;
-
+        var accumulator = default(CoMomentAccumulator);
         for (int i = 0; i < aSequence.Length; i++)
-        {
-            var a = double.CreateChecked(aSequence[i]);
-            var b = double.CreateChecked(bSequence[i]);
-            sumS1 += a;
-            sumS2 += b;
-            sumS1S2 += a * b;
-        }
+            accumulator.Add(double.CreateChecked(aSequence[i]), double.CreateChecked(bSequence[i]));
 
-        return (sumS1S2 - sumS1 * sumS2 / aSequence.Length) / (aSequence.Length - 1);
+        return accumulator.SampleCovariance;
     }
 }

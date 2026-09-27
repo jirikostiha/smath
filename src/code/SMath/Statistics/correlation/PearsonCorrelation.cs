@@ -3,6 +3,7 @@ namespace SMath.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 /// <summary>
 /// Pearson correlation coefficient.
@@ -14,7 +15,7 @@ public static class PearsonCorrelation
 {
     public static double Eval<N>(IEnumerable<N> aSequence, IEnumerable<N> bSequence)
          where N : INumberBase<N>
-         // the length check is done within the single pass of Covariance.Evaluate,
+         // the length check is done within the single pass of Evaluate,
          // enumerating the sequences twice would re-evaluate lazy pipelines
          => Evaluate(aSequence, bSequence);
 
@@ -30,12 +31,7 @@ public static class PearsonCorrelation
     internal static double Evaluate<N>(IEnumerable<N> aSequence, IEnumerable<N> bSequence)
         where N : INumberBase<N>
     {
-        double meanA = 0;
-        double meanB = 0;
-        double momentA = 0;
-        double momentB = 0;
-        double coMoment = 0;
-        long count = 0;
+        var accumulator = default(CoMomentAccumulator);
 
         using var aEnumerator = aSequence.GetEnumerator();
         using var bEnumerator = bSequence.GetEnumerator();
@@ -51,23 +47,12 @@ public static class PearsonCorrelation
             if (!aMoved)
                 break;
 
-            count++;
-            double a = double.CreateChecked(aEnumerator.Current);
-            double b = double.CreateChecked(bEnumerator.Current);
-            double deltaA = a - meanA;
-            double deltaB = b - meanB;
-            meanA += deltaA / count;
-            meanB += deltaB / count;
-            momentA += deltaA * (a - meanA);
-            momentB += deltaB * (b - meanB);
-            coMoment += deltaA * (b - meanB);
+            accumulator.Add(
+                double.CreateChecked(aEnumerator.Current),
+                double.CreateChecked(bEnumerator.Current));
         }
 
-        if (count < 2)
-            return double.NaN;
-
-        double denominator = double.Sqrt(momentA * momentB);
-        return denominator != 0 ? coMoment / denominator : double.NaN;
+        return accumulator.PearsonCoefficient;
     }
 
     public static double Eval<N>(ReadOnlySpan<N> aSequence, ReadOnlySpan<N> bSequence)
@@ -76,31 +61,11 @@ public static class PearsonCorrelation
         if (aSequence.Length != bSequence.Length)
             throw new ArgumentException("Inconsistent length of sequences.");
 
-        if (aSequence.Length < 2)
-            return double.NaN;
-
-        double meanA = 0;
-        double meanB = 0;
-        double momentA = 0;
-        double momentB = 0;
-        double coMoment = 0;
-
+        var accumulator = default(CoMomentAccumulator);
         for (int i = 0; i < aSequence.Length; i++)
-        {
-            int count = i + 1;
-            double a = double.CreateChecked(aSequence[i]);
-            double b = double.CreateChecked(bSequence[i]);
-            double deltaA = a - meanA;
-            double deltaB = b - meanB;
-            meanA += deltaA / count;
-            meanB += deltaB / count;
-            momentA += deltaA * (a - meanA);
-            momentB += deltaB * (b - meanB);
-            coMoment += deltaA * (b - meanB);
-        }
+            accumulator.Add(double.CreateChecked(aSequence[i]), double.CreateChecked(bSequence[i]));
 
-        double denominator = double.Sqrt(momentA * momentB);
-        return denominator != 0 ? coMoment / denominator : double.NaN;
+        return accumulator.PearsonCoefficient;
     }
 
     /// <summary>
@@ -113,9 +78,14 @@ public static class PearsonCorrelation
         if (aSequence.Count != bSequence.Count)
             throw new ArgumentException("Inconsistent length of lists.");
 
-        SumXYX2Y2XY(aSequence, bSequence, out N sumX, out N sumY, out N sumX2, out N sumY2, out N sumXY, lag);
+        var shift = int.CreateChecked(lag);
+        var accumulator = default(CoMomentAccumulator);
+        for (int i = 0; i < aSequence.Count; i++)
+            accumulator.Add(
+                double.CreateChecked(aSequence[i]),
+                double.CreateChecked(bSequence[ClampedIndex(i, shift, bSequence.Count)]));
 
-        return FromSums(sumX, sumY, sumX2, sumY2, sumXY, aSequence.Count);
+        return accumulator.PearsonCoefficient;
     }
 
     /// <summary>
@@ -128,29 +98,20 @@ public static class PearsonCorrelation
         if (aSequence.Length != bSequence.Length)
             throw new ArgumentException("Inconsistent length of sequences.");
 
-        SumXYX2Y2XY(aSequence, bSequence, out N sumX, out N sumY, out N sumX2, out N sumY2, out N sumXY, lag);
+        var shift = int.CreateChecked(lag);
+        var accumulator = default(CoMomentAccumulator);
+        for (int i = 0; i < aSequence.Length; i++)
+            accumulator.Add(
+                double.CreateChecked(aSequence[i]),
+                double.CreateChecked(bSequence[ClampedIndex(i, shift, bSequence.Length)]));
 
-        return FromSums(sumX, sumY, sumX2, sumY2, sumXY, aSequence.Length);
+        return accumulator.PearsonCoefficient;
     }
 
-    private static double FromSums<N>(N sumX, N sumY, N sumX2, N sumY2, N sumXY, int length)
-        where N : INumberBase<N>
-    {
-        var n = double.CreateChecked(length);
-
-        // the sums are widened before multiplying, the product of two N sums can overflow N
-        var x = double.CreateChecked(sumX);
-        var y = double.CreateChecked(sumY);
-
-        // replace by call to std dev?
-        var aStDev = double.Sqrt(double.CreateChecked(sumX2) / n - x * x / n / n);
-        var bStDev = double.Sqrt(double.CreateChecked(sumY2) / n - y * y / n / n);
-        var covariance = double.CreateChecked(sumXY) / n - x * y / n / n;
-
-        // a constant sequence has no deviation, the coefficient is undefined then
-        var denominator = aStDev * bStDev;
-        return denominator != 0 ? covariance / denominator : double.NaN;
-    }
+    // the shifted index runs past the sequence at one end, the nearest edge value stands in for it
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static int ClampedIndex(int index, int shift, int length)
+        => int.Clamp(index + shift, 0, length - 1);
 
     /// <summary>
     /// Pearson cross-correlation.
@@ -418,77 +379,6 @@ public static class PearsonCorrelation
             // and the roots are taken apart to not overflow on their product
             public readonly double Coefficient
                 => _coMoment / (double.Sqrt(_momentA) * double.Sqrt(_momentB));
-        }
-    }
-
-    //http://www.statisticshowto.com/probability-and-statistics/correlation-coefficient-formula/
-
-    internal static void SumXYX2Y2XY<N, NInt>(IList<N> numbers1, IList<N> numbers2, out N sumX, out N sumY, out N sumX2, out N sumY2, out N sumXY, NInt lag)
-        where N : INumberBase<N>
-        where NInt : IBinaryInteger<NInt>
-    {
-        sumX = N.Zero;
-        sumX2 = N.Zero;
-        sumY = N.Zero;
-        sumY2 = N.Zero;
-        sumXY = N.Zero;
-
-        for (int i = 0; i < numbers1.Count; ++i)
-        {
-            N x = numbers1[i];
-            var iy = i + int.CreateChecked(lag);
-            var y = N.Zero;
-            if (lag < NInt.Zero)
-                y = iy < 0
-                    ? numbers2[0]
-                    : iy < numbers2.Count
-                        ? numbers2[iy]
-                        : numbers2[numbers2.Count - 1];
-            else
-                y = iy < numbers2.Count
-                    ? numbers2[iy]
-                    : numbers2[numbers2.Count - 1];
-
-            sumX += x;
-            sumX2 += x * x;
-            sumY += y;
-            sumY2 += y * y;
-            sumXY += x * y;
-        }
-    }
-
-    internal static void SumXYX2Y2XY<N, NInt>(ReadOnlySpan<N> numbers1, ReadOnlySpan<N> numbers2,
-        out N sumX, out N sumY, out N sumX2, out N sumY2, out N sumXY, NInt lag)
-        where N : INumberBase<N>
-        where NInt : IBinaryInteger<NInt>
-    {
-        sumX = N.Zero;
-        sumX2 = N.Zero;
-        sumY = N.Zero;
-        sumY2 = N.Zero;
-        sumXY = N.Zero;
-
-        for (int i = 0; i < numbers1.Length; ++i)
-        {
-            N x = numbers1[i];
-            var iy = i + int.CreateChecked(lag);
-            var y = N.Zero;
-            if (lag < NInt.Zero)
-                y = iy < 0
-                    ? numbers2[0]
-                    : iy < numbers2.Length
-                        ? numbers2[iy]
-                        : numbers2[numbers2.Length - 1];
-            else
-                y = iy < numbers2.Length
-                    ? numbers2[iy]
-                    : numbers2[numbers2.Length - 1];
-
-            sumX += x;
-            sumX2 += x * x;
-            sumY += y;
-            sumY2 += y * y;
-            sumXY += x * y;
         }
     }
 }

@@ -143,4 +143,23 @@ public class PearsonCorrelationTest
         Assert.Equal(expected, PearsonCorrelation.EvalPerf(aSequence, bSequence, 0), 6);
     }
     #endregion
+
+    [Fact]
+    public void EvalArrayPerf_LargeOffset_KeepsPrecision()
+    {
+        // the naive sum-of-squares form cancels out every digit here and returned NaN
+        var seq = new[] { 1e9 + 1, 1e9 + 2, 1e9 + 3, 1e9 + 5 };
+
+        Assert.Equal(1d, PearsonCorrelation.EvalPerf(seq, seq, 0), 9);
+        Assert.Equal(1d, PearsonCorrelation.EvalPerf(new ReadOnlySpan<double>(seq), new ReadOnlySpan<double>(seq), 0), 9);
+    }
+
+    [Fact]
+    public void EvalArrayPerf_IntegerSquaresBeyondRange_DoesNotOverflow()
+    {
+        // the sum of squares of these values does not fit into int
+        var seq = new[] { 100_000, 200_000, 300_000 };
+
+        Assert.Equal(1d, PearsonCorrelation.EvalPerf(seq, seq, 0), 9);
+    }
 }

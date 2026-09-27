@@ -52,4 +52,21 @@ public class CovarianceTest
     {
         Assert.Throws<ArgumentException>(() => Covariance.Eval(new ReadOnlySpan<int>(new int[] { 1 }), new ReadOnlySpan<int>(new int[] { 1, 2 })));
     }
+
+    [Fact]
+    public void Eval_LargeOffset_KeepsPrecision()
+    {
+        // the naive sum-of-products form cancels out every digit here and returned 0
+        var seq = new[] { 1e9 + 1, 1e9 + 2, 1e9 + 3 };
+
+        Assert.Equal(1d, Covariance.Eval((System.Collections.Generic.IEnumerable<double>)seq, seq), 9);
+        Assert.Equal(1d, Covariance.Eval(new ReadOnlySpan<double>(seq), new ReadOnlySpan<double>(seq)), 9);
+    }
+
+    [Fact]
+    public void Eval_SinglePair_ReturnsNaN()
+    {
+        Assert.True(double.IsNaN(Covariance.Eval(new[] { 1 }, new[] { 2 }, out long count)));
+        Assert.Equal(1, count);
+    }
 }
