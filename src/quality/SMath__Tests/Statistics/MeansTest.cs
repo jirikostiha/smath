@@ -102,4 +102,21 @@ public class MeansTest
         Assert.Equal(2.5, WeightedArithmeticMean.Eval(values, weights), 6);
         Assert.Equal(2.5, WeightedArithmeticMean.Eval(new ReadOnlySpan<double>(values), new ReadOnlySpan<double>(weights)), 6);
     }
+
+    [Fact]
+    public void ArithmeticMean_IntegerSumBeyondRange_DoesNotOverflow()
+    {
+        // the sum kept in int wrapped around and the mean came out as -1
+        var data = new[] { int.MaxValue, int.MaxValue };
+
+        Assert.Equal(int.MaxValue, ArithmeticMean.Eval((IEnumerable<int>)data), 6);
+        Assert.Equal(int.MaxValue, ArithmeticMean.Eval(new ReadOnlySpan<int>(data)), 6);
+    }
+
+    [Fact]
+    public void ArithmeticMean_Empty_ReturnsNaN()
+    {
+        Assert.True(double.IsNaN(ArithmeticMean.Eval(Array.Empty<int>())));
+        Assert.True(double.IsNaN(ArithmeticMean.Eval(ReadOnlySpan<int>.Empty)));
+    }
 }
