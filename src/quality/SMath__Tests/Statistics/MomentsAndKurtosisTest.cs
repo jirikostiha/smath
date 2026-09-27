@@ -115,4 +115,15 @@ public class MomentsAndKurtosisTest
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
     }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    public void StandardizedMoment_Degree1And2_EmptyOrConstant_ReturnsNaN(int degree)
+    {
+        // consistent with the higher degrees, there is no deviation to standardize by
+        Assert.True(double.IsNaN(StandardizedMoment.Eval(Array.Empty<double>(), degree)));
+        Assert.True(double.IsNaN(StandardizedMoment.Eval(new[] { 5d, 5d, 5d }, degree)));
+        Assert.True(double.IsNaN(StandardizedMoment.Eval(new ReadOnlySpan<double>(new[] { 5d, 5d, 5d }), degree)));
+    }
 }

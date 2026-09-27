@@ -63,8 +63,6 @@ public static class StandardizedMoment
         where N : INumberBase<N>
     {
         if (degree < 1) throw new ArgumentOutOfRangeException(nameof(degree));
-        if (degree == 1) return 0d;
-        if (degree == 2) return 1d;
 
         var list = sequence as IReadOnlyList<N> ?? sequence.ToArray();
         if (list.Count == 0) return double.NaN;
@@ -86,6 +84,11 @@ public static class StandardizedMoment
         var stdev = double.Sqrt(m2);
         if (stdev == 0) return double.NaN;
 
+        // exact by definition, the shortcut only after the checks keeps the degrees consistent:
+        // an empty or a constant sequence has no standardized moment of any degree
+        if (degree == 1) return 0d;
+        if (degree == 2) return 1d;
+
         return mk / double.Pow(stdev, degree);
     }
 
@@ -93,8 +96,6 @@ public static class StandardizedMoment
         where N : INumberBase<N>
     {
         if (degree < 1) throw new ArgumentOutOfRangeException(nameof(degree));
-        if (degree == 1) return 0d;
-        if (degree == 2) return 1d;
         if (sequence.Length == 0) return double.NaN;
 
         var mean = ArithmeticMean.Eval(sequence);
@@ -113,6 +114,11 @@ public static class StandardizedMoment
 
         var stdev = double.Sqrt(m2);
         if (stdev == 0) return double.NaN;
+
+        // exact by definition, the shortcut only after the checks keeps the degrees consistent:
+        // an empty or a constant sequence has no standardized moment of any degree
+        if (degree == 1) return 0d;
+        if (degree == 2) return 1d;
 
         return mk / double.Pow(stdev, degree);
     }
