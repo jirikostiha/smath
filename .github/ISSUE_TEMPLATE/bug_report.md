@@ -7,25 +7,24 @@ assignees: ''
 
 ---
 
-**Describe the bug**
+## Describe the bug
 
 …
 
-**Version(s)**
+## Version(s)
 
 …
 
-
-**Steps to Reproduce**
-
-…
-
-
-**Expected behavior**
+## Steps to Reproduce
 
 …
 
-**Code Snippets**
+## Expected behavior
+
+…
+
+## Code Snippets
+
 > A minimum viable code snippet can be useful! (use backticks to format it).
 
 …

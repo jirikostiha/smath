@@ -7,17 +7,17 @@ assignees: ''
 
 ---
 
-**Describe the problem you're having**
+## Describe the problem you're having
+
 > A clear and concise description of what the bug is.
 
 …
 
-**Version(s)**
-
+## Version(s)
 
 …
 
-**Code snippet**
+## Code snippet
 
 > Hint: wrap it with backticks to format it
 
