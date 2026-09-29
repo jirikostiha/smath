@@ -23,7 +23,9 @@
 *.{bat,[bB][aA][tT]} text eol=crlf
 
 # Languages
-*.cs    text diff=csharp
+# C# is checked out with lf, matching end_of_line in src/.editorconfig, so dotnet
+# format gives the same verdict whatever core.autocrlf or OS is in use.
+*.cs    text diff=csharp eol=lf
 *.vb    text
 *.resx  text
 *.c     text

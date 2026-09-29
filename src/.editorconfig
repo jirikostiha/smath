@@ -1,4 +1,7 @@
 ﻿[*.cs]
 
+# Without it dotnet format expects the OS line ending: crlf on Windows, lf on Linux.
+end_of_line = lf
+
 # S4136: Method overloads should be grouped together
 dotnet_diagnostic.S4136.severity = none
