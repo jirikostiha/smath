@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1790528667677,
+  "lastUpdate": 1790660540986,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -312,6 +312,42 @@ window.BENCHMARK_DATA = {
             "value": 21750.101122174943,
             "unit": "ns",
             "range": "± 62.435182370904585"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": false,
+          "id": "2f8ec9008eaeedcf03f297b85de34482d921fe39",
+          "message": "ci: github-release - grant checks write to publish job\n\nThe reusable nuget-publish.yml runs a nested build job that requests\nchecks: write; a caller must grant at least that, otherwise the\nworkflow is rejected as invalid.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+          "timestamp": "2026-09-29T07:21:45+02:00",
+          "tree_id": "a69980bc47ce75898eee7d4cf6a6f3faecf49e6b",
+          "url": "https://github.com/jirikostiha/smath/commit/2f8ec9008eaeedcf03f297b85de34482d921fe39"
+        },
+        "date": 1790660540445,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Benchmarks.SpearmanCorrelation_Benchmark.Eval_ReadOnlySpan",
+            "value": 18829.545673076922,
+            "unit": "ns",
+            "range": "± 12.901905735890248"
+          },
+          {
+            "name": "SMath.Benchmarks.SpearmanCorrelation_Benchmark.Eval_IEnumerable",
+            "value": 20759.846059945914,
+            "unit": "ns",
+            "range": "± 26.726940700513385"
           }
         ]
       }
