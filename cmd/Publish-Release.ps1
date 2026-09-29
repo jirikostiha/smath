@@ -23,8 +23,9 @@ Version rules by branch:
 
   -Version            Sets the numeric part outright; the suffix still follows the
                       rules below.
-  rel/* or release/*  The suffix is empty (a clean release; dev below 1.0). The patch part is
-                      raised until the version outranks every version tag reachable
+  rel/X.Y[.Z] or      The suffix is empty (a clean release; dev below 1.0). A v before
+  release/X.Y[.Z]     the version is accepted; any other name under rel/ or release/ is
+                      refused before the build. The patch part is raised until the version outranks every version tag reachable
                       from HEAD, so a fresh release branch keeps its prefix and a
                       re-run moves to the next patch.
   anything else       The suffix is dev and the minor part is raised until the
@@ -35,8 +36,9 @@ On main the run does not build a dev version: it cuts a release. Steps 1-3 run o
 first, so a failing build, test or lint leaves no branch and no version bump behind, and
 any lint fixes are committed to main. rel/X.Y is then opened at that commit, with X.Y
 taken from -Version or, without it, from the minor main carries, and the release proceeds
-on that branch. When rel/X.Y already exists main still holds a version that has been
-taken, so main is first advanced one minor with -dev (reusing Bump-Version and
+on that branch. When the X.Y line already exists - under any release-branch name, such as
+rel/X.Y, release/X.Y, release/vX.Y or rel/X.Y.Z - main still holds a version that has
+been taken, so main is first advanced one minor with -dev (reusing Bump-Version and
 Commit-Version) and rel/(X.Y+1) is cut instead.
 
 Below 1.0 (major 0) there is no release branch and no clean release. The version is always
@@ -101,7 +103,7 @@ name: Publish-Release
 kind: cmd
 description: Runs the release pipeline end to end - build, test, lint, version bump by branch type, commit, tag and push. Use to cut a release.
 profiles: [dotnet]
-version: 3.3.1
+version: 3.3.2
 ---#>
 [CmdletBinding(SupportsShouldProcess)]
 param(
@@ -119,6 +121,14 @@ $ErrorActionPreference = "Stop"
 # Native exit codes are checked explicitly below; letting the preference throw on
 # any stderr write would turn ordinary git progress output into a failure.
 $PSNativeCommandUseErrorActionPreference = $false
+
+# A release branch is rel/X.Y or release/X.Y, optionally with a v and a patch part
+# (release/v2.4, rel/2.4.1). Groups: major, minor, patch. [0-9] rather than \d, which
+# would also accept non-ASCII digits that [version] and [int] then reject. Any other
+# name under the prefix is refused up front rather than released under a version its
+# name does not state.
+$ReleaseBranchPrefix = '^(?:rel|release)/'
+$ReleaseBranchPattern = $ReleaseBranchPrefix + 'v?([0-9]+)\.([0-9]+)(?:\.([0-9]+))?$'
 
 function Write-Step {
     <#
@@ -550,13 +560,14 @@ function Get-TargetVersion {
         Write-Verbose ("Version {0} requested explicitly; only the suffix is still decided." -f $prefix)
     }
 
-    if ($Branch -match '^(rel|release)/') {
+    $named = [regex]::Match($Branch, $ReleaseBranchPattern)
+    if ($named.Success) {
         # A release branch names the version it prepares; honour that name when the
         # file still carries the lower version inherited from main. An explicit version
         # outranks the branch name - it was typed for this run.
-        $named = [regex]::Match($Branch, '^(?:rel|release)/v?(\d+(?:\.\d+){1,3})')
-        if (-not $isExplicit -and $named.Success) {
-            $branchVersion = ConvertTo-ThreePartVersion ([version] $named.Groups[1].Value)
+        if (-not $isExplicit) {
+            # An absent patch group is an empty string, which [int] turns into 0.
+            $branchVersion = [version] ("{0}.{1}.{2}" -f $named.Groups[1].Value, $named.Groups[2].Value, [int] $named.Groups[3].Value)
             if ($branchVersion -gt $prefix) { $prefix = $branchVersion }
         }
 
@@ -649,39 +660,59 @@ function Get-ReleaseLine {
     return [pscustomobject]@{ Major = $prefix.Major; Minor = $prefix.Minor }
 }
 
-function Test-BranchExists {
+function Find-ReleaseBranch {
     <#
     .SYNOPSIS
-    Determines whether a branch exists locally or on the origin.
+    Finds the existing release branch of a MAJOR.MINOR line, whatever form its name takes.
 
     .DESCRIPTION
-    Checks the local ref, then the remote-tracking ref, then the remote itself for a
-    branch pushed elsewhere but not yet fetched. An unreachable remote is tolerated:
-    the local checks still stand.
+    A new line is always cut as rel/X.Y, but a line already carried by release/X.Y,
+    rel/vX.Y or rel/X.Y.Z is the same line, and missing it would cut a duplicate beside
+    it. Looks at local branches, remote-tracking branches and the remote itself, for a
+    branch pushed elsewhere but not yet fetched. An unreachable remote is tolerated: the
+    local checks still stand. Returns the first matching name, or nothing when the line
+    is still free.
 
-    .PARAMETER Name
-    The branch name, for example rel/4.2.
+    .PARAMETER Major
+    Major part of the release line.
+
+    .PARAMETER Minor
+    Minor part of the release line.
 
     .EXAMPLE
-    Test-BranchExists -Name "rel/4.2"
+    Find-ReleaseBranch -Major 4 -Minor 2
     #>
     [CmdletBinding()]
-    [OutputType([bool])]
+    [OutputType([string])]
     param(
-        [Parameter(Mandatory, Position = 0)]
-        [ValidateNotNullOrEmpty()]
-        [string] $Name
+        [Parameter(Mandatory)]
+        [int] $Major,
+
+        [Parameter(Mandatory)]
+        [int] $Minor
     )
 
-    if (@(Invoke-Git -Arguments "branch", "--list", $Name | Where-Object { $_ }).Count -gt 0) { return $true }
-    if (@(Invoke-Git -Arguments "branch", "--remotes", "--list", ("origin/{0}" -f $Name) | Where-Object { $_ }).Count -gt 0) { return $true }
-
-    $remote = @(Invoke-Git -Arguments "ls-remote", "--heads", "origin", $Name -AllowFailure | Where-Object { $_ })
-    if ($LASTEXITCODE -ne 0) {
-        Write-Warning ("The remote could not be checked for {0} (git exit code: {1}); relying on local refs only." -f $Name, $LASTEXITCODE)
-        return $false
+    # Takes full ref names from either source and returns the first branch of the line.
+    $selectLine = {
+        param($refs)
+        $refs | ForEach-Object { ($_ -split '\s+')[-1] -replace '^refs/(heads|remotes/origin)/', '' } |
+            Where-Object {
+                $m = [regex]::Match($_, $ReleaseBranchPattern)
+                $m.Success -and [int] $m.Groups[1].Value -eq $Major -and [int] $m.Groups[2].Value -eq $Minor
+            } |
+            Sort-Object | Select-Object -First 1
     }
-    return $remote.Count -gt 0
+
+    $local = & $selectLine (Invoke-Git -Arguments "for-each-ref", "--format=%(refname)",
+        "refs/heads/rel", "refs/heads/release", "refs/remotes/origin/rel", "refs/remotes/origin/release")
+    if ($local) { return $local }
+
+    $remote = @(Invoke-Git -Arguments "ls-remote", "--heads", "origin", "rel/*", "release/*" -AllowFailure)
+    if ($LASTEXITCODE -ne 0) {
+        Write-Warning ("The remote could not be checked for release line {0}.{1} (git exit code: {2}); relying on local refs only." -f $Major, $Minor, $LASTEXITCODE)
+        return $null
+    }
+    return (& $selectLine $remote)
 }
 
 function Invoke-GitPush {
@@ -817,6 +848,9 @@ try {
     Invoke-Git -Arguments "rev-parse", "--is-inside-work-tree" | Out-Null
 
     $branch = @(Invoke-Git -Arguments "rev-parse", "--abbrev-ref", "HEAD")[0].Trim()
+    if ($branch -match $ReleaseBranchPrefix -and -not [regex]::IsMatch($branch, $ReleaseBranchPattern)) {
+        throw ("'{0}' is not a release branch name. Use rel/X.Y or release/X.Y, optionally with a v and a patch part, such as release/v2.4 or rel/2.4.1." -f $branch)
+    }
     $dirty = @(Invoke-Git -Arguments "status", "--porcelain" | Where-Object { $_ })
     if ($dirty.Count -gt 0) {
         throw ("The working tree has {0} uncommitted change(s). Commit or stash them first; the lint steps commit what they touch." -f $dirty.Count)
@@ -843,17 +877,17 @@ try {
     # a failing check leaves main without a stray branch or version bump. Below 1.0 nothing
     # is branched off: the run stays on main, which is bumped and tagged as a dev version.
     $cutReleaseBranch = $false
-    $advanceMain = $false
+    $existingBranch = $null
     if ($branch -eq "main") {
         $line = Get-ReleaseLine -Current $current -Version $Version
         if ($line.Major -gt 0) {
             $cutReleaseBranch = $true
             $relBranch = "rel/{0}.{1}" -f $line.Major, $line.Minor
-            if (Test-BranchExists -Name $relBranch) {
+            $existingBranch = Find-ReleaseBranch -Major $line.Major -Minor $line.Minor
+            if ($existingBranch) {
                 if (-not [string]::IsNullOrWhiteSpace($Version)) {
-                    throw ("Release branch '{0}' already exists; release on it, or pass a different -Version." -f $relBranch)
+                    throw ("Release branch '{0}' already exists; release on it, or pass a different -Version." -f $existingBranch)
                 }
-                $advanceMain = $true
             }
         }
     }
@@ -909,8 +943,8 @@ try {
         Write-Host ("  {0}.{1} is below 1.0: no release branch; main is bumped and tagged as a dev version." -f $line.Major, $line.Minor) -ForegroundColor Yellow
     }
     elseif ($cutReleaseBranch) {
-        if ($advanceMain) {
-            Write-Host ("  {0} exists; main still carries that version. Advancing main one minor." -f $relBranch) -ForegroundColor Yellow
+        if ($existingBranch) {
+            Write-Host ("  {0} exists; main still carries that version. Advancing main one minor." -f $existingBranch) -ForegroundColor Yellow
             foreach ($carrier in $carriers) {
                 & (Join-Path $PSScriptRoot "Bump-Version.ps1") -VersionFile $carrier -Minor -Suffix dev -Confirm:$false
             }
@@ -936,8 +970,9 @@ try {
             }
             $advanced = ConvertTo-ThreePartVersion $current.Prefix
             $relBranch = "rel/{0}.{1}" -f $advanced.Major, $advanced.Minor
-            if (Test-BranchExists -Name $relBranch) {
-                throw ("The advanced release branch '{0}' also exists; resolve the release branches manually." -f $relBranch)
+            $advancedBranch = Find-ReleaseBranch -Major $advanced.Major -Minor $advanced.Minor
+            if ($advancedBranch) {
+                throw ("The advanced release branch '{0}' also exists; resolve the release branches manually." -f $advancedBranch)
             }
         }
 
@@ -952,7 +987,7 @@ try {
     Write-Step "4/7 Version"
     $target = Get-TargetVersion -Branch $branch -Current $current -Version $Version
     Write-Host ("  {0} -> {1}" -f $current.Display, $target.Display) -ForegroundColor Yellow
-    if (-not $target.Suffix -and $branch -match '^(rel|release)/') {
+    if (-not $target.Suffix -and [regex]::IsMatch($branch, $ReleaseBranchPattern)) {
         # A clean, unsuffixed version publishes a real release; never let that pass unannounced.
         Write-Host "  Release branch: publishing a clean, unsuffixed release." -ForegroundColor DarkGray
     }
