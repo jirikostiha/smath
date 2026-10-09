@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   analyze:
-    uses: jirikostiha/ci/.github/workflows/code-analysis.yml@v1
+    uses: jirikostiha/ci/.github/workflows/code-analysis.yml@fix/code-analysis-private-repos
     permissions:
       contents: read
       security-events: write
