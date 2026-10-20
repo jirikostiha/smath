@@ -72,7 +72,7 @@ public static class Plane
         public static (N A, N B, N C, N D) Normalized<N>((N A, N B, N C, N D) plane)
             where N : IRootFunctions<N>
         {
-            var length = PT.Hypotenuse(plane.A, plane.B, plane.C);
+            var length = GeometricVector3.Magnitude.FromCartesian(Normal.FromGeneralForm(plane));
             return (plane.A / length, plane.B / length, plane.C / length, plane.D / length);
         }
     }
@@ -103,7 +103,7 @@ public static class Plane
             {
                 public static N FromGeneralForm<N>((N A, N B, N C, N D) plane, (N X, N Y, N Z) point)
                     where N : IRootFunctions<N>
-                    => Evaluate(plane, point) / PT.Hypotenuse(plane.A, plane.B, plane.C);
+                    => Evaluate(plane, point) / GeometricVector3.Magnitude.FromCartesian(Normal.FromGeneralForm(plane));
             }
 
             /// <summary>
@@ -156,7 +156,8 @@ public static class Plane
             private static (N X, N Y, N Z) Along<N>((N A, N B, N C, N D) plane, (N X, N Y, N Z) point, N multiple)
                 where N : INumberBase<N>
             {
-                var t = multiple * Evaluate(plane, point) / ((plane.A * plane.A) + (plane.B * plane.B) + (plane.C * plane.C));
+                var normal = Normal.FromGeneralForm(plane);
+                var t = multiple * Evaluate(plane, point) / GeometricVector3.DotProduct.FromCartesian(normal, normal);
                 return (point.X - (t * plane.A), point.Y - (t * plane.B), point.Z - (t * plane.C));
             }
         }
@@ -190,7 +191,7 @@ public static class Plane
                         return null;
 
                     var t = -Evaluate(plane, linePoint1) / denominator;
-                    return (linePoint1.X + (t * direction.X), linePoint1.Y + (t * direction.Y), linePoint1.Z + (t * direction.Z));
+                    return Line3.At(linePoint1, linePoint2, t);
                 }
             }
         }
@@ -239,5 +240,5 @@ public static class Plane
     // left side of the plane equation, zero for a point in the plane
     private static N Evaluate<N>((N A, N B, N C, N D) plane, (N X, N Y, N Z) point)
         where N : INumberBase<N>
-        => (plane.A * point.X) + (plane.B * point.Y) + (plane.C * point.Z) + plane.D;
+        => GeometricVector3.DotProduct.FromCartesian(Normal.FromGeneralForm(plane), point) + plane.D;
 }

@@ -101,9 +101,11 @@ public static class GeometricVector3
         public static (N X, N Y, N Z) FromSpherical<N>(N magnitude, N polarAngle, N azimuth)
             where N : ITrigonometricFunctions<N>
         {
+            var (sinPolar, cosPolar) = N.SinCos(polarAngle);
+            var (sinAzimuth, cosAzimuth) = N.SinCos(azimuth);
             // sin of the polar angle is shared by x and y
-            N planar = magnitude * N.Sin(polarAngle);
-            return (planar * N.Cos(azimuth), planar * N.Sin(azimuth), Z.FromSpherical(magnitude, polarAngle));
+            N planar = magnitude * sinPolar;
+            return (planar * cosAzimuth, planar * sinAzimuth, magnitude * cosPolar);
         }
 
         /// <summary>
@@ -263,7 +265,7 @@ public static class GeometricVector3
     {
         public static N FromCartesian<N>((N X, N Y, N Z) vector1, (N X, N Y, N Z) vector2)
             where N : IRootFunctions<N>
-            => PT.Hypotenuse(vector1.X - vector2.X, vector1.Y - vector2.Y, vector1.Z - vector2.Z);
+            => Point3.Distance(vector1, vector2);
     }
 
     /// <summary>
@@ -370,8 +372,7 @@ public static class GeometricVector3
         public static (N X, N Y, N Z) FromCartesian<N>((N X, N Y, N Z) vector, (N X, N Y, N Z) unitAxis, N angle)
             where N : ITrigonometricFunctions<N>
         {
-            var cos = N.Cos(angle);
-            var sin = N.Sin(angle);
+            var (sin, cos) = N.SinCos(angle);
             var cross = CrossProduct.FromCartesian(unitAxis, vector);
             var along = DotProduct.FromCartesian(unitAxis, vector) * (N.One - cos);
             return ((vector.X * cos) + (cross.X * sin) + (unitAxis.X * along),

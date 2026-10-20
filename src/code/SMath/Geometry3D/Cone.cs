@@ -17,8 +17,8 @@ public static class Cone
     public static class Height
     {
         public static N FromVolume<N>(N volume, N radius)
-            where N : IFloatingPointConstants<N>
-            => N.CreateChecked(3) * volume / (N.Pi * radius * radius);
+            where N : IFloatingPoint<N>
+            => Cylinder.Height.FromVolume(N.CreateChecked(3) * volume, radius);
     }
 
     /// <summary>
@@ -78,7 +78,7 @@ public static class Cone
         public static class Volume
         {
             public static N FromRadius<N>(N radius, N height)
-                where N : IFloatingPointConstants<N>
+                where N : IFloatingPoint<N>
                 => Cylinder.Region.Volume.FromRadius(radius, height) / N.CreateChecked(3);
         }
     }

@@ -18,7 +18,7 @@ public static class Cylinder
     {
         public static N FromVolume<N>(N volume, N height)
             where N : IRootFunctions<N>
-            => N.Sqrt(volume / (N.Pi * height));
+            => Geometry2D.Circle.Radius.FromArea(volume / height);
     }
 
     /// <summary>
@@ -27,8 +27,8 @@ public static class Cylinder
     public static class Height
     {
         public static N FromVolume<N>(N volume, N radius)
-            where N : IFloatingPointConstants<N>
-            => volume / (N.Pi * radius * radius);
+            where N : IFloatingPoint<N>
+            => volume / Geometry2D.Circle.Region.Area.FromRadius(radius);
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ public static class Cylinder
         {
             public static N FromRadius<N>(N radius, N height)
                 where N : IFloatingPointConstants<N>
-                => N.CreateChecked(2) * N.Pi * radius * height;
+                => Geometry2D.Circle.Perimeter.Length.FromRadius(radius) * height;
         }
     }
 
@@ -68,8 +68,8 @@ public static class Cylinder
         public static class Volume
         {
             public static N FromRadius<N>(N radius, N height)
-                where N : IFloatingPointConstants<N>
-                => N.Pi * radius * radius * height;
+                where N : IFloatingPoint<N>
+                => Geometry2D.Circle.Region.Area.FromRadius(radius) * height;
         }
     }
 }

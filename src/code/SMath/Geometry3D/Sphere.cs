@@ -103,7 +103,7 @@ public static class Sphere
                     /// </summary>
                     public static N FromRadius<N>(N radius, (N X, N Y, N Z) point)
                         where N : IRootFunctions<N>
-                        => N.Abs(PT.Hypotenuse(point) - radius);
+                        => FromRadius((N.Zero, N.Zero, N.Zero), radius, point);
 
                     /// <summary>
                     /// Distance between a surface of a sphere centered in <paramref name="center"/> and a point.
@@ -158,7 +158,7 @@ public static class Sphere
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                     {
                         var gap = Geometry3D.Plane.And.Point.Distance.FromGeneralForm(plane, center) - radius;
-                        return gap > N.Zero ? gap : N.Zero;
+                        return NonNegative(gap);
                     }
                 }
 
@@ -201,7 +201,7 @@ public static class Sphere
 
                         var circleRadius2 = (radius * radius) - (distance * distance);
                         return (Geometry3D.Plane.And.Point.Projection.FromGeneralForm(plane, center),
-                            circleRadius2 > N.Zero ? N.Sqrt(circleRadius2) : N.Zero);
+                            CircleRadius(circleRadius2));
                     }
                 }
             }
@@ -234,7 +234,7 @@ public static class Sphere
                         var outer = centerDistance - radius - otherRadius;
                         var inner = N.Abs(radius - otherRadius) - centerDistance;
                         var gap = outer > inner ? outer : inner;
-                        return gap > N.Zero ? gap : N.Zero;
+                        return NonNegative(gap);
                     }
                 }
 
@@ -281,8 +281,7 @@ public static class Sphere
                             / (N.CreateChecked(2) * centerDistance);
                         var circleRadius2 = (radius * radius) - (a * a);
                         var t = a / centerDistance;
-                        return ((center.X + (t * direction.X), center.Y + (t * direction.Y), center.Z + (t * direction.Z)),
-                            circleRadius2 > N.Zero ? N.Sqrt(circleRadius2) : N.Zero);
+                        return (Line3.At(center, otherCenter, t), CircleRadius(circleRadius2));
                     }
                 }
             }
@@ -324,10 +323,7 @@ public static class Sphere
                     /// </summary>
                     public static N FromRadius<N>(N radius, (N X, N Y, N Z) point)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
-                    {
-                        var gap = PT.Hypotenuse(point) - radius;
-                        return gap > N.Zero ? gap : N.Zero;
-                    }
+                        => FromRadius((N.Zero, N.Zero, N.Zero), radius, point);
 
                     /// <summary>
                     /// Distance between a region of a sphere centered in <paramref name="center"/> and a point.
@@ -336,7 +332,7 @@ public static class Sphere
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                     {
                         var gap = GeometricVector3.Distance.FromCartesian(point, center) - radius;
-                        return gap > N.Zero ? gap : N.Zero;
+                        return NonNegative(gap);
                     }
                 }
 
@@ -385,7 +381,7 @@ public static class Sphere
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                     {
                         var gap = GeometricVector3.Distance.FromCartesian(otherCenter, center) - radius - otherRadius;
-                        return gap > N.Zero ? gap : N.Zero;
+                        return NonNegative(gap);
                     }
                 }
 
@@ -410,13 +406,12 @@ public static class Sphere
                         if (centerDistance <= N.Abs(radius - otherRadius))
                             return Volume.FromRadius(radius < otherRadius ? radius : otherRadius);
 
-                        // V = pi (R + r - d)^2 (d^2 + 2dr - 3r^2 + 2dR + 6rR - 3R^2) / (12 d)
+                        // V = pi (R + r - d)^2 (d^2 + 2d (R + r) - 3 (R - r)^2) / (12 d)
                         var gap = radius + otherRadius - centerDistance;
-                        var two = N.CreateChecked(2);
-                        var three = N.CreateChecked(3);
+                        var difference = radius - otherRadius;
                         return N.Pi * gap * gap
-                            * ((centerDistance * centerDistance) + (two * centerDistance * (radius + otherRadius))
-                                - (three * ((radius * radius) + (otherRadius * otherRadius))) + (N.CreateChecked(6) * radius * otherRadius))
+                            * ((centerDistance * centerDistance) + (N.CreateChecked(2) * centerDistance * (radius + otherRadius))
+                                - (N.CreateChecked(3) * difference * difference))
                             / (N.CreateChecked(12) * centerDistance);
                     }
                 }
@@ -439,4 +434,14 @@ public static class Sphere
             return (x, y, z, -(radius * radius));
         }
     }
+
+    // a gap that closes up is no gap
+    private static N NonNegative<N>(N gap)
+        where N : INumberBase<N>, IComparisonOperators<N, N, bool>
+        => gap > N.Zero ? gap : N.Zero;
+
+    // radius from its square, zero when rounding leaves the square slightly negative for a tangent contact
+    private static N CircleRadius<N>(N radius2)
+        where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
+        => radius2 > N.Zero ? N.Sqrt(radius2) : N.Zero;
 }

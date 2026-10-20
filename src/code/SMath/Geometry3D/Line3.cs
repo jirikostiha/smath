@@ -119,15 +119,7 @@ public static class Line3
                     (N X, N Y, N Z) line2Point1, (N X, N Y, N Z) line2Point2)
                     where N : INumberBase<N>
                 {
-                    var d1 = GeometricVector3.Direction.FromCartesian(line1Point1, line1Point2);
-                    var d2 = GeometricVector3.Direction.FromCartesian(line2Point1, line2Point2);
-                    var r = GeometricVector3.Direction.FromCartesian(line2Point1, line1Point1);
-                    // names follow Ericson, Real-Time Collision Detection, 5.1.8, as in the segment distance below
-                    var a = GeometricVector3.DotProduct.FromCartesian(d1, d1);
-                    var b = GeometricVector3.DotProduct.FromCartesian(d1, d2);
-                    var c = GeometricVector3.DotProduct.FromCartesian(d1, r);
-                    var e = GeometricVector3.DotProduct.FromCartesian(d2, d2);
-                    var f = GeometricVector3.DotProduct.FromCartesian(d2, r);
+                    var (a, b, c, e, f) = Coefficients(line1Point1, line1Point2, line2Point1, line2Point2);
                     var denominator = (a * e) - (b * b);
                     if (denominator == N.Zero)
                         return null;
@@ -183,9 +175,9 @@ public static class Line3
                     yield break;
                 }
 
-                var step = N.One / N.CreateChecked(count - 1);
+                var last = N.CreateChecked(count - 1);
                 for (int i = 0; i < count; i++)
-                    yield return At(point1, point2, N.CreateChecked(i) * step);
+                    yield return At(point1, point2, N.CreateChecked(i) / last);
             }
         }
 
@@ -258,50 +250,33 @@ public static class Line3
                         (N X, N Y, N Z) segment2Point1, (N X, N Y, N Z) segment2Point2)
                         where N : INumber<N>, IRootFunctions<N>
                     {
-                        var d1 = GeometricVector3.Direction.FromCartesian(segment1Point1, segment1Point2);
-                        var d2 = GeometricVector3.Direction.FromCartesian(segment2Point1, segment2Point2);
-                        var r = GeometricVector3.Direction.FromCartesian(segment2Point1, segment1Point1);
-                        var a = GeometricVector3.DotProduct.FromCartesian(d1, d1);
-                        var e = GeometricVector3.DotProduct.FromCartesian(d2, d2);
-                        var f = GeometricVector3.DotProduct.FromCartesian(d2, r);
+                        var (a, b, c, e, f) = Coefficients(segment1Point1, segment1Point2, segment2Point1, segment2Point2);
 
-                        N s;
-                        N t;
-                        if (a == N.Zero && e == N.Zero)
+                        // a or e is zero when the segment degenerates to a point
+                        N s = N.Zero;
+                        N t = N.Zero;
+                        if (a == N.Zero)
                         {
-                            s = N.Zero;
-                            t = N.Zero;
+                            if (e != N.Zero)
+                                t = N.Clamp(f / e, N.Zero, N.One);
                         }
-                        else if (a == N.Zero)
+                        else if (e == N.Zero)
                         {
-                            s = N.Zero;
-                            t = N.Clamp(f / e, N.Zero, N.One);
+                            s = N.Clamp(-c / a, N.Zero, N.One);
                         }
                         else
                         {
-                            var c = GeometricVector3.DotProduct.FromCartesian(d1, r);
-                            if (e == N.Zero)
+                            var denominator = (a * e) - (b * b);
+                            // parallel segments: any s works, start from the first point
+                            if (denominator != N.Zero)
+                                s = N.Clamp(((b * f) - (c * e)) / denominator, N.Zero, N.One);
+
+                            t = ((b * s) + f) / e;
+                            if (t < N.Zero || t > N.One)
                             {
-                                t = N.Zero;
-                                s = N.Clamp(-c / a, N.Zero, N.One);
-                            }
-                            else
-                            {
-                                var b = GeometricVector3.DotProduct.FromCartesian(d1, d2);
-                                var denominator = (a * e) - (b * b);
-                                // parallel segments: any s works, start from the first point
-                                s = denominator != N.Zero ? N.Clamp(((b * f) - (c * e)) / denominator, N.Zero, N.One) : N.Zero;
-                                t = ((b * s) + f) / e;
-                                if (t < N.Zero)
-                                {
-                                    t = N.Zero;
-                                    s = N.Clamp(-c / a, N.Zero, N.One);
-                                }
-                                else if (t > N.One)
-                                {
-                                    t = N.One;
-                                    s = N.Clamp((b - c) / a, N.Zero, N.One);
-                                }
+                                // the closest point of the second segment is its end, find the matching point of the first one again
+                                t = t < N.Zero ? N.Zero : N.One;
+                                s = N.Clamp(((t * b) - c) / a, N.Zero, N.One);
                             }
                         }
 
@@ -310,6 +285,23 @@ public static class Line3
                 }
             }
         }
+    }
+
+    // dot products of the line directions d1, d2 and the offset r of their first points, named after Ericson,
+    // Real-Time Collision Detection, 5.1.8: a = d1·d1, b = d1·d2, c = d1·r, e = d2·d2, f = d2·r
+    private static (N A, N B, N C, N E, N F) Coefficients<N>(
+        (N X, N Y, N Z) line1Point1, (N X, N Y, N Z) line1Point2,
+        (N X, N Y, N Z) line2Point1, (N X, N Y, N Z) line2Point2)
+        where N : INumberBase<N>
+    {
+        var d1 = GeometricVector3.Direction.FromCartesian(line1Point1, line1Point2);
+        var d2 = GeometricVector3.Direction.FromCartesian(line2Point1, line2Point2);
+        var r = GeometricVector3.Direction.FromCartesian(line2Point1, line1Point1);
+        return (GeometricVector3.DotProduct.FromCartesian(d1, d1),
+                GeometricVector3.DotProduct.FromCartesian(d1, d2),
+                GeometricVector3.DotProduct.FromCartesian(d1, r),
+                GeometricVector3.DotProduct.FromCartesian(d2, d2),
+                GeometricVector3.DotProduct.FromCartesian(d2, r));
     }
 
     // parameter t of the projection of a point to the line p1 + t * (p2 - p1), zero for coinciding line points
@@ -324,7 +316,7 @@ public static class Line3
     }
 
     // point p1 + t * (p2 - p1)
-    private static (N X, N Y, N Z) At<N>((N X, N Y, N Z) linePoint1, (N X, N Y, N Z) linePoint2, N t)
+    internal static (N X, N Y, N Z) At<N>((N X, N Y, N Z) linePoint1, (N X, N Y, N Z) linePoint2, N t)
         where N : INumberBase<N>
         => (linePoint1.X + (t * (linePoint2.X - linePoint1.X)),
             linePoint1.Y + (t * (linePoint2.Y - linePoint1.Y)),
