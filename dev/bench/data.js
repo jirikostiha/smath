@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1792530941736,
+  "lastUpdate": 1792532863316,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -456,6 +456,42 @@ window.BENCHMARK_DATA = {
             "value": 16844.193885216348,
             "unit": "ns",
             "range": "± 42.15581813515858"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "cca136928ed79cc782355a23799a30d597fbd0e2",
+          "message": "docs: readme - grid, pathfinding and the new geometry types\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+          "timestamp": "2026-10-20T23:31:11+02:00",
+          "tree_id": "337ff359a1ad6eb6cb06ca3b91cd26f1e6c40261",
+          "url": "https://github.com/jirikostiha/smath/commit/cca136928ed79cc782355a23799a30d597fbd0e2"
+        },
+        "date": 1792532862624,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Functions1.PT_Hypotenuse_Benchmark.SMath",
+            "value": 24544.076988220215,
+            "unit": "ns",
+            "range": "± 7.843262200572947"
+          },
+          {
+            "name": "SMath.Functions1.PT_Hypotenuse_Benchmark.Double",
+            "value": 24541.33727809361,
+            "unit": "ns",
+            "range": "± 2.743749534577042"
           }
         ]
       }
