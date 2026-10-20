@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1790660540986,
+  "lastUpdate": 1792527319326,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -348,6 +348,42 @@ window.BENCHMARK_DATA = {
             "value": 20759.846059945914,
             "unit": "ns",
             "range": "± 26.726940700513385"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "3873a4867b8496c3cb909c0e2822b5975df126dd",
+          "message": "feat: SphereCap - golden angle spiral of points on the cap surface\n\nSpreads points from the pole of the cap to its rim at an equal surface area per point,\nthe 3D counterpart of Circle.Perimeter.Points; a cap angle of pi covers the whole sphere.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+          "timestamp": "2026-10-20T21:45:56+02:00",
+          "tree_id": "7451a2b95848b35689f990f1ed191500e624bc98",
+          "url": "https://github.com/jirikostiha/smath/commit/3873a4867b8496c3cb909c0e2822b5975df126dd"
+        },
+        "date": 1792527318677,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Benchmarks.SpearmanCorrelation_Benchmark.Eval_ReadOnlySpan",
+            "value": 18735.789269080527,
+            "unit": "ns",
+            "range": "± 21.597116335482188"
+          },
+          {
+            "name": "SMath.Benchmarks.SpearmanCorrelation_Benchmark.Eval_IEnumerable",
+            "value": 20151.799127197264,
+            "unit": "ns",
+            "range": "± 42.3522352468919"
           }
         ]
       }
