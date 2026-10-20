@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1792529773977,
+  "lastUpdate": 1792530941736,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -420,6 +420,42 @@ window.BENCHMARK_DATA = {
             "value": 28032.063424917367,
             "unit": "ns",
             "range": "± 11.616277361029452"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "acb0b8bddf94f796d82ab981228a0728414166e9",
+          "message": "refactor: Geometry3D - reuse the vector, line and circle helpers\n\nPlane, Line3, Sphere, Cylinder and Cone wrote out formulas that GeometricVector3,\nPoint3, Line3.At and Circle already own. Line3 shares the Ericson coefficients of\nthe line and segment solvers, whose results stay bitwise identical on 300000\nrandom cases.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+          "timestamp": "2026-10-20T22:58:33+02:00",
+          "tree_id": "5b592dad965cee31a917861f095446a3e170275a",
+          "url": "https://github.com/jirikostiha/smath/commit/acb0b8bddf94f796d82ab981228a0728414166e9"
+        },
+        "date": 1792530941248,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Functions1.PT_Hypotenuse_Benchmark.SMath",
+            "value": 16820.117606026786,
+            "unit": "ns",
+            "range": "± 29.67742938402309"
+          },
+          {
+            "name": "SMath.Functions1.PT_Hypotenuse_Benchmark.Double",
+            "value": 16844.193885216348,
+            "unit": "ns",
+            "range": "± 42.15581813515858"
           }
         ]
       }
