@@ -128,5 +128,33 @@ public static class SphereCap
                 where N : IFloatingPointConstants<N>, ITrigonometricFunctions<N>
                 => N.CreateChecked(2) * N.Pi * radius * radius * (N.One - N.Cos(polarAngle));
         }
+
+        /// <summary>
+        /// Points on the surface of a spherical cap around the +z axis.
+        /// </summary>
+        public static class Points
+        {
+            /// <summary>
+            /// Enumerating points on a golden angle spiral from the pole of the cap on the +z axis to its rim,
+            /// at an equal surface area per step. A cap angle of pi covers the whole sphere.
+            /// </summary>
+            /// <param name="radius"> Radius of the sphere. </param>
+            /// <param name="capAngle"> Polar angle of the rim of the cap. </param>
+            /// <param name="count"> Number of points. The first one sits on the pole, from two points on the last one sits on the rim. </param>
+            public static IEnumerable<(N X, N Y, N Z)> Spiral<N>(N radius, N capAngle, int count)
+                where N : IFloatingPointIeee754<N>
+            {
+                N heightStep = count > 1 ? Height.FromCapAngle(N.One, capAngle) / N.CreateTruncating(count - 1) : N.Zero;
+                N goldenAngle = N.Pi * (N.CreateChecked(3) - N.Sqrt(N.CreateChecked(5)));
+                for (int k = 0; k < count; k++)
+                {
+                    N step = N.CreateTruncating(k);
+                    N cosPolar = N.Clamp(N.One - (heightStep * step), -N.One, N.One);
+                    N sinPolar = PT.Leg(N.One, cosPolar);
+                    N azimuth = step * goldenAngle;
+                    yield return (radius * sinPolar * N.Cos(azimuth), radius * sinPolar * N.Sin(azimuth), radius * cosPolar);
+                }
+            }
+        }
     }
 }
