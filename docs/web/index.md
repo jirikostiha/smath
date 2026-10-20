@@ -38,7 +38,7 @@ dotnet add package SMath
 | :--- | :--- |
 | **Geometry 1D** | `LineSegment` |
 | **Geometry 2D** | `Point2`, `Line` (ray, segment, projection, intersection), `Circle` (arc, chord, sector, segment, tangents, distance, intersection), `Ellipse`, `Hyperbola`, `Parabola`, `Polygon` (shoelace area, centroid, containment), `Triangle`, `Rectangle`, `Square`, `Rhombus`, `RegularHexagon`, `GeometricVector2` (polar/cartesian, normals, rotation, reflection, dot/cross product), `Function1Geometry` |
-| **Geometry 3D** | `Point3` (distances, neighbors, grid traversal), `Sphere`, `SphereCap`, `BallCap`, `SphericalShell`, `Ellipsoid`, `Cuboid` |
+| **Geometry 3D** | `Point3` (distances, neighbors, grid traversal), `GeometricVector3` (spherical/cartesian, normal, rotation, reflection, dot/cross/triple product), `Line3` (projection, segment, distances, closest points), `Plane` (projection, reflection, intersection), `Sphere` (distance, intersection, overlap, tangent plane), `SphereCap`, `BallCap`, `SphericalShell`, `Ellipsoid`, `Cuboid`, `Cube`, `Tetrahedron`, `Cylinder`, `Cone`, `Torus` |
 | **Statistics** | `ArithmeticMean` (also weighted), `GeometricMean`, `HarmonicMean`, `QuadraticMean`, `CubicMean`, `GeneralizedMean`, `Median`, `Mode`, `Variance`, `StandardDeviation`, `Moment`, `Skewness`, `Kurtosis`, `Covariance`, `PearsonCorrelation` (cross, auto, weighted), `SpearmanRankCorrelation`, `KendallCorrelation`, `CramerCorrelation`, `Histogram` |
 | **Combinatorics** | `Permutations`, `PermutationsWithRepetition`, `Combinations`, `CombinationsWithRepetition` |
 | **Sequences** | `ArithmeticSequence`, `GeometricSequence`, `FibonacciSequence`, `GeneralisedFibonacciSequence`, `CollatzConjecture` |
