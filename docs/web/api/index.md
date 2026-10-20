@@ -8,7 +8,9 @@ SMath is designed around .NET generic math, offering allocation-free, static mat
 
 - **`SMath`**: Core utilities, expansions, sequences, factorials, determinants, and binary integer extensions.
 - **`SMath.Geometry1D`**: 1D geometric constructs such as line segments.
-- **`SMath.Geometry2D`**: 2D points, lines, circles, ellipses, polygons, vectors, and planar shapes.
+- **`SMath.Geometry2D`**: 2D points, lines, circles, ellipses, polygons, vectors, and planar shapes, bounding boxes, interpolation and steering.
+- **`SMath.Grid2D`**: Row-major cell grids, directions, rasterization and line of sight.
+- **`SMath.Pathfinding`**: Allocation free A*, Dijkstra, flood fill, flow fields and path smoothing over a grid.
 - **`SMath.Geometry3D`**: 3D points, spherical geometry, cuboids, ellipsoids, and voxel grids.
 - **`SMath.Functions1`**: 1D mathematical functions (trigonometric, power, roots, sigmoid, logistic, etc.) with explicit parity, continuity, and derivatives.
 - **`SMath.Functions2`**: 2D test optimization functions (Ackley, Booth, etc.).

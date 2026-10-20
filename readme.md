@@ -55,8 +55,10 @@ dotnet add package SMath
 | Area | Types |
 | --- | --- |
 | Geometry 1D | `LineSegment` |
-| Geometry 2D | `Point2`, `Line` (ray, segment, projection, intersection), `Circle` (arc, chord, sector, segment, tangents, distance, intersection), `Ellipse`, `Hyperbola`, `Parabola`, `Polygon` (shoelace area, centroid, containment), `Triangle` (equilateral, isosceles, right), `Rectangle`, `Square`, `Rhombus`, `RegularHexagon`, `GeometricVector2` (polar/cartesian, normals, rotation, reflection, dot/cross product), `Function1Geometry` |
+| Geometry 2D | `Point2`, `Line` (ray, segment, projection, intersection), `Circle` (arc, chord, sector, segment, tangents, distance, intersection), `Ellipse`, `Hyperbola`, `Parabola`, `Polygon` (shoelace area, centroid, containment), `Triangle` (equilateral, isosceles, right), `Rectangle`, `Square`, `Rhombus`, `RegularHexagon`, `GeometricVector2` (polar/cartesian, normals, rotation, reflection, dot/cross product), `Function1Geometry`, `Aabb` (queries, ray, sweep), `Interpolation` (easing, Bezier, Catmull-Rom), `Steering` (seek, arrive, pursue, flocking) |
 | Geometry 3D | `Point3` (distances, neighbors, grid traversal), `GeometricVector3` (spherical/cartesian, normal, rotation, reflection, dot/cross/triple product), `Line3` (projection, segment, distances, closest points), `Plane` (projection, reflection, intersection), `Sphere` (distance, intersection, overlap, tangent plane), `SphereCap`, `BallCap`, `SphericalShell`, `Ellipsoid`, `Cuboid`, `Cube`, `Tetrahedron`, `Cylinder`, `Cone`, `Torus` |
+| Grid 2D | `Grid` (index, wrap, neighborhood, rings), `GridDirection`, `Raster` (Bresenham line, circle, disc, line of sight), `IGridPredicate` |
+| Pathfinding | `GridPathfinder` (A*, Dijkstra, allocation free), `GridFloodFill` (distances, connectivity, regions), `FlowField`, `Path2` (simplify, string pulling, smoothing) |
 | Statistics | `ArithmeticMean` (also weighted), `GeometricMean`, `HarmonicMean`, `QuadraticMean`, `CubicMean`, `GeneralizedMean`, `Median`, `Mode`, `Variance`, `StandardDeviation`, `Moment`, `Skewness`, `Kurtosis`, `Covariance`, `PearsonCorrelation` (cross, auto, weighted), `SpearmanRankCorrelation`, `KendallCorrelation`, `CramerCorrelation`, `Histogram` |
 | Combinatorics | `Permutations`, `PermutationsWithRepetition`, `Combinations`, `CombinationsWithRepetition` |
 | Sequences | `ArithmeticSequence`, `GeometricSequence`, `FibonacciSequence`, `GeneralisedFibonacciSequence`, `CollatzConjecture` |
@@ -176,6 +178,41 @@ var shell = Point3.CoordinatesAtChebyshevDistance(origin, radius);
 var neighbors = Point3.AxialNeighbors(origin)
     .Concat(Point3.EdgeNeighbors(origin))
     .Concat(Point3.DiagonalNeighbors(origin));
+```
+
+Pathfinding over a grid, with the map plugged in as a struct predicate, so a search makes
+no allocation and no virtual call:
+
+```cs
+using SMath.Grid2D;
+using SMath.Pathfinding;
+
+readonly struct Map : IGridPredicate
+{
+    private readonly bool[] _walls;
+    private readonly int _width;
+
+    public Map(bool[] walls, int width) => (_walls, _width) = (walls, width);
+
+    public bool Test(int x, int y) => !_walls[(y * _width) + x];
+}
+
+var map = new Map(walls, width);
+var pathfinder = new GridPathfinder(width, height); // allocate once, reuse for every search
+
+if (pathfinder.FindPath(start: (0, 0), target: (99, 99), map, GridConnectivity.Diagonal))
+{
+    Span<(int X, int Y)> path = stackalloc (int X, int Y)[pathfinder.PathCellCount];
+    var count = pathfinder.GetPath(path);
+
+    // drop the staircase artifacts of a grid search
+    count = Path2.PullString(path[..count], new GridNegatedPredicate<Map>(map));
+}
+
+// many agents heading to one target are cheaper over a flow field
+pathfinder.Fill(target, new GridPassabilityCost<Map>(map), distances);
+FlowField.FromDistances(distances, width, height, directions);
+var step = FlowField.Next(directions, width, agentCell);
 ```
 
 Cross correlation over a range of lags, writing into a caller owned buffer:
