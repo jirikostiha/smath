@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1792527319326,
+  "lastUpdate": 1792529773977,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -384,6 +384,42 @@ window.BENCHMARK_DATA = {
             "value": 20151.799127197264,
             "unit": "ns",
             "range": "± 42.3522352468919"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "b58b16a7dfa2ca8c7de79ff92c53bd05572554e4",
+          "message": "docs: list the new Geometry3D types\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+          "timestamp": "2026-10-20T22:39:40+02:00",
+          "tree_id": "4f170061f0e6283658a607d52d9fec1c3b7a8f9a",
+          "url": "https://github.com/jirikostiha/smath/commit/b58b16a7dfa2ca8c7de79ff92c53bd05572554e4"
+        },
+        "date": 1792529773618,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Functions1.PT_Hypotenuse_Benchmark.SMath",
+            "value": 28020.1686466762,
+            "unit": "ns",
+            "range": "± 3.5105158420400735"
+          },
+          {
+            "name": "SMath.Functions1.PT_Hypotenuse_Benchmark.Double",
+            "value": 28032.063424917367,
+            "unit": "ns",
+            "range": "± 11.616277361029452"
           }
         ]
       }
