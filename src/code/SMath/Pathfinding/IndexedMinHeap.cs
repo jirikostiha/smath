@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-
 namespace SMath.Pathfinding;
 
 /// <summary>
@@ -39,14 +37,6 @@ internal sealed class IndexedMinHeap
         Array.Fill(_positions, NotInHeap);
     }
 
-    /// <summary> Count of nodes the heap can hold. </summary>
-    public int Capacity
-        => _heap.Length;
-
-    /// <summary> Count of nodes in the heap. </summary>
-    public int Count
-        => _count;
-
     /// <summary> Determine if the heap holds no node. </summary>
     public bool IsEmpty
         => _count == 0;
@@ -60,21 +50,10 @@ internal sealed class IndexedMinHeap
         _count = 0;
     }
 
-    /// <summary> Determine if a node is in the heap. </summary>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Contains(int node)
-        => _positions[node] != NotInHeap;
-
-    /// <summary> Priority of a node. It is valid only for a node in the heap. </summary>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int PriorityOf(int node)
-        => _priorities[node];
-
     /// <summary>
     /// Insert a node or decrease its priority if it is already in the heap.
     /// </summary>
-    /// <returns> True if the node was inserted or its priority decreased. </returns>
-    public bool Push(int node, int priority)
+    public void Push(int node, int priority)
     {
         var position = _positions[node];
 
@@ -85,23 +64,15 @@ internal sealed class IndexedMinHeap
             _positions[node] = _count;
             SiftUp(_count++);
 
-            return true;
+            return;
         }
 
         if (priority >= _priorities[node])
-            return false;
+            return;
 
         _priorities[node] = priority;
         SiftUp(position);
-
-        return true;
     }
-
-    /// <summary> Node with the lowest priority. </summary>
-    public int Peek()
-        => _count > 0
-            ? _heap[0]
-            : throw new InvalidOperationException("The heap is empty.");
 
     /// <summary> Remove and get the node with the lowest priority. </summary>
     public int Pop()
