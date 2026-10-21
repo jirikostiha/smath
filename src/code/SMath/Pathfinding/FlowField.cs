@@ -103,11 +103,11 @@ public static class FlowField
         {
             yield return cell;
 
-            var direction = directions[(cell.Y * width) + cell.X];
-            if (direction == GridDirection.None)
+            var next = Next(directions, width, cell);
+            if (next == cell)
                 yield break;
 
-            cell = GridDirection.Step(cell, direction);
+            cell = next;
         }
     }
 }
