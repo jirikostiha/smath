@@ -114,6 +114,18 @@ public class RasterTests
     public void Cast_OverEmptyGrid_ReachesTarget()
         => Assert.Equal((5, 3), Raster.Cast((0, 0), (5, 3), default(NoObstacle)));
 
+    [Theory]
+    [InlineData(1)]
+    [InlineData(3)]
+    [InlineData(7)]
+    [InlineData(20)]
+    public void Circle_ListsEveryCellOnce(int radius)
+    {
+        var cells = Raster.Circle((2, -1), radius).ToArray();
+
+        Assert.Equal(cells.Length, cells.Distinct().Count());
+    }
+
     [Fact]
     public void Circle_IsSymmetric()
     {

@@ -141,7 +141,7 @@ public static class Raster
     }
 
     /// <summary>
-    /// Cells of a midpoint circle outline.
+    /// Cells of a midpoint circle outline, each of them once.
     /// </summary>
     /// <remarks>
     /// <a href="https://en.wikipedia.org/wiki/Midpoint_circle_algorithm">Wikipedia</a>
@@ -163,14 +163,25 @@ public static class Raster
 
         while (x >= y)
         {
+            // the mirrored cells coincide on the axes and on the diagonals
             yield return (center.X + x, center.Y + y);
-            yield return (center.X + y, center.Y + x);
-            yield return (center.X - y, center.Y + x);
-            yield return (center.X - x, center.Y + y);
             yield return (center.X - x, center.Y - y);
-            yield return (center.X - y, center.Y - x);
-            yield return (center.X + y, center.Y - x);
-            yield return (center.X + x, center.Y - y);
+            if (y != 0)
+            {
+                yield return (center.X - x, center.Y + y);
+                yield return (center.X + x, center.Y - y);
+            }
+
+            if (x != y)
+            {
+                yield return (center.X + y, center.Y + x);
+                yield return (center.X - y, center.Y - x);
+                if (y != 0)
+                {
+                    yield return (center.X - y, center.Y + x);
+                    yield return (center.X + y, center.Y - x);
+                }
+            }
 
             y++;
             if (error < 0)
