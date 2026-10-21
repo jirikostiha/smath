@@ -82,6 +82,23 @@ public class RasterTests
     }
 
     [Fact]
+    public void ThickLine_ThroughCorners_IsFourConnected()
+        => Assert.Equal(new[] { (0, 0), (1, 0), (1, 1), (2, 1), (2, 2) }, Raster.ThickLine((0, 0), (2, 2)).ToArray());
+
+    [Theory]
+    [InlineData(0, 0, 5, 3)]
+    [InlineData(0, 0, -4, 4)]
+    [InlineData(2, 1, 2, -6)]
+    [InlineData(-3, 2, 3, -4)]
+    public void ThickLine_StepsOnceForEveryCellOfBothSpans(int x1, int y1, int x2, int y2)
+    {
+        var cells = Raster.ThickLine((x1, y1), (x2, y2)).ToArray();
+
+        Assert.Equal(Math.Abs(x2 - x1) + Math.Abs(y2 - y1) + 1, cells.Length);
+        Assert.Equal((x2, y2), cells[^1]);
+    }
+
+    [Fact]
     public void IsVisible_OverEmptyGrid_IsTrue()
         => Assert.True(Raster.IsVisible((0, 0), (5, 3), default(NoObstacle)));
 

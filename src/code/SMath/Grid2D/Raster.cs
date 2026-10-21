@@ -80,23 +80,16 @@ public static class Raster
 
         for (var i = dx + dy; i > 0; i--)
         {
-            if (error > 0)
+            // a line through a corner of two cells takes the x step first, a step in both axes would leave the 4-connectivity
+            if (error >= 0)
             {
                 x += sx;
                 error -= (dy << 1);
             }
-            else if (error < 0)
+            else
             {
                 y += sy;
                 error += (dx << 1);
-            }
-            else
-            {
-                // exact diagonal, step in both axes at once and skip one iteration
-                x += sx;
-                y += sy;
-                error = error - (dy << 1) + (dx << 1);
-                i--;
             }
 
             yield return (x, y);
