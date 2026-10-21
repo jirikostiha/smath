@@ -22,6 +22,8 @@ public static class FlowField
     /// <param name="directions">
     /// Row-major buffer of the resulting direction indexes, see <see cref="GridDirection"/>.
     /// Targets and unreachable cells get <see cref="GridDirection.None"/>.
+    /// With <see cref="GridConnectivity.Diagonal"/> an unreached axial neighbor blocks the diagonal steps past it,
+    /// so after a fill limited by a maximal cost a cell next to the limit may get no direction.
     /// </param>
     /// <param name="connectivity"> Allowed steps. </param>
     /// <returns> Count of cells with a direction. </returns>

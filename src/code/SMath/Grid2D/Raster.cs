@@ -63,7 +63,8 @@ public static class Raster
     /// <summary>
     /// Cells of a line between two cells. Both ends are included.
     /// The line is 4-connected, every two consecutive cells share an edge.
-    /// It is the "supercover" variant suitable for line of sight of solid obstacles.
+    /// Through the exact corner of two cells it takes the x step only, so unlike a full supercover
+    /// it lists one of the two cells touching the line there.
     /// </summary>
     public static IEnumerable<(int X, int Y)> ThickLine((int X, int Y) from, (int X, int Y) to)
     {

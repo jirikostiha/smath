@@ -45,8 +45,9 @@ public static class Path2
     /// by a straight line of sight over the passable cells.
     /// </summary>
     /// <remarks>
-    /// It is the greedy variant of the string pulling, linear in the count of cells
-    /// and good enough to remove the staircase artifacts of a grid search.
+    /// It is the greedy variant of the string pulling, good enough to remove the staircase artifacts of a grid search.
+    /// Every test walks the line from the last kept cell, so a path that collapses to a few long shortcuts
+    /// costs up to the square of the count of cells.
     /// </remarks>
     /// <typeparam name="TObstacle"> Predicate matching the impassable cells. </typeparam>
     /// <param name="path"> Path of cells, it is shortened in place. </param>
