@@ -190,7 +190,7 @@ public static class Aabb
     /// <returns>
     /// Parameters of the entry and exit point of the ray or null if the ray misses the box.
     /// A negative entry parameter means the origin lies inside of the box.
-    /// A ray running exactly along an edge of the box is a miss.
+    /// A ray touching the box, along an edge or at a corner, is a hit.
     /// </returns>
     public static (N Entry, N Exit)? RayIntersection<N>(((N X, N Y) Min, (N X, N Y) Max) box,
         (N X, N Y) origin, (N X, N Y) direction)
@@ -215,7 +215,7 @@ public static class Aabb
     /// Fraction of the time step at the moment of the contact in range [0,1]
     /// together with the normal of the touched edge, or null if the boxes do not meet.
     /// Boxes overlapping already at the start are null too, separate them by <see cref="Penetration{N}"/>.
-    /// A movement exactly along an edge of the obstacle is not a contact.
+    /// A movement touching the obstacle, along an edge or at a corner, is a contact.
     /// </returns>
     public static (N Time, (N X, N Y) Normal)? Sweep<N>(((N X, N Y) Min, (N X, N Y) Max) box, (N X, N Y) velocity,
         ((N X, N Y) Min, (N X, N Y) Max) obstacle)
@@ -240,14 +240,29 @@ public static class Aabb
     private static (N EntryX, N EntryY, N Exit) Slabs<N>(((N X, N Y) Min, (N X, N Y) Max) box, (N X, N Y) origin, (N X, N Y) direction)
         where N : IFloatingPointIeee754<N>
     {
-        var inverseX = N.One / direction.X;
-        var inverseY = N.One / direction.Y;
+        var (entryX, exitX) = Slab(box.Min.X, box.Max.X, origin.X, direction.X);
+        var (entryY, exitY) = Slab(box.Min.Y, box.Max.Y, origin.Y, direction.Y);
 
-        var tx1 = (box.Min.X - origin.X) * inverseX;
-        var tx2 = (box.Max.X - origin.X) * inverseX;
-        var ty1 = (box.Min.Y - origin.Y) * inverseY;
-        var ty2 = (box.Max.Y - origin.Y) * inverseY;
+        return (entryX, entryY, N.Min(exitX, exitY));
+    }
 
-        return (N.Min(tx1, tx2), N.Min(ty1, ty2), N.Min(N.Max(tx1, tx2), N.Max(ty1, ty2)));
+    // parameters of the entry into and the exit from the slab of one axis
+    private static (N Entry, N Exit) Slab<N>(N min, N max, N origin, N direction)
+        where N : IFloatingPointIeee754<N>
+    {
+        // a movement along the slab never crosses it, it stays inside or outside, its boundary counts as inside;
+        // the division would give 0 * infinity = NaN on the boundary
+        if (direction == N.Zero)
+        {
+            return min <= origin && origin <= max
+                ? (N.NegativeInfinity, N.PositiveInfinity)
+                : (N.PositiveInfinity, N.NegativeInfinity);
+        }
+
+        var inverse = N.One / direction;
+        var t1 = (min - origin) * inverse;
+        var t2 = (max - origin) * inverse;
+
+        return (N.Min(t1, t2), N.Max(t1, t2));
     }
 }

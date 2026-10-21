@@ -170,8 +170,22 @@ public class AabbTests
     }
 
     [Fact]
-    public void RayIntersection_AlongAnEdge_IsNull()
-        => Assert.Null(Aabb.RayIntersection(((0d, 0d), (1d, 1d)), (-1d, 0d), (1d, 0d)));
+    public void RayIntersection_AlongAnEdge_IsAHit()
+        => Assert.Equal((1d, 2d), Aabb.RayIntersection(((0d, 0d), (1d, 1d)), (-1d, 0d), (1d, 0d)));
+
+    [Fact]
+    public void Sweep_AlongAnEdge_TouchesAtAFiniteTime()
+    {
+        var hit = Aabb.Sweep(((-1d, 0d), (0d, 1d)), (0d, 5d), ((0d, 3d), (1d, 4d)));
+
+        Assert.NotNull(hit);
+        Assert.Equal(0.4, hit.Value.Time, 12);
+        Assert.Equal((0d, -1d), hit.Value.Normal);
+    }
+
+    [Fact]
+    public void Sweep_ParallelBesideTheObstacle_IsNull()
+        => Assert.Null(Aabb.Sweep(((-2d, 0d), (-1d, 1d)), (0d, 5d), ((0d, 3d), (1d, 4d))));
 
     [Fact]
     public void Sweep_OverlappingAtTheStart_IsNull()
