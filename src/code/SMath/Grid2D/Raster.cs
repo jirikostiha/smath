@@ -26,34 +26,16 @@ public static class Raster
     /// </remarks>
     public static IEnumerable<(int X, int Y)> Line((int X, int Y) from, (int X, int Y) to)
     {
-        var dx = Math.Abs(to.X - from.X);
-        var dy = -Math.Abs(to.Y - from.Y);
-        var sx = from.X < to.X ? 1 : -1;
-        var sy = from.Y < to.Y ? 1 : -1;
-        var error = dx + dy;
-
-        var x = from.X;
-        var y = from.Y;
+        var line = new BresenhamLine(from, to);
 
         while (true)
         {
-            yield return (x, y);
+            yield return (line.X, line.Y);
 
-            if (x == to.X && y == to.Y)
+            if (line.IsAtEnd)
                 yield break;
 
-            var doubleError = error << 1;
-            if (doubleError >= dy)
-            {
-                error += dy;
-                x += sx;
-            }
-
-            if (doubleError <= dx)
-            {
-                error += dx;
-                y += sy;
-            }
+            line.Step();
         }
     }
 
@@ -64,35 +46,17 @@ public static class Raster
     /// <returns> Count of written cells, see <see cref="LineCellCount"/>. </returns>
     public static int Line((int X, int Y) from, (int X, int Y) to, Span<(int X, int Y)> cells)
     {
-        var dx = Math.Abs(to.X - from.X);
-        var dy = -Math.Abs(to.Y - from.Y);
-        var sx = from.X < to.X ? 1 : -1;
-        var sy = from.Y < to.Y ? 1 : -1;
-        var error = dx + dy;
-
-        var x = from.X;
-        var y = from.Y;
+        var line = new BresenhamLine(from, to);
         var count = 0;
 
         while (true)
         {
-            cells[count++] = (x, y);
+            cells[count++] = (line.X, line.Y);
 
-            if (x == to.X && y == to.Y)
+            if (line.IsAtEnd)
                 return count;
 
-            var doubleError = error << 1;
-            if (doubleError >= dy)
-            {
-                error += dy;
-                x += sx;
-            }
-
-            if (doubleError <= dx)
-            {
-                error += dx;
-                y += sy;
-            }
+            line.Step();
         }
     }
 
@@ -149,31 +113,13 @@ public static class Raster
     public static bool IsVisible<TObstacle>((int X, int Y) from, (int X, int Y) to, TObstacle isObstacle)
         where TObstacle : IGridPredicate
     {
-        var dx = Math.Abs(to.X - from.X);
-        var dy = -Math.Abs(to.Y - from.Y);
-        var sx = from.X < to.X ? 1 : -1;
-        var sy = from.Y < to.Y ? 1 : -1;
-        var error = dx + dy;
+        var line = new BresenhamLine(from, to);
 
-        var x = from.X;
-        var y = from.Y;
-
-        while (x != to.X || y != to.Y)
+        while (!line.IsAtEnd)
         {
-            var doubleError = error << 1;
-            if (doubleError >= dy)
-            {
-                error += dy;
-                x += sx;
-            }
+            line.Step();
 
-            if (doubleError <= dx)
-            {
-                error += dx;
-                y += sy;
-            }
-
-            if (isObstacle.Test(x, y))
+            if (isObstacle.Test(line.X, line.Y))
                 return false;
         }
 
@@ -187,35 +133,15 @@ public static class Raster
     public static (int X, int Y) Cast<TObstacle>((int X, int Y) from, (int X, int Y) to, TObstacle isObstacle)
         where TObstacle : IGridPredicate
     {
-        var dx = Math.Abs(to.X - from.X);
-        var dy = -Math.Abs(to.Y - from.Y);
-        var sx = from.X < to.X ? 1 : -1;
-        var sy = from.Y < to.Y ? 1 : -1;
-        var error = dx + dy;
+        var line = new BresenhamLine(from, to);
 
-        var x = from.X;
-        var y = from.Y;
-
-        while (x != to.X || y != to.Y)
+        while (!line.IsAtEnd)
         {
-            var previousX = x;
-            var previousY = y;
+            var previous = (line.X, line.Y);
+            line.Step();
 
-            var doubleError = error << 1;
-            if (doubleError >= dy)
-            {
-                error += dy;
-                x += sx;
-            }
-
-            if (doubleError <= dx)
-            {
-                error += dx;
-                y += sy;
-            }
-
-            if (isObstacle.Test(x, y))
-                return (previousX, previousY);
+            if (isObstacle.Test(line.X, line.Y))
+                return previous;
         }
 
         return to;
@@ -309,5 +235,55 @@ public static class Raster
         var half = cellSize / N.CreateTruncating(2);
         return ((N.CreateTruncating(cell.X) * cellSize) + half,
                 (N.CreateTruncating(cell.Y) * cellSize) + half);
+    }
+
+    /// <summary> Integer walk of a Bresenham line, one cell per step. </summary>
+    private struct BresenhamLine
+    {
+        private readonly int _dx;
+        private readonly int _dy;
+        private readonly int _sx;
+        private readonly int _sy;
+        private readonly (int X, int Y) _to;
+        private int _error;
+
+        public BresenhamLine((int X, int Y) from, (int X, int Y) to)
+        {
+            _dx = Math.Abs(to.X - from.X);
+            _dy = -Math.Abs(to.Y - from.Y);
+            _sx = from.X < to.X ? 1 : -1;
+            _sy = from.Y < to.Y ? 1 : -1;
+            _error = _dx + _dy;
+            _to = to;
+            X = from.X;
+            Y = from.Y;
+        }
+
+        /// <summary> X coordinate of the current cell. </summary>
+        public int X { get; private set; }
+
+        /// <summary> Y coordinate of the current cell. </summary>
+        public int Y { get; private set; }
+
+        /// <summary> Determine if the current cell is the end of the line. </summary>
+        public readonly bool IsAtEnd
+            => X == _to.X && Y == _to.Y;
+
+        /// <summary> Move to the next cell of the line. </summary>
+        public void Step()
+        {
+            var doubleError = _error << 1;
+            if (doubleError >= _dy)
+            {
+                _error += _dy;
+                X += _sx;
+            }
+
+            if (doubleError <= _dx)
+            {
+                _error += _dx;
+                Y += _sy;
+            }
+        }
     }
 }
