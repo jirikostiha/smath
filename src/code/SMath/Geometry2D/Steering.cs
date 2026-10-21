@@ -18,13 +18,7 @@ public static class Steering
     public static (N X, N Y) Seek<N>((N X, N Y) position, (N X, N Y) target, N maxSpeed)
         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
     {
-        var dx = target.X - position.X;
-        var dy = target.Y - position.Y;
-        var distance = PT.Hypotenuse(dx, dy);
-
-        return distance > N.Zero
-            ? (dx / distance * maxSpeed, dy / distance * maxSpeed)
-            : (N.Zero, N.Zero);
+        return WithLength(target.X - position.X, target.Y - position.Y, maxSpeed);
     }
 
     /// <summary>
@@ -121,11 +115,7 @@ public static class Steering
             sumY += dy * weight;
         }
 
-        var length = PT.Hypotenuse(sumX, sumY);
-
-        return length > N.Zero
-            ? (sumX / length * maxSpeed, sumY / length * maxSpeed)
-            : (N.Zero, N.Zero);
+        return WithLength(sumX, sumY, maxSpeed);
     }
 
     /// <summary>
@@ -169,11 +159,7 @@ public static class Steering
             sumY += velocity.Y;
         }
 
-        var length = PT.Hypotenuse(sumX, sumY);
-
-        return length > N.Zero
-            ? (sumX / length * maxSpeed, sumY / length * maxSpeed)
-            : (N.Zero, N.Zero);
+        return WithLength(sumX, sumY, maxSpeed);
     }
 
     /// <summary>
@@ -214,5 +200,16 @@ public static class Steering
         var scale = maxSpeed / speed;
 
         return (velocity.X * scale, velocity.Y * scale);
+    }
+
+    // the vector in the same direction with a given length, a zero vector stays zero
+    private static (N X, N Y) WithLength<N>(N x, N y, N length)
+        where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
+    {
+        var magnitude = PT.Hypotenuse(x, y);
+
+        return magnitude > N.Zero
+            ? (x / magnitude * length, y / magnitude * length)
+            : (N.Zero, N.Zero);
     }
 }
