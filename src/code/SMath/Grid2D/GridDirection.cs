@@ -76,13 +76,13 @@ public static class GridDirection
         var sx = Math.Sign(dx);
         var sy = Math.Sign(dy);
 
-        // snap to an axis within 22.5 degrees of it, ay / ax < tan(22.5) = sqrt(2) - 1 squared to stay exact, unsigned to hold the square of the sum
-        ulong ax = (ulong)Math.Abs(dx);
-        ulong ay = (ulong)Math.Abs(dy);
-        var sum = ax + ay;
-        if (sum * sum < 2 * ax * ax)
+        // snap to an axis within 22.5 degrees of it: ay / ax < tan(22.5) = sqrt(2) - 1 squares to ay * (ay + 2 ax) < ax^2,
+        // exact in integers and within ulong for any int step
+        var ax = (ulong)Math.Abs((long)dx);
+        var ay = (ulong)Math.Abs((long)dy);
+        if (ay * (ay + (2 * ax)) < ax * ax)
             sy = 0;
-        else if (sum * sum < 2 * ay * ay)
+        else if (ax * (ax + (2 * ay)) < ay * ay)
             sx = 0;
 
         return OfUnitStep(sx, sy);

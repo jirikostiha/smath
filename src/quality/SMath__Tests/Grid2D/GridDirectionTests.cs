@@ -37,5 +37,7 @@ public class GridDirectionTests
     {
         Assert.Equal(1, GridDirection.OfStep(int.MaxValue, int.MaxValue));
         Assert.Equal(0, GridDirection.OfStep(int.MaxValue, int.MaxValue / 3));
+        Assert.Equal(5, GridDirection.OfStep(int.MinValue, int.MinValue));
+        Assert.Equal(6, GridDirection.OfStep(0, int.MinValue));
     }
 }
