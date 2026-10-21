@@ -14,6 +14,34 @@ public class FlowFieldTests
     }
 
     [Fact]
+    public void FromDistances_WithDiagonalConnectivity_KeepsOffTheCornersOfObstacles()
+    {
+        // walls at (4,3) and (3,4) touch by a corner, the target lies diagonally past it
+        const int width = 7;
+        const int height = 7;
+        var walls = new byte[width * height];
+        walls[(3 * width) + 4] = 1;
+        walls[(4 * width) + 3] = 1;
+        var isPassable = new GridNegatedPredicate<GridMaskPredicate>(new GridMaskPredicate(walls, width, height));
+
+        var distances = new int[width * height];
+        new GridPathfinder(width, height).Fill((6, 6), new GridPassabilityCost<GridNegatedPredicate<GridMaskPredicate>>(isPassable),
+            distances, GridConnectivity.Diagonal);
+        var directions = new byte[width * height];
+        FlowField.FromDistances(distances, width, height, directions, GridConnectivity.Diagonal);
+
+        var path = FlowField.Path(directions, width, (3, 3)).ToArray();
+
+        Assert.Equal((6, 6), path[^1]);
+        for (var i = 1; i < path.Length; i++)
+        {
+            var (x, y) = path[i - 1];
+            var (nx, ny) = path[i];
+            Assert.True(isPassable.Test(nx, y) && isPassable.Test(x, ny), $"step {path[i - 1]} to {path[i]} cuts a corner");
+        }
+    }
+
+    [Fact]
     public void FromDistances_OfTargetCell_HasNoDirection()
     {
         var distances = new[] { 0, 1, 2, 3 };

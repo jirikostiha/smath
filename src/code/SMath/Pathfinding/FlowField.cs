@@ -28,7 +28,8 @@ public static class FlowField
     public static int FromDistances(ReadOnlySpan<int> distances, int width, int height, Span<byte> directions,
         GridConnectivity connectivity = GridConnectivity.Axial)
     {
-        var directionStep = connectivity == GridConnectivity.Axial ? 2 : 1;
+        var directionIncrement = GridNeighborhood.DirectionIncrement(connectivity);
+        var keepOffCorners = connectivity == GridConnectivity.Diagonal;
         var deltas = GridDirection.All;
         var count = 0;
 
@@ -44,13 +45,19 @@ public static class FlowField
                     continue;
 
                 var bestDistance = distance;
-                for (var direction = 0; direction < GridDirection.Count; direction += directionStep)
+                for (var direction = 0; direction < GridDirection.Count; direction += directionIncrement)
                 {
                     var delta = deltas[direction];
                     var nx = x + delta.X;
                     var ny = y + delta.Y;
 
                     if (!Grid.Contains(nx, ny, width, height))
+                        continue;
+
+                    // an unreached axial neighbor of a reached cell is impassable or over the cost limit,
+                    // a diagonal step past it slips through the corner the search refused
+                    if (keepOffCorners && !GridDirection.IsAxial(direction)
+                        && (distances[(y * width) + nx] == int.MaxValue || distances[(ny * width) + x] == int.MaxValue))
                         continue;
 
                     var neighborDistance = distances[(ny * width) + nx];
