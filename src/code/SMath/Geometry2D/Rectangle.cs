@@ -34,13 +34,7 @@ public static class Rectangle
     /// </summary>
     public static bool Contains<N>((N X, N Y) origin, (N X, N Y) size, (N X, N Y) point)
         where N : INumber<N>
-    {
-        var maxX = origin.X + size.X;
-        var maxY = origin.Y + size.Y;
-
-        return point.X >= origin.X && point.X <= maxX
-            && point.Y >= origin.Y && point.Y <= maxY;
-    }
+        => Aabb.Contains(Aabb.FromSize(origin, size), point);
 
     /// <summary>
     /// Determine whether a point lies inside an axis-aligned rectangle
@@ -48,15 +42,9 @@ public static class Rectangle
     /// </summary>
     public static bool ContainsByCorners<N>((N X, N Y) corner1, (N X, N Y) corner2, (N X, N Y) point)
         where N : INumber<N>
-    {
-        var minX = N.Min(corner1.X, corner2.X);
-        var maxX = N.Max(corner1.X, corner2.X);
-        var minY = N.Min(corner1.Y, corner2.Y);
-        var maxY = N.Max(corner1.Y, corner2.Y);
-
-        return point.X >= minX && point.X <= maxX
-            && point.Y >= minY && point.Y <= maxY;
-    }
+        => Aabb.Contains(
+            ((N.Min(corner1.X, corner2.X), N.Min(corner1.Y, corner2.Y)), (N.Max(corner1.X, corner2.X), N.Max(corner1.Y, corner2.Y))),
+            point);
 
     public static (N X, N Y) Vertex1<N>()
         where N : IFloatingPoint<N>
