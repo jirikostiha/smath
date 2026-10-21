@@ -107,9 +107,7 @@ public sealed class GridPathfinder
         var startIndex = Grid.Index(start, Width);
         var targetIndex = Grid.Index(target, Width);
 
-        _costs[startIndex] = 0;
-        _cameFrom[startIndex] = startIndex;
-        _stamps[startIndex] = _generation;
+        TryRelax(startIndex, startIndex, 0);
         _open.Push(startIndex, heuristic.Estimate(start.X, start.Y, target.X, target.Y));
 
         var directionIncrement = GridNeighborhood.DirectionIncrement(connectivity);
@@ -138,13 +136,8 @@ public sealed class GridPathfinder
                 var neighborCost = currentCost + (stepCost * weight);
                 var neighbor = (ny * Width) + nx;
 
-                if (_stamps[neighbor] == _generation && neighborCost >= _costs[neighbor])
-                    continue;
-
-                _stamps[neighbor] = _generation;
-                _costs[neighbor] = neighborCost;
-                _cameFrom[neighbor] = current;
-                _open.Push(neighbor, neighborCost + heuristic.Estimate(nx, ny, target.X, target.Y));
+                if (TryRelax(current, neighbor, neighborCost))
+                    _open.Push(neighbor, neighborCost + heuristic.Estimate(nx, ny, target.X, target.Y));
             }
         }
 
@@ -270,10 +263,8 @@ public sealed class GridPathfinder
                 continue;
 
             var sourceIndex = Grid.Index(source, Width);
-            _costs[sourceIndex] = 0;
-            _cameFrom[sourceIndex] = sourceIndex;
-            _stamps[sourceIndex] = _generation;
-            _open.Push(sourceIndex, 0);
+            if (TryRelax(sourceIndex, sourceIndex, 0))
+                _open.Push(sourceIndex, 0);
         }
 
         var directionIncrement = GridNeighborhood.DirectionIncrement(connectivity);
@@ -302,13 +293,8 @@ public sealed class GridPathfinder
                     continue;
 
                 var neighbor = (ny * Width) + nx;
-                if (_stamps[neighbor] == _generation && neighborCost >= _costs[neighbor])
-                    continue;
-
-                _stamps[neighbor] = _generation;
-                _costs[neighbor] = neighborCost;
-                _cameFrom[neighbor] = current;
-                _open.Push(neighbor, neighborCost);
+                if (TryRelax(current, neighbor, neighborCost))
+                    _open.Push(neighbor, neighborCost);
             }
         }
 
@@ -324,6 +310,19 @@ public sealed class GridPathfinder
     {
         Span<(int X, int Y)> sources = stackalloc (int X, int Y)[1] { source };
         return Fill(sources, cost, distances, connectivity, maxCost);
+    }
+
+    // records a cheaper way to a cell, false when this search already reached it at most as cheap
+    private bool TryRelax(int from, int cell, int cost)
+    {
+        if (_stamps[cell] == _generation && cost >= _costs[cell])
+            return false;
+
+        _stamps[cell] = _generation;
+        _costs[cell] = cost;
+        _cameFrom[cell] = from;
+
+        return true;
     }
 
     private void NextGeneration()
