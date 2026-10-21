@@ -16,8 +16,8 @@ internal static class GridNeighborhood
     /// <summary>
     /// Determine if a step from a cell in a direction is allowed: the neighbor lies in the grid, it is passable
     /// and a diagonal step does not slip past an impassable cell unless the corners may be cut.
+    /// The neighbor and its traversal weight are returned for the cost of the step.
     /// </summary>
-    /// <param name="weight"> Traversal weight of the neighbor. </param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool TryStep<TCost>(TCost cost, int x, int y, int direction, int width, int height,
         GridConnectivity connectivity, out int nx, out int ny, out int weight)
