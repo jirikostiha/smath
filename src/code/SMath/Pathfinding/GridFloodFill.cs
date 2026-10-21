@@ -118,7 +118,8 @@ public static class GridFloodFill
 
         for (var seed = 0; seed < cellCount; seed++)
         {
-            if (labels[seed] != Unreached || !isPassable.Test(seed % width, seed / width))
+            var (seedY, seedX) = Math.DivRem(seed, width);
+            if (labels[seed] != Unreached || !isPassable.Test(seedX, seedY))
                 continue;
 
             var label = regionCount++;
@@ -141,16 +142,16 @@ public static class GridFloodFill
         where TPassable : IGridPredicate
     {
         var directionIncrement = GridNeighborhood.DirectionIncrement(connectivity);
-        var x = current % width;
-        var y = current / width;
+        var (y, x) = Math.DivRem(current, width);
 
         for (var direction = 0; direction < GridDirection.Count; direction += directionIncrement)
         {
-            if (!GridNeighborhood.TryStep(cost, x, y, direction, width, height, connectivity, out var nx, out var ny, out _))
+            // the cheap test of a reached cell goes before the predicate calls of the step rule
+            if (!GridNeighborhood.TryNeighbor(x, y, direction, width, height, out var nx, out var ny))
                 continue;
 
             var neighbor = (ny * width) + nx;
-            if (values[neighbor] != Unreached)
+            if (values[neighbor] != Unreached || !GridNeighborhood.IsAllowed(cost, x, y, nx, ny, direction, connectivity, out _))
                 continue;
 
             values[neighbor] = value;

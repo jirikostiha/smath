@@ -123,8 +123,7 @@ public sealed class GridPathfinder
                 return true;
             }
 
-            var x = current % Width;
-            var y = current / Width;
+            var (y, x) = Math.DivRem(current, Width);
             var currentCost = _costs[current];
 
             for (var direction = 0; direction < GridDirection.Count; direction += directionIncrement)
@@ -279,8 +278,7 @@ public sealed class GridPathfinder
             reachedCount++;
             VisitedCellCount++;
 
-            var x = current % Width;
-            var y = current / Width;
+            var (y, x) = Math.DivRem(current, Width);
 
             for (var direction = 0; direction < GridDirection.Count; direction += directionIncrement)
             {
