@@ -50,9 +50,8 @@ public static class GridFloodFill
             queue[tail++] = index;
         }
 
-        var directionStep = connectivity == GridConnectivity.Axial ? 2 : 1;
-        var cutCorners = connectivity == GridConnectivity.DiagonalCornerCutting;
-        var deltas = GridDirection.All;
+        var directionIncrement = GridNeighborhood.DirectionIncrement(connectivity);
+        var cost = new GridPassabilityCost<TPassable>(isPassable);
         var head = 0;
 
         while (head < tail)
@@ -66,21 +65,13 @@ public static class GridFloodFill
             var y = current / width;
             var neighborDistance = distance + 1;
 
-            for (var direction = 0; direction < GridDirection.Count; direction += directionStep)
+            for (var direction = 0; direction < GridDirection.Count; direction += directionIncrement)
             {
-                var delta = deltas[direction];
-                var nx = x + delta.X;
-                var ny = y + delta.Y;
-
-                if (!Grid.Contains(nx, ny, width, height))
+                if (!GridNeighborhood.TryStep(cost, x, y, direction, width, height, connectivity, out var nx, out var ny, out _))
                     continue;
 
                 var neighbor = (ny * width) + nx;
-                if (distances[neighbor] != Unreached || !isPassable.Test(nx, ny))
-                    continue;
-
-                if ((direction & 1) != 0 && !cutCorners
-                    && (!isPassable.Test(nx, y) || !isPassable.Test(x, ny)))
+                if (distances[neighbor] != Unreached)
                     continue;
 
                 distances[neighbor] = neighborDistance;
@@ -140,9 +131,8 @@ public static class GridFloodFill
         var cellCount = width * height;
         labels[..cellCount].Fill(Unreached);
 
-        var directionStep = connectivity == GridConnectivity.Axial ? 2 : 1;
-        var cutCorners = connectivity == GridConnectivity.DiagonalCornerCutting;
-        var deltas = GridDirection.All;
+        var directionIncrement = GridNeighborhood.DirectionIncrement(connectivity);
+        var cost = new GridPassabilityCost<TPassable>(isPassable);
         var regionCount = 0;
 
         for (var seed = 0; seed < cellCount; seed++)
@@ -163,21 +153,13 @@ public static class GridFloodFill
                 var x = current % width;
                 var y = current / width;
 
-                for (var direction = 0; direction < GridDirection.Count; direction += directionStep)
+                for (var direction = 0; direction < GridDirection.Count; direction += directionIncrement)
                 {
-                    var delta = deltas[direction];
-                    var nx = x + delta.X;
-                    var ny = y + delta.Y;
-
-                    if (!Grid.Contains(nx, ny, width, height))
+                    if (!GridNeighborhood.TryStep(cost, x, y, direction, width, height, connectivity, out var nx, out var ny, out _))
                         continue;
 
                     var neighbor = (ny * width) + nx;
-                    if (labels[neighbor] != Unreached || !isPassable.Test(nx, ny))
-                        continue;
-
-                    if ((direction & 1) != 0 && !cutCorners
-                        && (!isPassable.Test(nx, y) || !isPassable.Test(x, ny)))
+                    if (labels[neighbor] != Unreached)
                         continue;
 
                     labels[neighbor] = label;

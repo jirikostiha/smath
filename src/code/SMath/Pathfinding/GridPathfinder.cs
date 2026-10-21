@@ -112,9 +112,7 @@ public sealed class GridPathfinder
         _stamps[startIndex] = _generation;
         _open.Push(startIndex, heuristic.Estimate(start.X, start.Y, target.X, target.Y));
 
-        var directionStep = connectivity == GridConnectivity.Axial ? 2 : 1;
-        var cutCorners = connectivity == GridConnectivity.DiagonalCornerCutting;
-        var directions = GridDirection.All;
+        var directionIncrement = GridNeighborhood.DirectionIncrement(connectivity);
 
         while (!_open.IsEmpty)
         {
@@ -131,25 +129,12 @@ public sealed class GridPathfinder
             var y = current / Width;
             var currentCost = _costs[current];
 
-            for (var direction = 0; direction < GridDirection.Count; direction += directionStep)
+            for (var direction = 0; direction < GridDirection.Count; direction += directionIncrement)
             {
-                var delta = directions[direction];
-                var nx = x + delta.X;
-                var ny = y + delta.Y;
-
-                if (!Grid.Contains(nx, ny, Width, Height))
+                if (!GridNeighborhood.TryStep(cost, x, y, direction, Width, Height, connectivity, out var nx, out var ny, out var weight))
                     continue;
 
-                var weight = cost.Weight(nx, ny);
-                if (weight <= 0)
-                    continue;
-
-                var isDiagonal = (direction & 1) != 0;
-                if (isDiagonal && !cutCorners
-                    && (cost.Weight(nx, y) <= 0 || cost.Weight(x, ny) <= 0))
-                    continue;
-
-                var stepCost = isDiagonal ? GridStep.DiagonalCost : GridStep.StraightCost;
+                var stepCost = GridDirection.IsAxial(direction) ? GridStep.StraightCost : GridStep.DiagonalCost;
                 var neighborCost = currentCost + (stepCost * weight);
                 var neighbor = (ny * Width) + nx;
 
@@ -291,9 +276,7 @@ public sealed class GridPathfinder
             _open.Push(sourceIndex, 0);
         }
 
-        var directionStep = connectivity == GridConnectivity.Axial ? 2 : 1;
-        var cutCorners = connectivity == GridConnectivity.DiagonalCornerCutting;
-        var directions = GridDirection.All;
+        var directionIncrement = GridNeighborhood.DirectionIncrement(connectivity);
         var reachedCount = 0;
 
         while (!_open.IsEmpty)
@@ -308,25 +291,12 @@ public sealed class GridPathfinder
             var x = current % Width;
             var y = current / Width;
 
-            for (var direction = 0; direction < GridDirection.Count; direction += directionStep)
+            for (var direction = 0; direction < GridDirection.Count; direction += directionIncrement)
             {
-                var delta = directions[direction];
-                var nx = x + delta.X;
-                var ny = y + delta.Y;
-
-                if (!Grid.Contains(nx, ny, Width, Height))
+                if (!GridNeighborhood.TryStep(cost, x, y, direction, Width, Height, connectivity, out var nx, out var ny, out var weight))
                     continue;
 
-                var weight = cost.Weight(nx, ny);
-                if (weight <= 0)
-                    continue;
-
-                var isDiagonal = (direction & 1) != 0;
-                if (isDiagonal && !cutCorners
-                    && (cost.Weight(nx, y) <= 0 || cost.Weight(x, ny) <= 0))
-                    continue;
-
-                var stepCost = isDiagonal ? GridStep.DiagonalCost : GridStep.StraightCost;
+                var stepCost = GridDirection.IsAxial(direction) ? GridStep.StraightCost : GridStep.DiagonalCost;
                 var neighborCost = currentCost + (stepCost * weight);
                 if (neighborCost > maxCost)
                     continue;
