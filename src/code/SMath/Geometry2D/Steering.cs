@@ -147,9 +147,6 @@ public static class Steering
     public static (N X, N Y) Align<N>(ReadOnlySpan<(N X, N Y)> neighborVelocities, N maxSpeed)
         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
     {
-        if (neighborVelocities.Length == 0)
-            return (N.Zero, N.Zero);
-
         var sumX = N.Zero;
         var sumY = N.Zero;
 
