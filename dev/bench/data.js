@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1792545126104,
+  "lastUpdate": 1792605660560,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -564,6 +564,54 @@ window.BENCHMARK_DATA = {
             "value": 20249.225503104073,
             "unit": "ns",
             "range": "± 153.32232671506185"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "400a589c375dae4e48628c55d34cdab3f43a8177",
+          "message": "feat: Grid - WindowStart and Quadrant\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+          "timestamp": "2026-10-21T19:36:14+02:00",
+          "tree_id": "3f42b6881d8aa012798563a87d81179e095cf639",
+          "url": "https://github.com/jirikostiha/smath/commit/400a589c375dae4e48628c55d34cdab3f43a8177"
+        },
+        "date": 1792605660225,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power2_Eval",
+            "value": 11392.779573713031,
+            "unit": "ns",
+            "range": "± 4.464982037216384"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power4_Eval",
+            "value": 11398.524805341449,
+            "unit": "ns",
+            "range": "± 4.3974169716487905"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power6_Eval",
+            "value": 11409.537288665771,
+            "unit": "ns",
+            "range": "± 1.9570654864865453"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power8_Eval",
+            "value": 11408.563298906598,
+            "unit": "ns",
+            "range": "± 1.1071399979061478"
           }
         ]
       }
