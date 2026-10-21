@@ -91,4 +91,12 @@ public class GridTests
 
         Assert.Equal(new[] { (0, 0), (1, 0), (1, 1), (0, 1) }, cells);
     }
+
+    [Fact]
+    public void CellCount_OverTheIntRange_Throws()
+        => Assert.Throws<OverflowException>(() => Grid.CellCount(65536, 65536));
+
+    [Fact]
+    public void MaskPredicate_OfAGridOverTheIntRange_Throws()
+        => Assert.Throws<OverflowException>(() => new GridMaskPredicate(Array.Empty<byte>(), 65536, 65536));
 }

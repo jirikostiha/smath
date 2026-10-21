@@ -33,7 +33,7 @@ public static class GridFloodFill
         GridConnectivity connectivity = GridConnectivity.Axial, int maxDistance = int.MaxValue)
         where TPassable : IGridPredicate
     {
-        var cellCount = width * height;
+        var cellCount = Grid.CellCount(width, height);
         distances[..cellCount].Fill(Unreached);
 
         var tail = 0;
@@ -110,7 +110,7 @@ public static class GridFloodFill
         Span<int> labels, Span<int> queue, GridConnectivity connectivity = GridConnectivity.Axial)
         where TPassable : IGridPredicate
     {
-        var cellCount = width * height;
+        var cellCount = Grid.CellCount(width, height);
         labels[..cellCount].Fill(Unreached);
 
         var cost = new GridPassabilityCost<TPassable>(isPassable);

@@ -13,9 +13,10 @@ namespace SMath.Grid2D;
 public static class Grid
 {
     /// <summary> Count of cells of a grid. </summary>
+    /// <exception cref="OverflowException"> The count does not fit into an <see cref="int"/>. </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int CellCount(int width, int height)
-        => width * height;
+        => checked(width * height);
 
     /// <summary> Buffer index of a cell. </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -55,7 +56,7 @@ public static class Grid
     /// <summary> Determine if a buffer index lies inside of a grid. </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool ContainsIndex(int index, int width, int height)
-        => (uint)index < (uint)(width * height);
+        => (uint)index < (uint)CellCount(width, height);
 
     /// <summary> Wrap a coordinate into range [0, length) as on a torus shaped map. </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

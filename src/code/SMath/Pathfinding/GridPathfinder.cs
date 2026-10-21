@@ -35,7 +35,7 @@ public sealed class GridPathfinder
         Width = width;
         Height = height;
 
-        var cellCount = width * height;
+        var cellCount = Grid.CellCount(width, height);
         _open = new IndexedMinHeap(cellCount);
         _costs = new int[cellCount];
         _cameFrom = new int[cellCount];
