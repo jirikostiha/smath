@@ -195,16 +195,8 @@ public static class Aabb
         (N X, N Y) origin, (N X, N Y) direction)
         where N : IFloatingPointIeee754<N>
     {
-        var inverseX = N.One / direction.X;
-        var inverseY = N.One / direction.Y;
-
-        var tx1 = (box.Min.X - origin.X) * inverseX;
-        var tx2 = (box.Max.X - origin.X) * inverseX;
-        var ty1 = (box.Min.Y - origin.Y) * inverseY;
-        var ty2 = (box.Max.Y - origin.Y) * inverseY;
-
-        var entry = N.Max(N.Min(tx1, tx2), N.Min(ty1, ty2));
-        var exit = N.Min(N.Max(tx1, tx2), N.Max(ty1, ty2));
+        var (entryX, entryY, exit) = Slabs(box, origin, direction);
+        var entry = N.Max(entryX, entryY);
 
         return exit >= N.Zero && entry <= exit ? (entry, exit) : null;
     }
@@ -227,21 +219,9 @@ public static class Aabb
         where N : IFloatingPointIeee754<N>
     {
         // reduce the problem to a ray against the Minkowski sum of both boxes
-        var minX = obstacle.Min.X - (box.Max.X - box.Min.X);
-        var minY = obstacle.Min.Y - (box.Max.Y - box.Min.Y);
-
-        var inverseX = N.One / velocity.X;
-        var inverseY = N.One / velocity.Y;
-
-        var tx1 = (minX - box.Min.X) * inverseX;
-        var tx2 = (obstacle.Max.X - box.Min.X) * inverseX;
-        var ty1 = (minY - box.Min.Y) * inverseY;
-        var ty2 = (obstacle.Max.Y - box.Min.Y) * inverseY;
-
-        var entryX = N.Min(tx1, tx2);
-        var entryY = N.Min(ty1, ty2);
+        var minkowskiSum = ((obstacle.Min.X - (box.Max.X - box.Min.X), obstacle.Min.Y - (box.Max.Y - box.Min.Y)), obstacle.Max);
+        var (entryX, entryY, exit) = Slabs(minkowskiSum, box.Min, velocity);
         var entry = N.Max(entryX, entryY);
-        var exit = N.Min(N.Max(tx1, tx2), N.Max(ty1, ty2));
 
         if (entry > exit || entry < N.Zero || entry > N.One)
             return null;
@@ -251,5 +231,20 @@ public static class Aabb
             : (velocity.Y < N.Zero ? (N.Zero, N.One) : (N.Zero, -N.One));
 
         return (entry, normal);
+    }
+
+    // parameters of the entries into the slabs of both axes and of the exit from the box, the slab method
+    private static (N EntryX, N EntryY, N Exit) Slabs<N>(((N X, N Y) Min, (N X, N Y) Max) box, (N X, N Y) origin, (N X, N Y) direction)
+        where N : IFloatingPointIeee754<N>
+    {
+        var inverseX = N.One / direction.X;
+        var inverseY = N.One / direction.Y;
+
+        var tx1 = (box.Min.X - origin.X) * inverseX;
+        var tx2 = (box.Max.X - origin.X) * inverseX;
+        var ty1 = (box.Min.Y - origin.Y) * inverseY;
+        var ty2 = (box.Max.Y - origin.Y) * inverseY;
+
+        return (N.Min(tx1, tx2), N.Min(ty1, ty2), N.Min(N.Max(tx1, tx2), N.Max(ty1, ty2)));
     }
 }
