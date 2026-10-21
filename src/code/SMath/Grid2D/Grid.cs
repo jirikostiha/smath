@@ -25,7 +25,7 @@ public static class Grid
     /// <summary> Buffer index of a cell. </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Index((int X, int Y) cell, int width)
-        => (cell.Y * width) + cell.X;
+        => Index(cell.X, cell.Y, width);
 
     /// <summary> Cell of a buffer index. </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -50,7 +50,7 @@ public static class Grid
     /// <summary> Determine if a cell lies inside of a grid. </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool Contains((int X, int Y) cell, int width, int height)
-        => (uint)cell.X < (uint)width && (uint)cell.Y < (uint)height;
+        => Contains(cell.X, cell.Y, width, height);
 
     /// <summary> Determine if a buffer index lies inside of a grid. </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
