@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using SMath.Geometry2D;
 
 namespace SMath.Pathfinding;
 
@@ -61,7 +62,7 @@ public readonly struct ManhattanHeuristic : IGridHeuristic
     /// <inheritdoc/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int Estimate(int fromX, int fromY, int toX, int toY)
-        => GridStep.StraightCost * (Math.Abs(toX - fromX) + Math.Abs(toY - fromY));
+        => GridStep.StraightCost * Point2.ManhattanDistance((toX, toY), (fromX, fromY));
 }
 
 /// <summary>
@@ -75,7 +76,7 @@ public readonly struct ChebyshevHeuristic : IGridHeuristic
     /// <inheritdoc/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int Estimate(int fromX, int fromY, int toX, int toY)
-        => GridStep.StraightCost * Math.Max(Math.Abs(toX - fromX), Math.Abs(toY - fromY));
+        => GridStep.StraightCost * Point2.ChebyshevDistance((toX, toY), (fromX, fromY));
 }
 
 /// <summary>
