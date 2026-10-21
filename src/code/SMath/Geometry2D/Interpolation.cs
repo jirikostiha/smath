@@ -33,8 +33,7 @@ public static class Interpolation
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static (N X, N Y) Point<N>((N X, N Y) from, (N X, N Y) to, N t)
             where N : INumberBase<N>
-            => (from.X + ((to.X - from.X) * t),
-                from.Y + ((to.Y - from.Y) * t));
+            => (Eval(from.X, to.X, t), Eval(from.Y, to.Y, t));
 
         /// <summary>
         /// Parameter of a value between two values. It is the inverse of <see cref="Eval{N}"/>.
