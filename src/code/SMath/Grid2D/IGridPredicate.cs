@@ -63,6 +63,12 @@ public readonly struct GridMaskPredicate : IGridPredicate
     public GridMaskPredicate(byte[] mask, int width, int height)
     {
         ArgumentNullException.ThrowIfNull(mask);
+        if (width < 0)
+            throw new ArgumentOutOfRangeException(nameof(width), width, "Width must not be negative.");
+        if (height < 0)
+            throw new ArgumentOutOfRangeException(nameof(height), height, "Height must not be negative.");
+        if (mask.Length < Grid.CellCount(width, height))
+            throw new ArgumentException("Mask must hold a value for every cell of the grid.", nameof(mask));
 
         _mask = mask;
         Width = width;

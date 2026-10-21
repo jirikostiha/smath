@@ -52,4 +52,12 @@ public class GridPredicateTests
     [Fact]
     public void GridMaskPredicate_OutsideOfGrid_Matches()
         => Assert.True(new GridMaskPredicate(new byte[4], 2, 2).Test(9, 9));
+
+    [Fact]
+    public void MaskPredicate_ShorterThanTheGrid_Throws()
+        => Assert.Throws<ArgumentException>(() => new GridMaskPredicate(new byte[5], 3, 2));
+
+    [Fact]
+    public void MaskPredicate_OfNegativeSize_Throws()
+        => Assert.Throws<ArgumentOutOfRangeException>(() => new GridMaskPredicate(new byte[5], -1, 2));
 }
