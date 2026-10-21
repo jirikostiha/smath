@@ -82,17 +82,9 @@ public static class Grid
     /// <returns> Count of written neighbors. Maximum is 4. </returns>
     public static int Neighbors4(int x, int y, int width, int height, Span<int> neighbors)
     {
-        var index = (y * width) + x;
         var count = 0;
-
-        if (x + 1 < width)
-            neighbors[count++] = index + 1;
-        if (y + 1 < height)
-            neighbors[count++] = index + width;
-        if (x > 0)
-            neighbors[count++] = index - 1;
-        if (y > 0)
-            neighbors[count++] = index - width;
+        for (var direction = 0; direction < GridDirection.Count; direction += 2)
+            count = AppendNeighbor(x, y, direction, width, height, neighbors, count);
 
         return count;
     }
@@ -114,21 +106,8 @@ public static class Grid
     public static int Neighbors8(int x, int y, int width, int height, Span<int> neighbors)
     {
         var count = Neighbors4(x, y, width, height, neighbors);
-
-        var index = (y * width) + x;
-        var hasRight = x + 1 < width;
-        var hasLeft = x > 0;
-        var hasUp = y + 1 < height;
-        var hasDown = y > 0;
-
-        if (hasRight && hasUp)
-            neighbors[count++] = index + width + 1;
-        if (hasLeft && hasUp)
-            neighbors[count++] = index + width - 1;
-        if (hasLeft && hasDown)
-            neighbors[count++] = index - width - 1;
-        if (hasRight && hasDown)
-            neighbors[count++] = index - width + 1;
+        for (var direction = 1; direction < GridDirection.Count; direction += 2)
+            count = AppendNeighbor(x, y, direction, width, height, neighbors, count);
 
         return count;
     }
@@ -150,15 +129,8 @@ public static class Grid
     public static int Neighbors4(int x, int y, int width, int height, Span<(int X, int Y)> neighbors)
     {
         var count = 0;
-
-        if (x + 1 < width)
-            neighbors[count++] = (x + 1, y);
-        if (y + 1 < height)
-            neighbors[count++] = (x, y + 1);
-        if (x > 0)
-            neighbors[count++] = (x - 1, y);
-        if (y > 0)
-            neighbors[count++] = (x, y - 1);
+        for (var direction = 0; direction < GridDirection.Count; direction += 2)
+            count = AppendNeighbor(x, y, direction, width, height, neighbors, count);
 
         return count;
     }
@@ -171,20 +143,8 @@ public static class Grid
     public static int Neighbors8(int x, int y, int width, int height, Span<(int X, int Y)> neighbors)
     {
         var count = Neighbors4(x, y, width, height, neighbors);
-
-        var hasRight = x + 1 < width;
-        var hasLeft = x > 0;
-        var hasUp = y + 1 < height;
-        var hasDown = y > 0;
-
-        if (hasRight && hasUp)
-            neighbors[count++] = (x + 1, y + 1);
-        if (hasLeft && hasUp)
-            neighbors[count++] = (x - 1, y + 1);
-        if (hasLeft && hasDown)
-            neighbors[count++] = (x - 1, y - 1);
-        if (hasRight && hasDown)
-            neighbors[count++] = (x + 1, y - 1);
+        for (var direction = 1; direction < GridDirection.Count; direction += 2)
+            count = AppendNeighbor(x, y, direction, width, height, neighbors, count);
 
         return count;
     }
@@ -238,5 +198,24 @@ public static class Grid
         for (var r = 1; r <= radius; r++)
             foreach (var cell in Point2.CoordinatesAtChebyshevDistance(center, r, bottomLimit, topLimit))
                 yield return cell;
+    }
+
+    // writes the neighbor in a direction when it lies in the grid, GridDirection orders the axial directions as right, up, left, down
+    private static int AppendNeighbor(int x, int y, int direction, int width, int height, Span<int> neighbors, int count)
+    {
+        var (nx, ny) = GridDirection.Step((x, y), direction);
+        if (Contains(nx, ny, width, height))
+            neighbors[count++] = Index(nx, ny, width);
+
+        return count;
+    }
+
+    private static int AppendNeighbor(int x, int y, int direction, int width, int height, Span<(int X, int Y)> neighbors, int count)
+    {
+        var neighbor = GridDirection.Step((x, y), direction);
+        if (Contains(neighbor, width, height))
+            neighbors[count++] = neighbor;
+
+        return count;
     }
 }
