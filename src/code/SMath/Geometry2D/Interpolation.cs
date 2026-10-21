@@ -49,7 +49,7 @@ public static class Interpolation
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static N Remap<N>(N fromStart, N fromEnd, N toStart, N toEnd, N value)
             where N : INumberBase<N>
-            => toStart + ((toEnd - toStart) * ((value - fromStart) / (fromEnd - fromStart)));
+            => Eval(toStart, toEnd, Parameter(fromStart, fromEnd, value));
     }
 
     /// <summary>
@@ -72,10 +72,10 @@ public static class Interpolation
         public static N Eval<N>(N v11, N v21, N v12, N v22, N tx, N ty)
             where N : INumberBase<N>
         {
-            var bottom = v11 + ((v21 - v11) * tx);
-            var top = v12 + ((v22 - v12) * tx);
+            var bottom = Linear.Eval(v11, v21, tx);
+            var top = Linear.Eval(v12, v22, tx);
 
-            return bottom + ((top - bottom) * ty);
+            return Linear.Eval(bottom, top, ty);
         }
     }
 
@@ -153,7 +153,7 @@ public static class Interpolation
         public static N SmoothStep<N>(N t)
             where N : INumber<N>
         {
-            t = N.Clamp(t, N.Zero, N.One);
+            t = Clamped(t);
             return t * t * (N.CreateTruncating(3) - (N.CreateTruncating(2) * t));
         }
 
@@ -161,7 +161,7 @@ public static class Interpolation
         public static N SmootherStep<N>(N t)
             where N : INumber<N>
         {
-            t = N.Clamp(t, N.Zero, N.One);
+            t = Clamped(t);
             return t * t * t * ((t * ((t * N.CreateTruncating(6)) - N.CreateTruncating(15))) + N.CreateTruncating(10));
         }
 
