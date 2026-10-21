@@ -11,7 +11,7 @@ namespace SMath.Pathfinding;
 /// It is the priority queue of choice for graph searches over a known count of nodes.
 /// <a href="https://en.wikipedia.org/wiki/Binary_heap">Wikipedia</a>
 /// </remarks>
-public sealed class IndexedMinHeap
+internal sealed class IndexedMinHeap
 {
     private const int NotInHeap = -1;
 
