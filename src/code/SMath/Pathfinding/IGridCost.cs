@@ -9,6 +9,8 @@ namespace SMath.Pathfinding;
 /// Weight is a multiplier of the step cost, one is the plain terrain,
 /// non-positive value marks an impassable cell.
 /// Weights lower than one break admissibility of the heuristics.
+/// A path cost is an <see cref="int"/> scaled by <see cref="GridStep.StraightCost"/>,
+/// so the sum of the weights along any searched path must stay below <c>int.MaxValue / GridStep.DiagonalCost</c>.
 /// Implement it by a <see langword="struct"/> and pass it as a generic type argument
 /// to let the runtime devirtualize and inline the calls.
 /// </remarks>
