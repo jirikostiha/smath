@@ -190,6 +190,7 @@ public static class Aabb
     /// <returns>
     /// Parameters of the entry and exit point of the ray or null if the ray misses the box.
     /// A negative entry parameter means the origin lies inside of the box.
+    /// A ray running exactly along an edge of the box is a miss.
     /// </returns>
     public static (N Entry, N Exit)? RayIntersection<N>(((N X, N Y) Min, (N X, N Y) Max) box,
         (N X, N Y) origin, (N X, N Y) direction)
@@ -213,6 +214,8 @@ public static class Aabb
     /// <returns>
     /// Fraction of the time step at the moment of the contact in range [0,1]
     /// together with the normal of the touched edge, or null if the boxes do not meet.
+    /// Boxes overlapping already at the start are null too, separate them by <see cref="Penetration{N}"/>.
+    /// A movement exactly along an edge of the obstacle is not a contact.
     /// </returns>
     public static (N Time, (N X, N Y) Normal)? Sweep<N>(((N X, N Y) Min, (N X, N Y) Max) box, (N X, N Y) velocity,
         ((N X, N Y) Min, (N X, N Y) Max) obstacle)
