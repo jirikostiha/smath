@@ -50,7 +50,6 @@ public static class GridFloodFill
             queue[tail++] = index;
         }
 
-        var directionIncrement = GridNeighborhood.DirectionIncrement(connectivity);
         var cost = new GridPassabilityCost<TPassable>(isPassable);
         var head = 0;
 
@@ -58,25 +57,8 @@ public static class GridFloodFill
         {
             var current = queue[head++];
             var distance = distances[current];
-            if (distance >= maxDistance)
-                continue;
-
-            var x = current % width;
-            var y = current / width;
-            var neighborDistance = distance + 1;
-
-            for (var direction = 0; direction < GridDirection.Count; direction += directionIncrement)
-            {
-                if (!GridNeighborhood.TryStep(cost, x, y, direction, width, height, connectivity, out var nx, out var ny, out _))
-                    continue;
-
-                var neighbor = (ny * width) + nx;
-                if (distances[neighbor] != Unreached)
-                    continue;
-
-                distances[neighbor] = neighborDistance;
-                queue[tail++] = neighbor;
-            }
+            if (distance < maxDistance)
+                Expand(current, width, height, cost, connectivity, distances, distance + 1, queue, ref tail);
         }
 
         return tail;
@@ -131,7 +113,6 @@ public static class GridFloodFill
         var cellCount = width * height;
         labels[..cellCount].Fill(Unreached);
 
-        var directionIncrement = GridNeighborhood.DirectionIncrement(connectivity);
         var cost = new GridPassabilityCost<TPassable>(isPassable);
         var regionCount = 0;
 
@@ -148,26 +129,32 @@ public static class GridFloodFill
             queue[tail++] = seed;
 
             while (head < tail)
-            {
-                var current = queue[head++];
-                var x = current % width;
-                var y = current / width;
-
-                for (var direction = 0; direction < GridDirection.Count; direction += directionIncrement)
-                {
-                    if (!GridNeighborhood.TryStep(cost, x, y, direction, width, height, connectivity, out var nx, out var ny, out _))
-                        continue;
-
-                    var neighbor = (ny * width) + nx;
-                    if (labels[neighbor] != Unreached)
-                        continue;
-
-                    labels[neighbor] = label;
-                    queue[tail++] = neighbor;
-                }
-            }
+                Expand(queue[head++], width, height, cost, connectivity, labels, label, queue, ref tail);
         }
 
         return regionCount;
+    }
+
+    // writes the value to every unreached neighbor the cell may step to and queues it
+    private static void Expand<TPassable>(int current, int width, int height, GridPassabilityCost<TPassable> cost,
+        GridConnectivity connectivity, Span<int> values, int value, Span<int> queue, ref int tail)
+        where TPassable : IGridPredicate
+    {
+        var directionIncrement = GridNeighborhood.DirectionIncrement(connectivity);
+        var x = current % width;
+        var y = current / width;
+
+        for (var direction = 0; direction < GridDirection.Count; direction += directionIncrement)
+        {
+            if (!GridNeighborhood.TryStep(cost, x, y, direction, width, height, connectivity, out var nx, out var ny, out _))
+                continue;
+
+            var neighbor = (ny * width) + nx;
+            if (values[neighbor] != Unreached)
+                continue;
+
+            values[neighbor] = value;
+            queue[tail++] = neighbor;
+        }
     }
 }
