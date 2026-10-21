@@ -77,6 +77,31 @@ public static class Grid
         => (Math.Clamp(cell.X, 0, width - 1), Math.Clamp(cell.Y, 0, height - 1));
 
     /// <summary>
+    /// First coordinate of a window of cells that keeps the center in its middle
+    /// and does not reach past either end of the length.
+    /// A window longer than the length starts at 0.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int WindowStart(int center, int windowLength, int length)
+        => Math.Clamp(center - (windowLength / 2), 0, Math.Max(0, length - windowLength));
+
+    /// <summary>
+    /// Quarter of a rectangular region, both corners are included.
+    /// An odd length leaves the bigger half to the upper one.
+    /// A length of one cannot be split, so both halves stay on that single cell.
+    /// </summary>
+    /// <param name="region"> Region given by its inclusive corners. Min must not exceed Max. </param>
+    /// <param name="upperHalf"> Determine for each axis if the half of the higher coordinates is taken. </param>
+    public static ((int X, int Y) Min, (int X, int Y) Max) Quadrant(((int X, int Y) Min, (int X, int Y) Max) region,
+        (bool X, bool Y) upperHalf)
+    {
+        var (minX, maxX) = Half(region.Min.X, region.Max.X, upperHalf.X);
+        var (minY, maxY) = Half(region.Min.Y, region.Max.Y, upperHalf.Y);
+
+        return ((minX, minY), (maxX, maxY));
+    }
+
+    /// <summary>
     /// Write buffer indexes of the existing neighbors in axes directions into a buffer.
     /// Order is right, up, left, down.
     /// </summary>
@@ -199,6 +224,15 @@ public static class Grid
         for (var r = 1; r <= radius; r++)
             foreach (var cell in Point2.CoordinatesAtChebyshevDistance(center, r, bottomLimit, topLimit))
                 yield return cell;
+    }
+
+    private static (int Min, int Max) Half(int min, int max, bool isUpper)
+    {
+        var half = (max - min + 1) / 2;
+
+        return isUpper
+            ? (min + half, max)
+            : (min, min + Math.Max(half, 1) - 1);
     }
 
     // writes the neighbor in a direction when it lies in the grid, GridDirection orders the axial directions as right, up, left, down

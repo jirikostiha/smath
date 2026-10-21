@@ -35,6 +35,40 @@ public class GridTests
     public void Wrap(int value, int length, int expected)
         => Assert.Equal(expected, Grid.Wrap(value, length));
 
+    [Theory]
+    [InlineData(5, 4, 10, 3)]
+    [InlineData(0, 4, 10, 0)]
+    [InlineData(9, 4, 10, 6)]
+    [InlineData(5, 12, 10, 0)]
+    public void WindowStart_StaysWithinTheLength(int center, int windowLength, int length, int expected)
+        => Assert.Equal(expected, Grid.WindowStart(center, windowLength, length));
+
+    [Theory]
+    [InlineData(false, false, 0, 0, 3, 1)]
+    [InlineData(true, false, 4, 0, 7, 1)]
+    [InlineData(false, true, 0, 2, 3, 3)]
+    [InlineData(true, true, 4, 2, 7, 3)]
+    public void Quadrant_TakesTheHalfOfEachAxis(bool upperX, bool upperY, int minX, int minY, int maxX, int maxY)
+    {
+        var quadrant = Grid.Quadrant(((0, 0), (7, 3)), (upperX, upperY));
+
+        Assert.Equal(((minX, minY), (maxX, maxY)), quadrant);
+    }
+
+    [Fact]
+    public void Quadrant_OfOddLength_LeavesTheBiggerHalfToTheUpperOne()
+    {
+        Assert.Equal(((0, 0), (0, 0)), Grid.Quadrant(((0, 0), (2, 0)), (false, false)));
+        Assert.Equal(((1, 0), (2, 0)), Grid.Quadrant(((0, 0), (2, 0)), (true, false)));
+    }
+
+    [Fact]
+    public void Quadrant_OfOneCell_StaysOnIt()
+    {
+        Assert.Equal(((1, 1), (1, 1)), Grid.Quadrant(((1, 1), (1, 1)), (false, false)));
+        Assert.Equal(((1, 1), (1, 1)), Grid.Quadrant(((1, 1), (1, 1)), (true, true)));
+    }
+
     [Fact]
     public void Neighbors4_InCorner_HasTwo()
     {
