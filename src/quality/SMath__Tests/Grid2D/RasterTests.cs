@@ -13,6 +13,17 @@ public class RasterTests
             => false;
     }
 
+    private readonly struct WallAtCell : IGridPredicate
+    {
+        private readonly (int X, int Y) _cell;
+
+        public WallAtCell((int X, int Y) cell)
+            => _cell = cell;
+
+        public bool Test(int x, int y)
+            => (x, y) == _cell;
+    }
+
     private readonly struct WallAtX : IGridPredicate
     {
         private readonly int _x;
@@ -105,6 +116,23 @@ public class RasterTests
     [Fact]
     public void IsVisible_BehindWall_IsFalse()
         => Assert.False(Raster.IsVisible((0, 0), (5, 0), new WallAtX(2)));
+
+    [Fact]
+    public void IsVisible_DiagonallyPastACorner_DependsOnCornerCutting()
+    {
+        var corner = new WallAtCell((1, 0));
+
+        Assert.True(Raster.IsVisible((0, 0), (1, 1), corner));
+        Assert.False(Raster.IsVisible((0, 0), (1, 1), corner, cutCorners: false));
+        Assert.False(Raster.IsVisible((0, 0), (3, 3), new WallAtCell((2, 1)), cutCorners: false));
+    }
+
+    [Fact]
+    public void Cast_WithoutCornerCutting_StopsBeforeTheCorner()
+    {
+        Assert.Equal((3, 3), Raster.Cast((0, 0), (3, 3), new WallAtCell((2, 1))));
+        Assert.Equal((1, 1), Raster.Cast((0, 0), (3, 3), new WallAtCell((2, 1)), cutCorners: false));
+    }
 
     [Fact]
     public void Cast_StopsBeforeWall()

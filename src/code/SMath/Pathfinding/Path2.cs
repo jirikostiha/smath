@@ -49,8 +49,14 @@ public static class Path2
     /// and good enough to remove the staircase artifacts of a grid search.
     /// </remarks>
     /// <typeparam name="TObstacle"> Predicate matching the impassable cells. </typeparam>
+    /// <param name="path"> Path of cells, it is shortened in place. </param>
+    /// <param name="isObstacle"> Predicate matching the impassable cells. </param>
+    /// <param name="cutCorners">
+    /// False keeps a shortcut off the corners of obstacles as a path found with <see cref="GridConnectivity.Diagonal"/> does,
+    /// true allows the shortcut between two obstacles touching by a corner as <see cref="GridConnectivity.DiagonalCornerCutting"/> does.
+    /// </param>
     /// <returns> Count of the kept cells. Cells are written in place. </returns>
-    public static int PullString<TObstacle>(Span<(int X, int Y)> path, TObstacle isObstacle)
+    public static int PullString<TObstacle>(Span<(int X, int Y)> path, TObstacle isObstacle, bool cutCorners = false)
         where TObstacle : IGridPredicate
     {
         if (path.Length < 3)
@@ -61,7 +67,7 @@ public static class Path2
 
         for (var i = 1; i < path.Length - 1; i++)
         {
-            if (Raster.IsVisible(anchor, path[i + 1], isObstacle))
+            if (Raster.IsVisible(anchor, path[i + 1], isObstacle, cutCorners))
                 continue;
 
             anchor = path[i];

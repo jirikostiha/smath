@@ -77,6 +77,26 @@ public class Path2Tests
     }
 
     [Fact]
+    public void PullString_KeepsTheShortcutOffTheCornerOfAnObstacle()
+    {
+        Span<(int X, int Y)> path = stackalloc (int X, int Y)[] { (0, 0), (0, 1), (1, 1) };
+
+        var count = Path2.PullString(path, new WallAt((1, 0)));
+
+        Assert.Equal(new[] { (0, 0), (0, 1), (1, 1) }, path[..count].ToArray());
+    }
+
+    [Fact]
+    public void PullString_WithCornerCutting_TakesTheDiagonalShortcut()
+    {
+        Span<(int X, int Y)> path = stackalloc (int X, int Y)[] { (0, 0), (0, 1), (1, 1) };
+
+        var count = Path2.PullString(path, new WallAt((1, 0)), cutCorners: true);
+
+        Assert.Equal(new[] { (0, 0), (1, 1) }, path[..count].ToArray());
+    }
+
+    [Fact]
     public void Length_OfSegments()
     {
         ReadOnlySpan<(double X, double Y)> path = stackalloc (double X, double Y)[] { (0, 0), (3, 0), (3, 4) };

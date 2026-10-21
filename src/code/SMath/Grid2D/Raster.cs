@@ -103,16 +103,21 @@ public static class Raster
     /// <remarks>
     /// It is symmetric only up to the symmetry of the underlying Bresenham line.
     /// </remarks>
-    public static bool IsVisible<TObstacle>((int X, int Y) from, (int X, int Y) to, TObstacle isObstacle)
+    /// <param name="from"> Start cell. </param>
+    /// <param name="to"> Target cell. </param>
+    /// <param name="isObstacle"> Predicate matching the impassable cells. </param>
+    /// <param name="cutCorners">
+    /// True to let the line pass diagonally between two obstacles touching by a corner,
+    /// false to block a diagonal step next to any obstacle as <c>GridConnectivity.Diagonal</c> does.
+    /// </param>
+    public static bool IsVisible<TObstacle>((int X, int Y) from, (int X, int Y) to, TObstacle isObstacle, bool cutCorners = true)
         where TObstacle : IGridPredicate
     {
         var line = new BresenhamLine(from, to);
 
         while (!line.IsAtEnd)
         {
-            line.Step();
-
-            if (isObstacle.Test(line.X, line.Y))
+            if (IsBlockedStep(ref line, isObstacle, cutCorners))
                 return false;
         }
 
@@ -123,7 +128,11 @@ public static class Raster
     /// Find the last cell reachable from the start cell towards the target cell.
     /// The start cell is never tested, the target cell is.
     /// </summary>
-    public static (int X, int Y) Cast<TObstacle>((int X, int Y) from, (int X, int Y) to, TObstacle isObstacle)
+    /// <param name="from"> Start cell. </param>
+    /// <param name="to"> Target cell. </param>
+    /// <param name="isObstacle"> Predicate matching the impassable cells. </param>
+    /// <param name="cutCorners"> True to let the line pass diagonally between two obstacles touching by a corner, see <see cref="IsVisible{TObstacle}"/>. </param>
+    public static (int X, int Y) Cast<TObstacle>((int X, int Y) from, (int X, int Y) to, TObstacle isObstacle, bool cutCorners = true)
         where TObstacle : IGridPredicate
     {
         var line = new BresenhamLine(from, to);
@@ -131,13 +140,27 @@ public static class Raster
         while (!line.IsAtEnd)
         {
             var previous = (line.X, line.Y);
-            line.Step();
 
-            if (isObstacle.Test(line.X, line.Y))
+            if (IsBlockedStep(ref line, isObstacle, cutCorners))
                 return previous;
         }
 
         return to;
+    }
+
+    // moves the line by one cell and tests the reached cell, a diagonal step also both cells beside it unless corners are cut
+    private static bool IsBlockedStep<TObstacle>(ref BresenhamLine line, TObstacle isObstacle, bool cutCorners)
+        where TObstacle : IGridPredicate
+    {
+        var previousX = line.X;
+        var previousY = line.Y;
+        line.Step();
+
+        if (isObstacle.Test(line.X, line.Y))
+            return true;
+
+        return !cutCorners && line.X != previousX && line.Y != previousY
+            && (isObstacle.Test(line.X, previousY) || isObstacle.Test(previousX, line.Y));
     }
 
     /// <summary>
