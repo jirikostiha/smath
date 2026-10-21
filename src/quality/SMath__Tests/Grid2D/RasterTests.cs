@@ -122,16 +122,16 @@ public class RasterTests
     {
         var corner = new WallAtCell((1, 0));
 
-        Assert.True(Raster.IsVisible((0, 0), (1, 1), corner));
-        Assert.False(Raster.IsVisible((0, 0), (1, 1), corner, cutCorners: false));
+        Assert.False(Raster.IsVisible((0, 0), (1, 1), corner));
+        Assert.True(Raster.IsVisible((0, 0), (1, 1), corner, cutCorners: true));
         Assert.False(Raster.IsVisible((0, 0), (3, 3), new WallAtCell((2, 1)), cutCorners: false));
     }
 
     [Fact]
-    public void Cast_WithoutCornerCutting_StopsBeforeTheCorner()
+    public void Cast_StopsBeforeTheCornerUnlessCornersAreCut()
     {
-        Assert.Equal((3, 3), Raster.Cast((0, 0), (3, 3), new WallAtCell((2, 1))));
-        Assert.Equal((1, 1), Raster.Cast((0, 0), (3, 3), new WallAtCell((2, 1)), cutCorners: false));
+        Assert.Equal((1, 1), Raster.Cast((0, 0), (3, 3), new WallAtCell((2, 1))));
+        Assert.Equal((3, 3), Raster.Cast((0, 0), (3, 3), new WallAtCell((2, 1)), cutCorners: true));
     }
 
     [Fact]

@@ -107,10 +107,10 @@ public static class Raster
     /// <param name="to"> Target cell. </param>
     /// <param name="isObstacle"> Predicate matching the impassable cells. </param>
     /// <param name="cutCorners">
-    /// True to let the line pass diagonally between two obstacles touching by a corner,
-    /// false to block a diagonal step next to any obstacle as <c>GridConnectivity.Diagonal</c> does.
+    /// False, the default, blocks a diagonal step next to any obstacle as <c>GridConnectivity.Diagonal</c> does,
+    /// true lets the line pass diagonally between two obstacles touching by a corner as <c>GridConnectivity.DiagonalCornerCutting</c> does.
     /// </param>
-    public static bool IsVisible<TObstacle>((int X, int Y) from, (int X, int Y) to, TObstacle isObstacle, bool cutCorners = true)
+    public static bool IsVisible<TObstacle>((int X, int Y) from, (int X, int Y) to, TObstacle isObstacle, bool cutCorners = false)
         where TObstacle : IGridPredicate
     {
         var line = new BresenhamLine(from, to);
@@ -132,7 +132,7 @@ public static class Raster
     /// <param name="to"> Target cell. </param>
     /// <param name="isObstacle"> Predicate matching the impassable cells. </param>
     /// <param name="cutCorners"> True to let the line pass diagonally between two obstacles touching by a corner, see <see cref="IsVisible{TObstacle}"/>. </param>
-    public static (int X, int Y) Cast<TObstacle>((int X, int Y) from, (int X, int Y) to, TObstacle isObstacle, bool cutCorners = true)
+    public static (int X, int Y) Cast<TObstacle>((int X, int Y) from, (int X, int Y) to, TObstacle isObstacle, bool cutCorners = false)
         where TObstacle : IGridPredicate
     {
         var line = new BresenhamLine(from, to);
