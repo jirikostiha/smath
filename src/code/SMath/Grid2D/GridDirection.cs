@@ -76,12 +76,13 @@ public static class GridDirection
         var sx = Math.Sign(dx);
         var sy = Math.Sign(dy);
 
-        // snap to an axis if the step is over twice longer in it
-        var ax = Math.Abs(dx);
-        var ay = Math.Abs(dy);
-        if (ax > (ay << 1))
+        // snap to an axis within 22.5 degrees of it, ay / ax < tan(22.5) = sqrt(2) - 1 squared to stay exact, unsigned to hold the square of the sum
+        ulong ax = (ulong)Math.Abs(dx);
+        ulong ay = (ulong)Math.Abs(dy);
+        var sum = ax + ay;
+        if (sum * sum < 2 * ax * ax)
             sy = 0;
-        else if (ay > (ax << 1))
+        else if (sum * sum < 2 * ay * ay)
             sx = 0;
 
         return OfUnitStep(sx, sy);
