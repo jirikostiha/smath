@@ -18,7 +18,6 @@
     <File Path="../.github/workflows/nuget-publish.yml" />
   </Folder>
   <Folder Name="/ci/configs/">
-    <File Path="../.github/commitlint_config.mjs" />
     <File Path="../.github/dependabot.yml" />
   </Folder>
   <Folder Name="/doc/">
