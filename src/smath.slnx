@@ -6,7 +6,6 @@
     <File Path="../.ai/skills/verify/SKILL.md" />
   </Folder>
   <Folder Name="/ci/">
-    <File Path="../.github/dependabot.yml" />
     <File Path="../.github/workflows/auto-approve.yml" />
     <File Path="../.github/workflows/benchmark.yml" />
     <File Path="../.github/workflows/build.yml" />
