@@ -2,24 +2,18 @@ using System.Numerics;
 
 namespace SMath.FunctionsN;
 
-/// <summary>
-/// Euclidean distance in n dimensions.
-/// </summary>
+/// <summary>Euclidean distance in n dimensions.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Euclidean_distance">Wikipedia</a>
 /// <a href="https://xlinux.nist.gov/dads/HTML/euclidndstnc.html">NIST</a>
 /// </remarks>
 public static class EuclideanDistance
 {
-    /// <summary>
-    /// String representation of the function.
-    /// </summary>
+    /// <summary>String representation of the function.</summary>
     public static string PlainTextFormula
         => "sqrt(sum(xi^2))";
 
-    /// <summary>
-    /// Euclidean distance of a point and the origin.
-    /// </summary>
+    /// <summary>Euclidean distance of a point and the origin.</summary>
     public static N Eval<N>(IEnumerable<N> point)
         where N : IRootFunctions<N>
     {
@@ -30,9 +24,7 @@ public static class EuclideanDistance
         return N.Sqrt(sum);
     }
 
-    /// <summary>
-    /// Euclidean distance of a point and the origin.
-    /// </summary>
+    /// <summary>Euclidean distance of a point and the origin.</summary>
     public static N Eval<N>(ReadOnlySpan<N> point)
         where N : IRootFunctions<N>
     {
@@ -43,9 +35,7 @@ public static class EuclideanDistance
         return N.Sqrt(sum);
     }
 
-    /// <summary>
-    /// Euclidean distance of two points.
-    /// </summary>
+    /// <summary>Euclidean distance of two points.</summary>
     public static N Eval<N>(IEnumerable<N> point1, IEnumerable<N> point2)
         where N : IRootFunctions<N>
     {
@@ -74,9 +64,7 @@ public static class EuclideanDistance
         return N.Sqrt(sum);
     }
 
-    /// <summary>
-    /// Euclidean distance of two points.
-    /// </summary>
+    /// <summary>Euclidean distance of two points.</summary>
     public static N Eval<N>(ReadOnlySpan<N> point1, ReadOnlySpan<N> point2)
         where N : IRootFunctions<N>
     {

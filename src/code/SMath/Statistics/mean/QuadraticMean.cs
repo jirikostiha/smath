@@ -2,12 +2,8 @@ using System.Numerics;
 
 namespace SMath.Statistics;
 
-/// <summary>
-/// Quadratic mean or Root Mean Square (RMS).
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Root_mean_square">Wikipedia</a>
-/// </remarks>
+/// <summary>Quadratic mean or Root Mean Square (RMS).</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Root_mean_square">Wikipedia</a></remarks>
 public static class QuadraticMean
 {
     public static double Eval<N>(IEnumerable<N> sequence)

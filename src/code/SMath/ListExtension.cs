@@ -2,14 +2,10 @@ using System.Numerics;
 
 namespace SMath;
 
-/// <summary>
-/// List extensions.
-/// </summary>
+/// <summary>List extensions.</summary>
 public static class ListExtension
 {
-    /// <summary>
-    /// Finds the kth smallest element of a list by a selected numeric value.
-    /// </summary>
+    /// <summary>Finds the kth smallest element of a list by a selected numeric value.</summary>
     public static T KthSmallestElement<T, N>(this IList<T> list, int k, Func<T, N> valueSelector)
         where N : IComparisonOperators<N, N, bool>
     {
@@ -25,19 +21,13 @@ public static class ListExtension
         return QuickSelect(list, k - 1, 0, list.Count - 1, valueSelector, smallestFirst: true);
     }
 
-    /// <summary>
-    /// Finds the kth smallest element of a list.
-    /// </summary>
+    /// <summary>Finds the kth smallest element of a list.</summary>
     public static N KthSmallestElement<N>(this IList<N> list, int k)
         where N : IComparisonOperators<N, N, bool>
         => list.KthSmallestElement(k, x => x);
 
-    /// <summary>
-    /// Finds the kth smallest element within a range of a list.
-    /// </summary>
-    /// <remarks>
-    /// Uses the quickselect algorithm. Note that the list is partially reordered in place.
-    /// </remarks>
+    /// <summary>Finds the kth smallest element within a range of a list.</summary>
+    /// <remarks>Uses the quickselect algorithm. Note that the list is partially reordered in place.</remarks>
     /// <typeparam name="T"> Type of element. </typeparam>
     /// <typeparam name="N"> Type of numeric value. </typeparam>
     /// <param name="list"> List of elements. </param>
@@ -73,9 +63,7 @@ public static class ListExtension
         return QuickSelect(list, k - 1, start, end, valueSelector, smallestFirst: true);
     }
 
-    /// <summary>
-    /// Finds the kth largest element of a list by a selected numeric value.
-    /// </summary>
+    /// <summary>Finds the kth largest element of a list by a selected numeric value.</summary>
     public static T KthLargestElement<T, N>(this IList<T> list, int k, Func<T, N> valueSelector)
         where N : IComparisonOperators<N, N, bool>
     {
@@ -91,19 +79,13 @@ public static class ListExtension
         return QuickSelect(list, k - 1, 0, list.Count - 1, valueSelector, smallestFirst: false);
     }
 
-    /// <summary>
-    /// Finds the kth largest element of a list.
-    /// </summary>
+    /// <summary>Finds the kth largest element of a list.</summary>
     public static N KthLargestElement<N>(this IList<N> list, int k)
         where N : IComparisonOperators<N, N, bool>
         => list.KthLargestElement(k, x => x);
 
-    /// <summary>
-    /// Finds the kth largest element within a range of a list.
-    /// </summary>
-    /// <remarks>
-    /// Uses the quickselect algorithm. Note that the list is partially reordered in place.
-    /// </remarks>
+    /// <summary>Finds the kth largest element within a range of a list.</summary>
+    /// <remarks>Uses the quickselect algorithm. Note that the list is partially reordered in place.</remarks>
     /// <typeparam name="T"> Type of element. </typeparam>
     /// <typeparam name="N"> Type of numeric value. </typeparam>
     /// <param name="list"> List of elements. </param>
@@ -139,9 +121,7 @@ public static class ListExtension
         return QuickSelect(list, k - 1, start, end, valueSelector, smallestFirst: false);
     }
 
-    /// <summary>
-    /// Quickselect narrowed by a three way partition around a median of three pivot.
-    /// </summary>
+    /// <summary>Quickselect narrowed by a three way partition around a median of three pivot.</summary>
     /// <remarks>
     /// A single pivot partition around a fixed element degrades to a quadratic number of
     /// comparisons on the two inputs which occur the most in practice, an already ordered
@@ -190,9 +170,7 @@ public static class ListExtension
         return list[start];
     }
 
-    /// <summary>
-    /// Index of the median of the first, the middle and the last element of the range.
-    /// </summary>
+    /// <summary>Index of the median of the first, the middle and the last element of the range.</summary>
     private static int MedianOfThree<T, N>(IList<T> list, int start, int end, Func<T, N> valueSelector, bool smallestFirst)
         where N : IComparisonOperators<N, N, bool>
     {
@@ -215,9 +193,7 @@ public static class ListExtension
         return Precedes(center, last, smallestFirst) ? end : middle;
     }
 
-    /// <summary>
-    /// Whether <paramref name="value"/> comes before <paramref name="other"/> in the requested order.
-    /// </summary>
+    /// <summary>Whether <paramref name="value"/> comes before <paramref name="other"/> in the requested order.</summary>
     private static bool Precedes<N>(N value, N other, bool smallestFirst)
         where N : IComparisonOperators<N, N, bool>
         => smallestFirst ? value < other : value > other;

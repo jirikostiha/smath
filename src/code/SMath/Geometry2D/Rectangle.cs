@@ -229,14 +229,10 @@ public static class Rectangle
         }
     }
 
-    /// <summary>
-    /// Enclosed plane region of a rectangle.
-    /// </summary>
+    /// <summary>Enclosed plane region of a rectangle.</summary>
     public static class Region
     {
-        /// <summary>
-        /// Enclosed plane region area of a rectangle.
-        /// </summary>
+        /// <summary>Enclosed plane region area of a rectangle.</summary>
         public static class Area
         {
             public static N FromEdges<N>(N a, N b)

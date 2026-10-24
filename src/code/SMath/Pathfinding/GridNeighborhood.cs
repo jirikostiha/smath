@@ -3,9 +3,7 @@ using SMath.Grid2D;
 
 namespace SMath.Pathfinding;
 
-/// <summary>
-/// Steps from a cell of a two dimensional grid to its neighbors allowed by a connectivity.
-/// </summary>
+/// <summary>Steps from a cell of a two dimensional grid to its neighbors allowed by a connectivity.</summary>
 internal static class GridNeighborhood
 {
     /// <summary> Increment of a direction index over <see cref="GridDirection.All"/>, the axial directions are the even ones. </summary>

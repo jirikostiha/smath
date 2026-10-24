@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.Statistics;
 
-/// <summary>
-/// Covariance.
-/// </summary>
+/// <summary>Covariance.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Covariance">Wikipedia</a>
 /// <a href="https://mathworld.wolfram.com/Covariance.html">Wolfram Mathworld</a>

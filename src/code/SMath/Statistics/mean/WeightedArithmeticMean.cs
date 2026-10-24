@@ -2,12 +2,8 @@ using System.Numerics;
 
 namespace SMath.Statistics;
 
-/// <summary>
-/// Weighted arithmetic mean.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Weighted_arithmetic_mean">Wikipedia</a>
-/// </remarks>
+/// <summary>Weighted arithmetic mean.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Weighted_arithmetic_mean">Wikipedia</a></remarks>
 public static class WeightedArithmeticMean
 {
     public static double Eval<N>(IEnumerable<KeyValuePair<N, N>> sequence)

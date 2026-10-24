@@ -2,12 +2,8 @@
 
 namespace SMath.Statistics;
 
-/// <summary>
-/// Histogram.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Histogram">wikipedia</a>
-/// </remarks>
+/// <summary>Histogram.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Histogram">wikipedia</a></remarks>
 public static class Histogram
 {
     /// <summary>

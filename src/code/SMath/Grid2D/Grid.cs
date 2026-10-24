@@ -3,9 +3,7 @@ using SMath.Geometry2D;
 
 namespace SMath.Grid2D;
 
-/// <summary>
-/// Uniform two dimensional grid of cells mapped onto a row-major one dimensional buffer.
-/// </summary>
+/// <summary>Uniform two dimensional grid of cells mapped onto a row-major one dimensional buffer.</summary>
 /// <remarks>
 /// Cell (0,0) is the first cell of the buffer, cell index = y * width + x.
 /// All members are allocation free unless they return an <see cref="IEnumerable{T}"/>.

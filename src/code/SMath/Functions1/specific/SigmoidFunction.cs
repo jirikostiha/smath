@@ -49,16 +49,12 @@ public class SigmoidFunction : IMathFunction, ISingleDomain, ISingleImage
         where N : INumberBase<N>, IMinMaxValue<N>
         => (N.Zero, N.One);
 
-    /// <summary>
-    /// Supremum of the function. It is not attained for any real number.
-    /// </summary>
+    /// <summary>Supremum of the function. It is not attained for any real number.</summary>
     public static N GlobalMaximum<N>()
         where N : INumberBase<N>
         => N.One;
 
-    /// <summary>
-    /// Infimum of the function. It is not attained for any real number.
-    /// </summary>
+    /// <summary>Infimum of the function. It is not attained for any real number.</summary>
     public static N GlobalMinimum<N>()
         where N : INumberBase<N>
         => N.Zero;

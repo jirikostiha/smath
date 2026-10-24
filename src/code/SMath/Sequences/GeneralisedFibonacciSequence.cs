@@ -2,19 +2,13 @@
 
 namespace SMath.Sequences;
 
-/// <summary>
-/// Generalised Fibonacci sequence with arbitrary first two terms.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Generalizations_of_Fibonacci_numbers">Wikipedia</a>
-/// </remarks>
+/// <summary>Generalised Fibonacci sequence with arbitrary first two terms.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Generalizations_of_Fibonacci_numbers">Wikipedia</a></remarks>
 public static class GeneralisedFibonacciSequence
 {
     public static string PlainTextFormula => "a(n) = a(n - 1) + a(n - 2)";
 
-    /// <summary>
-    /// Term at the one based position <paramref name="n"/>.
-    /// </summary>
+    /// <summary>Term at the one based position <paramref name="n"/>.</summary>
     /// <exception cref="ArgumentOutOfRangeException"> Position is not a positive number. </exception>
     public static N Term<N>(N first, N second, int n)
         where N : INumberBase<N>
@@ -30,9 +24,7 @@ public static class GeneralisedFibonacciSequence
         return previous;
     }
 
-    /// <summary>
-    /// Enumerate the first <paramref name="count"/> terms.
-    /// </summary>
+    /// <summary>Enumerate the first <paramref name="count"/> terms.</summary>
     public static IEnumerable<N> Terms<N>(N first, N second, int count)
         where N : INumberBase<N>
     {

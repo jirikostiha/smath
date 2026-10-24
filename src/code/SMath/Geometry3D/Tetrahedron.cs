@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.Geometry3D;
 
-/// <summary>
-/// Tetrahedron, the triangular pyramid and the three dimensional counterpart of a triangle.
-/// </summary>
+/// <summary>Tetrahedron, the triangular pyramid and the three dimensional counterpart of a triangle.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Tetrahedron">Wikipedia</a>
 /// <a href="https://mathworld.wolfram.com/Tetrahedron.html">Wolfram Mathworld</a>
@@ -26,9 +24,7 @@ public static class Tetrahedron
         where N : INumberBase<N>
         => N.CreateTruncating(4);
 
-    /// <summary>
-    /// Centroid of a tetrahedron, the average of its vertices.
-    /// </summary>
+    /// <summary>Centroid of a tetrahedron, the average of its vertices.</summary>
     public static class Centroid
     {
         public static (N X, N Y, N Z) FromVertices<N>((N X, N Y, N Z) vertex1, (N X, N Y, N Z) vertex2, (N X, N Y, N Z) vertex3, (N X, N Y, N Z) vertex4)
@@ -41,19 +37,13 @@ public static class Tetrahedron
         }
     }
 
-    /// <summary>
-    /// Region enclosed by a tetrahedron.
-    /// </summary>
+    /// <summary>Region enclosed by a tetrahedron.</summary>
     public static class Region
     {
-        /// <summary>
-        /// Enclosed volume of a tetrahedron.
-        /// </summary>
+        /// <summary>Enclosed volume of a tetrahedron.</summary>
         public static class Volume
         {
-            /// <summary>
-            /// Volume of a tetrahedron given by its vertices, a sixth of the volume of the parallelepiped spanned by its edges from one vertex.
-            /// </summary>
+            /// <summary>Volume of a tetrahedron given by its vertices, a sixth of the volume of the parallelepiped spanned by its edges from one vertex.</summary>
             public static N FromVertices<N>((N X, N Y, N Z) vertex1, (N X, N Y, N Z) vertex2, (N X, N Y, N Z) vertex3, (N X, N Y, N Z) vertex4)
                 where N : INumberBase<N>
                 => N.Abs(SignedFromVertices(vertex1, vertex2, vertex3, vertex4));
@@ -71,9 +61,7 @@ public static class Tetrahedron
         }
     }
 
-    /// <summary>
-    /// Regular tetrahedron, all faces are equilateral triangles.
-    /// </summary>
+    /// <summary>Regular tetrahedron, all faces are equilateral triangles.</summary>
     public static class Regular
     {
         /// <summary> Schläfli symbol </summary>
@@ -140,14 +128,10 @@ public static class Tetrahedron
                 => edgeLength * N.Sqrt(N.CreateChecked(6)) / N.CreateChecked(12);
         }
 
-        /// <summary>
-        /// Surface of a regular tetrahedron.
-        /// </summary>
+        /// <summary>Surface of a regular tetrahedron.</summary>
         public static class Surface
         {
-            /// <summary>
-            /// Surface area of a regular tetrahedron, four equilateral triangles.
-            /// </summary>
+            /// <summary>Surface area of a regular tetrahedron, four equilateral triangles.</summary>
             public static class Area
             {
                 public static N FromEdge<N>(N edgeLength)
@@ -156,14 +140,10 @@ public static class Tetrahedron
             }
         }
 
-        /// <summary>
-        /// Region enclosed by a regular tetrahedron.
-        /// </summary>
+        /// <summary>Region enclosed by a regular tetrahedron.</summary>
         public static class Region
         {
-            /// <summary>
-            /// Enclosed volume of a regular tetrahedron.
-            /// </summary>
+            /// <summary>Enclosed volume of a regular tetrahedron.</summary>
             public static class Volume
             {
                 public static N FromEdge<N>(N edgeLength)

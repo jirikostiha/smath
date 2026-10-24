@@ -3,9 +3,7 @@ using SMath.Geometry2D;
 
 namespace SMath.Pathfinding;
 
-/// <summary>
-/// Estimate of the remaining cost from a cell to the target cell of a search.
-/// </summary>
+/// <summary>Estimate of the remaining cost from a cell to the target cell of a search.</summary>
 /// <remarks>
 /// The estimate must never exceed the real cost, otherwise the found path is not the shortest one.
 /// Implement it by a <see langword="struct"/> and pass it as a generic type argument
@@ -18,9 +16,7 @@ public interface IGridHeuristic
     int Estimate(int fromX, int fromY, int toX, int toY);
 }
 
-/// <summary>
-/// Costs of a single step over cells of a two dimensional grid.
-/// </summary>
+/// <summary>Costs of a single step over cells of a two dimensional grid.</summary>
 /// <remarks>
 /// Costs are scaled integers to keep the searches exact and branch free.
 /// The scale is chosen so that the diagonal step is the closest integer multiple of sqrt(2).
@@ -40,9 +36,7 @@ public static class GridStep
         => N.CreateChecked(cost) / N.CreateChecked(StraightCost);
 }
 
-/// <summary>
-/// Heuristic returning zero. It turns the A* search into the Dijkstra search.
-/// </summary>
+/// <summary>Heuristic returning zero. It turns the A* search into the Dijkstra search.</summary>
 public readonly struct ZeroHeuristic : IGridHeuristic
 {
     /// <inheritdoc/>
@@ -51,12 +45,8 @@ public readonly struct ZeroHeuristic : IGridHeuristic
         => 0;
 }
 
-/// <summary>
-/// Manhattan or taxicab heuristic. It is admissible for the 4-neighborhood only.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
-/// </remarks>
+/// <summary>Manhattan or taxicab heuristic. It is admissible for the 4-neighborhood only.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a></remarks>
 public readonly struct ManhattanHeuristic : IGridHeuristic
 {
     /// <inheritdoc/>
@@ -65,12 +55,8 @@ public readonly struct ManhattanHeuristic : IGridHeuristic
         => GridStep.StraightCost * Point2.ManhattanDistance((toX, toY), (fromX, fromY));
 }
 
-/// <summary>
-/// Chebyshev heuristic. It is admissible for the 8-neighborhood with an equally priced diagonal step.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
-/// </remarks>
+/// <summary>Chebyshev heuristic. It is admissible for the 8-neighborhood with an equally priced diagonal step.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a></remarks>
 public readonly struct ChebyshevHeuristic : IGridHeuristic
 {
     /// <inheritdoc/>
@@ -98,12 +84,8 @@ public readonly struct OctileHeuristic : IGridHeuristic
     }
 }
 
-/// <summary>
-/// Euclidean heuristic. It is admissible for any neighborhood but weaker than the octile one.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Euclidean_distance">Wikipedia</a>
-/// </remarks>
+/// <summary>Euclidean heuristic. It is admissible for any neighborhood but weaker than the octile one.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Euclidean_distance">Wikipedia</a></remarks>
 public readonly struct EuclideanHeuristic : IGridHeuristic
 {
     /// <inheritdoc/>
@@ -117,9 +99,7 @@ public readonly struct EuclideanHeuristic : IGridHeuristic
     }
 }
 
-/// <summary>
-/// Heuristic multiplied by a weight. Weight over one trades the optimality of the path for the speed of the search.
-/// </summary>
+/// <summary>Heuristic multiplied by a weight. Weight over one trades the optimality of the path for the speed of the search.</summary>
 /// <remarks>
 /// The found path is at most weight times longer than the shortest one.
 /// <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">Wikipedia</a>

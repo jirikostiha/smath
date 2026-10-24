@@ -52,9 +52,7 @@ public class NaturalExponential : IMathFunction, ISingleDomain, ISingleImage
         where N : IFloatingPointIeee754<N>
         => N.PositiveInfinity;
 
-    /// <summary>
-    /// Infimum of the function. It is not attained for any real number.
-    /// </summary>
+    /// <summary>Infimum of the function. It is not attained for any real number.</summary>
     public static N GlobalMinimum<N>()
         where N : INumberBase<N>
         => N.Zero;

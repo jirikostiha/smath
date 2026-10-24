@@ -3,9 +3,7 @@ using SMath.Sequences;
 
 namespace SMath.Series;
 
-/// <summary>
-/// Geometric series, the partial sums of a geometric sequence.
-/// </summary>
+/// <summary>Geometric series, the partial sums of a geometric sequence.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Geometric_series">Wikipedia</a>
 /// <a href="https://mathworld.wolfram.com/GeometricSeries.html">Wolfram Mathworld</a>
@@ -14,9 +12,7 @@ public static class GeometricSeries
 {
     public static string PlainTextFormula => "s(n) = a(1) * (r^n - 1) / (r - 1)";
 
-    /// <summary>
-    /// Sum of the first <paramref name="n"/> terms of <see cref="GeometricSequence"/>.
-    /// </summary>
+    /// <summary>Sum of the first <paramref name="n"/> terms of <see cref="GeometricSequence"/>.</summary>
     public static N Term<N>(N initial, N ratio, int n)
         where N : INumberBase<N>
     {
@@ -32,9 +28,7 @@ public static class GeometricSeries
         return initial * ((GeometricSequence.Power(ratio, n) - N.One) / (ratio - N.One));
     }
 
-    /// <summary>
-    /// Enumerate the first <paramref name="count"/> partial sums.
-    /// </summary>
+    /// <summary>Enumerate the first <paramref name="count"/> partial sums.</summary>
     public static IEnumerable<N> Terms<N>(N initial, N ratio, int count)
         where N : INumberBase<N>
     {
@@ -63,9 +57,7 @@ public static class GeometricSeries
         return count;
     }
 
-    /// <summary>
-    /// Sum of all terms of an infinite geometric series.
-    /// </summary>
+    /// <summary>Sum of all terms of an infinite geometric series.</summary>
     /// <remarks> The series converges for an absolute value of the ratio lower than one only. </remarks>
     public static N Limit<N>(N initial, N ratio)
         where N : INumberBase<N>

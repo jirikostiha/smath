@@ -2,12 +2,8 @@ using System.Numerics;
 
 namespace SMath.Statistics;
 
-/// <summary>
-/// Harmonic mean.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Harmonic_mean">Wikipedia</a>
-/// </remarks>
+/// <summary>Harmonic mean.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Harmonic_mean">Wikipedia</a></remarks>
 public static class HarmonicMean
 {
     public static double Eval<N>(IEnumerable<N> sequence)

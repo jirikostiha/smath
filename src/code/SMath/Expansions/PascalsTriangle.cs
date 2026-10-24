@@ -2,35 +2,27 @@ using System.Numerics;
 
 namespace SMath.Expansions;
 
-/// <summary>
-/// Pascal's triangle.
-/// </summary>
+/// <summary>Pascal's triangle.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Pascal%27s_triangle">Wikipedia</a>
 /// <a href="https://mathworld.wolfram.com/PascalsTriangle.html">Wolfram Mathworld</a>
 /// </remarks>
 public static class PascalsTriangle
 {
-    /// <summary>
-    /// Count of numbers in a row.
-    /// </summary>
+    /// <summary>Count of numbers in a row.</summary>
     /// <param name="rowNumber"> Row index, starting from 0. </param>
     public static int RowLength(int rowNumber)
         => rowNumber < 0
             ? 0
             : rowNumber + 1;
 
-    /// <summary>
-    /// Build a single row of Pascal's triangle.
-    /// </summary>
+    /// <summary>Build a single row of Pascal's triangle.</summary>
     /// <param name="rowNumber"> Row index, starting from 0. </param>
     public static NInt[] Row<NInt>(int rowNumber)
         where NInt : IBinaryInteger<NInt>
         => Row(rowNumber, NInt.One);
 
-    /// <summary>
-    /// Build a single row of Pascal's triangle.
-    /// </summary>
+    /// <summary>Build a single row of Pascal's triangle.</summary>
     /// <param name="rowNumber"> Row index, starting from 0. </param>
     /// <param name="baseNumber"> Triangle top number. </param>
     public static NInt[] Row<NInt>(int rowNumber, NInt baseNumber)
@@ -80,16 +72,12 @@ public static class PascalsTriangle
         return length;
     }
 
-    /// <summary>
-    /// Enumerate the first <paramref name="rowCount"/> rows, starting from the top one.
-    /// </summary>
+    /// <summary>Enumerate the first <paramref name="rowCount"/> rows, starting from the top one.</summary>
     public static IEnumerable<NInt[]> Rows<NInt>(int rowCount)
         where NInt : IBinaryInteger<NInt>
         => Rows(rowCount, NInt.One);
 
-    /// <summary>
-    /// Enumerate the first <paramref name="rowCount"/> rows, starting from the top one.
-    /// </summary>
+    /// <summary>Enumerate the first <paramref name="rowCount"/> rows, starting from the top one.</summary>
     /// <param name="rowCount"> Count of rows. </param>
     /// <param name="baseNumber"> Triangle top number. </param>
     public static IEnumerable<NInt[]> Rows<NInt>(int rowCount, NInt baseNumber)

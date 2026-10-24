@@ -56,9 +56,7 @@ public class UnitStepFunction : IMathFunction, ISingleDomain, ISingleImage
         where N : INumberBase<N>
         => N.Zero;
 
-    /// <summary>
-    /// Evaluates the function value.
-    /// </summary>
+    /// <summary>Evaluates the function value.</summary>
     /// <param name="x"> Variable. </param>
     /// <param name="p"> Value at zero. </param>
     public static N Eval<N>(N x, N p)

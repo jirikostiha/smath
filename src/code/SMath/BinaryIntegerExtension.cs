@@ -5,12 +5,8 @@ namespace SMath;
 
 public static class BinaryIntegerExtension
 {
-    /// <summary>
-    /// Hamming distance of two numbers.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Hamming_distance">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Hamming distance of two numbers.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Hamming_distance">Wikipedia</a></remarks>
     public static N HammingDistanceTo<N>(this N number, N otherNumber)
         where N : IBinaryInteger<N>
         => N.PopCount(number ^ otherNumber);
@@ -34,9 +30,7 @@ public static class BinaryIntegerExtension
         return result;
     }
 
-    /// <summary>
-    /// Greatest common divisor of two numbers.
-    /// </summary>
+    /// <summary>Greatest common divisor of two numbers.</summary>
     /// <remarks>
     /// Shared by the formulas which reduce a fraction before multiplying it out.
     /// <a href="https://en.wikipedia.org/wiki/Euclidean_algorithm">Wikipedia</a>
@@ -57,9 +51,7 @@ public static class BinaryIntegerExtension
         return number;
     }
 
-    /// <summary>
-    /// Raises <paramref name="number"/> to a non negative integer power <paramref name="exp"/>.
-    /// </summary>
+    /// <summary>Raises <paramref name="number"/> to a non negative integer power <paramref name="exp"/>.</summary>
     /// <remarks>
     /// Evaluated by squaring, so the count of multiplications is logarithmic in the exponent.
     /// <a href="https://en.wikipedia.org/wiki/Exponentiation_by_squaring">Wikipedia</a>

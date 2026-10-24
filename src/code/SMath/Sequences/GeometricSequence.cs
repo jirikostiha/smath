@@ -3,9 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace SMath.Sequences;
 
-/// <summary>
-/// Geometric sequence or geometric progression.
-/// </summary>
+/// <summary>Geometric sequence or geometric progression.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Geometric_progression">Wikipedia</a>
 /// <a href="https://mathworld.wolfram.com/GeometricSequence.html">Wolfram Mathworld</a>
@@ -14,9 +12,7 @@ public static class GeometricSequence
 {
     public static string PlainTextFormula => "a(n) = a(1) * r^(n - 1)";
 
-    /// <summary>
-    /// Term at the one based position <paramref name="n"/>.
-    /// </summary>
+    /// <summary>Term at the one based position <paramref name="n"/>.</summary>
     /// <exception cref="ArgumentOutOfRangeException"> Position is not a positive number. </exception>
     public static N Term<N>(N initial, N ratio, int n)
         where N : INumberBase<N>
@@ -27,9 +23,7 @@ public static class GeometricSequence
         return initial * Power(ratio, n - 1);
     }
 
-    /// <summary>
-    /// Enumerate the first <paramref name="count"/> terms.
-    /// </summary>
+    /// <summary>Enumerate the first <paramref name="count"/> terms.</summary>
     public static IEnumerable<N> Terms<N>(N initial, N ratio, int count)
         where N : INumberBase<N>
     {
@@ -58,9 +52,7 @@ public static class GeometricSequence
         return count;
     }
 
-    /// <summary>
-    /// Raises a number to a non negative integer power.
-    /// </summary>
+    /// <summary>Raises a number to a non negative integer power.</summary>
     /// <remarks>
     /// Evaluated by squaring instead of by a repeated multiplication of the previous term,
     /// so that a rounding error does not accumulate along the sequence. Kept over

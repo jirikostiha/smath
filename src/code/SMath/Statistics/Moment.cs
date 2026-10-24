@@ -2,12 +2,8 @@ using System.Numerics;
 
 namespace SMath.Statistics;
 
-/// <summary>
-/// Central moment of a data set.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Central_moment">Wikipedia</a>
-/// </remarks>
+/// <summary>Central moment of a data set.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Central_moment">Wikipedia</a></remarks>
 public static class Moment
 {
     public static double Eval<N>(IEnumerable<N> sequence, int degree)
@@ -51,12 +47,8 @@ public static class Moment
     }
 }
 
-/// <summary>
-/// Standardized moment of a data set.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Standardized_moment">Wikipedia</a>
-/// </remarks>
+/// <summary>Standardized moment of a data set.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Standardized_moment">Wikipedia</a></remarks>
 public static class StandardizedMoment
 {
     public static double Eval<N>(IEnumerable<N> sequence, int degree)

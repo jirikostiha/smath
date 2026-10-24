@@ -3,9 +3,7 @@ using System.Numerics;
 
 namespace SMath.Geometry2D;
 
-/// <summary>
-/// Line in two dimensional space.
-/// </summary>
+/// <summary>Line in two dimensional space.</summary>
 /// <remarks>
 /// Line is defined in general form by default.
 /// <a href="https://en.wikipedia.org/wiki/Line_(geometry)">Wikipedia</a>
@@ -13,23 +11,17 @@ namespace SMath.Geometry2D;
 /// </remarks>
 public static class Line
 {
-    /// <summary>
-    /// X axis line in general form.
-    /// </summary>
+    /// <summary>X axis line in general form.</summary>
     public static (N A, N B, N C) XAxis<N>()
         where N : INumberBase<N>
         => (N.Zero, N.One, N.Zero);
 
-    /// <summary>
-    /// Y axis line in general form.
-    /// </summary>
+    /// <summary>Y axis line in general form.</summary>
     public static (N A, N B, N C) YAxis<N>()
         where N : INumberBase<N>
         => (-N.One, N.Zero, N.Zero);
 
-    /// <summary>
-    /// Identity line y=x in general form.
-    /// </summary>
+    /// <summary>Identity line y=x in general form.</summary>
     public static (N A, N B, N C) Identity<N>()
         where N : INumberBase<N>
         => (-N.One, N.One, N.Zero);
@@ -37,9 +29,7 @@ public static class Line
     public static string PlainTextEquation
         => "a*x + b*y + c = 0";
 
-    /// <summary>
-    /// Line in general form from two points in Cartesian coordinates.
-    /// </summary>
+    /// <summary>Line in general form from two points in Cartesian coordinates.</summary>
     public static (N A, N B, N C) FromTwoPoints<N>((N X, N Y) point1, (N X, N Y) point2)
         where N : IRootFunctions<N>
     {
@@ -53,42 +43,30 @@ public static class Line
         return (normal.X, normal.Y, c);
     }
 
-    /// <summary>
-    /// Line in general form from slope and y-intercept.
-    /// </summary>
+    /// <summary>Line in general form from slope and y-intercept.</summary>
     public static (N A, N B, N C) FromSlopeAndYIntercept<N>(N slope, N yintercept)
         where N : INumberBase<N>
         => (-slope, N.One, -yintercept);
 
-    /// <summary>
-    /// Line in general form recounted to have a=1.
-    /// </summary>
+    /// <summary>Line in general form recounted to have a=1.</summary>
     public static (N A, N B, N C) NormalizedX<N>((N A, N B, N C) line)
         where N : INumberBase<N>
         => (N.One, line.B / line.A, line.C / line.A);
 
-    /// <summary>
-    /// Line in general form recounted to have b=1.
-    /// </summary>
+    /// <summary>Line in general form recounted to have b=1.</summary>
     public static (N A, N B, N C) NormalizedY<N>((N A, N B, N C) line)
         where N : INumberBase<N>
         => (line.A / line.B, N.One, line.C / line.B);
 
-    /// <summary>
-    /// Slope of a line.
-    /// </summary>
+    /// <summary>Slope of a line.</summary>
     public static class Slope
     {
-        /// <summary>
-        /// Slope of a line from line general form of line.
-        /// </summary>
+        /// <summary>Slope of a line from line general form of line.</summary>
         public static N FromGeneralForm<N>((N A, N B, N C) line)
             where N : IUnaryNegationOperators<N, N>, IDivisionOperators<N, N, N>
             => -line.A / line.B;
 
-        /// <summary>
-        /// Slope of a line from line angle.
-        /// </summary>
+        /// <summary>Slope of a line from line angle.</summary>
         public static N FromAngle<N>(N angle)
             where N : IFloatingPointIeee754<N>, ITrigonometricFunctions<N>
             => angle == N.Pi / N.CreateChecked(2) || N.Abs(N.Cos(angle)) < N.CreateChecked(1e-15)
@@ -96,79 +74,55 @@ public static class Line
             : N.Tan(angle);
     }
 
-    /// <summary>
-    /// The x-intercept is the point at which the lines crosses the x-axis.
-    /// </summary>
+    /// <summary>The x-intercept is the point at which the lines crosses the x-axis.</summary>
     public static class XIntercept
     {
-        /// <summary>
-        /// The x-intercept of a line in general form.
-        /// </summary>
+        /// <summary>The x-intercept of a line in general form.</summary>
         public static N FromGeneralForm<N>((N A, N B, N C) line)
             where N : IUnaryNegationOperators<N, N>, IDivisionOperators<N, N, N>
             => -line.C / line.A;
     }
 
-    /// <summary>
-    /// The y-intercept is the point at which the lines crosses the y-axis.
-    /// </summary>
+    /// <summary>The y-intercept is the point at which the lines crosses the y-axis.</summary>
     public static class YIntercept
     {
-        /// <summary>
-        /// The y-intercept of a line in general form.
-        /// </summary>
+        /// <summary>The y-intercept of a line in general form.</summary>
         public static N FromGeneralForm<N>((N A, N B, N C) line)
             where N : IUnaryNegationOperators<N, N>, IDivisionOperators<N, N, N>
             => -line.C / line.B;
     }
 
 
-    /// <summary>
-    /// Normal line to a given line.
-    /// </summary>
+    /// <summary>Normal line to a given line.</summary>
     public static class NormalLine
     {
-        /// <summary>
-        /// Slope of a normal line.
-        /// </summary>
+        /// <summary>Slope of a normal line.</summary>
         public static class Slope
         {
-            /// <summary>
-            /// Get a slope of a normal line to line determined in general form.
-            /// </summary>
+            /// <summary>Get a slope of a normal line to line determined in general form.</summary>
             public static N FromGeneralForm<N>(N a, N b)
                 where N : IDivisionOperators<N, N, N>
                 => b / a;
 
-            /// <summary>
-            /// Get a slope of a normal line to line determined in general form.
-            /// </summary>
+            /// <summary>Get a slope of a normal line to line determined in general form.</summary>
             public static N FromGeneralForm<N>((N A, N B, N C) line)
                 where N : IDivisionOperators<N, N, N>
                 => line.B / line.A;
         }
 
-        /// <summary>
-        /// Get normal line in general form from line determined by general form.
-        /// </summary>
+        /// <summary>Get normal line in general form from line determined by general form.</summary>
         public static (N A, N B, N C) FromGeneralForm<N>((N A, N B, N C) line)
             where N : IUnaryNegationOperators<N, N>
             => (line.B, -line.A, line.C);
     }
 
-    /// <summary>
-    /// Line and ... investigation.
-    /// </summary>
+    /// <summary>Line and ... investigation.</summary>
     public static class And
     {
-        /// <summary>
-        /// Line and point investigation.
-        /// </summary>
+        /// <summary>Line and point investigation.</summary>
         public static class Point
         {
-            /// <summary>
-            /// Projection of point to line.
-            /// </summary>
+            /// <summary>Projection of point to line.</summary>
             public static class Projection
             {
                 public static (N X, N Y) FromPoints<N>((N X, N Y) spoint1, (N X, N Y) spoint2, (N X, N Y) point)
@@ -190,24 +144,16 @@ public static class Line
                 }
             }
 
-            /// <summary>
-            /// Line and point distance.
-            /// </summary>
-            /// <remarks>
-            /// <a href="https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line">Wikipedia</a>
-            /// </remarks>
+            /// <summary>Line and point distance.</summary>
+            /// <remarks><a href="https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line">Wikipedia</a></remarks>
             public static class Distance
             {
-                /// <summary>
-                /// Calculates the distance of line in general form and point.
-                /// </summary>
+                /// <summary>Calculates the distance of line in general form and point.</summary>
                 public static N FromGeneralForm<N>((N A, N B, N C) line, (N X, N Y) point)
                     where N : IRootFunctions<N>
                     => N.Abs(line.A * point.X + line.B * point.Y + line.C) / PT.Hypotenuse(line.A, line.B);
 
-                /// <summary>
-                /// Calculates distance of line determined by two points and point.
-                /// </summary>
+                /// <summary>Calculates distance of line determined by two points and point.</summary>
                 public static N FromPoints<N>((N X, N Y) linePoint1, (N X, N Y) linePoint2, (N X, N Y) point)
                     where N : IRootFunctions<N>
                     => N.Abs((linePoint2.X - linePoint1.X) * (linePoint1.Y - point.Y)
@@ -215,36 +161,24 @@ public static class Line
                         / PT.Hypotenuse(linePoint1.X - linePoint2.X, linePoint1.Y - linePoint2.Y);
             }
 
-            /// <summary>
-            /// Line and point intersection.
-            /// </summary>
+            /// <summary>Line and point intersection.</summary>
             public static class Intersection
             {
-                /// <summary>
-                /// Determine if line includes point.
-                /// </summary>
+                /// <summary>Determine if line includes point.</summary>
                 public static bool FromGeneralForm<N>((N A, N B, N C) line, (N X, N Y) point)
                     where N : INumberBase<N>
                     => line.A * point.X + line.B * point.Y + line.C == N.Zero;
             }
         }
 
-        /// <summary>
-        /// Line and line investigation.
-        /// </summary>
+        /// <summary>Line and line investigation.</summary>
         public static class Line
         {
-            /// <summary>
-            /// Line and line intersection.
-            /// </summary>
-            /// <remarks>
-            /// <a href="https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection">Wikipedia</a>
-            /// </remarks>
+            /// <summary>Line and line intersection.</summary>
+            /// <remarks><a href="https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection">Wikipedia</a></remarks>
             public static class Intersection
             {
-                /// <summary>
-                /// Line intersects line.
-                /// </summary>
+                /// <summary>Line intersects line.</summary>
                 /// <returns>
                 ///     null: parallel or identical
                 ///     (x,y): intersection point
@@ -268,30 +202,22 @@ public static class Line
     /// </summary>
     public static class Ray
     {
-        /// <summary>
-        /// Positive x-axis ray.
-        /// </summary>
+        /// <summary>Positive x-axis ray.</summary>
         public static ((N X, N Y) Point, N Angle) PositiveXAxis<N>()
             where N : IFloatingPointConstants<N>
             => ((N.Zero, N.Zero), N.Zero);
 
-        /// <summary>
-        /// Positive y-axis ray.
-        /// </summary>
+        /// <summary>Positive y-axis ray.</summary>
         public static ((N X, N Y) Point, N Angle) PositiveYAxis<N>()
             where N : IFloatingPointConstants<N>
             => ((N.Zero, N.Zero), N.Pi / N.CreateChecked(2));
 
-        /// <summary>
-        /// Positive identity ray.
-        /// </summary>
+        /// <summary>Positive identity ray.</summary>
         public static ((N X, N Y) Point, N Angle) PositiveIdentity<N>()
             where N : IFloatingPointConstants<N>
             => ((N.Zero, N.Zero), N.Pi / N.CreateChecked(4));
 
-        /// <summary>
-        /// Points on a ray.
-        /// </summary>
+        /// <summary>Points on a ray.</summary>
         public static class Points
         {
             /// <summary>
@@ -318,37 +244,27 @@ public static class Line
     /// </summary>
     public static class Segment
     {
-        /// <summary>
-        /// X unit segment.
-        /// </summary>
+        /// <summary>X unit segment.</summary>
         public static ((N X, N Y) Point1, (N X, N Y) Point2) XUnit<N>()
             where N : INumberBase<N>
             => ((N.Zero, N.Zero), (N.One, N.Zero));
 
-        /// <summary>
-        /// Y unit segment.
-        /// </summary>
+        /// <summary>Y unit segment.</summary>
         public static ((N X, N Y) Point1, (N X, N Y) Point2) YUnit<N>()
             where N : INumberBase<N>
             => ((N.Zero, N.Zero), (N.Zero, N.One));
 
-        /// <summary>
-        /// Unit segment.
-        /// </summary>
+        /// <summary>Unit segment.</summary>
         public static ((N X, N Y) Point1, (N X, N Y) Point2) Unit<N>()
             where N : INumberBase<N>
             => ((N.Zero, N.Zero), (N.One, N.One));
 
-        /// <summary>
-        /// Divides a unit line segment into equal subsegments and returns start distances.
-        /// </summary>
+        /// <summary>Divides a unit line segment into equal subsegments and returns start distances.</summary>
         public static IEnumerable<N> Indices<N>(int count)
             where N : INumberBase<N>
             => Indices(count, N.One);
 
-        /// <summary>
-        /// Divides a line segment into equal subsegments and returns start distances.
-        /// </summary>
+        /// <summary>Divides a line segment into equal subsegments and returns start distances.</summary>
         public static IEnumerable<N> Indices<N>(int count, N length)
             where N : INumberBase<N>
         {
@@ -360,51 +276,35 @@ public static class Line
                 yield return N.CreateTruncating(i) * step;
         }
 
-        /// <summary>
-        /// Length of a line segment.
-        /// </summary>
+        /// <summary>Length of a line segment.</summary>
         public static class Length
         {
-            /// <summary>
-            /// Length of a line segment determined by two points.
-            /// </summary>
+            /// <summary>Length of a line segment determined by two points.</summary>
             public static N FromTwoPoints<N>((N X, N Y) p1, (N X, N Y) p2)
                 where N : IRootFunctions<N>
                 => PT.Hypotenuse(p2.X - p1.X, p2.Y - p1.Y);
 
-            /// <summary>
-            /// Length of a line segment determined by two points.
-            /// </summary>
+            /// <summary>Length of a line segment determined by two points.</summary>
             [Obsolete("Misspelled name, use FromTwoPoints instead.")]
             public static N FromTwoPints<N>((N X, N Y) p1, (N X, N Y) p2)
                 where N : IRootFunctions<N>
                 => FromTwoPoints(p1, p2);
         }
 
-        /// <summary>
-        /// Slope of a line segment.
-        /// </summary>
+        /// <summary>Slope of a line segment.</summary>
         public static class Slope
         {
-            /// <summary>
-            /// Get slope value from two points in 2D.
-            /// </summary>
-            /// <remarks>
-            /// <a href="https://en.wikipedia.org/wiki/Slope">Wikipedia</a>
-            /// </remarks>
+            /// <summary>Get slope value from two points in 2D.</summary>
+            /// <remarks><a href="https://en.wikipedia.org/wiki/Slope">Wikipedia</a></remarks>
             public static N FromTwoPoints<N>((N X, N Y) point1, (N X, N Y) point2)
                 where N : ISubtractionOperators<N, N, N>, IDivisionOperators<N, N, N>
                 => (point2.Y - point1.Y) / (point2.X - point1.X);
         }
 
-        /// <summary>
-        /// Points on a segment line.
-        /// </summary>
+        /// <summary>Points on a segment line.</summary>
         public static class Points
         {
-            /// <summary>
-            /// Get n points on a line segment determined by two points.
-            /// </summary>
+            /// <summary>Get n points on a line segment determined by two points.</summary>
             public static IEnumerable<(N X, N Y)> Get<N>((N X, N Y) point1, (N X, N Y) point2, int count)
                 where N : INumberBase<N>
             {
@@ -423,9 +323,7 @@ public static class Line
             }
         }
 
-        /// <summary>
-        /// Parallel line segment to original segment.
-        /// </summary>
+        /// <summary>Parallel line segment to original segment.</summary>
         public static class Parallel
         {
             /// <summary>
@@ -437,22 +335,16 @@ public static class Line
                 => (seedPoint.X + point2.X - point1.X, seedPoint.Y + point2.Y - point1.Y);
         }
 
-        /// <summary>
-        /// Parallel line segments to original segment.
-        /// </summary>
+        /// <summary>Parallel line segments to original segment.</summary>
         public static class Parallels
         {
-            /// <summary>
-            /// Get line segment parallels to given line segment in seed direction.
-            /// </summary>
+            /// <summary>Get line segment parallels to given line segment in seed direction.</summary>
             public static IEnumerable<((N X, N Y) Point1, (N X, N Y) Point2)> Get<N>((N X, N Y) basePoint,
                 (N X, N Y) direction, (N X, N Y) seedDirection, params (N Distance, N Length)[] @params)
                 where N : INumberBase<N>, IRootFunctions<N>
                 => Get(basePoint, direction, seedDirection, (IList<(N, N)>)@params);
 
-            /// <summary>
-            /// Get line segment parallels to given line segment in seed direction.
-            /// </summary>
+            /// <summary>Get line segment parallels to given line segment in seed direction.</summary>
             public static IEnumerable<((N X, N Y) Point1, (N X, N Y) Point2)> Get<N>((N X, N Y) basePoint,
                 (N X, N Y) direction, (N X, N Y) seedDirection, IList<(N Distance, N Length)> @params)
                 where N : INumberBase<N>, IRootFunctions<N>
@@ -472,14 +364,10 @@ public static class Line
             }
         }
 
-        /// <summary>
-        /// Line segment and ... investigation.
-        /// </summary>
+        /// <summary>Line segment and ... investigation.</summary>
         public static class And
         {
-            /// <summary>
-            /// Line segment and point investigation.
-            /// </summary>
+            /// <summary>Line segment and point investigation.</summary>
             public static class Point
             {
                 /// <summary>
@@ -488,9 +376,7 @@ public static class Line
                 /// </summary>
                 public static class Distance
                 {
-                    /// <summary>
-                    /// Determine distance of line segment and point.
-                    /// </summary>
+                    /// <summary>Determine distance of line segment and point.</summary>
                     public static N FromPoints<N>((N X, N Y) sp1, (N X, N Y) sp2, (N X, N Y) point)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                     {
@@ -519,14 +405,10 @@ public static class Line
                     }
                 }
 
-                /// <summary>
-                /// Line segment and point intersection.
-                /// </summary>
+                /// <summary>Line segment and point intersection.</summary>
                 public static class Intersection
                 {
-                    /// <summary>
-                    /// Determine if line segment includes the point.
-                    /// </summary>
+                    /// <summary>Determine if line segment includes the point.</summary>
                     public static bool FromPoints<N>((N X, N Y) sp1, (N X, N Y) sp2, (N X, N Y) point)
                         where N : INumberBase<N>, IComparisonOperators<N, N, bool>
                     {
@@ -555,17 +437,11 @@ public static class Line
                 }
             }
 
-            /// <summary>
-            /// Line segment and line segment investigation.
-            /// </summary>
+            /// <summary>Line segment and line segment investigation.</summary>
             public static class Segment
             {
-                /// <summary>
-                /// Line segment and line segment intersection.
-                /// </summary>
-                /// <remarks>
-                /// <a href="https://en.wikipedia.org/wiki/Intersection_(geometry)#Two_line_segments">Wikipedia</a>
-                /// </remarks>
+                /// <summary>Line segment and line segment intersection.</summary>
+                /// <remarks><a href="https://en.wikipedia.org/wiki/Intersection_(geometry)#Two_line_segments">Wikipedia</a></remarks>
                 public static class Intersection
                 {
                     public static (N X, N Y)? FromPoints<N>((N X, N Y) s1p1, (N X, N Y) s1p2, (N X, N Y) s2p1, (N X, N Y) s2p2)

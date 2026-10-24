@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Cube root function.
-/// </summary>
+/// <summary>Cube root function.</summary>
 /// <remarks>
 /// The function is defined for all real numbers, the root of a negative number is negative.
 /// <a href="https://en.wikipedia.org/wiki/Cube_root">Wikipedia</a>

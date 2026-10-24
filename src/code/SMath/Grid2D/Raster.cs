@@ -2,18 +2,14 @@ using System.Numerics;
 
 namespace SMath.Grid2D;
 
-/// <summary>
-/// Rasterization of geometric primitives into cells of a two dimensional grid.
-/// </summary>
+/// <summary>Rasterization of geometric primitives into cells of a two dimensional grid.</summary>
 /// <remarks>
 /// All algorithms are purely integer based and allocation free.
 /// <a href="https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm">Wikipedia</a>
 /// </remarks>
 public static class Raster
 {
-    /// <summary>
-    /// Count of cells of a Bresenham line between two cells. Both ends are included.
-    /// </summary>
+    /// <summary>Count of cells of a Bresenham line between two cells. Both ends are included.</summary>
     public static int LineCellCount((int X, int Y) from, (int X, int Y) to)
         => Math.Max(Math.Abs(to.X - from.X), Math.Abs(to.Y - from.Y)) + 1;
 
@@ -21,9 +17,7 @@ public static class Raster
     /// Cells of a line between two cells. Both ends are included.
     /// The line is 8-connected, it may pass diagonally between two cells.
     /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm">Wikipedia</a>
-    /// </remarks>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm">Wikipedia</a></remarks>
     public static IEnumerable<(int X, int Y)> Line((int X, int Y) from, (int X, int Y) to)
     {
         var line = new BresenhamLine(from, to);
@@ -101,9 +95,7 @@ public static class Raster
     /// Determine if there is no cell matching the obstacle predicate between two cells.
     /// The start cell is never tested, the target cell is.
     /// </summary>
-    /// <remarks>
-    /// It is symmetric only up to the symmetry of the underlying Bresenham line.
-    /// </remarks>
+    /// <remarks>It is symmetric only up to the symmetry of the underlying Bresenham line.</remarks>
     /// <param name="from"> Start cell. </param>
     /// <param name="to"> Target cell. </param>
     /// <param name="isObstacle"> Predicate matching the impassable cells. </param>
@@ -164,12 +156,8 @@ public static class Raster
             && (isObstacle.Test(line.X, previousY) || isObstacle.Test(previousX, line.Y));
     }
 
-    /// <summary>
-    /// Cells of a midpoint circle outline, each of them once.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Midpoint_circle_algorithm">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Cells of a midpoint circle outline, each of them once.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Midpoint_circle_algorithm">Wikipedia</a></remarks>
     public static IEnumerable<(int X, int Y)> Circle((int X, int Y) center, int radius)
     {
         if (radius < 0)
@@ -220,9 +208,7 @@ public static class Raster
         }
     }
 
-    /// <summary>
-    /// Cells of a filled circle ordered by rows.
-    /// </summary>
+    /// <summary>Cells of a filled circle ordered by rows.</summary>
     public static IEnumerable<(int X, int Y)> Disc((int X, int Y) center, int radius)
     {
         if (radius < 0)
@@ -238,25 +224,19 @@ public static class Raster
         }
     }
 
-    /// <summary>
-    /// Cells of a triangle outline.
-    /// </summary>
+    /// <summary>Cells of a triangle outline.</summary>
     public static IEnumerable<(int X, int Y)> Triangle((int X, int Y) vertex1, (int X, int Y) vertex2, (int X, int Y) vertex3)
         => Line(vertex1, vertex2)
             .Concat(Line(vertex2, vertex3).Skip(1))
             .Concat(Line(vertex3, vertex1).Skip(1));
 
-    /// <summary>
-    /// Cell of a point in a grid of a given cell size. Point is snapped to the cell it lies in.
-    /// </summary>
+    /// <summary>Cell of a point in a grid of a given cell size. Point is snapped to the cell it lies in.</summary>
     public static (int X, int Y) CellOfPoint<N>((N X, N Y) point, N cellSize)
         where N : IFloatingPoint<N>
         => (int.CreateTruncating(N.Floor(point.X / cellSize)),
             int.CreateTruncating(N.Floor(point.Y / cellSize)));
 
-    /// <summary>
-    /// Center point of a cell in a grid of a given cell size.
-    /// </summary>
+    /// <summary>Center point of a cell in a grid of a given cell size.</summary>
     public static (N X, N Y) CenterOfCell<N>((int X, int Y) cell, N cellSize)
         where N : IFloatingPoint<N>
     {

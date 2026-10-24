@@ -1,8 +1,6 @@
 namespace SMath.FunctionsN;
 
-/// <summary>
-/// Hamming distance of two sequences of equal length.
-/// </summary>
+/// <summary>Hamming distance of two sequences of equal length.</summary>
 /// <remarks>
 /// It is the number of positions at which the corresponding items differ.
 /// For the bitwise distance of two numbers see
@@ -12,15 +10,11 @@ namespace SMath.FunctionsN;
 /// </remarks>
 public static class HammingDistance
 {
-    /// <summary>
-    /// String representation of the function.
-    /// </summary>
+    /// <summary>String representation of the function.</summary>
     public static string PlainTextFormula
         => "count(xi != yi)";
 
-    /// <summary>
-    /// Hamming distance of two sequences.
-    /// </summary>
+    /// <summary>Hamming distance of two sequences.</summary>
     /// <param name="sequence1"> First sequence. </param>
     /// <param name="sequence2"> Second sequence. </param>
     /// <param name="comparer"> Comparer of the items, the default comparer is used when it is null. </param>
@@ -53,9 +47,7 @@ public static class HammingDistance
         return distance;
     }
 
-    /// <summary>
-    /// Hamming distance of two sequences.
-    /// </summary>
+    /// <summary>Hamming distance of two sequences.</summary>
     /// <param name="sequence1"> First sequence. </param>
     /// <param name="sequence2"> Second sequence. </param>
     /// <param name="comparer"> Comparer of the items, the default comparer is used when it is null. </param>

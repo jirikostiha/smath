@@ -2,9 +2,7 @@
 
 namespace SMath.Sequences;
 
-/// <summary>
-/// Arithmetic sequence or arithmetic progression.
-/// </summary>
+/// <summary>Arithmetic sequence or arithmetic progression.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Arithmetic_progression">Wikipedia</a>
 /// <a href="https://mathworld.wolfram.com/ArithmeticProgression.html">Wolfram Mathworld</a>
@@ -13,9 +11,7 @@ public static class ArithmeticSequence
 {
     public static string PlainTextFormula => "a(n) = a(1) + (n - 1) * d";
 
-    /// <summary>
-    /// Term at the one based position <paramref name="n"/>.
-    /// </summary>
+    /// <summary>Term at the one based position <paramref name="n"/>.</summary>
     /// <exception cref="ArgumentOutOfRangeException"> Position is not a positive number. </exception>
     public static N Term<N>(N initial, N difference, int n)
         where N : INumberBase<N>
@@ -26,9 +22,7 @@ public static class ArithmeticSequence
         return initial + N.CreateChecked(n - 1) * difference;
     }
 
-    /// <summary>
-    /// Enumerate the first <paramref name="count"/> terms.
-    /// </summary>
+    /// <summary>Enumerate the first <paramref name="count"/> terms.</summary>
     public static IEnumerable<N> Terms<N>(N initial, N difference, int count)
         where N : INumberBase<N>
     {

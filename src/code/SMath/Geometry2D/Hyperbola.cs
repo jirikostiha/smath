@@ -17,9 +17,7 @@ public static class Hyperbola
 
     public static string PlainTextEquation => "x^2/a^2 - y^2/b^2 = 1";
 
-    /// <summary>
-    /// Eccentricity of a hyperbola. It is always greater than one.
-    /// </summary>
+    /// <summary>Eccentricity of a hyperbola. It is always greater than one.</summary>
     public static class Eccentricity
     {
         public static N FromRadius<N>(N majorRadius, N minorRadius)
@@ -27,9 +25,7 @@ public static class Hyperbola
             => N.Sqrt(N.One + (minorRadius * minorRadius) / (majorRadius * majorRadius));
     }
 
-    /// <summary>
-    /// Linear eccentricity of a hyperbola, the distance between the center and a focus.
-    /// </summary>
+    /// <summary>Linear eccentricity of a hyperbola, the distance between the center and a focus.</summary>
     public static class LinearEccentricity
     {
         public static N FromRadius<N>(N majorRadius, N minorRadius)
@@ -37,9 +33,7 @@ public static class Hyperbola
             => PT.Hypotenuse(majorRadius, minorRadius);
     }
 
-    /// <summary>
-    /// Parameter of a hyperbola.
-    /// </summary>
+    /// <summary>Parameter of a hyperbola.</summary>
     public static class Parameter
     {
         public static N FromRadius<N>(N radius1, N radius2)
@@ -47,9 +41,7 @@ public static class Hyperbola
             => radius2 * radius2 / radius1;
     }
 
-    /// <summary>
-    /// Semi-latus rectum of a hyperbola.
-    /// </summary>
+    /// <summary>Semi-latus rectum of a hyperbola.</summary>
     public static class SemiLatusRectum
     {
         /// <summary>
@@ -64,9 +56,7 @@ public static class Hyperbola
         }
     }
 
-    /// <summary>
-    /// Vertices of a hyperbola, the two points where it meets its transverse axis.
-    /// </summary>
+    /// <summary>Vertices of a hyperbola, the two points where it meets its transverse axis.</summary>
     public static class Vertex
     {
         public static ((N X, N Y) Point1, (N X, N Y) Point2) FromRadius<N>(N majorRadius)
@@ -113,9 +103,7 @@ public static class Hyperbola
             => ((minorRadius, -majorRadius, N.Zero), (minorRadius, majorRadius, N.Zero));
     }
 
-    /// <summary>
-    /// Point on a hyperbola.
-    /// </summary>
+    /// <summary>Point on a hyperbola.</summary>
     public static class Point
     {
         /// <summary>
@@ -126,9 +114,7 @@ public static class Hyperbola
             where N : IRootFunctions<N>
             => minorRadius * N.Sqrt((x * x) / (majorRadius * majorRadius) - N.One);
 
-        /// <summary>
-        /// Point on the upper half of a hyperbola from its x coordinate.
-        /// </summary>
+        /// <summary>Point on the upper half of a hyperbola from its x coordinate.</summary>
         public static (N X, N Y) FromX<N>(N majorRadius, N minorRadius, N x)
             where N : IRootFunctions<N>
             => (x, YFromX(majorRadius, minorRadius, x));

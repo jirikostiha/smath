@@ -2,9 +2,7 @@
 
 namespace SMath;
 
-/// <summary>
-/// Factorial.
-/// </summary>
+/// <summary>Factorial.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Factorial">Wikipedia</a>
 /// <a href="https://mathworld.wolfram.com/Factorial.html">Wolfram Mathworld</a>
@@ -13,9 +11,7 @@ public static class Factorial
 {
     public static string PlainTextFormula => "n! = 1 * 2 * ... * n";
 
-    /// <summary>
-    /// Factorial of a non negative number.
-    /// </summary>
+    /// <summary>Factorial of a non negative number.</summary>
     /// <remarks> Factorial of zero is the empty product, one. </remarks>
     /// <exception cref="ArgumentOutOfRangeException"> Number is negative. </exception>
     public static NInt Eval<NInt>(NInt n)
@@ -31,17 +27,11 @@ public static class Factorial
         return product;
     }
 
-    /// <summary>
-    /// Falling factorial, n * (n - 1) * ... * (n - k + 1).
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Falling_and_rising_factorials">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Falling factorial, n * (n - 1) * ... * (n - k + 1).</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Falling_and_rising_factorials">Wikipedia</a></remarks>
     public static class Falling
     {
-        /// <summary>
-        /// Product of <paramref name="k"/> numbers descending from <paramref name="n"/>.
-        /// </summary>
+        /// <summary>Product of <paramref name="k"/> numbers descending from <paramref name="n"/>.</summary>
         /// <remarks> The empty product is one. </remarks>
         /// <exception cref="ArgumentOutOfRangeException"> Count of factors is negative. </exception>
         public static NInt Eval<NInt>(NInt n, NInt k)
@@ -58,17 +48,11 @@ public static class Factorial
         }
     }
 
-    /// <summary>
-    /// Rising factorial, n * (n + 1) * ... * (n + k - 1).
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Falling_and_rising_factorials">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Rising factorial, n * (n + 1) * ... * (n + k - 1).</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Falling_and_rising_factorials">Wikipedia</a></remarks>
     public static class Rising
     {
-        /// <summary>
-        /// Product of <paramref name="k"/> numbers ascending from <paramref name="n"/>.
-        /// </summary>
+        /// <summary>Product of <paramref name="k"/> numbers ascending from <paramref name="n"/>.</summary>
         /// <remarks> The empty product is one. </remarks>
         /// <exception cref="ArgumentOutOfRangeException"> Count of factors is negative. </exception>
         public static NInt Eval<NInt>(NInt n, NInt k)

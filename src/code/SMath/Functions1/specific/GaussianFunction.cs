@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Gaussian function.
-/// </summary>
+/// <summary>Gaussian function.</summary>
 /// <remarks>
 /// The image of the function depends on the height parameter, therefore it is not declared here.
 /// <a href="https://en.wikipedia.org/wiki/Gaussian_function">Wikipedia</a>
@@ -37,9 +35,7 @@ public class GaussianFunction : IMathFunction, ISingleDomain
         where N : INumberBase<N>, IMinMaxValue<N>
         => (N.MinValue, N.MaxValue);
 
-    /// <summary>
-    /// Evaluates the function value.
-    /// </summary>
+    /// <summary>Evaluates the function value.</summary>
     /// <param name="x"> Variable. </param>
     /// <param name="a"> Height of the curve peak. </param>
     /// <param name="b"> Position of the center of the peak. </param>

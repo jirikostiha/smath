@@ -14,9 +14,7 @@ namespace SMath.Geometry3D;
 /// </remarks>
 public static class GeometricVector3
 {
-    /// <summary>
-    /// Magnitude (length) of a vector.
-    /// </summary>
+    /// <summary>Magnitude (length) of a vector.</summary>
     public static class Magnitude
     {
         public static N FromCartesian<N>(N x, N y, N z)
@@ -27,17 +25,13 @@ public static class GeometricVector3
             where N : IRootFunctions<N>
             => PT.Hypotenuse(vector);
 
-        /// <summary>
-        /// Magnitude of the sum of n Cartesian vectors.
-        /// </summary>
+        /// <summary>Magnitude of the sum of n Cartesian vectors.</summary>
         public static N FromCartesianVectors<N>(params (N X, N Y, N Z)[] vectors)
             where N : IRootFunctions<N>
             => FromCartesian(Cartesian.FromCartesianVectors(vectors));
     }
 
-    /// <summary>
-    /// X component of a vector.
-    /// </summary>
+    /// <summary>X component of a vector.</summary>
     public static class X
     {
         public static N FromSpherical<N>(N magnitude, N polarAngle, N azimuth)
@@ -45,9 +39,7 @@ public static class GeometricVector3
             => magnitude * N.Sin(polarAngle) * N.Cos(azimuth);
     }
 
-    /// <summary>
-    /// Y component of a vector.
-    /// </summary>
+    /// <summary>Y component of a vector.</summary>
     public static class Y
     {
         public static N FromSpherical<N>(N magnitude, N polarAngle, N azimuth)
@@ -55,9 +47,7 @@ public static class GeometricVector3
             => magnitude * N.Sin(polarAngle) * N.Sin(azimuth);
     }
 
-    /// <summary>
-    /// Z component of a vector.
-    /// </summary>
+    /// <summary>Z component of a vector.</summary>
     public static class Z
     {
         public static N FromSpherical<N>(N magnitude, N polarAngle)
@@ -65,9 +55,7 @@ public static class GeometricVector3
             => magnitude * N.Cos(polarAngle);
     }
 
-    /// <summary>
-    /// Polar angle (inclination) of a vector, measured from the +z axis, in the range [0, pi].
-    /// </summary>
+    /// <summary>Polar angle (inclination) of a vector, measured from the +z axis, in the range [0, pi].</summary>
     public static class PolarAngle
     {
         public static N FromCartesian<N>(N x, N y, N z)
@@ -79,9 +67,7 @@ public static class GeometricVector3
             => FromCartesian(vector.X, vector.Y, vector.Z);
     }
 
-    /// <summary>
-    /// Azimuth of a vector, measured in the xy plane from the +x axis towards the +y axis, in the range (-pi, pi].
-    /// </summary>
+    /// <summary>Azimuth of a vector, measured in the xy plane from the +x axis towards the +y axis, in the range (-pi, pi].</summary>
     public static class Azimuth
     {
         public static N FromCartesian<N>(N x, N y)
@@ -93,9 +79,7 @@ public static class GeometricVector3
             => N.Atan2(vector.Y, vector.X);
     }
 
-    /// <summary>
-    /// Vector in Cartesian coordinate system.
-    /// </summary>
+    /// <summary>Vector in Cartesian coordinate system.</summary>
     public static class Cartesian
     {
         public static (N X, N Y, N Z) FromSpherical<N>(N magnitude, N polarAngle, N azimuth)
@@ -108,9 +92,7 @@ public static class GeometricVector3
             return (planar * cosAzimuth, planar * sinAzimuth, magnitude * cosPolar);
         }
 
-        /// <summary>
-        /// Vector summation determined by n Cartesian vectors.
-        /// </summary>
+        /// <summary>Vector summation determined by n Cartesian vectors.</summary>
         public static (N X, N Y, N Z) FromCartesianVectors<N>(params (N X, N Y, N Z)[] vectors)
             where N : INumberBase<N>
         {
@@ -138,17 +120,13 @@ public static class GeometricVector3
             where N : IRootFunctions<N>
             => Normalized(vector.X, vector.Y, vector.Z);
 
-        /// <summary>
-        /// Vector with components reduced to their octant signs (+1, -1, or 0).
-        /// </summary>
+        /// <summary>Vector with components reduced to their octant signs (+1, -1, or 0).</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static (N X, N Y, N Z) Octantized<N>(N x, N y, N z)
             where N : INumberBase<N>
             => (Sign(x), Sign(y), Sign(z));
 
-        /// <summary>
-        /// Vector with components reduced to their octant signs (+1, -1, or 0).
-        /// </summary>
+        /// <summary>Vector with components reduced to their octant signs (+1, -1, or 0).</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static (N X, N Y, N Z) Octantized<N>((N X, N Y, N Z) vector)
             where N : INumberBase<N>
@@ -160,9 +138,7 @@ public static class GeometricVector3
             => N.IsZero(value) ? N.Zero : (N.IsNegative(value) ? -N.One : N.One);
     }
 
-    /// <summary>
-    /// Vector in spherical coordinate system.
-    /// </summary>
+    /// <summary>Vector in spherical coordinate system.</summary>
     public static class Spherical
     {
         public static (N Magnitude, N PolarAngle, N Azimuth) FromCartesian<N>(N x, N y, N z)
@@ -174,12 +150,8 @@ public static class GeometricVector3
             => FromCartesian(vector.X, vector.Y, vector.Z);
     }
 
-    /// <summary>
-    /// Cross product or vector product.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Cross_product">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Cross product or vector product.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Cross_product">Wikipedia</a></remarks>
     public static class CrossProduct
     {
         public static (N X, N Y, N Z) FromCartesian<N>((N X, N Y, N Z) vector1, (N X, N Y, N Z) vector2)
@@ -189,9 +161,7 @@ public static class GeometricVector3
                 (vector1.X * vector2.Y) - (vector1.Y * vector2.X));
     }
 
-    /// <summary>
-    /// Dot product or scalar product.
-    /// </summary>
+    /// <summary>Dot product or scalar product.</summary>
     public static class DotProduct
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -200,12 +170,8 @@ public static class GeometricVector3
             => (vector1.X * vector2.X) + (vector1.Y * vector2.Y) + (vector1.Z * vector2.Z);
     }
 
-    /// <summary>
-    /// Scalar triple product a · (b × c), the signed volume of the parallelepiped spanned by the vectors.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Triple_product">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Scalar triple product a · (b × c), the signed volume of the parallelepiped spanned by the vectors.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Triple_product">Wikipedia</a></remarks>
     public static class TripleProduct
     {
         public static N FromCartesian<N>((N X, N Y, N Z) vector1, (N X, N Y, N Z) vector2, (N X, N Y, N Z) vector3)
@@ -213,14 +179,10 @@ public static class GeometricVector3
             => DotProduct.FromCartesian(vector1, CrossProduct.FromCartesian(vector2, vector3));
     }
 
-    /// <summary>
-    /// Angle between two vectors in the range [0, pi]. Zero when either vector is zero.
-    /// </summary>
+    /// <summary>Angle between two vectors in the range [0, pi]. Zero when either vector is zero.</summary>
     public static class Angle
     {
-        /// <remarks>
-        /// Computed as atan2(|a × b|, a · b), which stays accurate for nearly parallel vectors where acos loses precision.
-        /// </remarks>
+        /// <remarks>Computed as atan2(|a × b|, a · b), which stays accurate for nearly parallel vectors where acos loses precision.</remarks>
         public static N FromCartesian<N>((N X, N Y, N Z) vector1, (N X, N Y, N Z) vector2)
             where N : IFloatingPointIeee754<N>
             => N.Atan2(Magnitude.FromCartesian(CrossProduct.FromCartesian(vector1, vector2)), DotProduct.FromCartesian(vector1, vector2));
@@ -231,9 +193,7 @@ public static class GeometricVector3
     /// Space has a whole circle of such vectors; this one is also perpendicular to the coordinate axis
     /// the input leans on least, which keeps it far from degenerate. A zero vector has the zero vector.
     /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Normal_(geometry)">Wikipedia</a>
-    /// </remarks>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Normal_(geometry)">Wikipedia</a></remarks>
     public static class Normal
     {
         public static (N X, N Y, N Z) FromCartesian<N>((N X, N Y, N Z) vector)
@@ -258,9 +218,7 @@ public static class GeometricVector3
         }
     }
 
-    /// <summary>
-    /// Distance of two vectors.
-    /// </summary>
+    /// <summary>Distance of two vectors.</summary>
     public static class Distance
     {
         public static N FromCartesian<N>((N X, N Y, N Z) vector1, (N X, N Y, N Z) vector2)
@@ -268,9 +226,7 @@ public static class GeometricVector3
             => Point3.Distance(vector1, vector2);
     }
 
-    /// <summary>
-    /// Direction from one to the other vector. It is not normalized.
-    /// </summary>
+    /// <summary>Direction from one to the other vector. It is not normalized.</summary>
     public static class Direction
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -279,17 +235,11 @@ public static class GeometricVector3
             => (toVector.X - fromVector.X, toVector.Y - fromVector.Y, toVector.Z - fromVector.Z);
     }
 
-    /// <summary>
-    /// Projection of a vector onto another one.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Vector_projection">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Projection of a vector onto another one.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Vector_projection">Wikipedia</a></remarks>
     public static class Projection
     {
-        /// <summary>
-        /// Component of <paramref name="vector"/> parallel to <paramref name="onto"/>. Zero when <paramref name="onto"/> is zero.
-        /// </summary>
+        /// <summary>Component of <paramref name="vector"/> parallel to <paramref name="onto"/>. Zero when <paramref name="onto"/> is zero.</summary>
         public static (N X, N Y, N Z) FromCartesian<N>((N X, N Y, N Z) vector, (N X, N Y, N Z) onto)
             where N : INumberBase<N>
         {
@@ -302,12 +252,8 @@ public static class GeometricVector3
         }
     }
 
-    /// <summary>
-    /// Reflection of a vector about a normal.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Reflection_(mathematics)">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Reflection of a vector about a normal.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Reflection_(mathematics)">Wikipedia</a></remarks>
     public static class Reflection
     {
         /// <summary>
@@ -322,9 +268,7 @@ public static class GeometricVector3
             return (vector.X - twoDot * unitNormal.X, vector.Y - twoDot * unitNormal.Y, vector.Z - twoDot * unitNormal.Z);
         }
 
-        /// <summary>
-        /// Reflect a point across a plane parallel to the xy plane at height <c>z</c>.
-        /// </summary>
+        /// <summary>Reflect a point across a plane parallel to the xy plane at height <c>z</c>.</summary>
         public static class ToXY
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -333,9 +277,7 @@ public static class GeometricVector3
                 => (point.X, point.Y, N.CreateChecked(2) * z - point.Z);
         }
 
-        /// <summary>
-        /// Reflect a point across a plane parallel to the xz plane at ordinate <c>y</c>.
-        /// </summary>
+        /// <summary>Reflect a point across a plane parallel to the xz plane at ordinate <c>y</c>.</summary>
         public static class ToXZ
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -344,9 +286,7 @@ public static class GeometricVector3
                 => (point.X, N.CreateChecked(2) * y - point.Y, point.Z);
         }
 
-        /// <summary>
-        /// Reflect a point across a plane parallel to the yz plane at abscissa <c>x</c>.
-        /// </summary>
+        /// <summary>Reflect a point across a plane parallel to the yz plane at abscissa <c>x</c>.</summary>
         public static class ToYZ
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -356,12 +296,8 @@ public static class GeometricVector3
         }
     }
 
-    /// <summary>
-    /// Rotation around an axis.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Rotation around an axis.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula">Wikipedia</a></remarks>
     public static class Rotation
     {
         /// <summary>
@@ -380,9 +316,7 @@ public static class GeometricVector3
                     (vector.Z * cos) + (cross.Z * sin) + (unitAxis.Z * along));
         }
 
-        /// <summary>
-        /// Rotate a point around a unit axis through a center point by an angle in radians.
-        /// </summary>
+        /// <summary>Rotate a point around a unit axis through a center point by an angle in radians.</summary>
         public static (N X, N Y, N Z) FromCartesian<N>((N X, N Y, N Z) point, (N X, N Y, N Z) center, (N X, N Y, N Z) unitAxis, N angle)
             where N : ITrigonometricFunctions<N>
         {

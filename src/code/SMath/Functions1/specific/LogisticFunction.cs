@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Logistic function.
-/// </summary>
+/// <summary>Logistic function.</summary>
 /// <remarks>
 /// The image of the function depends on the supremum parameter, therefore it is not declared here.
 /// <a href="https://en.wikipedia.org/wiki/Logistic_function">Wikipedia</a>
@@ -37,9 +35,7 @@ public class LogisticFunction : IMathFunction, ISingleDomain
         where N : INumberBase<N>, IMinMaxValue<N>
         => (N.MinValue, N.MaxValue);
 
-    /// <summary>
-    /// Evaluates the function value.
-    /// </summary>
+    /// <summary>Evaluates the function value.</summary>
     /// <param name="x"> Variable. </param>
     /// <param name="l"> Supremum of the function. </param>
     /// <param name="k"> Logistic growth rate or steepness of the curve. </param>
@@ -48,9 +44,7 @@ public class LogisticFunction : IMathFunction, ISingleDomain
         where N : IExponentialFunctions<N>
         => l / (N.One + N.Exp(-k * (x - x0)));
 
-    /// <summary>
-    /// Evaluates the function value of a curve with the midpoint at zero.
-    /// </summary>
+    /// <summary>Evaluates the function value of a curve with the midpoint at zero.</summary>
     /// <param name="x"> Variable. </param>
     /// <param name="l"> Supremum of the function. </param>
     /// <param name="k"> Logistic growth rate or steepness of the curve. </param>

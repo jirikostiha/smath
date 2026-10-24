@@ -2,12 +2,8 @@ using System.Numerics;
 
 namespace SMath.Statistics;
 
-/// <summary>
-/// Generalized mean or power mean or Hölder mean.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Generalized_mean">Wikipedia</a>
-/// </remarks>
+/// <summary>Generalized mean or power mean or Hölder mean.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Generalized_mean">Wikipedia</a></remarks>
 public static class GeneralizedMean
 {
     public static double Eval<N>(IEnumerable<N> sequence, double p)

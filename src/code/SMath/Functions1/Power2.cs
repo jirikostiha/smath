@@ -2,9 +2,7 @@
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Power 2 (square) function.
-/// </summary>
+/// <summary>Power 2 (square) function.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Square_(algebra)">Wikipedia</a>
 /// <a href="https://en.wikipedia.org/wiki/Exponentiation#Power_functions">Wikipedia</a>

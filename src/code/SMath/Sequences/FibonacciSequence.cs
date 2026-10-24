@@ -2,9 +2,7 @@
 
 namespace SMath.Sequences;
 
-/// <summary>
-/// Fibonacci sequence of Fibonacci numbers.
-/// </summary>
+/// <summary>Fibonacci sequence of Fibonacci numbers.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Fibonacci_number">Wikipedia</a>
 /// <a href="https://mathworld.wolfram.com/FibonacciNumber.html">Wolfram Mathworld</a>
@@ -13,9 +11,7 @@ public static class FibonacciSequence
 {
     public static string PlainTextFormula => "a(n) = a(n - 1) + a(n - 2), a(1) = 0, a(2) = 1";
 
-    /// <summary>
-    /// Fibonacci number at the one based position <paramref name="n"/>, the first one being zero.
-    /// </summary>
+    /// <summary>Fibonacci number at the one based position <paramref name="n"/>, the first one being zero.</summary>
     /// <exception cref="ArgumentOutOfRangeException"> Position is not a positive number. </exception>
     public static N Term<N>(int n)
         where N : INumberBase<N>
@@ -31,9 +27,7 @@ public static class FibonacciSequence
         return previous;
     }
 
-    /// <summary>
-    /// Enumerate the first <paramref name="count"/> Fibonacci numbers, starting from zero.
-    /// </summary>
+    /// <summary>Enumerate the first <paramref name="count"/> Fibonacci numbers, starting from zero.</summary>
     public static IEnumerable<N> Terms<N>(int count)
         where N : INumberBase<N>
     {

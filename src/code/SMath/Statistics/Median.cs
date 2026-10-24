@@ -2,12 +2,8 @@ using System.Numerics;
 
 namespace SMath.Statistics;
 
-/// <summary>
-/// Median.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Median">Wikipedia</a>
-/// </remarks>
+/// <summary>Median.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Median">Wikipedia</a></remarks>
 public static class Median
 {
     public static double Eval<N>(IEnumerable<N> numbers)

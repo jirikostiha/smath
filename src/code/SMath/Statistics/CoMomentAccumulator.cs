@@ -1,8 +1,6 @@
 namespace SMath.Statistics;
 
-/// <summary>
-/// Running means, second moments and co-moment of paired values (Welford's online update).
-/// </summary>
+/// <summary>Running means, second moments and co-moment of paired values (Welford's online update).</summary>
 /// <remarks>
 /// The textbook form <c>sum(ab) - sum(a) * sum(b) / n</c> subtracts two nearly equal large numbers
 /// when the data sit far from zero, and loses every significant digit. The deviations from the

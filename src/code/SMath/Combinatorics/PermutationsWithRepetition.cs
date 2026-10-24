@@ -6,14 +6,10 @@ namespace SMath.Combinatorics;
 /// Permutations with repetition.
 /// Order does matter, e.g. {a,b}: a, b, aa, ab, ba, bb.
 /// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Permutation#Permutations_with_repetition">Wikipedia</a>
-/// </remarks>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Permutation#Permutations_with_repetition">Wikipedia</a></remarks>
 public static class PermutationsWithRepetition
 {
-    /// <summary>
-    /// Counts k-tuples drawn with repetition from <paramref name="n"/> elements.
-    /// </summary>
+    /// <summary>Counts k-tuples drawn with repetition from <paramref name="n"/> elements.</summary>
     /// <remarks> n^k. </remarks>
     public static NInt Count<NInt>(NInt n, NInt k)
         where NInt : IBinaryInteger<NInt>

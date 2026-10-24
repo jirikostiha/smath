@@ -2,9 +2,7 @@ using SMath.Grid2D;
 
 namespace SMath.Pathfinding;
 
-/// <summary>
-/// Field of directions leading every cell of a two dimensional grid towards the closest target.
-/// </summary>
+/// <summary>Field of directions leading every cell of a two dimensional grid towards the closest target.</summary>
 /// <remarks>
 /// It is the tool of choice when many agents head to the same few targets.
 /// One build costs a single Dijkstra search over the grid,
@@ -13,9 +11,7 @@ namespace SMath.Pathfinding;
 /// </remarks>
 public static class FlowField
 {
-    /// <summary>
-    /// Build a field of directions from a field of costs.
-    /// </summary>
+    /// <summary>Build a field of directions from a field of costs.</summary>
     /// <param name="distances"> Row-major costs, see <see cref="GridPathfinder.Fill{TCost}(ReadOnlySpan{ValueTuple{int, int}}, TCost, Span{int}, GridConnectivity, int)"/>. </param>
     /// <param name="width"> Count of cells in x direction. </param>
     /// <param name="height"> Count of cells in y direction. </param>
@@ -78,9 +74,7 @@ public static class FlowField
         return count;
     }
 
-    /// <summary>
-    /// Cell the field leads to from a cell.
-    /// </summary>
+    /// <summary>Cell the field leads to from a cell.</summary>
     /// <returns> The next cell or the very same cell if it is a target or unreachable. </returns>
     public static (int X, int Y) Next(ReadOnlySpan<byte> directions, int width, (int X, int Y) cell)
     {

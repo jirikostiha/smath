@@ -2,12 +2,8 @@ using System.Numerics;
 
 namespace SMath.Statistics;
 
-/// <summary>
-/// Skewness.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Skewness">Wikipedia</a>
-/// </remarks>
+/// <summary>Skewness.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Skewness">Wikipedia</a></remarks>
 public static class Skewness
 {
     public static double Eval<N>(IEnumerable<N> sequence)

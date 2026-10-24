@@ -13,9 +13,7 @@ namespace SMath.Combinatorics;
 /// </remarks>
 public static class Combinations
 {
-    /// <summary>
-    /// Counts all non empty combinations (without repetition) of <paramref name="n"/> elements.
-    /// </summary>
+    /// <summary>Counts all non empty combinations (without repetition) of <paramref name="n"/> elements.</summary>
     /// <remarks> Sum of all k-combinations of n, 2^n - 1. </remarks>
     public static NInt Count<NInt>(NInt n)
         where NInt : IBinaryInteger<NInt>
@@ -26,18 +24,14 @@ public static class Combinations
         return (NInt.One << int.CreateChecked(n)) - NInt.One;
     }
 
-    /// <summary>
-    /// Counts k-combinations of <paramref name="n"/>.
-    /// </summary>
+    /// <summary>Counts k-combinations of <paramref name="n"/>.</summary>
     public static NInt Count<NInt>(NInt n, NInt k)
         where NInt : IBinaryInteger<NInt>
         => n >= k && !NInt.IsNegative(k) && !NInt.IsNegative(n)
             ? BinomialCoefficient.Eval(n, k)
             : NInt.Zero;
 
-    /// <summary>
-    /// Enumerate all index pairs (i &lt; j) drawn from [0, n).
-    /// </summary>
+    /// <summary>Enumerate all index pairs (i &lt; j) drawn from [0, n).</summary>
     public static IEnumerable<(NInt Index1, NInt Index2)> Tuple2<NInt>(NInt n)
         where NInt : IBinaryInteger<NInt>
     {
@@ -49,9 +43,7 @@ public static class Combinations
                 yield return (i, j);
     }
 
-    /// <summary>
-    /// Enumerate all index triples (i &lt; j &lt; k) drawn from [0, n).
-    /// </summary>
+    /// <summary>Enumerate all index triples (i &lt; j &lt; k) drawn from [0, n).</summary>
     public static IEnumerable<(NInt Index1, NInt Index2, NInt Index3)> Tuple3<NInt>(NInt n)
         where NInt : IBinaryInteger<NInt>
     {
@@ -65,9 +57,7 @@ public static class Combinations
                     yield return (i, j, k);
     }
 
-    /// <summary>
-    /// Enumerate all index quadruples (i &lt; j &lt; k &lt; l) drawn from [0, n).
-    /// </summary>
+    /// <summary>Enumerate all index quadruples (i &lt; j &lt; k &lt; l) drawn from [0, n).</summary>
     public static IEnumerable<(NInt Index1, NInt Index2, NInt Index3, NInt Index4)> Tuple4<NInt>(NInt n)
         where NInt : IBinaryInteger<NInt>
     {

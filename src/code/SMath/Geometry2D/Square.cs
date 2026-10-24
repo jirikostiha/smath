@@ -146,14 +146,10 @@ public static class Square
             => Polygon.Regular.Vertices.FromCircumradius(circumradius, 4);
     }
 
-    /// <summary>
-    /// Perimeter or outline of a square.
-    /// </summary>
+    /// <summary>Perimeter or outline of a square.</summary>
     public static class Perimeter
     {
-        /// <summary>
-        /// Length of the perimeter of a square.
-        /// </summary>
+        /// <summary>Length of the perimeter of a square.</summary>
         public static class Length
         {
             public static N FromEdge<N>(N edgeLength)
@@ -174,14 +170,10 @@ public static class Square
         }
     }
 
-    /// <summary>
-    /// Enclosed plane region of a square.
-    /// </summary>
+    /// <summary>Enclosed plane region of a square.</summary>
     public static class Region
     {
-        /// <summary>
-        /// Enclosed plane region area of a square.
-        /// </summary>
+        /// <summary>Enclosed plane region area of a square.</summary>
         public static class Area
         {
             public static N FromEdge<N>(N edgeLength)

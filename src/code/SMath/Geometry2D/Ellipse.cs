@@ -3,18 +3,14 @@ using System.Numerics;
 
 namespace SMath.Geometry2D;
 
-/// <summary>
-/// Ellipse.
-/// </summary>
+/// <summary>Ellipse.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Ellipse">Wikipedia</a>
 /// <a href="https://mathworld.wolfram.com/Ellipse.html">Wolfram Mathworld</a>
 /// </remarks>
 public static class Ellipse
 {
-    /// <summary>
-    /// Eccentricity of an ellipse.
-    /// </summary>
+    /// <summary>Eccentricity of an ellipse.</summary>
     public static class Eccentricity
     {
         public static N FromRadius<N>(N majorRadius, N minorRadius)
@@ -22,9 +18,7 @@ public static class Ellipse
             => N.Sqrt(N.One - (minorRadius * minorRadius) / (majorRadius * majorRadius));
     }
 
-    /// <summary>
-    /// Linear eccentricity of an ellipse.
-    /// </summary>
+    /// <summary>Linear eccentricity of an ellipse.</summary>
     public static class LinearEccentricity
     {
         public static N FromRadius<N>(N majorRadius, N minorRadius)
@@ -32,9 +26,7 @@ public static class Ellipse
             => N.Sqrt(majorRadius * majorRadius - minorRadius * minorRadius);
     }
 
-    /// <summary>
-    /// Parameter of an ellipse.
-    /// </summary>
+    /// <summary>Parameter of an ellipse.</summary>
     public static class Parameter
     {
         public static N FromRadius<N>(N radius1, N radius2)
@@ -42,14 +34,10 @@ public static class Ellipse
             => radius2 * radius2 / radius1;
     }
 
-    /// <summary>
-    /// Semi-Latus Rectum of an ellipse.
-    /// </summary>
+    /// <summary>Semi-Latus Rectum of an ellipse.</summary>
     public static class SemiLatusRectum
     {
-        /// <summary>
-        /// Length of semi-latus rectum of an ellipse.
-        /// </summary>
+        /// <summary>Length of semi-latus rectum of an ellipse.</summary>
         public static class Length
         {
             public static N FromRadius<N>(N majorRadius, N minorRadius)
@@ -58,14 +46,10 @@ public static class Ellipse
         }
     }
 
-    /// <summary>
-    /// Perimeter or curve or outline of an ellipse.
-    /// </summary>
+    /// <summary>Perimeter or curve or outline of an ellipse.</summary>
     public static class Perimeter
     {
-        /// <summary>
-        /// Circumference of an ellipse.
-        /// </summary>
+        /// <summary>Circumference of an ellipse.</summary>
         /// <remarks>
         /// The circumference of an ellipse has no closed form, this is Ramanujan's second
         /// approximation pi * (a+b) * (1 + 3*h / (10 + sqrt(4 - 3*h))), where h is
@@ -92,14 +76,10 @@ public static class Ellipse
         }
     }
 
-    /// <summary>
-    /// Enclosed plane region of an ellipse.
-    /// </summary>
+    /// <summary>Enclosed plane region of an ellipse.</summary>
     public static class Region
     {
-        /// <summary>
-        /// Enclosed plane region area of an ellipse.
-        /// </summary>
+        /// <summary>Enclosed plane region area of an ellipse.</summary>
         public static class Area
         {
             public static N FromRadius<N>(N majorRadius, N minorRadius)

@@ -3,36 +3,24 @@ using System.Runtime.CompilerServices;
 
 namespace SMath.Geometry2D;
 
-/// <summary>
-/// Euclidean or geometric vector with 2 components.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Euclidean_vector">Wikipedia</a>
-/// </remarks>
+/// <summary>Euclidean or geometric vector with 2 components.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Euclidean_vector">Wikipedia</a></remarks>
 public static class GeometricVector2
 {
-    /// <summary>
-    /// Magnitude/length/size/scalar of vector.
-    /// </summary>
+    /// <summary>Magnitude/length/size/scalar of vector.</summary>
     public static class Magnitude
     {
-        /// <summary>
-        /// Calculate magnitude of a vector determined in Cartesian coordinate system.
-        /// </summary>
+        /// <summary>Calculate magnitude of a vector determined in Cartesian coordinate system.</summary>
         public static N FromCartesian<N>(N x, N y)
             where N : IRootFunctions<N>
             => PT.Hypotenuse(x, y);
 
-        /// <summary>
-        /// Calculate magnitude of a vector determined in Cartesian coordinate system.
-        /// </summary>
+        /// <summary>Calculate magnitude of a vector determined in Cartesian coordinate system.</summary>
         public static N FromCartesian<N>((N X, N Y) vector)
             where N : IRootFunctions<N>
             => PT.Hypotenuse(vector.X, vector.Y);
 
-        /// <summary>
-        /// Calculate magnitude of vectors determined in Cartesian coordinate system.
-        /// </summary>
+        /// <summary>Calculate magnitude of vectors determined in Cartesian coordinate system.</summary>
         public static N FromCartesianVectors<N>(params (N X, N Y)[] vectors)
             where N : IRootFunctions<N>
             => FromCartesian(Cartesian.FromCartesianVectors(vectors));
@@ -49,17 +37,13 @@ public static class GeometricVector2
             where N : ITrigonometricFunctions<N>, IRootFunctions<N>
             => PT.Cosine(magnitude1, magnitude2, N.Pi - angle);
 
-        /// <summary>
-        /// Calculate magnitude of sum of two vectors determined in polar coordinate system.
-        /// </summary>
+        /// <summary>Calculate magnitude of sum of two vectors determined in polar coordinate system.</summary>
         public static N FromPolarVectors<N>((N Magnitude, N Angle) vector1, (N Magnitude, N Angle) vector2)
             where N : ITrigonometricFunctions<N>, IRootFunctions<N>
             => FromTwoPolarVectors(vector1.Magnitude, vector2.Magnitude, vector1.Angle - vector2.Angle);
     }
 
-    /// <summary>
-    /// X-component of vector.
-    /// </summary>
+    /// <summary>X-component of vector.</summary>
     public static class X
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -68,23 +52,17 @@ public static class GeometricVector2
             => magnitude * N.Cos(φ1);
     }
 
-    /// <summary>
-    /// Y-component of vector.
-    /// </summary>
+    /// <summary>Y-component of vector.</summary>
     public static class Y
     {
-        /// <summary>
-        /// Calculate y-component of vector determined in polar coordinate system.
-        /// </summary>
+        /// <summary>Calculate y-component of vector determined in polar coordinate system.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static N FromPolar<N>(N magnitude, N φ1)
             where N : ITrigonometricFunctions<N>
             => magnitude * N.Sin(φ1);
     }
 
-    /// <summary>
-    /// Polar angle. Angle from x-axis to y-axis.
-    /// </summary>
+    /// <summary>Polar angle. Angle from x-axis to y-axis.</summary>
     public static class PolarAngle
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -98,18 +76,14 @@ public static class GeometricVector2
             => N.Atan2(vector.Y, vector.X);
     }
 
-    /// <summary>
-    /// Vector in Cartesian coordinate system.
-    /// </summary>
+    /// <summary>Vector in Cartesian coordinate system.</summary>
     public static class Cartesian
     {
         public static (N X, N Y) FromPolar<N>(N magnitude, N φ1)
             where N : ITrigonometricFunctions<N>
             => (X.FromPolar(magnitude, φ1), Y.FromPolar(magnitude, φ1));
 
-        /// <summary>
-        /// Vector summation determined by n Cartesian vectors.
-        /// </summary>
+        /// <summary>Vector summation determined by n Cartesian vectors.</summary>
         public static (N X, N Y) FromCartesianVectors<N>(params (N X, N Y)[] vectors)
             where N : IRootFunctions<N>
         {
@@ -140,18 +114,14 @@ public static class GeometricVector2
             return magnitude == N.Zero ? (N.Zero, N.Zero) : (vector.X / magnitude, vector.Y / magnitude);
         }
 
-        /// <summary>
-        /// Vector with components reduced to their quadrant signs (+1, -1, or 0).
-        /// </summary>
+        /// <summary>Vector with components reduced to their quadrant signs (+1, -1, or 0).</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static (N X, N Y) Quadrantized<N>(N x, N y)
             where N : INumberBase<N>
             => (N.IsZero(x) ? N.Zero : (N.IsNegative(x) ? -N.One : N.One),
                 N.IsZero(y) ? N.Zero : (N.IsNegative(y) ? -N.One : N.One));
 
-        /// <summary>
-        /// Vector with components reduced to their quadrant signs (+1, -1, or 0).
-        /// </summary>
+        /// <summary>Vector with components reduced to their quadrant signs (+1, -1, or 0).</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static (N X, N Y) Quadrantized<N>((N X, N Y) vector)
             where N : INumberBase<N>
@@ -170,9 +140,7 @@ public static class GeometricVector2
             => Quadrantized(vector);
     }
 
-    /// <summary>
-    /// Vector in polar coordinate system.
-    /// </summary>
+    /// <summary>Vector in polar coordinate system.</summary>
     public static class Polar
     {
         public static (N Magnitude, N Φ1) FromCartesian<N>(N x, N y)
@@ -191,12 +159,8 @@ public static class GeometricVector2
             => (N.One, polarAngle);
     }
 
-    /// <summary>
-    /// First normal vector of an input vector. It is the first one in circular direction from (+)x-axis to (+)y-axis.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Normal_(geometry)">Wikipedia</a>
-    /// </remarks>
+    /// <summary>First normal vector of an input vector. It is the first one in circular direction from (+)x-axis to (+)y-axis.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Normal_(geometry)">Wikipedia</a></remarks>
     public static class Normal1
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -210,12 +174,8 @@ public static class GeometricVector2
             => (-vector.Y, vector.X);
     }
 
-    /// <summary>
-    /// Second normal vector of an input vector. It is the second one in circular direction from (+)x-axis to (+)y-axis.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Normal_(geometry)">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Second normal vector of an input vector. It is the second one in circular direction from (+)x-axis to (+)y-axis.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Normal_(geometry)">Wikipedia</a></remarks>
     public static class Normal2
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -229,9 +189,7 @@ public static class GeometricVector2
             => (vector.Y, -vector.X);
     }
 
-    /// <summary>
-    /// Distance of two vectors.
-    /// </summary>
+    /// <summary>Distance of two vectors.</summary>
     public static class Distance
     {
         public static N FromCartesian<N>((N X, N Y) vector1, (N X, N Y) vector2)
@@ -244,9 +202,7 @@ public static class GeometricVector2
                 - N.CreateChecked(2) * vector1.Radius * vector2.Radius * N.Cos(vector2.Angle - vector1.Angle));
     }
 
-    /// <summary>
-    /// Direction from one to the other vector. It is not normalized.
-    /// </summary>
+    /// <summary>Direction from one to the other vector. It is not normalized.</summary>
     public static class Direction
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -255,12 +211,8 @@ public static class GeometricVector2
             => (toVector.X - fromVector.X, toVector.Y - fromVector.Y);
     }
 
-    /// <summary>
-    /// Reflection of a vector about a normal.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Reflection_(mathematics)">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Reflection of a vector about a normal.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Reflection_(mathematics)">Wikipedia</a></remarks>
     public static class Reflection
     {
         /// <summary>
@@ -275,9 +227,7 @@ public static class GeometricVector2
             return (vector.X - twoDot * unitNormal.X, vector.Y - twoDot * unitNormal.Y);
         }
 
-        /// <summary>
-        /// Reflect a point across a line parallel to the x-axis at height <c>y</c>.
-        /// </summary>
+        /// <summary>Reflect a point across a line parallel to the x-axis at height <c>y</c>.</summary>
         public static class ToX
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -286,9 +236,7 @@ public static class GeometricVector2
                 => (point.X, N.CreateChecked(2) * y - point.Y);
         }
 
-        /// <summary>
-        /// Reflect a point across a line parallel to the y-axis at abscissa <c>x</c>.
-        /// </summary>
+        /// <summary>Reflect a point across a line parallel to the y-axis at abscissa <c>x</c>.</summary>
         public static class ToY
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -297,14 +245,10 @@ public static class GeometricVector2
                 => (N.CreateChecked(2) * x - point.X, point.Y);
         }
 
-        /// <summary>
-        /// Reflect a point across an arbitrary line.
-        /// </summary>
+        /// <summary>Reflect a point across an arbitrary line.</summary>
         public static class ToLine
         {
-            /// <summary>
-            /// Reflect a point across the line through the origin with the given direction vector.
-            /// </summary>
+            /// <summary>Reflect a point across the line through the origin with the given direction vector.</summary>
             public static (N X, N Y) FromCartesian<N>((N X, N Y) point, (N X, N Y) directionVector)
                 where N : INumberBase<N>
             {
@@ -341,9 +285,7 @@ public static class GeometricVector2
         }
     }
 
-    /// <summary>
-    /// Dot product or scalar product.
-    /// </summary>
+    /// <summary>Dot product or scalar product.</summary>
     public static class DotProduct
     {
         public static N FromCartesian<N>((N X, N Y) vector1, (N X, N Y) vector2)
@@ -366,25 +308,17 @@ public static class GeometricVector2
             => (vector1.X * vector2.Y) - (vector1.Y * vector2.X);
     }
 
-    /// <summary>
-    /// Rotation in the plane.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Rotation_(mathematics)">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Rotation in the plane.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Rotation_(mathematics)">Wikipedia</a></remarks>
     public static class Rotation
     {
-        /// <summary>
-        /// Rotate a vector counterclockwise around the origin by an angle in radians.
-        /// </summary>
+        /// <summary>Rotate a vector counterclockwise around the origin by an angle in radians.</summary>
         public static (N X, N Y) FromCartesian<N>((N X, N Y) vector, N angle)
             where N : ITrigonometricFunctions<N>
             => ((vector.X * N.Cos(angle)) - (vector.Y * N.Sin(angle)),
                 (vector.X * N.Sin(angle)) + (vector.Y * N.Cos(angle)));
 
-        /// <summary>
-        /// Rotate a point counterclockwise around a center point by an angle in radians.
-        /// </summary>
+        /// <summary>Rotate a point counterclockwise around a center point by an angle in radians.</summary>
         public static (N X, N Y) FromCartesian<N>((N X, N Y) point, (N X, N Y) center, N angle)
             where N : ITrigonometricFunctions<N>
         {

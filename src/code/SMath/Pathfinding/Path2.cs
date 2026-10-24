@@ -4,9 +4,7 @@ using SMath.Grid2D;
 
 namespace SMath.Pathfinding;
 
-/// <summary>
-/// Post processing of a path of cells or points.
-/// </summary>
+/// <summary>Post processing of a path of cells or points.</summary>
 public static class Path2
 {
     /// <summary>
@@ -80,9 +78,7 @@ public static class Path2
         return count;
     }
 
-    /// <summary>
-    /// Length of a path of points.
-    /// </summary>
+    /// <summary>Length of a path of points.</summary>
     public static N Length<N>(ReadOnlySpan<(N X, N Y)> path)
         where N : IRootFunctions<N>
     {
@@ -94,9 +90,7 @@ public static class Path2
         return length;
     }
 
-    /// <summary>
-    /// Point at a distance along a path of points.
-    /// </summary>
+    /// <summary>Point at a distance along a path of points.</summary>
     /// <remarks>
     /// A distance out of the path is clamped to the closest end.
     /// Use it to move an agent along a path at a constant speed.
@@ -128,9 +122,7 @@ public static class Path2
         return path[^1];
     }
 
-    /// <summary>
-    /// Convert a path of cells into a path of center points of a grid of a given cell size.
-    /// </summary>
+    /// <summary>Convert a path of cells into a path of center points of a grid of a given cell size.</summary>
     /// <returns> Count of written points, it equals the count of cells. </returns>
     public static int ToPoints<N>(ReadOnlySpan<(int X, int Y)> path, N cellSize, Span<(N X, N Y)> points)
         where N : IFloatingPoint<N>
@@ -141,9 +133,7 @@ public static class Path2
         return path.Length;
     }
 
-    /// <summary>
-    /// Round the corners of a path of points by a Chaikin subdivision.
-    /// </summary>
+    /// <summary>Round the corners of a path of points by a Chaikin subdivision.</summary>
     /// <remarks>
     /// One pass replaces every inner point by two points at a quarter and three quarters
     /// of its neighboring segments. Both ends are kept.

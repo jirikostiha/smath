@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Polynomial function of a single variable.
-/// </summary>
+/// <summary>Polynomial function of a single variable.</summary>
 /// <remarks>
 /// Coefficients are ordered from the lowest degree to the highest,
 /// so <c>[c0, c1, c2]</c> stands for <c>c0 + c1*x + c2*x^2</c>.
@@ -14,15 +12,11 @@ namespace SMath.Functions1;
 /// </remarks>
 public static class Polynomial
 {
-    /// <summary>
-    /// String representation of the function.
-    /// </summary>
+    /// <summary>String representation of the function.</summary>
     public static string PlainTextFormula
         => "c0 + c1*x + c2*x^2 + ... + cn*x^n";
 
-    /// <summary>
-    /// Degree of the polynomial. It is -1 for the zero polynomial.
-    /// </summary>
+    /// <summary>Degree of the polynomial. It is -1 for the zero polynomial.</summary>
     public static int Degree<N>(ReadOnlySpan<N> coefficients)
         where N : INumberBase<N>
     {
@@ -35,9 +29,7 @@ public static class Polynomial
         return -1;
     }
 
-    /// <summary>
-    /// Evaluates the polynomial value.
-    /// </summary>
+    /// <summary>Evaluates the polynomial value.</summary>
     public static N Eval<N>(N x, ReadOnlySpan<N> coefficients)
         where N : INumberBase<N>
     {
@@ -48,9 +40,7 @@ public static class Polynomial
         return value;
     }
 
-    /// <summary>
-    /// Evaluates the polynomial value.
-    /// </summary>
+    /// <summary>Evaluates the polynomial value.</summary>
     public static N Eval<N>(N x, IEnumerable<N> coefficients)
         where N : INumberBase<N>
     {
@@ -65,9 +55,7 @@ public static class Polynomial
         return value;
     }
 
-    /// <summary>
-    /// Evaluates the value of the first derivative of the polynomial.
-    /// </summary>
+    /// <summary>Evaluates the value of the first derivative of the polynomial.</summary>
     public static N DerivativeEval<N>(N x, ReadOnlySpan<N> coefficients)
         where N : INumberBase<N>
     {
@@ -78,9 +66,7 @@ public static class Polynomial
         return value;
     }
 
-    /// <summary>
-    /// Evaluates the value of the first derivative of the polynomial.
-    /// </summary>
+    /// <summary>Evaluates the value of the first derivative of the polynomial.</summary>
     public static N DerivativeEval<N>(N x, IEnumerable<N> coefficients)
         where N : INumberBase<N>
     {
@@ -101,9 +87,7 @@ public static class Polynomial
         return value;
     }
 
-    /// <summary>
-    /// Coefficients of the first derivative of the polynomial.
-    /// </summary>
+    /// <summary>Coefficients of the first derivative of the polynomial.</summary>
     public static N[] DerivativeCoefficients<N>(ReadOnlySpan<N> coefficients)
         where N : INumberBase<N>
     {

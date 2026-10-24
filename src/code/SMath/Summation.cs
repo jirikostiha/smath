@@ -3,12 +3,8 @@ using System.Runtime.CompilerServices;
 
 namespace SMath;
 
-/// <summary>
-/// Summation.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Summation">Wikipedia</a>
-/// </remarks>
+/// <summary>Summation.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Summation">Wikipedia</a></remarks>
 public static class Summation
 {
     public static N Eval<N>(IEnumerable<N> summands)

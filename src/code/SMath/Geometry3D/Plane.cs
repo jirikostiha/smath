@@ -12,23 +12,17 @@ namespace SMath.Geometry3D;
 /// </remarks>
 public static class Plane
 {
-    /// <summary>
-    /// xy plane (z = 0) in general form.
-    /// </summary>
+    /// <summary>xy plane (z = 0) in general form.</summary>
     public static (N A, N B, N C, N D) XY<N>()
         where N : INumberBase<N>
         => (N.Zero, N.Zero, N.One, N.Zero);
 
-    /// <summary>
-    /// xz plane (y = 0) in general form.
-    /// </summary>
+    /// <summary>xz plane (y = 0) in general form.</summary>
     public static (N A, N B, N C, N D) XZ<N>()
         where N : INumberBase<N>
         => (N.Zero, N.One, N.Zero, N.Zero);
 
-    /// <summary>
-    /// yz plane (x = 0) in general form.
-    /// </summary>
+    /// <summary>yz plane (x = 0) in general form.</summary>
     public static (N A, N B, N C, N D) YZ<N>()
         where N : INumberBase<N>
         => (N.One, N.Zero, N.Zero, N.Zero);
@@ -36,21 +30,15 @@ public static class Plane
     public static string PlainTextEquation
         => "a*x + b*y + c*z + d = 0";
 
-    /// <summary>
-    /// Plane in general form.
-    /// </summary>
+    /// <summary>Plane in general form.</summary>
     public static class GeneralForm
     {
-        /// <summary>
-        /// Plane through a point with the given normal vector.
-        /// </summary>
+        /// <summary>Plane through a point with the given normal vector.</summary>
         public static (N A, N B, N C, N D) FromPointAndNormal<N>((N X, N Y, N Z) point, (N X, N Y, N Z) normal)
             where N : INumberBase<N>
             => (normal.X, normal.Y, normal.Z, -GeometricVector3.DotProduct.FromCartesian(normal, point));
 
-        /// <summary>
-        /// Plane through three points. The normal follows the right hand rule from the first through the second to the third point.
-        /// </summary>
+        /// <summary>Plane through three points. The normal follows the right hand rule from the first through the second to the third point.</summary>
         /// <returns>
         ///     null: the points are collinear
         ///     (a,b,c,d): the plane
@@ -66,9 +54,7 @@ public static class Plane
                 : FromPointAndNormal(point1, normal);
         }
 
-        /// <summary>
-        /// The same plane with a unit normal vector, so that the equation gives the signed distance of a point.
-        /// </summary>
+        /// <summary>The same plane with a unit normal vector, so that the equation gives the signed distance of a point.</summary>
         public static (N A, N B, N C, N D) Normalized<N>((N A, N B, N C, N D) plane)
             where N : IRootFunctions<N>
         {
@@ -77,28 +63,20 @@ public static class Plane
         }
     }
 
-    /// <summary>
-    /// Normal vector of a plane.
-    /// </summary>
+    /// <summary>Normal vector of a plane.</summary>
     public static class Normal
     {
         public static (N X, N Y, N Z) FromGeneralForm<N>((N A, N B, N C, N D) plane)
             => (plane.A, plane.B, plane.C);
     }
 
-    /// <summary>
-    /// Plane and ... investigation.
-    /// </summary>
+    /// <summary>Plane and ... investigation.</summary>
     public static class And
     {
-        /// <summary>
-        /// Plane and point investigation.
-        /// </summary>
+        /// <summary>Plane and point investigation.</summary>
         public static class Point
         {
-            /// <summary>
-            /// Signed distance of a point from a plane, positive on the side the normal points to.
-            /// </summary>
+            /// <summary>Signed distance of a point from a plane, positive on the side the normal points to.</summary>
             public static class SignedDistance
             {
                 public static N FromGeneralForm<N>((N A, N B, N C, N D) plane, (N X, N Y, N Z) point)
@@ -106,12 +84,8 @@ public static class Plane
                     => Evaluate(plane, point) / GeometricVector3.Magnitude.FromCartesian(Normal.FromGeneralForm(plane));
             }
 
-            /// <summary>
-            /// Plane and point distance.
-            /// </summary>
-            /// <remarks>
-            /// <a href="https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_plane">Wikipedia</a>
-            /// </remarks>
+            /// <summary>Plane and point distance.</summary>
+            /// <remarks><a href="https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_plane">Wikipedia</a></remarks>
             public static class Distance
             {
                 public static N FromGeneralForm<N>((N A, N B, N C, N D) plane, (N X, N Y, N Z) point)
@@ -119,9 +93,7 @@ public static class Plane
                     => N.Abs(SignedDistance.FromGeneralForm(plane, point));
             }
 
-            /// <summary>
-            /// Orthogonal projection of a point onto a plane.
-            /// </summary>
+            /// <summary>Orthogonal projection of a point onto a plane.</summary>
             public static class Projection
             {
                 public static (N X, N Y, N Z) FromGeneralForm<N>((N A, N B, N C, N D) plane, (N X, N Y, N Z) point)
@@ -129,9 +101,7 @@ public static class Plane
                     => Along(plane, point, N.One);
             }
 
-            /// <summary>
-            /// Reflection of a point across a plane.
-            /// </summary>
+            /// <summary>Reflection of a point across a plane.</summary>
             public static class Reflection
             {
                 public static (N X, N Y, N Z) FromGeneralForm<N>((N A, N B, N C, N D) plane, (N X, N Y, N Z) point)
@@ -139,14 +109,10 @@ public static class Plane
                     => Along(plane, point, N.CreateChecked(2));
             }
 
-            /// <summary>
-            /// Plane and point intersection.
-            /// </summary>
+            /// <summary>Plane and point intersection.</summary>
             public static class Intersection
             {
-                /// <summary>
-                /// Determine if plane includes point.
-                /// </summary>
+                /// <summary>Determine if plane includes point.</summary>
                 public static bool FromGeneralForm<N>((N A, N B, N C, N D) plane, (N X, N Y, N Z) point)
                     where N : INumberBase<N>
                     => Evaluate(plane, point) == N.Zero;
@@ -162,22 +128,14 @@ public static class Plane
             }
         }
 
-        /// <summary>
-        /// Plane and line investigation.
-        /// </summary>
+        /// <summary>Plane and line investigation.</summary>
         public static class Line
         {
-            /// <summary>
-            /// Plane and line intersection.
-            /// </summary>
-            /// <remarks>
-            /// <a href="https://en.wikipedia.org/wiki/Line%E2%80%93plane_intersection">Wikipedia</a>
-            /// </remarks>
+            /// <summary>Plane and line intersection.</summary>
+            /// <remarks><a href="https://en.wikipedia.org/wiki/Line%E2%80%93plane_intersection">Wikipedia</a></remarks>
             public static class Intersection
             {
-                /// <summary>
-                /// Intersection of a plane and a line through two points.
-                /// </summary>
+                /// <summary>Intersection of a plane and a line through two points.</summary>
                 /// <returns>
                 ///     null: parallel, lying in the plane, or the points coincide
                 ///     (x,y,z): intersection point
@@ -196,22 +154,14 @@ public static class Plane
             }
         }
 
-        /// <summary>
-        /// Plane and plane investigation.
-        /// </summary>
+        /// <summary>Plane and plane investigation.</summary>
         public static class Plane
         {
-            /// <summary>
-            /// Plane and plane intersection.
-            /// </summary>
-            /// <remarks>
-            /// <a href="https://en.wikipedia.org/wiki/Plane%E2%80%93plane_intersection">Wikipedia</a>
-            /// </remarks>
+            /// <summary>Plane and plane intersection.</summary>
+            /// <remarks><a href="https://en.wikipedia.org/wiki/Plane%E2%80%93plane_intersection">Wikipedia</a></remarks>
             public static class Intersection
             {
-                /// <summary>
-                /// Line shared by two planes.
-                /// </summary>
+                /// <summary>Line shared by two planes.</summary>
                 /// <returns>
                 ///     null: parallel or identical
                 ///     (point, direction): the point of the line closest to the origin and its direction, the cross product of the normals

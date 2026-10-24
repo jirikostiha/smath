@@ -121,14 +121,10 @@ public static class RegularHexagon
             => Polygon.Regular.Vertices.FromCircumradius(circumradius, 6);
     }
 
-    /// <summary>
-    /// Perimeter or outline of a regular hexagon.
-    /// </summary>
+    /// <summary>Perimeter or outline of a regular hexagon.</summary>
     public static class Perimeter
     {
-        /// <summary>
-        /// Length of the perimeter of a regular hexagon.
-        /// </summary>
+        /// <summary>Length of the perimeter of a regular hexagon.</summary>
         public static class Length
         {
             public static N FromEdge<N>(N edgeLength)
@@ -145,14 +141,10 @@ public static class RegularHexagon
         }
     }
 
-    /// <summary>
-    /// Enclosed plane region of a regular hexagon.
-    /// </summary>
+    /// <summary>Enclosed plane region of a regular hexagon.</summary>
     public static class Region
     {
-        /// <summary>
-        /// Enclosed plane region area of a regular hexagon.
-        /// </summary>
+        /// <summary>Enclosed plane region area of a regular hexagon.</summary>
         public static class Area
         {
             public static N FromEdge<N>(N edgeLength)

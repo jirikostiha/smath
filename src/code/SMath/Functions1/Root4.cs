@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Fourth root function.
-/// </summary>
+/// <summary>Fourth root function.</summary>
 /// <remarks>
 /// The function is defined for non negative numbers only.
 /// <a href="https://en.wikipedia.org/wiki/Nth_root">Wikipedia</a>

@@ -2,12 +2,8 @@ using System.Numerics;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Power 7 (septic) function.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Exponentiation#Power_functions">Wikipedia</a>
-/// </remarks>
+/// <summary>Power 7 (septic) function.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Exponentiation#Power_functions">Wikipedia</a></remarks>
 public class Power7 : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />

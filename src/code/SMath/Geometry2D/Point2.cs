@@ -3,14 +3,10 @@ using System.Runtime.CompilerServices;
 
 namespace SMath.Geometry2D;
 
-/// <summary>
-/// Point in two dimensions.
-/// </summary>
+/// <summary>Point in two dimensions.</summary>
 public static class Point2
 {
-    /// <summary>
-    /// Get the neighbors in axes directions.
-    /// </summary>
+    /// <summary>Get the neighbors in axes directions.</summary>
     public static IEnumerable<(NInt X, NInt Y)> AxialNeighbors<NInt>((NInt X, NInt Y) point)
         where NInt : IBinaryInteger<NInt>
     {
@@ -20,9 +16,7 @@ public static class Point2
         yield return (point.X, point.Y - NInt.One);
     }
 
-    /// <summary>
-    /// Get the neighbors in diagonal directions.
-    /// </summary>
+    /// <summary>Get the neighbors in diagonal directions.</summary>
     public static IEnumerable<(NInt X, NInt Y)> DiagonalNeighbors<NInt>((NInt X, NInt Y) point)
         where NInt : IBinaryInteger<NInt>
     {
@@ -32,98 +26,62 @@ public static class Point2
         yield return (point.X - NInt.One, point.Y - NInt.One);
     }
 
-    /// <summary>
-    /// Euclidean distance of the point and origin.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Euclidean_distance">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Euclidean distance of the point and origin.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Euclidean_distance">Wikipedia</a></remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static N Distance<N>((N X, N Y) point)
         where N : IRootFunctions<N>
         => PT.Hypotenuse(point);
 
-    /// <summary>
-    /// Euclidean distance of two points.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Euclidean_distance">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Euclidean distance of two points.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Euclidean_distance">Wikipedia</a></remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static N Distance<N>((N X, N Y) point1, (N X, N Y) point2)
         where N : IRootFunctions<N>
         => PT.Hypotenuse(point2.X - point1.X, point2.Y - point1.Y);
 
-    /// <summary>
-    /// Manhattan or taxicab distance of point and origin.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Manhattan or taxicab distance of point and origin.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a></remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static N ManhattanDistance<N>((N X, N Y) point)
         where N : INumberBase<N>
         => N.Abs(point.X) + N.Abs(point.Y);
 
-    /// <summary>
-    /// Manhattan or taxicab distance of two points.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Manhattan or taxicab distance of two points.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a></remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static N ManhattanDistance<N>((N X, N Y) point1, (N X, N Y) point2)
         where N : INumberBase<N>
         => N.Abs(point1.X - point2.X) + N.Abs(point1.Y - point2.Y);
 
-    /// <summary>
-    /// Chebyshev distance of point and origin
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Chebyshev distance of point and origin</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a></remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static N ChebyshevDistance<N>((N X, N Y) point)
         where N : INumber<N>
         => N.Max(N.Abs(point.X), N.Abs(point.Y));
 
-    /// <summary>
-    /// Chebyshev distance of two points.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Chebyshev distance of two points.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a></remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static N ChebyshevDistance<N>((N X, N Y) point1, (N X, N Y) point2)
         where N : INumber<N>
         => N.Max(N.Abs(point1.X - point2.X), N.Abs(point1.Y - point2.Y));
 
-    /// <summary>
-    /// Minkowski distance of point and origin.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Minkowski_distance">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Minkowski distance of point and origin.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Minkowski_distance">Wikipedia</a></remarks>
     public static N MinkowskiDistance<N>((N X, N Y) point, N r)
         where N : IPowerFunctions<N>
         => N.Pow(N.Pow(N.Abs(point.X), r) + N.Pow(N.Abs(point.Y), r), N.One / r);
 
-    /// <summary>
-    /// Minkowski distance of two points.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Minkowski_distance">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Minkowski distance of two points.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Minkowski_distance">Wikipedia</a></remarks>
     public static N MinkowskiDistance<N>((N X, N Y) point1, (N X, N Y) point2, N r)
         where N : IPowerFunctions<N>
         => N.Pow(N.Pow(N.Abs(point1.X - point2.X), r) + N.Pow(N.Abs(point1.Y - point2.Y), r), N.One / r);
 
-    /// <summary>
-    /// Get all coordinates at exact Manhattan or taxicab distance from the center point.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Get all coordinates at exact Manhattan or taxicab distance from the center point.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a></remarks>
     public static IEnumerable<(NInt X, NInt Y)> CoordinatesAtManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance)
         where NInt : IBinaryInteger<NInt>
     {
@@ -141,12 +99,8 @@ public static class Point2
         }
     }
 
-    /// <summary>
-    /// Get all coordinates at exact Manhattan or taxicab distance from the center point limited by bounds.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Get all coordinates at exact Manhattan or taxicab distance from the center point limited by bounds.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a></remarks>
     public static IEnumerable<(NInt X, NInt Y)> CoordinatesAtManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance,
         (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
         where NInt : IBinaryInteger<NInt>
@@ -174,9 +128,7 @@ public static class Point2
     /// Get all coordinates up to the Manhattan or taxicab distance from the center point.
     /// Center is included.
     /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
-    /// </remarks>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a></remarks>
     public static IEnumerable<(NInt X, NInt Y)> CoordinatesUpToManhattanDistance<NInt>((NInt X, NInt Y) center, NInt distance)
        where NInt : IBinaryInteger<NInt>
     {
@@ -197,9 +149,7 @@ public static class Point2
     /// Get all coordinates up to the Manhattan or taxicab distance from the center point limited by bounds.
     /// Center is included.
     /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
-    /// </remarks>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a></remarks>
     public static IEnumerable<(NInt X, NInt Y)> CoordinatesUpToManhattanDistance<NInt>(
         (NInt X, NInt Y) center, NInt distance, (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
         where NInt : IBinaryInteger<NInt>
@@ -223,9 +173,7 @@ public static class Point2
     /// Get all coordinates whose Manhattan or taxicab distance from the center point
     /// falls within the inclusive range [<paramref name="minDistance"/>, <paramref name="maxDistance"/>].
     /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
-    /// </remarks>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a></remarks>
     public static IEnumerable<(NInt X, NInt Y)> CoordinatesInManhattanDistanceRange<NInt>(
         (NInt X, NInt Y) center, NInt minDistance, NInt maxDistance)
         where NInt : IBinaryInteger<NInt>
@@ -269,9 +217,7 @@ public static class Point2
     /// falls within the inclusive range [<paramref name="minDistance"/>, <paramref name="maxDistance"/>],
     /// limited by bounds.
     /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
-    /// </remarks>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a></remarks>
     public static IEnumerable<(NInt X, NInt Y)> CoordinatesInManhattanDistanceRange<NInt>(
         (NInt X, NInt Y) center, NInt minDistance, NInt maxDistance,
         (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
@@ -311,12 +257,8 @@ public static class Point2
         }
     }
 
-    /// <summary>
-    /// Get all coordinates at exact Chebyshev distance from the center point.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Get all coordinates at exact Chebyshev distance from the center point.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a></remarks>
     public static IEnumerable<(NInt X, NInt Y)> CoordinatesAtChebyshevDistance<NInt>((NInt X, NInt Y) center, NInt distance)
         where NInt : IBinaryInteger<NInt>
     {
@@ -343,12 +285,8 @@ public static class Point2
             yield return (minX, y);
     }
 
-    /// <summary>
-    /// Get all coordinates at exact Chebyshev distance from the center point limited by bounds.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Get all coordinates at exact Chebyshev distance from the center point limited by bounds.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a></remarks>
     public static IEnumerable<(NInt X, NInt Y)> CoordinatesAtChebyshevDistance<NInt>((NInt X, NInt Y) center, NInt distance,
         (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
         where NInt : IBinaryInteger<NInt>
@@ -402,9 +340,7 @@ public static class Point2
     /// Get all coordinates up to the Chebyshev distance from the center point.
     /// Center point is included.
     /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
-    /// </remarks>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a></remarks>
     public static IEnumerable<(NInt X, NInt Y)> CoordinatesUpToChebyshevDistance<NInt>((NInt X, NInt Y) center, NInt distance)
         where NInt : IBinaryInteger<NInt>
     {
@@ -425,9 +361,7 @@ public static class Point2
     /// Get all coordinates up to the Chebyshev distance from the center point limited by bounds.
     /// Center point is included.
     /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
-    /// </remarks>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a></remarks>
     public static IEnumerable<(NInt X, NInt Y)> CoordinatesUpToChebyshevDistance<NInt>((NInt X, NInt Y) center, NInt distance,
         (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
         where NInt : IBinaryInteger<NInt>
@@ -449,9 +383,7 @@ public static class Point2
     /// Get all coordinates whose Chebyshev distance from the center point
     /// falls within the inclusive range [<paramref name="minDistance"/>, <paramref name="maxDistance"/>].
     /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
-    /// </remarks>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a></remarks>
     public static IEnumerable<(NInt X, NInt Y)> CoordinatesInChebyshevDistanceRange<NInt>(
         (NInt X, NInt Y) center, NInt minDistance, NInt maxDistance)
         where NInt : IBinaryInteger<NInt>
@@ -496,9 +428,7 @@ public static class Point2
     /// falls within the inclusive range [<paramref name="minDistance"/>, <paramref name="maxDistance"/>],
     /// limited by bounds.
     /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a>
-    /// </remarks>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Chebyshev_distance">Wikipedia</a></remarks>
     public static IEnumerable<(NInt X, NInt Y)> CoordinatesInChebyshevDistanceRange<NInt>(
         (NInt X, NInt Y) center, NInt minDistance, NInt maxDistance,
         (NInt X, NInt Y) bottomLimit, (NInt X, NInt Y) topLimit)
@@ -537,9 +467,7 @@ public static class Point2
         }
     }
 
-    /// <summary>
-    /// Count of coordinates at exact Manhattan distance from a center point. Unbounded.
-    /// </summary>
+    /// <summary>Count of coordinates at exact Manhattan distance from a center point. Unbounded.</summary>
     /// <remarks> The taxicab circle has 4*distance coordinates, distance 0 gives the center only. </remarks>
     public static NInt ManhattanCircleCount<NInt>(NInt distance)
         where NInt : IBinaryInteger<NInt>
@@ -549,9 +477,7 @@ public static class Point2
                 ? NInt.One
                 : NInt.CreateChecked(4) * distance;
 
-    /// <summary>
-    /// Count of coordinates up to the Manhattan distance from a center point, center included. Unbounded.
-    /// </summary>
+    /// <summary>Count of coordinates up to the Manhattan distance from a center point, center included. Unbounded.</summary>
     /// <remarks> The taxicab disk has 2*d^2 + 2*d + 1 coordinates. </remarks>
     public static NInt ManhattanDiskCount<NInt>(NInt distance)
         where NInt : IBinaryInteger<NInt>
@@ -559,9 +485,7 @@ public static class Point2
             ? NInt.Zero
             : NInt.CreateChecked(2) * distance * distance + NInt.CreateChecked(2) * distance + NInt.One;
 
-    /// <summary>
-    /// Count of coordinates at exact Chebyshev distance from a center point. Unbounded.
-    /// </summary>
+    /// <summary>Count of coordinates at exact Chebyshev distance from a center point. Unbounded.</summary>
     /// <remarks> The Chebyshev ring has 8*distance coordinates, distance 0 gives the center only. </remarks>
     public static NInt ChebyshevRingCount<NInt>(NInt distance)
         where NInt : IBinaryInteger<NInt>
@@ -571,9 +495,7 @@ public static class Point2
                 ? NInt.One
                 : NInt.CreateChecked(8) * distance;
 
-    /// <summary>
-    /// Count of coordinates up to the Chebyshev distance from a center point, center included. Unbounded.
-    /// </summary>
+    /// <summary>Count of coordinates up to the Chebyshev distance from a center point, center included. Unbounded.</summary>
     /// <remarks> The Chebyshev square has (2*d + 1)^2 coordinates. </remarks>
     public static NInt ChebyshevSquareCount<NInt>(NInt distance)
         where NInt : IBinaryInteger<NInt>
@@ -685,9 +607,7 @@ public static class Point2
     /// range [<paramref name="minDistance"/>, <paramref name="maxDistance"/>] into a destination buffer.
     /// Allocation free alternative to the enumerable overload.
     /// </summary>
-    /// <remarks>
-    /// Size the buffer with <c>ManhattanDiskCount(maxDistance) - ManhattanDiskCount(minDistance - 1)</c>.
-    /// </remarks>
+    /// <remarks>Size the buffer with <c>ManhattanDiskCount(maxDistance) - ManhattanDiskCount(minDistance - 1)</c>.</remarks>
     /// <returns> Count of written coordinates. </returns>
     /// <exception cref="ArgumentException"> Destination is too short. </exception>
     public static int CoordinatesInManhattanDistanceRange<NInt>((NInt X, NInt Y) center,

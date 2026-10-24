@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Step function with a single jump.
-/// </summary>
+/// <summary>Step function with a single jump.</summary>
 /// <remarks>
 /// Function is not continuous. It has a jump discontinuity at the threshold.
 /// The image of the function depends on the value parameters, therefore it is not declared here.
@@ -38,9 +36,7 @@ public class StepFunction : IMathFunction, ISingleDomain
         where N : INumberBase<N>, IMinMaxValue<N>
         => (N.MinValue, N.MaxValue);
 
-    /// <summary>
-    /// Evaluates the function value.
-    /// </summary>
+    /// <summary>Evaluates the function value.</summary>
     /// <param name="x"> Variable. </param>
     /// <param name="c"> Threshold where the function jumps. </param>
     /// <param name="p"> Value at the threshold. </param>

@@ -2,9 +2,7 @@ using SMath.Grid2D;
 
 namespace SMath.Pathfinding;
 
-/// <summary>
-/// Shortest path searches over cells of a two dimensional grid.
-/// </summary>
+/// <summary>Shortest path searches over cells of a two dimensional grid.</summary>
 /// <remarks>
 /// All buffers are allocated once per instance and reused by every search,
 /// therefore a repeated search does not allocate at all.
@@ -78,9 +76,7 @@ public sealed class GridPathfinder
         }
     }
 
-    /// <summary>
-    /// Find the shortest path between two cells.
-    /// </summary>
+    /// <summary>Find the shortest path between two cells.</summary>
     /// <typeparam name="TCost"> Traversal weight of cells. </typeparam>
     /// <typeparam name="THeuristic"> Estimate of the remaining cost. </typeparam>
     /// <param name="start"> Start cell. Its weight is not tested. </param>
@@ -143,9 +139,7 @@ public sealed class GridPathfinder
         return false;
     }
 
-    /// <summary>
-    /// Find the shortest path between two cells over cells matching a passability predicate.
-    /// </summary>
+    /// <summary>Find the shortest path between two cells over cells matching a passability predicate.</summary>
     public bool FindPath<TPassable>((int X, int Y) start, (int X, int Y) target, TPassable isPassable,
         GridConnectivity connectivity = GridConnectivity.Axial)
         where TPassable : IGridPredicate
@@ -153,9 +147,7 @@ public sealed class GridPathfinder
             ? FindPath(start, target, new GridPassabilityCost<TPassable>(isPassable), default(ManhattanHeuristic), connectivity)
             : FindPath(start, target, new GridPassabilityCost<TPassable>(isPassable), default(OctileHeuristic), connectivity);
 
-    /// <summary>
-    /// Write the path found by the last search into a buffer ordered from the start to the target cell.
-    /// </summary>
+    /// <summary>Write the path found by the last search into a buffer ordered from the start to the target cell.</summary>
     /// <returns> Count of written cells, see <see cref="PathCellCount"/>. It is 0 if no path was found. </returns>
     public int GetPath(Span<(int X, int Y)> path)
     {
@@ -198,12 +190,8 @@ public sealed class GridPathfinder
         return count;
     }
 
-    /// <summary>
-    /// Cells of the path found by the last search ordered from the target to the start cell.
-    /// </summary>
-    /// <remarks>
-    /// It is the cheapest way to read the path, no buffer of the path length is needed.
-    /// </remarks>
+    /// <summary>Cells of the path found by the last search ordered from the target to the start cell.</summary>
+    /// <remarks>It is the cheapest way to read the path, no buffer of the path length is needed.</remarks>
     public IEnumerable<(int X, int Y)> ReversePath()
     {
         if (_target < 0)
@@ -217,9 +205,7 @@ public sealed class GridPathfinder
         }
     }
 
-    /// <summary>
-    /// Cells of the path found by the last search ordered from the start to the target cell.
-    /// </summary>
+    /// <summary>Cells of the path found by the last search ordered from the start to the target cell.</summary>
     public IEnumerable<(int X, int Y)> Path()
     {
         var count = PathCellCount;
@@ -299,9 +285,7 @@ public sealed class GridPathfinder
         return reachedCount;
     }
 
-    /// <summary>
-    /// Calculate the cost of the cheapest path from a source cell to every cell of the grid.
-    /// </summary>
+    /// <summary>Calculate the cost of the cheapest path from a source cell to every cell of the grid.</summary>
     public int Fill<TCost>((int X, int Y) source, TCost cost, Span<int> distances,
         GridConnectivity connectivity = GridConnectivity.Axial, int maxCost = int.MaxValue)
         where TCost : IGridCost

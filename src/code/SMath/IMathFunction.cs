@@ -1,28 +1,18 @@
 namespace SMath;
 
-/// <summary>
-/// Mathematical function.
-/// </summary>
+/// <summary>Mathematical function.</summary>
 public interface IMathFunction
 {
-    /// <summary>
-    /// Determines whether the specified function is even function.
-    /// </summary>
+    /// <summary>Determines whether the specified function is even function.</summary>
     public static abstract bool IsEven { get; }
 
-    /// <summary>
-    /// Determines whether the specified function is odd function.
-    /// </summary>
+    /// <summary>Determines whether the specified function is odd function.</summary>
     public static abstract bool IsOdd { get; }
 
-    /// <summary>
-    /// Determines whether the specified function is continuous function.
-    /// </summary>
+    /// <summary>Determines whether the specified function is continuous function.</summary>
     public static abstract bool IsContinuous { get; }
 
-    /// <summary>
-    /// String representation of the function.
-    /// </summary>
+    /// <summary>String representation of the function.</summary>
     public static abstract string PlainTextFormula { get; }
 
     // Error CS0425

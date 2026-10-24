@@ -3,9 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace SMath.Geometry2D;
 
-/// <summary>
-/// Axis aligned bounding box in two dimensions determined by its minimal and maximal corner.
-/// </summary>
+/// <summary>Axis aligned bounding box in two dimensions determined by its minimal and maximal corner.</summary>
 /// <remarks>
 /// It is the broad phase primitive of virtually every 2D collision detection.
 /// <a href="https://en.wikipedia.org/wiki/Minimum_bounding_box">Wikipedia</a>
@@ -118,9 +116,7 @@ public static class Aabb
         => ((box.Min.X + offset.X, box.Min.Y + offset.Y),
             (box.Max.X + offset.X, box.Max.Y + offset.Y));
 
-    /// <summary>
-    /// Box grown to contain the whole sweep of a moving box. It is used for a broad phase of a fast object.
-    /// </summary>
+    /// <summary>Box grown to contain the whole sweep of a moving box. It is used for a broad phase of a fast object.</summary>
     public static ((N X, N Y) Min, (N X, N Y) Max) Swept<N>(((N X, N Y) Min, (N X, N Y) Max) box, (N X, N Y) velocity)
         where N : INumber<N>
         => Union(box, Translated(box, velocity));
@@ -141,9 +137,7 @@ public static class Aabb
         return PT.Hypotenuse(dx, dy);
     }
 
-    /// <summary>
-    /// The shortest translation separating two overlapping boxes.
-    /// </summary>
+    /// <summary>The shortest translation separating two overlapping boxes.</summary>
     /// <remarks>
     /// Apply it to the first box to push it out of the second one.
     /// <a href="https://en.wikipedia.org/wiki/Hyperplane_separation_theorem">Wikipedia</a>
@@ -167,9 +161,7 @@ public static class Aabb
         return N.Abs(dx) < N.Abs(dy) ? (dx, N.Zero) : (N.Zero, dy);
     }
 
-    /// <summary>
-    /// Vertices of a box ordered counterclockwise starting at the minimal corner.
-    /// </summary>
+    /// <summary>Vertices of a box ordered counterclockwise starting at the minimal corner.</summary>
     public static ((N X, N Y) V1, (N X, N Y) V2, (N X, N Y) V3, (N X, N Y) V4) Vertices<N>(
         ((N X, N Y) Min, (N X, N Y) Max) box)
         where N : INumberBase<N>
@@ -178,12 +170,8 @@ public static class Aabb
             box.Max,
             (box.Min.X, box.Max.Y));
 
-    /// <summary>
-    /// Ray and box intersection by the slab method.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Slab_method">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Ray and box intersection by the slab method.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Slab_method">Wikipedia</a></remarks>
     /// <param name="box"> Box. </param>
     /// <param name="origin"> Origin point of the ray. </param>
     /// <param name="direction"> Direction of the ray, it does not need to be normalized. </param>
@@ -202,12 +190,8 @@ public static class Aabb
         return exit >= N.Zero && entry <= exit ? (entry, exit) : null;
     }
 
-    /// <summary>
-    /// Time of the first contact of a moving box and a static box.
-    /// </summary>
-    /// <remarks>
-    /// It is the swept test preventing a fast object from tunneling through a thin obstacle.
-    /// </remarks>
+    /// <summary>Time of the first contact of a moving box and a static box.</summary>
+    /// <remarks>It is the swept test preventing a fast object from tunneling through a thin obstacle.</remarks>
     /// <param name="box"> Moving box. </param>
     /// <param name="velocity"> Movement of the box over the whole time step. </param>
     /// <param name="obstacle"> Static box. </param>

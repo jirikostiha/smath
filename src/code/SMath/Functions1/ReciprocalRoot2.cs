@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Reciprocal of the square root function.
-/// </summary>
+/// <summary>Reciprocal of the square root function.</summary>
 /// <remarks>
 /// The function is defined for positive numbers only.
 /// It has a vertical asymptote at zero, which is not in the domain.
@@ -53,9 +51,7 @@ public class ReciprocalRoot2 : IMathFunction, ISingleDomain, ISingleImage
         where N : IFloatingPointIeee754<N>
         => N.PositiveInfinity;
 
-    /// <summary>
-    /// Infimum of the function. It is not attained for any real number.
-    /// </summary>
+    /// <summary>Infimum of the function. It is not attained for any real number.</summary>
     public static N GlobalMinimum<N>()
         where N : INumberBase<N>
         => N.Zero;

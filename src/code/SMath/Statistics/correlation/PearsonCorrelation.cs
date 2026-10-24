@@ -5,12 +5,8 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
-/// <summary>
-/// Pearson correlation coefficient.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">wikipedia</a>
-/// </remarks>
+/// <summary>Pearson correlation coefficient.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">wikipedia</a></remarks>
 public static class PearsonCorrelation
 {
     public static double Eval<N>(IEnumerable<N> aSequence, IEnumerable<N> bSequence)
@@ -68,9 +64,7 @@ public static class PearsonCorrelation
         return accumulator.PearsonCoefficient;
     }
 
-    /// <summary>
-    /// Pearson product-moment correlation coefficient with edge clamping on the shifted sequence.
-    /// </summary>
+    /// <summary>Pearson product-moment correlation coefficient with edge clamping on the shifted sequence.</summary>
     public static double EvalPerf<N, NInt>(IList<N> aSequence, IList<N> bSequence, NInt lag)
          where N : INumberBase<N>
          where NInt : IBinaryInteger<NInt>
@@ -88,9 +82,7 @@ public static class PearsonCorrelation
         return accumulator.PearsonCoefficient;
     }
 
-    /// <summary>
-    /// Pearson product-moment correlation coefficient with edge clamping on the shifted sequence.
-    /// </summary>
+    /// <summary>Pearson product-moment correlation coefficient with edge clamping on the shifted sequence.</summary>
     public static double EvalPerf<N, NInt>(ReadOnlySpan<N> aSequence, ReadOnlySpan<N> bSequence, NInt lag)
          where N : INumberBase<N>
          where NInt : IBinaryInteger<NInt>
@@ -113,9 +105,7 @@ public static class PearsonCorrelation
     private static int ClampedIndex(int index, int shift, int length)
         => int.Clamp(index + shift, 0, length - 1);
 
-    /// <summary>
-    /// Pearson cross-correlation.
-    /// </summary>
+    /// <summary>Pearson cross-correlation.</summary>
     public static class Cross
     {
         public static IEnumerable<(NInt Lag, double Coef)> Eval<N, NInt>(IList<N> aSequence, IList<N> bSequence, IEnumerable<NInt> lags)
@@ -139,9 +129,7 @@ public static class PearsonCorrelation
             }
         }
 
-        /// <summary>
-        /// Cross-correlation using the product-moment formula with edge clamping.
-        /// </summary>
+        /// <summary>Cross-correlation using the product-moment formula with edge clamping.</summary>
         public static IEnumerable<(NInt Lag, double Coef)> EvalPerf<N, NInt>(IList<N> aSequence, IList<N> bSequence, IEnumerable<NInt> lags)
             where N : INumberBase<N>
             where NInt : IBinaryInteger<NInt>
@@ -176,9 +164,7 @@ public static class PearsonCorrelation
             return lags.Length;
         }
 
-        /// <summary>
-        /// Allocation free cross-correlation using the product-moment formula with edge clamping.
-        /// </summary>
+        /// <summary>Allocation free cross-correlation using the product-moment formula with edge clamping.</summary>
         /// <returns> Count of written coefficients. </returns>
         public static int EvalPerf<N, NInt>(ReadOnlySpan<N> aSequence, ReadOnlySpan<N> bSequence,
             ReadOnlySpan<NInt> lags, Span<double> destination)
@@ -195,9 +181,7 @@ public static class PearsonCorrelation
         }
     }
 
-    /// <summary>
-    /// Pearson auto-correlation.
-    /// </summary>
+    /// <summary>Pearson auto-correlation.</summary>
     public static class Auto
     {
         public static IEnumerable<(NInt Lag, double Coef)> Eval<N, NInt>(IList<N> sequence, IEnumerable<NInt> lags)
@@ -221,9 +205,7 @@ public static class PearsonCorrelation
             }
         }
 
-        /// <summary>
-        /// Auto-correlation using the product-moment formula with edge clamping.
-        /// </summary>
+        /// <summary>Auto-correlation using the product-moment formula with edge clamping.</summary>
         public static IEnumerable<(NInt Lag, double Coef)> EvalPerf<N, NInt>(IList<N> sequence, IEnumerable<NInt> lags)
             where N : INumberBase<N>
             where NInt : IBinaryInteger<NInt>
@@ -242,9 +224,7 @@ public static class PearsonCorrelation
             where NInt : IBinaryInteger<NInt>
             => Cross.Eval(sequence, sequence, lags, destination);
 
-        /// <summary>
-        /// Allocation free auto-correlation using the product-moment formula with edge clamping.
-        /// </summary>
+        /// <summary>Allocation free auto-correlation using the product-moment formula with edge clamping.</summary>
         /// <returns> Count of written coefficients. </returns>
         public static int EvalPerf<N, NInt>(ReadOnlySpan<N> sequence, ReadOnlySpan<NInt> lags, Span<double> destination)
             where N : INumberBase<N>
@@ -252,9 +232,7 @@ public static class PearsonCorrelation
             => Cross.EvalPerf(sequence, sequence, lags, destination);
     }
 
-    /// <summary>
-    /// Weighted pearson correlation coefficient.
-    /// </summary>
+    /// <summary>Weighted pearson correlation coefficient.</summary>
     /// <remarks>
     /// Each pair contributes in proportion to its weight, so a pair weighted 2 counts
     /// exactly as the same pair listed twice and a pair weighted 0 does not count at all.
@@ -263,9 +241,7 @@ public static class PearsonCorrelation
     /// </remarks>
     public static class Weighted
     {
-        /// <summary>
-        /// Weighted pearson correlation coefficient of two sequences.
-        /// </summary>
+        /// <summary>Weighted pearson correlation coefficient of two sequences.</summary>
         /// <returns>
         /// Coefficient in the range [-1, 1], or <see cref="double.NaN"/> when it cannot be decided,
         /// that is for an empty input, for weights summing to zero or for a constant sequence.
@@ -307,9 +283,7 @@ public static class PearsonCorrelation
             return accumulator.Coefficient;
         }
 
-        /// <summary>
-        /// Allocation free weighted pearson correlation coefficient of two sequences.
-        /// </summary>
+        /// <summary>Allocation free weighted pearson correlation coefficient of two sequences.</summary>
         /// <returns>
         /// Coefficient in the range [-1, 1], or <see cref="double.NaN"/> when it cannot be decided,
         /// that is for an empty input, for weights summing to zero or for a constant sequence.

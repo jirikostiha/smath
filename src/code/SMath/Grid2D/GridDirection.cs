@@ -2,9 +2,7 @@ using System.Runtime.CompilerServices;
 
 namespace SMath.Grid2D;
 
-/// <summary>
-/// Directions of steps over cells of a two dimensional grid.
-/// </summary>
+/// <summary>Directions of steps over cells of a two dimensional grid.</summary>
 /// <remarks>
 /// Directions are ordered counterclockwise starting at the (+)x-axis,
 /// axial and diagonal ones are interleaved so that
@@ -64,9 +62,7 @@ public static class GridDirection
         return Math.Min(difference, 8 - difference);
     }
 
-    /// <summary>
-    /// Direction of a step. Any non-zero step is snapped to the closest of the eight directions.
-    /// </summary>
+    /// <summary>Direction of a step. Any non-zero step is snapped to the closest of the eight directions.</summary>
     /// <returns> Direction index or <see cref="None"/> for a zero step. </returns>
     public static byte OfStep(int dx, int dy)
     {
@@ -88,9 +84,7 @@ public static class GridDirection
         return OfUnitStep(sx, sy);
     }
 
-    /// <summary>
-    /// Direction of a step of unit length in both axes.
-    /// </summary>
+    /// <summary>Direction of a step of unit length in both axes.</summary>
     /// <returns> Direction index or <see cref="None"/> for a zero step. </returns>
     public static byte OfUnitStep(int sx, int sy)
     {

@@ -2,12 +2,8 @@ using System.Numerics;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Identity function.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Identity_function">Wikipedia</a>
-/// </remarks>
+/// <summary>Identity function.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Identity_function">Wikipedia</a></remarks>
 public class Identity : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />

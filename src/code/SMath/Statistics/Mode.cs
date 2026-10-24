@@ -3,12 +3,8 @@ using System.Runtime.InteropServices;
 
 namespace SMath.Statistics;
 
-/// <summary>
-/// Mode.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Mode_(statistics)">Wikipedia</a>
-/// </remarks>
+/// <summary>Mode.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Mode_(statistics)">Wikipedia</a></remarks>
 public static class Mode
 {
     public static IEnumerable<N> Eval<N>(IEnumerable<N> numbers)

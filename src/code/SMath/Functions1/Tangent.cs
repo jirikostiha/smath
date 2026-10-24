@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Tangent function.
-/// </summary>
+/// <summary>Tangent function.</summary>
 /// <remarks>
 /// Function is not continuous. It has vertical asymptotes at pi/2 + k*pi, where k is an integer.
 /// <a href="https://en.wikipedia.org/wiki/Trigonometric_functions#Tangent">Wikipedia</a>
@@ -55,9 +53,7 @@ public class Tangent : IMathFunction, ISingleDomain, ISingleImage
         where N : IFloatingPointIeee754<N>
         => N.NegativeInfinity;
 
-    /// <summary>
-    /// Period of the function.
-    /// </summary>
+    /// <summary>Period of the function.</summary>
     public static N Period<N>()
         where N : IFloatingPointConstants<N>
         => N.Pi;

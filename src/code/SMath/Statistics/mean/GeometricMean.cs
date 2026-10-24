@@ -2,12 +2,8 @@ using System.Numerics;
 
 namespace SMath.Statistics;
 
-/// <summary>
-/// Geometric mean.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Geometric_mean">Wikipedia</a>
-/// </remarks>
+/// <summary>Geometric mean.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Geometric_mean">Wikipedia</a></remarks>
 public static class GeometricMean
 {
     public static double Eval<N>(IEnumerable<N> sequence)

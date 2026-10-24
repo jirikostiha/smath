@@ -2,9 +2,7 @@ using System.Runtime.CompilerServices;
 
 namespace SMath.Grid2D;
 
-/// <summary>
-/// Predicate over cells of a two dimensional grid.
-/// </summary>
+/// <summary>Predicate over cells of a two dimensional grid.</summary>
 /// <remarks>
 /// Implement it by a <see langword="struct"/> and pass it as a generic type argument
 /// to let the runtime devirtualize and inline the calls.
@@ -15,9 +13,7 @@ public interface IGridPredicate
     bool Test(int x, int y);
 }
 
-/// <summary>
-/// Predicate over cells of a two dimensional grid defined by a delegate.
-/// </summary>
+/// <summary>Predicate over cells of a two dimensional grid defined by a delegate.</summary>
 public readonly struct GridPredicate : IGridPredicate
 {
     private readonly Func<int, int, bool> _predicate;
@@ -30,9 +26,7 @@ public readonly struct GridPredicate : IGridPredicate
         => _predicate(x, y);
 }
 
-/// <summary>
-/// Predicate matching the cells another predicate does not match.
-/// </summary>
+/// <summary>Predicate matching the cells another predicate does not match.</summary>
 /// <remarks>
 /// Use it to pass a predicate of the passable cells where a predicate of the obstacles is expected
 /// and the other way round.

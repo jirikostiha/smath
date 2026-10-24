@@ -2,24 +2,18 @@ using System.Numerics;
 
 namespace SMath.FunctionsN;
 
-/// <summary>
-/// Manhattan or taxicab distance in n dimensions.
-/// </summary>
+/// <summary>Manhattan or taxicab distance in n dimensions.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Wikipedia</a>
 /// <a href="https://xlinux.nist.gov/dads/HTML/manhattanDistance.html">NIST</a>
 /// </remarks>
 public static class ManhattanDistance
 {
-    /// <summary>
-    /// String representation of the function.
-    /// </summary>
+    /// <summary>String representation of the function.</summary>
     public static string PlainTextFormula
         => "sum(|xi|)";
 
-    /// <summary>
-    /// Manhattan distance of a point and the origin.
-    /// </summary>
+    /// <summary>Manhattan distance of a point and the origin.</summary>
     public static N Eval<N>(IEnumerable<N> point)
         where N : INumberBase<N>
     {
@@ -30,9 +24,7 @@ public static class ManhattanDistance
         return sum;
     }
 
-    /// <summary>
-    /// Manhattan distance of a point and the origin.
-    /// </summary>
+    /// <summary>Manhattan distance of a point and the origin.</summary>
     public static N Eval<N>(ReadOnlySpan<N> point)
         where N : INumberBase<N>
     {
@@ -43,9 +35,7 @@ public static class ManhattanDistance
         return sum;
     }
 
-    /// <summary>
-    /// Manhattan distance of two points.
-    /// </summary>
+    /// <summary>Manhattan distance of two points.</summary>
     public static N Eval<N>(IEnumerable<N> point1, IEnumerable<N> point2)
         where N : INumberBase<N>
     {
@@ -73,9 +63,7 @@ public static class ManhattanDistance
         return sum;
     }
 
-    /// <summary>
-    /// Manhattan distance of two points.
-    /// </summary>
+    /// <summary>Manhattan distance of two points.</summary>
     public static N Eval<N>(ReadOnlySpan<N> point1, ReadOnlySpan<N> point2)
         where N : INumberBase<N>
     {

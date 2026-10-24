@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Binary logarithm function.
-/// </summary>
+/// <summary>Binary logarithm function.</summary>
 /// <remarks>
 /// It is a special case of the logarithm function with the base equal to two.
 /// The function is defined for positive numbers only.

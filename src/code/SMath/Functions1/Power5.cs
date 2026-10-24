@@ -2,12 +2,8 @@ using System.Numerics;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Power 5 (quintic) function.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Exponentiation#Power_functions">Wikipedia</a>
-/// </remarks>
+/// <summary>Power 5 (quintic) function.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Exponentiation#Power_functions">Wikipedia</a></remarks>
 public class Power5 : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />

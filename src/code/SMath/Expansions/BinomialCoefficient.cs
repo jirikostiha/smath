@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.Expansions;
 
-/// <summary>
-/// Binomial coefficient, "n choose k".
-/// </summary>
+/// <summary>Binomial coefficient, "n choose k".</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Binomial_coefficient">Wikipedia</a>
 /// <a href="https://mathworld.wolfram.com/BinomialCoefficient.html">Wolfram Mathworld</a>

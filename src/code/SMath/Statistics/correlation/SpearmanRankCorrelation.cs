@@ -4,12 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 
-/// <summary>
-/// Spearman's rank correlation coefficient.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient">wikipedia</a>
-/// </remarks>
+/// <summary>Spearman's rank correlation coefficient.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient">wikipedia</a></remarks>
 public static class SpearmanRankCorrelation
 {
     public static double Eval<N>(IEnumerable<N> aSequence, IEnumerable<N> bSequence)
@@ -46,9 +42,7 @@ public static class SpearmanRankCorrelation
         return PearsonCorrelation.Eval<double>(new ReadOnlySpan<double>(aRanks), new ReadOnlySpan<double>(bRanks));
     }
 
-    /// <summary>
-    /// Fractional ranks of the values, tied values share the average of the positions they span.
-    /// </summary>
+    /// <summary>Fractional ranks of the values, tied values share the average of the positions they span.</summary>
     private static double[] Ranks(double[] values)
     {
         var n = values.Length;

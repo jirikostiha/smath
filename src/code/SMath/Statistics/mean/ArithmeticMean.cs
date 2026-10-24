@@ -3,12 +3,8 @@
 using System.Collections.Generic;
 using System.Numerics;
 
-/// <summary>
-/// Arithmetic mean.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Arithmetic_mean">wikipedia</a>
-/// </remarks>
+/// <summary>Arithmetic mean.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Arithmetic_mean">wikipedia</a></remarks>
 public static class ArithmeticMean
 {
     // the values are summed as doubles, a sum kept in N wraps around for integer types

@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Power 3 (cube) function.
-/// </summary>
+/// <summary>Power 3 (cube) function.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Cube_(algebra)">Wikipedia</a>
 /// <a href="https://en.wikipedia.org/wiki/Exponentiation#Power_functions">Wikipedia</a>

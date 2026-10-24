@@ -2,48 +2,30 @@ using System.Numerics;
 
 namespace SMath.Geometry3D;
 
-/// <summary>
-/// Line in 3D space, determined by two points. Space has no general form of a line, a plane takes that role.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Line_(geometry)">Wikipedia</a>
-/// </remarks>
+/// <summary>Line in 3D space, determined by two points. Space has no general form of a line, a plane takes that role.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Line_(geometry)">Wikipedia</a></remarks>
 public static class Line3
 {
-    /// <summary>
-    /// Line and ... investigation.
-    /// </summary>
+    /// <summary>Line and ... investigation.</summary>
     public static class And
     {
-        /// <summary>
-        /// Line and point investigation.
-        /// </summary>
+        /// <summary>Line and point investigation.</summary>
         public static class Point
         {
-            /// <summary>
-            /// Projection of point to line.
-            /// </summary>
+            /// <summary>Projection of point to line.</summary>
             public static class Projection
             {
-                /// <summary>
-                /// Projection of a point to the line through two points. The first point when the line points coincide.
-                /// </summary>
+                /// <summary>Projection of a point to the line through two points. The first point when the line points coincide.</summary>
                 public static (N X, N Y, N Z) FromPoints<N>((N X, N Y, N Z) linePoint1, (N X, N Y, N Z) linePoint2, (N X, N Y, N Z) point)
                     where N : INumberBase<N>
                     => At(linePoint1, linePoint2, Parameter(linePoint1, linePoint2, point));
             }
 
-            /// <summary>
-            /// Line and point distance.
-            /// </summary>
-            /// <remarks>
-            /// <a href="https://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html">Wolfram Mathworld</a>
-            /// </remarks>
+            /// <summary>Line and point distance.</summary>
+            /// <remarks><a href="https://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html">Wolfram Mathworld</a></remarks>
             public static class Distance
             {
-                /// <summary>
-                /// Distance of a point from the line through two points, |(p - p1) × (p2 - p1)| / |p2 - p1|.
-                /// </summary>
+                /// <summary>Distance of a point from the line through two points, |(p - p1) × (p2 - p1)| / |p2 - p1|.</summary>
                 public static N FromPoints<N>((N X, N Y, N Z) linePoint1, (N X, N Y, N Z) linePoint2, (N X, N Y, N Z) point)
                     where N : IRootFunctions<N>
                 {
@@ -56,14 +38,10 @@ public static class Line3
                 }
             }
 
-            /// <summary>
-            /// Line and point intersection.
-            /// </summary>
+            /// <summary>Line and point intersection.</summary>
             public static class Intersection
             {
-                /// <summary>
-                /// Determine if the line through two points includes the point.
-                /// </summary>
+                /// <summary>Determine if the line through two points includes the point.</summary>
                 public static bool FromPoints<N>((N X, N Y, N Z) linePoint1, (N X, N Y, N Z) linePoint2, (N X, N Y, N Z) point)
                     where N : INumberBase<N>
                 {
@@ -75,17 +53,11 @@ public static class Line3
             }
         }
 
-        /// <summary>
-        /// Line and line investigation.
-        /// </summary>
+        /// <summary>Line and line investigation.</summary>
         public static class Line
         {
-            /// <summary>
-            /// Shortest distance between two lines. Zero when they intersect.
-            /// </summary>
-            /// <remarks>
-            /// <a href="https://en.wikipedia.org/wiki/Skew_lines#Distance">Wikipedia</a>
-            /// </remarks>
+            /// <summary>Shortest distance between two lines. Zero when they intersect.</summary>
+            /// <remarks><a href="https://en.wikipedia.org/wiki/Skew_lines#Distance">Wikipedia</a></remarks>
             public static class Distance
             {
                 public static N FromPoints<N>(
@@ -105,9 +77,7 @@ public static class Line3
                 }
             }
 
-            /// <summary>
-            /// Pair of the closest points of two lines.
-            /// </summary>
+            /// <summary>Pair of the closest points of two lines.</summary>
             public static class ClosestPoints
             {
                 /// <returns>
@@ -138,9 +108,7 @@ public static class Line3
     /// </summary>
     public static class Segment
     {
-        /// <summary>
-        /// Length of a line segment.
-        /// </summary>
+        /// <summary>Length of a line segment.</summary>
         public static class Length
         {
             public static N FromPoints<N>((N X, N Y, N Z) point1, (N X, N Y, N Z) point2)
@@ -148,9 +116,7 @@ public static class Line3
                 => GeometricVector3.Distance.FromCartesian(point1, point2);
         }
 
-        /// <summary>
-        /// Midpoint of a line segment.
-        /// </summary>
+        /// <summary>Midpoint of a line segment.</summary>
         public static class Midpoint
         {
             public static (N X, N Y, N Z) FromPoints<N>((N X, N Y, N Z) point1, (N X, N Y, N Z) point2)
@@ -158,14 +124,10 @@ public static class Line3
                 => At(point1, point2, N.One / N.CreateChecked(2));
         }
 
-        /// <summary>
-        /// Points on a line segment.
-        /// </summary>
+        /// <summary>Points on a line segment.</summary>
         public static class Points
         {
-            /// <summary>
-            /// Enumerating equally spaced points from the first to the second point, both included.
-            /// </summary>
+            /// <summary>Enumerating equally spaced points from the first to the second point, both included.</summary>
             public static IEnumerable<(N X, N Y, N Z)> FromPoints<N>((N X, N Y, N Z) point1, (N X, N Y, N Z) point2, int count)
                 where N : INumberBase<N>
             {
@@ -181,19 +143,13 @@ public static class Line3
             }
         }
 
-        /// <summary>
-        /// Line segment and ... investigation.
-        /// </summary>
+        /// <summary>Line segment and ... investigation.</summary>
         public static class And
         {
-            /// <summary>
-            /// Line segment and point investigation.
-            /// </summary>
+            /// <summary>Line segment and point investigation.</summary>
             public static class Point
             {
-                /// <summary>
-                /// Point of a line segment closest to a point.
-                /// </summary>
+                /// <summary>Point of a line segment closest to a point.</summary>
                 public static class ClosestPoint
                 {
                     public static (N X, N Y, N Z) FromPoints<N>((N X, N Y, N Z) sp1, (N X, N Y, N Z) sp2, (N X, N Y, N Z) point)
@@ -201,9 +157,7 @@ public static class Line3
                         => At(sp1, sp2, N.Clamp(Parameter(sp1, sp2, point), N.Zero, N.One));
                 }
 
-                /// <summary>
-                /// Distance of line segment and point.
-                /// </summary>
+                /// <summary>Distance of line segment and point.</summary>
                 public static class Distance
                 {
                     public static N FromPoints<N>((N X, N Y, N Z) sp1, (N X, N Y, N Z) sp2, (N X, N Y, N Z) point)
@@ -211,14 +165,10 @@ public static class Line3
                         => GeometricVector3.Distance.FromCartesian(ClosestPoint.FromPoints(sp1, sp2, point), point);
                 }
 
-                /// <summary>
-                /// Line segment and point intersection.
-                /// </summary>
+                /// <summary>Line segment and point intersection.</summary>
                 public static class Intersection
                 {
-                    /// <summary>
-                    /// Determine if line segment includes the point.
-                    /// </summary>
+                    /// <summary>Determine if line segment includes the point.</summary>
                     public static bool FromPoints<N>((N X, N Y, N Z) sp1, (N X, N Y, N Z) sp2, (N X, N Y, N Z) point)
                         where N : INumber<N>
                     {
@@ -232,17 +182,11 @@ public static class Line3
                 }
             }
 
-            /// <summary>
-            /// Line segment and line segment investigation.
-            /// </summary>
+            /// <summary>Line segment and line segment investigation.</summary>
             public static class Segment
             {
-                /// <summary>
-                /// Shortest distance between two line segments. Zero when they intersect.
-                /// </summary>
-                /// <remarks>
-                /// Clamps the closest points of the two lines to the segments, Ericson, Real-Time Collision Detection, 5.1.9.
-                /// </remarks>
+                /// <summary>Shortest distance between two line segments. Zero when they intersect.</summary>
+                /// <remarks>Clamps the closest points of the two lines to the segments, Ericson, Real-Time Collision Detection, 5.1.9.</remarks>
                 public static class Distance
                 {
                     public static N FromPoints<N>(

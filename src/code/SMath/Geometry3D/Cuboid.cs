@@ -3,12 +3,8 @@ using System.Runtime.CompilerServices;
 
 namespace SMath.Geometry3D;
 
-/// <summary>
-/// Rectangular cuboid, the three dimensional counterpart of a rectangle.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Cuboid">Wikipedia</a>
-/// </remarks>
+/// <summary>Rectangular cuboid, the three dimensional counterpart of a rectangle.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Cuboid">Wikipedia</a></remarks>
 public static class Cuboid
 {
     /// <summary> Count of vertices. </summary>
@@ -241,14 +237,10 @@ public static class Cuboid
             => PT.Hypotenuse(a, b, c);
     }
 
-    /// <summary>
-    /// Surface of a cuboid.
-    /// </summary>
+    /// <summary>Surface of a cuboid.</summary>
     public static class Surface
     {
-        /// <summary>
-        /// Surface area of a cuboid.
-        /// </summary>
+        /// <summary>Surface area of a cuboid.</summary>
         public static class Area
         {
             public static N FromEdges<N>(N a, N b, N c)
@@ -257,14 +249,10 @@ public static class Cuboid
         }
     }
 
-    /// <summary>
-    /// Region enclosed by a cuboid.
-    /// </summary>
+    /// <summary>Region enclosed by a cuboid.</summary>
     public static class Region
     {
-        /// <summary>
-        /// Enclosed volume of a cuboid.
-        /// </summary>
+        /// <summary>Enclosed volume of a cuboid.</summary>
         public static class Volume
         {
             public static N FromEdges<N>(N a, N b, N c)

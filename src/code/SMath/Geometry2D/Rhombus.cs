@@ -103,14 +103,10 @@ public static class Rhombus
             => p * q / (N.CreateChecked(2) * PT.Hypotenuse(p, q));
     }
 
-    /// <summary>
-    /// Perimeter or outline of a rhombus.
-    /// </summary>
+    /// <summary>Perimeter or outline of a rhombus.</summary>
     public static class Perimeter
     {
-        /// <summary>
-        /// Length of the perimeter of a rhombus.
-        /// </summary>
+        /// <summary>Length of the perimeter of a rhombus.</summary>
         public static class Length
         {
             public static N FromEdge<N>(N edgeLength)
@@ -123,14 +119,10 @@ public static class Rhombus
         }
     }
 
-    /// <summary>
-    /// Enclosed plane region of a rhombus.
-    /// </summary>
+    /// <summary>Enclosed plane region of a rhombus.</summary>
     public static class Region
     {
-        /// <summary>
-        /// Enclosed plane region area of a rhombus.
-        /// </summary>
+        /// <summary>Enclosed plane region area of a rhombus.</summary>
         public static class Area
         {
             public static N FromHeight<N>(N edgeLength, N height)

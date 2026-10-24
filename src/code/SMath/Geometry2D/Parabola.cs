@@ -23,9 +23,7 @@ public static class Parabola
     /// </summary>
     public static class Focus
     {
-        /// <summary>
-        /// Focus of a parabola determined by its focal length.
-        /// </summary>
+        /// <summary>Focus of a parabola determined by its focal length.</summary>
         public static (N X, N Y) FromFocalLength<N>(N focalLength)
             where N : INumberBase<N>
             => (N.Zero, focalLength);
@@ -46,9 +44,7 @@ public static class Parabola
             => (N.Zero, N.One, focalLength);
     }
 
-    /// <summary>
-    /// Semi-latus rectum of a parabola.
-    /// </summary>
+    /// <summary>Semi-latus rectum of a parabola.</summary>
     public static class SemiLatusRectum
     {
         /// <summary>
@@ -63,34 +59,24 @@ public static class Parabola
         }
     }
 
-    /// <summary>
-    /// Point on a parabola.
-    /// </summary>
+    /// <summary>Point on a parabola.</summary>
     public static class Point
     {
-        /// <summary>
-        /// y coordinate of a point on a parabola from its x coordinate.
-        /// </summary>
+        /// <summary>y coordinate of a point on a parabola from its x coordinate.</summary>
         public static N YFromX<N>(N focalLength, N x)
             where N : INumberBase<N>
             => x * x / (N.CreateChecked(4) * focalLength);
 
-        /// <summary>
-        /// Point on a parabola from its x coordinate.
-        /// </summary>
+        /// <summary>Point on a parabola from its x coordinate.</summary>
         public static (N X, N Y) FromX<N>(N focalLength, N x)
             where N : INumberBase<N>
             => (x, YFromX(focalLength, x));
     }
 
-    /// <summary>
-    /// Tangent line of a parabola in general form.
-    /// </summary>
+    /// <summary>Tangent line of a parabola in general form.</summary>
     public static class TangentLine
     {
-        /// <summary>
-        /// Tangent line of a parabola in general form at the point with the given x coordinate.
-        /// </summary>
+        /// <summary>Tangent line of a parabola in general form at the point with the given x coordinate.</summary>
         public static (N A, N B, N C) FromX<N>(N focalLength, N x)
             where N : INumberBase<N>
         {
@@ -98,9 +84,7 @@ public static class Parabola
             return (-slope, N.One, slope * x - Point.YFromX(focalLength, x));
         }
 
-        /// <summary>
-        /// Slope of the tangent line of a parabola, the first derivative of the parabola.
-        /// </summary>
+        /// <summary>Slope of the tangent line of a parabola, the first derivative of the parabola.</summary>
         public static class Slope
         {
             public static N FromX<N>(N focalLength, N x)
@@ -109,9 +93,7 @@ public static class Parabola
         }
     }
 
-    /// <summary>
-    /// Normal line of a parabola in general form.
-    /// </summary>
+    /// <summary>Normal line of a parabola in general form.</summary>
     public static class NormalLine
     {
         /// <summary>
@@ -131,9 +113,7 @@ public static class Parabola
                 : (N.One, N.Zero, -x);
         }
 
-        /// <summary>
-        /// Slope of the normal line of a parabola, the negative reciprocal of the tangent slope.
-        /// </summary>
+        /// <summary>Slope of the normal line of a parabola, the negative reciprocal of the tangent slope.</summary>
         public static class Slope
         {
             public static N FromX<N>(N focalLength, N x)

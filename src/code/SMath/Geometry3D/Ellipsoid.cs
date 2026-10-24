@@ -2,37 +2,27 @@ using System.Numerics;
 
 namespace SMath.Geometry3D;
 
-/// <summary>
-/// Ellipsoid.
-/// </summary>
+/// <summary>Ellipsoid.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Ellipsoid">Wikipedia</a>
 /// <a href="https://mathworld.wolfram.com/Ellipsoid.html">Wolfram MathWorld</a>
 /// </remarks>
 public static class Ellipsoid
 {
-    /// <summary>
-    /// Surface area of a triaxial ellipsoid using Knud Thomsen's approximation (p ≈ 1.6075).
-    /// </summary>
+    /// <summary>Surface area of a triaxial ellipsoid using Knud Thomsen's approximation (p ≈ 1.6075).</summary>
     public static N SurfaceArea<N>(N r1, N r2, N r3)
         where N : IFloatingPointConstants<N>, IPowerFunctions<N>
         => Surface.Area.FromRadii(r1, r2, r3);
 
-    /// <summary>
-    /// Enclosed volume of an ellipsoid.
-    /// </summary>
+    /// <summary>Enclosed volume of an ellipsoid.</summary>
     public static N EnclosedVolume<N>(N r1, N r2, N r3)
         where N : IFloatingPointConstants<N>
         => Region.Volume.FromRadii(r1, r2, r3);
 
-    /// <summary>
-    /// Surface of an ellipsoid.
-    /// </summary>
+    /// <summary>Surface of an ellipsoid.</summary>
     public static class Surface
     {
-        /// <summary>
-        /// Surface area of an ellipsoid.
-        /// </summary>
+        /// <summary>Surface area of an ellipsoid.</summary>
         /// <remarks>
         /// Calculated using Knud Thomsen's approximation formula 4 * pi * ((a^p * b^p + a^p * c^p + b^p * c^p) / 3)^(1/p)
         /// with p ≈ 1.6075, which has a maximum relative error below 1.061% and is exact for spheres.
@@ -54,14 +44,10 @@ public static class Ellipsoid
         }
     }
 
-    /// <summary>
-    /// Region enclosed by an ellipsoid.
-    /// </summary>
+    /// <summary>Region enclosed by an ellipsoid.</summary>
     public static class Region
     {
-        /// <summary>
-        /// Enclosed volume of an ellipsoid.
-        /// </summary>
+        /// <summary>Enclosed volume of an ellipsoid.</summary>
         public static class Volume
         {
             public static N FromRadii<N>(N r1, N r2, N r3)

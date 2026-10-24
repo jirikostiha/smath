@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 
-/// <summary>
-/// Kendall's tau-b rank correlation coefficient.
-/// </summary>
+/// <summary>Kendall's tau-b rank correlation coefficient.</summary>
 /// <remarks>
 /// The tau-b variant corrects for ties in either sequence.
 /// <a href="https://en.wikipedia.org/wiki/Kendall_rank_correlation_coefficient">wikipedia</a>

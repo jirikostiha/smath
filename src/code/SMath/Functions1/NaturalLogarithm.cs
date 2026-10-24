@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Natural logarithm function.
-/// </summary>
+/// <summary>Natural logarithm function.</summary>
 /// <remarks>
 /// It is a special case of the logarithm function with the base equal to Euler's number.
 /// The function is defined for positive numbers only.

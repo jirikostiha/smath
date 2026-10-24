@@ -3,9 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace SMath.Statistics;
 
-/// <summary>
-/// Variance.
-/// </summary>
+/// <summary>Variance.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Variance">Wikipedia</a>
 /// <a href="https://mathworld.wolfram.com/Variance.html">Wolfram Mathworld</a>
@@ -50,9 +48,7 @@ public static class Variance
         return moment;
     }
 
-    /// <summary>
-    /// Sample variance.
-    /// </summary>
+    /// <summary>Sample variance.</summary>
     public static class Sample
     {
         public static double Eval<N>(IEnumerable<N> sequence)
@@ -67,9 +63,7 @@ public static class Variance
             => sequence.Length > 1 ? PreEvaluate(sequence) / (double.CreateChecked(sequence.Length) - 1d) : double.NaN;
     }
 
-    /// <summary>
-    /// Population variance.
-    /// </summary>
+    /// <summary>Population variance.</summary>
     public static class Population
     {
         public static double Eval<N>(IEnumerable<N> sequence)

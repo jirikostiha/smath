@@ -3,12 +3,8 @@ using System.Runtime.CompilerServices;
 
 namespace SMath;
 
-/// <summary>
-/// Determinant of a square matrix.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Determinant">Wikipedia</a>
-/// </remarks>
+/// <summary>Determinant of a square matrix.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Determinant">Wikipedia</a></remarks>
 public static class Determinant
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

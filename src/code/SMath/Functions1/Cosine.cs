@@ -2,12 +2,8 @@ using System.Numerics;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Cosine function.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Sine_and_cosine">Wikipedia</a>
-/// </remarks>
+/// <summary>Cosine function.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Sine_and_cosine">Wikipedia</a></remarks>
 public class Cosine : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />

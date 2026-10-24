@@ -2,9 +2,7 @@ using SMath.Grid2D;
 
 namespace SMath.Pathfinding;
 
-/// <summary>
-/// Breadth first searches over cells of a two dimensional grid with a uniform step cost.
-/// </summary>
+/// <summary>Breadth first searches over cells of a two dimensional grid with a uniform step cost.</summary>
 /// <remarks>
 /// It is significantly faster than a Dijkstra search but it applies to a uniform cost only.
 /// Use it for reachability, distance fields, connected regions and flood fills.
@@ -15,9 +13,7 @@ public static class GridFloodFill
     /// <summary> Value of a cell not reached by a search. </summary>
     public const int Unreached = -1;
 
-    /// <summary>
-    /// Calculate the count of steps from any source cell to every reachable cell of a grid.
-    /// </summary>
+    /// <summary>Calculate the count of steps from any source cell to every reachable cell of a grid.</summary>
     /// <typeparam name="TPassable"> Predicate matching the passable cells. </typeparam>
     /// <param name="sources"> Cells the search starts at, they get the zero distance. </param>
     /// <param name="width"> Count of cells in x direction. </param>
@@ -64,9 +60,7 @@ public static class GridFloodFill
         return tail;
     }
 
-    /// <summary>
-    /// Calculate the count of steps from a source cell to every reachable cell of a grid.
-    /// </summary>
+    /// <summary>Calculate the count of steps from a source cell to every reachable cell of a grid.</summary>
     public static int Distances<TPassable>((int X, int Y) source, int width, int height,
         TPassable isPassable, Span<int> distances, Span<int> queue,
         GridConnectivity connectivity = GridConnectivity.Axial, int maxDistance = int.MaxValue)
@@ -76,12 +70,8 @@ public static class GridFloodFill
         return Distances(sources, width, height, isPassable, distances, queue, connectivity, maxDistance);
     }
 
-    /// <summary>
-    /// Determine if there is a path of passable cells between two cells.
-    /// </summary>
-    /// <remarks>
-    /// It is the cheapest way to reject an unreachable target before running a full search.
-    /// </remarks>
+    /// <summary>Determine if there is a path of passable cells between two cells.</summary>
+    /// <remarks>It is the cheapest way to reject an unreachable target before running a full search.</remarks>
     public static bool AreConnected<TPassable>((int X, int Y) from, (int X, int Y) to, int width, int height,
         TPassable isPassable, Span<int> distances, Span<int> queue,
         GridConnectivity connectivity = GridConnectivity.Axial)
@@ -95,9 +85,7 @@ public static class GridFloodFill
         return distances[Grid.Index(to, width)] != Unreached;
     }
 
-    /// <summary>
-    /// Label every connected region of passable cells of a grid by its own index.
-    /// </summary>
+    /// <summary>Label every connected region of passable cells of a grid by its own index.</summary>
     /// <typeparam name="TPassable"> Predicate matching the passable cells. </typeparam>
     /// <param name="width"> Count of cells in x direction. </param>
     /// <param name="height"> Count of cells in y direction. </param>

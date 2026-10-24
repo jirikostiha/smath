@@ -1,8 +1,6 @@
 namespace SMath.Pathfinding;
 
-/// <summary>
-/// Binary min-heap of integer nodes from a fixed range with an O(log n) decrease-key operation.
-/// </summary>
+/// <summary>Binary min-heap of integer nodes from a fixed range with an O(log n) decrease-key operation.</summary>
 /// <remarks>
 /// Every node can be present at most once, therefore the heap never grows over its capacity
 /// and no lazy deletion of stale entries is needed.
@@ -50,9 +48,7 @@ internal sealed class IndexedMinHeap
         _count = 0;
     }
 
-    /// <summary>
-    /// Insert a node or decrease its priority if it is already in the heap.
-    /// </summary>
+    /// <summary>Insert a node or decrease its priority if it is already in the heap.</summary>
     public void Push(int node, int priority)
     {
         var position = _positions[node];

@@ -16,14 +16,10 @@ public static class Torus
 
     public static string PlainTextEquation => "(sqrt(x^2 + y^2) - R)^2 + z^2 = r^2";
 
-    /// <summary>
-    /// Surface of a torus.
-    /// </summary>
+    /// <summary>Surface of a torus.</summary>
     public static class Surface
     {
-        /// <summary>
-        /// Surface area of a torus, 4 pi^2 R r.
-        /// </summary>
+        /// <summary>Surface area of a torus, 4 pi^2 R r.</summary>
         public static class Area
         {
             public static N FromRadii<N>(N majorRadius, N minorRadius)
@@ -31,9 +27,7 @@ public static class Torus
                 => N.CreateChecked(4) * N.Pi * N.Pi * majorRadius * minorRadius;
         }
 
-        /// <summary>
-        /// Point on the surface of a torus centered in origin.
-        /// </summary>
+        /// <summary>Point on the surface of a torus centered in origin.</summary>
         public static class Point
         {
             /// <param name="majorRadius"> Distance from the axis to the center of the tube. </param>
@@ -49,14 +43,10 @@ public static class Torus
         }
     }
 
-    /// <summary>
-    /// Region enclosed by a torus.
-    /// </summary>
+    /// <summary>Region enclosed by a torus.</summary>
     public static class Region
     {
-        /// <summary>
-        /// Enclosed volume of a torus, 2 pi^2 R r^2.
-        /// </summary>
+        /// <summary>Enclosed volume of a torus, 2 pi^2 R r^2.</summary>
         public static class Volume
         {
             public static N FromRadii<N>(N majorRadius, N minorRadius)
@@ -64,19 +54,13 @@ public static class Torus
                 => N.CreateChecked(2) * N.Pi * N.Pi * majorRadius * minorRadius * minorRadius;
         }
 
-        /// <summary>
-        /// Relations of a torus region and another geometric object.
-        /// </summary>
+        /// <summary>Relations of a torus region and another geometric object.</summary>
         public static class And
         {
-            /// <summary>
-            /// Relations of a torus region and a point.
-            /// </summary>
+            /// <summary>Relations of a torus region and a point.</summary>
             public static class Point
             {
-                /// <summary>
-                /// Determines whether a point lies inside a region of a torus centered in origin (surface included).
-                /// </summary>
+                /// <summary>Determines whether a point lies inside a region of a torus centered in origin (surface included).</summary>
                 public static class Intersection
                 {
                     public static bool FromRadii<N>(N majorRadius, N minorRadius, (N X, N Y, N Z) point)

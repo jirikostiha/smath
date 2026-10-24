@@ -3,66 +3,44 @@ using System.Runtime.CompilerServices;
 
 namespace SMath.Geometry2D;
 
-/// <summary>
-/// Interpolation and easing of scalars and points in two dimensions.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Interpolation">Wikipedia</a>
-/// </remarks>
+/// <summary>Interpolation and easing of scalars and points in two dimensions.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Interpolation">Wikipedia</a></remarks>
 public static class Interpolation
 {
-    /// <summary>
-    /// Linear interpolation.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Linear_interpolation">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Linear interpolation.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Linear_interpolation">Wikipedia</a></remarks>
     public static class Linear
     {
-        /// <summary>
-        /// Value at a parameter between two values. Parameter 0 gives the first, 1 the second value.
-        /// </summary>
+        /// <summary>Value at a parameter between two values. Parameter 0 gives the first, 1 the second value.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static N Eval<N>(N from, N to, N t)
             where N : INumberBase<N>
             => from + ((to - from) * t);
 
-        /// <summary>
-        /// Point at a parameter between two points. Parameter 0 gives the first, 1 the second point.
-        /// </summary>
+        /// <summary>Point at a parameter between two points. Parameter 0 gives the first, 1 the second point.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static (N X, N Y) Point<N>((N X, N Y) from, (N X, N Y) to, N t)
             where N : INumberBase<N>
             => (Eval(from.X, to.X, t), Eval(from.Y, to.Y, t));
 
-        /// <summary>
-        /// Parameter of a value between two values. It is the inverse of <see cref="Eval{N}"/>.
-        /// </summary>
+        /// <summary>Parameter of a value between two values. It is the inverse of <see cref="Eval{N}"/>.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static N Parameter<N>(N from, N to, N value)
             where N : INumberBase<N>
             => (value - from) / (to - from);
 
-        /// <summary>
-        /// Remap a value from one range to another one.
-        /// </summary>
+        /// <summary>Remap a value from one range to another one.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static N Remap<N>(N fromStart, N fromEnd, N toStart, N toEnd, N value)
             where N : INumberBase<N>
             => Eval(toStart, toEnd, Parameter(fromStart, fromEnd, value));
     }
 
-    /// <summary>
-    /// Bilinear interpolation over the four corners of a unit square.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Bilinear_interpolation">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Bilinear interpolation over the four corners of a unit square.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Bilinear_interpolation">Wikipedia</a></remarks>
     public static class Bilinear
     {
-        /// <summary>
-        /// Value at a point of a unit square determined by the values in its corners.
-        /// </summary>
+        /// <summary>Value at a point of a unit square determined by the values in its corners.</summary>
         /// <param name="v11"> Value at the corner (0,0). </param>
         /// <param name="v21"> Value at the corner (1,0). </param>
         /// <param name="v12"> Value at the corner (0,1). </param>
@@ -79,24 +57,16 @@ public static class Interpolation
         }
     }
 
-    /// <summary>
-    /// Spherical linear interpolation of an angle.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Slerp">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Spherical linear interpolation of an angle.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Slerp">Wikipedia</a></remarks>
     public static class Angular
     {
-        /// <summary>
-        /// Angle at a parameter between two angles taking the shorter way around.
-        /// </summary>
+        /// <summary>Angle at a parameter between two angles taking the shorter way around.</summary>
         public static N Eval<N>(N from, N to, N t)
             where N : IFloatingPointIeee754<N>
             => from + (Difference(from, to) * t);
 
-        /// <summary>
-        /// The shortest signed difference of two angles. It is in range (-pi, pi].
-        /// </summary>
+        /// <summary>The shortest signed difference of two angles. It is in range (-pi, pi].</summary>
         public static N Difference<N>(N from, N to)
             where N : IFloatingPointIeee754<N>
         {
@@ -111,9 +81,7 @@ public static class Interpolation
             return difference;
         }
 
-        /// <summary>
-        /// Wrap an angle into range [0, 2*pi).
-        /// </summary>
+        /// <summary>Wrap an angle into range [0, 2*pi).</summary>
         public static N Wrapped<N>(N angle)
             where N : IFloatingPointIeee754<N>
         {
@@ -121,9 +89,7 @@ public static class Interpolation
             return rest < N.Zero ? rest + N.Tau : rest;
         }
 
-        /// <summary>
-        /// Rotate an angle towards another one by at most a given step.
-        /// </summary>
+        /// <summary>Rotate an angle towards another one by at most a given step.</summary>
         public static N Towards<N>(N from, N to, N maxStep)
             where N : IFloatingPointIeee754<N>
         {
@@ -135,9 +101,7 @@ public static class Interpolation
         }
     }
 
-    /// <summary>
-    /// Easing of the interpolation parameter.
-    /// </summary>
+    /// <summary>Easing of the interpolation parameter.</summary>
     /// <remarks>
     /// Every function maps range [0,1] onto range [0,1] keeping both ends.
     /// <a href="https://en.wikipedia.org/wiki/Smoothstep">Wikipedia</a>
@@ -183,9 +147,7 @@ public static class Interpolation
             where N : ITrigonometricFunctions<N>
             => (N.One - N.Cos(N.Pi * t)) / N.CreateTruncating(2);
 
-        /// <summary>
-        /// Frame rate independent exponential approach of a target.
-        /// </summary>
+        /// <summary>Frame rate independent exponential approach of a target.</summary>
         /// <remarks>
         /// It is the correct replacement of the naive <c>value += (target-value) * rate</c> smoothing
         /// which depends on the length of a frame.
@@ -197,17 +159,11 @@ public static class Interpolation
             => N.One - N.Pow(N.One - rate, deltaTime);
     }
 
-    /// <summary>
-    /// Cubic Bezier and Catmull-Rom curves in two dimensions.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/B%C3%A9zier_curve">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Cubic Bezier and Catmull-Rom curves in two dimensions.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/B%C3%A9zier_curve">Wikipedia</a></remarks>
     public static class Curve
     {
-        /// <summary>
-        /// Point of a quadratic Bezier curve at a parameter.
-        /// </summary>
+        /// <summary>Point of a quadratic Bezier curve at a parameter.</summary>
         public static (N X, N Y) QuadraticBezier<N>((N X, N Y) point1, (N X, N Y) controlPoint, (N X, N Y) point2, N t)
             where N : INumberBase<N>
         {
@@ -220,9 +176,7 @@ public static class Interpolation
                     (w1 * point1.Y) + (w2 * controlPoint.Y) + (w3 * point2.Y));
         }
 
-        /// <summary>
-        /// Point of a cubic Bezier curve at a parameter.
-        /// </summary>
+        /// <summary>Point of a cubic Bezier curve at a parameter.</summary>
         public static (N X, N Y) CubicBezier<N>((N X, N Y) point1, (N X, N Y) controlPoint1,
             (N X, N Y) controlPoint2, (N X, N Y) point2, N t)
             where N : INumberBase<N>
@@ -242,9 +196,7 @@ public static class Interpolation
         /// Point of a Catmull-Rom spline segment at a parameter.
         /// The curve passes through the two inner points.
         /// </summary>
-        /// <remarks>
-        /// <a href="https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline">Wikipedia</a>
-        /// </remarks>
+        /// <remarks><a href="https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline">Wikipedia</a></remarks>
         public static (N X, N Y) CatmullRom<N>((N X, N Y) point0, (N X, N Y) point1,
             (N X, N Y) point2, (N X, N Y) point3, N t)
             where N : INumberBase<N>

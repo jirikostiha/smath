@@ -40,9 +40,7 @@ public static class Polygon
         where N : IFloatingPointConstants<N>
         => N.CreateChecked(2) * N.Pi;
 
-    /// <summary>
-    /// Determine whether a point lies inside a simple polygon by the even-odd rule.
-    /// </summary>
+    /// <summary>Determine whether a point lies inside a simple polygon by the even-odd rule.</summary>
     /// <param name="vertices"> Vertices in order along the boundary. </param>
     /// <param name="point"> Tested point. </param>
     /// <remarks>
@@ -103,19 +101,13 @@ public static class Polygon
         => (from.Y > point.Y) != (to.Y > point.Y)
             && point.X < (from.X - to.X) * (point.Y - to.Y) / (from.Y - to.Y) + to.X;
 
-    /// <summary>
-    /// Perimeter or outline of a polygon.
-    /// </summary>
+    /// <summary>Perimeter or outline of a polygon.</summary>
     public static class Perimeter
     {
-        /// <summary>
-        /// Length of the perimeter of a polygon.
-        /// </summary>
+        /// <summary>Length of the perimeter of a polygon.</summary>
         public static class Length
         {
-            /// <summary>
-            /// Length of the perimeter of a polygon, the sum of the lengths of all its edges.
-            /// </summary>
+            /// <summary>Length of the perimeter of a polygon, the sum of the lengths of all its edges.</summary>
             /// <param name="vertices"> Vertices in order along the boundary. </param>
             /// <remarks>
             /// Reusable overload that accepts any sequence; it is enumerated exactly once.
@@ -167,14 +159,10 @@ public static class Polygon
         }
     }
 
-    /// <summary>
-    /// Enclosed plane region of a polygon.
-    /// </summary>
+    /// <summary>Enclosed plane region of a polygon.</summary>
     public static class Region
     {
-        /// <summary>
-        /// Enclosed plane region area of a polygon.
-        /// </summary>
+        /// <summary>Enclosed plane region area of a polygon.</summary>
         public static class Area
         {
             /// <summary>
@@ -254,12 +242,8 @@ public static class Polygon
             }
         }
 
-        /// <summary>
-        /// Centroid of the plane region enclosed by a polygon.
-        /// </summary>
-        /// <remarks>
-        /// <a href="https://en.wikipedia.org/wiki/Centroid#Of_a_polygon">Wikipedia</a>
-        /// </remarks>
+        /// <summary>Centroid of the plane region enclosed by a polygon.</summary>
+        /// <remarks><a href="https://en.wikipedia.org/wiki/Centroid#Of_a_polygon">Wikipedia</a></remarks>
         public static class Centroid
         {
             /// <summary>
@@ -334,9 +318,7 @@ public static class Polygon
         where N : INumberBase<N>
         => (point1.X * point2.Y) - (point2.X * point1.Y);
 
-    /// <summary>
-    /// Running sums of the polygon centroid, kept in one place for the enumerable and the span overload.
-    /// </summary>
+    /// <summary>Running sums of the polygon centroid, kept in one place for the enumerable and the span overload.</summary>
     private struct CentroidAccumulator<N>
         where N : INumberBase<N>
     {
@@ -379,12 +361,8 @@ public static class Polygon
         }
     }
 
-    /// <summary>
-    /// Regular polygon, equilateral and equiangular, centered in the origin.
-    /// </summary>
-    /// <remarks>
-    /// <a href="https://en.wikipedia.org/wiki/Regular_polygon">Wikipedia</a>
-    /// </remarks>
+    /// <summary>Regular polygon, equilateral and equiangular, centered in the origin.</summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Regular_polygon">Wikipedia</a></remarks>
     public static class Regular
     {
         /// <summary> Schläfli symbol of a regular polygon with the given count of edges. </summary>
@@ -456,14 +434,10 @@ public static class Polygon
                 => Circle.Perimeter.Points.FromRadius(circumradius, count);
         }
 
-        /// <summary>
-        /// Perimeter or outline of a regular polygon.
-        /// </summary>
+        /// <summary>Perimeter or outline of a regular polygon.</summary>
         public static class Perimeter
         {
-            /// <summary>
-            /// Length of the perimeter of a regular polygon.
-            /// </summary>
+            /// <summary>Length of the perimeter of a regular polygon.</summary>
             public static class Length
             {
                 public static N FromEdge<N>(N edges, N edgeLength)
@@ -480,14 +454,10 @@ public static class Polygon
             }
         }
 
-        /// <summary>
-        /// Enclosed plane region of a regular polygon.
-        /// </summary>
+        /// <summary>Enclosed plane region of a regular polygon.</summary>
         public static class Region
         {
-            /// <summary>
-            /// Enclosed plane region area of a regular polygon.
-            /// </summary>
+            /// <summary>Enclosed plane region area of a regular polygon.</summary>
             public static class Area
             {
                 public static N FromEdge<N>(N edges, N edgeLength)

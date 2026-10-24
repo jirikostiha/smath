@@ -2,9 +2,7 @@
 
 namespace SMath;
 
-/// <summary>
-/// Product.
-/// </summary>
+/// <summary>Product.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Product_(mathematics)">Wikipedia</a>
 /// <a href="https://en.wikipedia.org/wiki/Empty_product">Wikipedia</a>

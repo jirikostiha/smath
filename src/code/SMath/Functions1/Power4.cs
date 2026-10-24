@@ -3,12 +3,8 @@ using System.Runtime.CompilerServices;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Power 4 (quartic) function.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Exponentiation#Power_functions">Wikipedia</a>
-/// </remarks>
+/// <summary>Power 4 (quartic) function.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Exponentiation#Power_functions">Wikipedia</a></remarks>
 public class Power4 : IMathFunction, ISingleDomain, ISingleImage
 {
     /// <inheritdoc />

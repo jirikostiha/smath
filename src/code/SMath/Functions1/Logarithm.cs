@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// General logarithm function.
-/// </summary>
+/// <summary>General logarithm function.</summary>
 /// <remarks>
 /// It is the inverse of the exponential function.
 /// The function is defined for positive numbers only.

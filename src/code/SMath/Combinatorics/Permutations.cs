@@ -12,9 +12,7 @@ namespace SMath.Combinatorics;
 /// </remarks>
 public static class Permutations
 {
-    /// <summary>
-    /// Counts all non empty permutations of <paramref name="n"/> elements.
-    /// </summary>
+    /// <summary>Counts all non empty permutations of <paramref name="n"/> elements.</summary>
     /// <remarks> Sum of all k-permutations of n. </remarks>
     public static NInt Count<NInt>(NInt n)
         where NInt : IBinaryInteger<NInt>
@@ -34,9 +32,7 @@ public static class Permutations
         return sum;
     }
 
-    /// <summary>
-    /// Counts k-permutations of <paramref name="n"/>.
-    /// </summary>
+    /// <summary>Counts k-permutations of <paramref name="n"/>.</summary>
     /// <remarks>
     /// Falling factorial of n and k.
     /// <a href="https://en.wikipedia.org/wiki/Permutation#k-permutations_of_n">Wikipedia</a>
@@ -47,9 +43,7 @@ public static class Permutations
             ? Factorial.Falling.Eval(n, k)
             : NInt.Zero;
 
-    /// <summary>
-    /// Enumerate all k element index permutations drawn from [0, n), in lexicographic order.
-    /// </summary>
+    /// <summary>Enumerate all k element index permutations drawn from [0, n), in lexicographic order.</summary>
     /// <remarks> Every permutation is a newly allocated array. </remarks>
     public static IEnumerable<NInt[]> Tuples<NInt>(NInt n, NInt k)
         where NInt : IBinaryInteger<NInt>

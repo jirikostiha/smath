@@ -168,14 +168,10 @@ public static class Cube
             => circumradius / N.Sqrt(N.CreateChecked(3));
     }
 
-    /// <summary>
-    /// Surface of a cube.
-    /// </summary>
+    /// <summary>Surface of a cube.</summary>
     public static class Surface
     {
-        /// <summary>
-        /// Surface area of a cube.
-        /// </summary>
+        /// <summary>Surface area of a cube.</summary>
         public static class Area
         {
             public static N FromEdge<N>(N edgeLength)
@@ -188,14 +184,10 @@ public static class Cube
         }
     }
 
-    /// <summary>
-    /// Region enclosed by a cube.
-    /// </summary>
+    /// <summary>Region enclosed by a cube.</summary>
     public static class Region
     {
-        /// <summary>
-        /// Enclosed volume of a cube.
-        /// </summary>
+        /// <summary>Enclosed volume of a cube.</summary>
         public static class Volume
         {
             public static N FromEdge<N>(N edgeLength)

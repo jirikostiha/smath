@@ -1,8 +1,6 @@
 namespace SMath.Pathfinding;
 
-/// <summary>
-/// Neighborhood of a cell of a two dimensional grid used by a search.
-/// </summary>
+/// <summary>Neighborhood of a cell of a two dimensional grid used by a search.</summary>
 public enum GridConnectivity
 {
     /// <summary> Steps in axes directions only, also known as the von Neumann neighborhood. </summary>

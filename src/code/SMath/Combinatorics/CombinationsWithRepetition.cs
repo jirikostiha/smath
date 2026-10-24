@@ -13,9 +13,7 @@ namespace SMath.Combinatorics;
 /// </remarks>
 public static class CombinationsWithRepetition
 {
-    /// <summary>
-    /// Counts k-multisets drawn from <paramref name="n"/> elements.
-    /// </summary>
+    /// <summary>Counts k-multisets drawn from <paramref name="n"/> elements.</summary>
     /// <remarks> C(n + k - 1, k). </remarks>
     public static NInt Count<NInt>(NInt n, NInt k)
         where NInt : IBinaryInteger<NInt>

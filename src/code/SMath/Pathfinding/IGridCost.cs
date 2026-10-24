@@ -2,9 +2,7 @@ using SMath.Grid2D;
 
 namespace SMath.Pathfinding;
 
-/// <summary>
-/// Traversal weight of cells of a two dimensional grid.
-/// </summary>
+/// <summary>Traversal weight of cells of a two dimensional grid.</summary>
 /// <remarks>
 /// Weight is a multiplier of the step cost, one is the plain terrain,
 /// non-positive value marks an impassable cell.
@@ -20,9 +18,7 @@ public interface IGridCost
     int Weight(int x, int y);
 }
 
-/// <summary>
-/// Cost of cells of a grid where every cell is passable with the plain weight.
-/// </summary>
+/// <summary>Cost of cells of a grid where every cell is passable with the plain weight.</summary>
 public readonly struct OpenGridCost : IGridCost
 {
     /// <inheritdoc/>
@@ -30,9 +26,7 @@ public readonly struct OpenGridCost : IGridCost
         => 1;
 }
 
-/// <summary>
-/// Cost of cells of a grid stored in a row-major buffer.
-/// </summary>
+/// <summary>Cost of cells of a grid stored in a row-major buffer.</summary>
 public readonly struct GridCostMap : IGridCost
 {
     private readonly int[] _weights;
@@ -55,9 +49,7 @@ public readonly struct GridCostMap : IGridCost
         => _weights[(y * Width) + x];
 }
 
-/// <summary>
-/// Cost of cells of a grid determined by passability of cells.
-/// </summary>
+/// <summary>Cost of cells of a grid determined by passability of cells.</summary>
 /// <typeparam name="TPassable"> Predicate matching the passable cells. </typeparam>
 public readonly struct GridPassabilityCost<TPassable> : IGridCost
     where TPassable : IGridPredicate
@@ -72,9 +64,7 @@ public readonly struct GridPassabilityCost<TPassable> : IGridCost
         => _isPassable.Test(x, y) ? 1 : 0;
 }
 
-/// <summary>
-/// Cost of cells of a grid determined by a delegate.
-/// </summary>
+/// <summary>Cost of cells of a grid determined by a delegate.</summary>
 public readonly struct GridCostFunction : IGridCost
 {
     private readonly Func<int, int, int> _weight;

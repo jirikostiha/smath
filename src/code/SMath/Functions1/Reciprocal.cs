@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Reciprocal or multiplicative inverse function.
-/// </summary>
+/// <summary>Reciprocal or multiplicative inverse function.</summary>
 /// <remarks>
 /// Function is not continuous. It has a vertical asymptote at zero, which is not in the domain.
 /// <a href="https://en.wikipedia.org/wiki/Multiplicative_inverse">Wikipedia</a>

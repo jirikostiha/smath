@@ -2,9 +2,7 @@
 
 namespace SMath.Sequences;
 
-/// <summary>
-/// 3x + 1 or Collatz conjecture sequence.
-/// </summary>
+/// <summary>3x + 1 or Collatz conjecture sequence.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Collatz_conjecture">Wikipedia</a>
 /// <a href="https://mathworld.wolfram.com/CollatzProblem.html">Wolfram Mathworld</a>
@@ -14,9 +12,7 @@ public static class CollatzConjecture
 {
     public static string PlainTextFormula => "a(n+1) = a(n) / 2 for even a(n), 3 * a(n) + 1 for odd a(n)";
 
-    /// <summary>
-    /// Term following <paramref name="value"/>, a half of an even value, 3 * value + 1 of an odd one.
-    /// </summary>
+    /// <summary>Term following <paramref name="value"/>, a half of an even value, 3 * value + 1 of an odd one.</summary>
     public static N NextTerm<N>(N value)
         where N : IBinaryInteger<N>
         => N.IsEvenInteger(value)
@@ -64,9 +60,7 @@ public static class CollatzConjecture
         return count;
     }
 
-    /// <summary>
-    /// Total stopping time, the count of steps needed to reach one.
-    /// </summary>
+    /// <summary>Total stopping time, the count of steps needed to reach one.</summary>
     /// <remarks>
     /// The conjecture that every positive number reaches one is not proven, the search
     /// is therefore unbounded.

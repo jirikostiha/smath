@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.FunctionsN;
 
-/// <summary>
-/// Chebyshev, chessboard or diagonal distance in n dimensions.
-/// </summary>
+/// <summary>Chebyshev, chessboard or diagonal distance in n dimensions.</summary>
 /// <remarks>
 /// It is the number of moves a king needs on a chessboard, therefore it is also
 /// the number of steps of a diagonal walk in a grid.
@@ -13,15 +11,11 @@ namespace SMath.FunctionsN;
 /// </remarks>
 public static class ChebyshevDistance
 {
-    /// <summary>
-    /// String representation of the function.
-    /// </summary>
+    /// <summary>String representation of the function.</summary>
     public static string PlainTextFormula
         => "max(|xi|)";
 
-    /// <summary>
-    /// Chebyshev distance of a point and the origin.
-    /// </summary>
+    /// <summary>Chebyshev distance of a point and the origin.</summary>
     public static N Eval<N>(IEnumerable<N> point)
         where N : INumber<N>
     {
@@ -32,9 +26,7 @@ public static class ChebyshevDistance
         return maximum;
     }
 
-    /// <summary>
-    /// Chebyshev distance of a point and the origin.
-    /// </summary>
+    /// <summary>Chebyshev distance of a point and the origin.</summary>
     public static N Eval<N>(ReadOnlySpan<N> point)
         where N : INumber<N>
     {
@@ -45,9 +37,7 @@ public static class ChebyshevDistance
         return maximum;
     }
 
-    /// <summary>
-    /// Chebyshev distance of two points.
-    /// </summary>
+    /// <summary>Chebyshev distance of two points.</summary>
     public static N Eval<N>(IEnumerable<N> point1, IEnumerable<N> point2)
         where N : INumber<N>
     {
@@ -75,9 +65,7 @@ public static class ChebyshevDistance
         return maximum;
     }
 
-    /// <summary>
-    /// Chebyshev distance of two points.
-    /// </summary>
+    /// <summary>Chebyshev distance of two points.</summary>
     public static N Eval<N>(ReadOnlySpan<N> point1, ReadOnlySpan<N> point2)
         where N : INumber<N>
     {

@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.Functions1;
 
-/// <summary>
-/// Reciprocal of the power 2 (square) function.
-/// </summary>
+/// <summary>Reciprocal of the power 2 (square) function.</summary>
 /// <remarks>
 /// Function is not continuous. It has a vertical asymptote at zero, which is not in the domain.
 /// <a href="https://en.wikipedia.org/wiki/Multiplicative_inverse">Wikipedia</a>
@@ -52,9 +50,7 @@ public class ReciprocalPower2 : IMathFunction, ISingleDomain, ISingleImage
         where N : IFloatingPointIeee754<N>
         => N.PositiveInfinity;
 
-    /// <summary>
-    /// Infimum of the function. It is not attained for any real number.
-    /// </summary>
+    /// <summary>Infimum of the function. It is not attained for any real number.</summary>
     public static N GlobalMinimum<N>()
         where N : INumberBase<N>
         => N.Zero;

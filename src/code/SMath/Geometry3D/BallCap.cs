@@ -2,12 +2,8 @@ using System.Numerics;
 
 namespace SMath.Geometry3D;
 
-/// <summary>
-/// Spherical cap of a ball (solid segment with base).
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Spherical_cap">Wikipedia</a>
-/// </remarks>
+/// <summary>Spherical cap of a ball (solid segment with base).</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Spherical_cap">Wikipedia</a></remarks>
 public static class BallCap
 {
     /// <summary> Surface area (with base) </summary>
@@ -37,14 +33,10 @@ public static class BallCap
         where N : IFloatingPointConstants<N>, ITrigonometricFunctions<N>
         => Region.Volume.FromPolarAngle(radius, polarAngle);
 
-    /// <summary>
-    /// Surface of a ball cap (including base).
-    /// </summary>
+    /// <summary>Surface of a ball cap (including base).</summary>
     public static class Surface
     {
-        /// <summary>
-        /// Surface area of a ball cap (including base).
-        /// </summary>
+        /// <summary>Surface area of a ball cap (including base).</summary>
         public static class Area
         {
             public static N FromCapHeight<N>(N radius, N capHeight)
@@ -67,14 +59,10 @@ public static class BallCap
         }
     }
 
-    /// <summary>
-    /// Region enclosed by a ball cap.
-    /// </summary>
+    /// <summary>Region enclosed by a ball cap.</summary>
     public static class Region
     {
-        /// <summary>
-        /// Enclosed volume of a ball cap.
-        /// </summary>
+        /// <summary>Enclosed volume of a ball cap.</summary>
         public static class Volume
         {
             public static N FromCapHeight<N>(N radius, N capHeight)

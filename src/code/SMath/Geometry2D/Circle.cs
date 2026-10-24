@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace SMath.Geometry2D;
 
-/// <summary>
-/// Circle.
-/// </summary>
+/// <summary>Circle.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Circle">Wikipedia</a>
 /// <a href="https://mathworld.wolfram.com/Circle.html">Wolfram Mathworld</a>
@@ -15,9 +13,7 @@ public static class Circle
 
     public static string PlainTextEquation => "(x - a)^2 + (y - b)^2 = r^2";
 
-    /// <summary>
-    /// Radius of a circle.
-    /// </summary>
+    /// <summary>Radius of a circle.</summary>
     public static class Radius
     {
         public static N FromCircumference<N>(N circumference)
@@ -29,14 +25,10 @@ public static class Circle
             => N.Sqrt(area / N.Pi);
     }
 
-    /// <summary>
-    /// Perimeter or curve or outline of a circle.
-    /// </summary>
+    /// <summary>Perimeter or curve or outline of a circle.</summary>
     public static class Perimeter
     {
-        /// <summary>
-        /// Circumference of a circle.
-        /// </summary>
+        /// <summary>Circumference of a circle.</summary>
         public static class Length
         {
             public static N FromRadius<N>(N radius)
@@ -44,9 +36,7 @@ public static class Circle
                 => N.CreateTruncating(2) * N.Pi * radius;
         }
 
-        /// <summary>
-        /// Point on the perimeter of a circle.
-        /// </summary>
+        /// <summary>Point on the perimeter of a circle.</summary>
         public static class Point
         {
             public static N XFromAngle<N>(N radius, N angle)
@@ -62,14 +52,10 @@ public static class Circle
                 => (XFromAngle(radius, angle), YFromAngle(radius, angle));
         }
 
-        /// <summary>
-        /// Points on the perimeter of a circle.
-        /// </summary>
+        /// <summary>Points on the perimeter of a circle.</summary>
         public static class Points
         {
-            /// <summary>
-            /// Enumerating points on circle from the +x axis towards the +y axis and beyond.
-            /// </summary>
+            /// <summary>Enumerating points on circle from the +x axis towards the +y axis and beyond.</summary>
             public static IEnumerable<(N X, N Y)> FromRadius<N>(N radius, int count)
                 where N : IFloatingPoint<N>, ITrigonometricFunctions<N>
             {
@@ -82,51 +68,35 @@ public static class Circle
             }
         }
 
-        /// <summary>
-        /// Relations of a circle perimeter and another geometric object.
-        /// </summary>
+        /// <summary>Relations of a circle perimeter and another geometric object.</summary>
         public static class And
         {
-            /// <summary>
-            /// Relations of a circle perimeter and a point.
-            /// </summary>
+            /// <summary>Relations of a circle perimeter and a point.</summary>
             public static class Point
             {
-                /// <summary>
-                /// Shortest distance between a circle perimeter and a point.
-                /// </summary>
+                /// <summary>Shortest distance between a circle perimeter and a point.</summary>
                 public static class Distance
                 {
-                    /// <summary>
-                    /// Distance between a perimeter of a circle centered in origin and a point.
-                    /// </summary>
+                    /// <summary>Distance between a perimeter of a circle centered in origin and a point.</summary>
                     public static N FromRadius<N>(N radius, (N X, N Y) point)
                         where N : IRootFunctions<N>
                         => N.Abs(PT.Hypotenuse(point.X, point.Y) - radius);
 
-                    /// <summary>
-                    /// Distance between a perimeter of a circle centered in <paramref name="center"/> and a point.
-                    /// </summary>
+                    /// <summary>Distance between a perimeter of a circle centered in <paramref name="center"/> and a point.</summary>
                     public static N FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) point)
                         where N : IRootFunctions<N>
                         => N.Abs(PT.Hypotenuse(point.X - center.X, point.Y - center.Y) - radius);
                 }
 
-                /// <summary>
-                /// Determines whether a point lies on a circle perimeter.
-                /// </summary>
+                /// <summary>Determines whether a point lies on a circle perimeter.</summary>
                 public static class Intersection
                 {
-                    /// <summary>
-                    /// Determines whether a point lies on a perimeter of a circle centered in origin.
-                    /// </summary>
+                    /// <summary>Determines whether a point lies on a perimeter of a circle centered in origin.</summary>
                     public static bool FromRadius<N>(N radius, (N X, N Y) point)
                         where N : IRootFunctions<N>
                         => (point.X * point.X + point.Y * point.Y) == radius * radius;
 
-                    /// <summary>
-                    /// Determines whether a point lies on a perimeter of a circle centered in <paramref name="center"/>.
-                    /// </summary>
+                    /// <summary>Determines whether a point lies on a perimeter of a circle centered in <paramref name="center"/>.</summary>
                     public static bool FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) point)
                         where N : IRootFunctions<N>
                     {
@@ -137,22 +107,14 @@ public static class Circle
                 }
             }
 
-            /// <summary>
-            /// Relations of a circle perimeter and a line.
-            /// </summary>
-            /// <remarks>
-            /// <a href="https://mathworld.wolfram.com/Circle-LineIntersection.html">Wolfram Mathworld</a>
-            /// </remarks>
+            /// <summary>Relations of a circle perimeter and a line.</summary>
+            /// <remarks><a href="https://mathworld.wolfram.com/Circle-LineIntersection.html">Wolfram Mathworld</a></remarks>
             public static class Line
             {
-                /// <summary>
-                /// Shortest distance between a circle perimeter and a line. Zero when the line intersects the circle.
-                /// </summary>
+                /// <summary>Shortest distance between a circle perimeter and a line. Zero when the line intersects the circle.</summary>
                 public static class Distance
                 {
-                    /// <summary>
-                    /// Distance between a perimeter of a circle centered in origin and a line in general form.
-                    /// </summary>
+                    /// <summary>Distance between a perimeter of a circle centered in origin and a line in general form.</summary>
                     public static N FromRadius<N>(N radius, (N A, N B, N C) line)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                     {
@@ -160,9 +122,7 @@ public static class Circle
                         return gap > N.Zero ? gap : N.Zero;
                     }
 
-                    /// <summary>
-                    /// Distance between a perimeter of a circle centered in <paramref name="center"/> and a line in general form.
-                    /// </summary>
+                    /// <summary>Distance between a perimeter of a circle centered in <paramref name="center"/> and a line in general form.</summary>
                     public static N FromRadius<N>((N X, N Y) center, N radius, (N A, N B, N C) line)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                     {
@@ -171,14 +131,10 @@ public static class Circle
                     }
                 }
 
-                /// <summary>
-                /// Intersection points of a circle perimeter and a line.
-                /// </summary>
+                /// <summary>Intersection points of a circle perimeter and a line.</summary>
                 public static class Intersection
                 {
-                    /// <summary>
-                    /// Intersection points of a perimeter of a circle centered in origin and a line in general form.
-                    /// </summary>
+                    /// <summary>Intersection points of a perimeter of a circle centered in origin and a line in general form.</summary>
                     /// <returns>
                     ///     null: the line does not reach the circle;
                     ///     two equal points: the line is tangent to the circle;
@@ -188,9 +144,7 @@ public static class Circle
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                         => FromRadius((N.Zero, N.Zero), radius, line);
 
-                    /// <summary>
-                    /// Intersection points of a perimeter of a circle centered in <paramref name="center"/> and a line in general form.
-                    /// </summary>
+                    /// <summary>Intersection points of a perimeter of a circle centered in <paramref name="center"/> and a line in general form.</summary>
                     /// <returns>
                     ///     null: the line does not reach the circle;
                     ///     two equal points: the line is tangent to the circle;
@@ -219,26 +173,18 @@ public static class Circle
                 }
             }
 
-            /// <summary>
-            /// Relations of a circle perimeter and another circle.
-            /// </summary>
+            /// <summary>Relations of a circle perimeter and another circle.</summary>
             public static class Circle
             {
-                /// <summary>
-                /// Shortest distance between two circle perimeters. Zero when the perimeters intersect.
-                /// </summary>
+                /// <summary>Shortest distance between two circle perimeters. Zero when the perimeters intersect.</summary>
                 public static class Distance
                 {
-                    /// <summary>
-                    /// Distance between a perimeter of a circle centered in origin and another circle.
-                    /// </summary>
+                    /// <summary>Distance between a perimeter of a circle centered in origin and another circle.</summary>
                     public static N FromRadius<N>(N radius, (N X, N Y) otherCenter, N otherRadius)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                         => FromRadius((N.Zero, N.Zero), radius, otherCenter, otherRadius);
 
-                    /// <summary>
-                    /// Distance between a perimeter of a circle centered in <paramref name="center"/> and another circle.
-                    /// </summary>
+                    /// <summary>Distance between a perimeter of a circle centered in <paramref name="center"/> and another circle.</summary>
                     public static N FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) otherCenter, N otherRadius)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                     {
@@ -251,17 +197,11 @@ public static class Circle
                     }
                 }
 
-                /// <summary>
-                /// Intersection points of two circle perimeters.
-                /// </summary>
-                /// <remarks>
-                /// <a href="https://mathworld.wolfram.com/Circle-CircleIntersection.html">Wolfram Mathworld</a>
-                /// </remarks>
+                /// <summary>Intersection points of two circle perimeters.</summary>
+                /// <remarks><a href="https://mathworld.wolfram.com/Circle-CircleIntersection.html">Wolfram Mathworld</a></remarks>
                 public static class Intersection
                 {
-                    /// <summary>
-                    /// Intersection points of a perimeter of a circle centered in origin and another circle.
-                    /// </summary>
+                    /// <summary>Intersection points of a perimeter of a circle centered in origin and another circle.</summary>
                     /// <returns>
                     ///     null: the circles do not meet, one contains the other, or they coincide;
                     ///     two equal points: the circles are tangent;
@@ -271,9 +211,7 @@ public static class Circle
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                         => FromRadius((N.Zero, N.Zero), radius, otherCenter, otherRadius);
 
-                    /// <summary>
-                    /// Intersection points of a perimeter of a circle centered in <paramref name="center"/> and another circle.
-                    /// </summary>
+                    /// <summary>Intersection points of a perimeter of a circle centered in <paramref name="center"/> and another circle.</summary>
                     /// <returns>
                     ///     null: the circles do not meet, one contains the other, or they coincide;
                     ///     two equal points: the circles are tangent;
@@ -310,17 +248,11 @@ public static class Circle
         }
     }
 
-    /// <summary>
-    /// Plane region enclosed by a circle.
-    /// </summary>
+    /// <summary>Plane region enclosed by a circle.</summary>
     public static class Region
     {
-        /// <summary>
-        /// Area of a plane region enclosed by circle.
-        /// </summary>
-        /// <remarks>
-        /// <a href="https://en.wikipedia.org/wiki/Area_of_a_circle">Wikipedia</a>
-        /// </remarks>
+        /// <summary>Area of a plane region enclosed by circle.</summary>
+        /// <remarks><a href="https://en.wikipedia.org/wiki/Area_of_a_circle">Wikipedia</a></remarks>
         public static class Area
         {
             public static N FromRadius<N>(N radius)
@@ -328,24 +260,16 @@ public static class Circle
                 => N.Pi * radius * radius;
         }
 
-        /// <summary>
-        /// Relations of a circle region and another geometric object.
-        /// </summary>
+        /// <summary>Relations of a circle region and another geometric object.</summary>
         public static class And
         {
-            /// <summary>
-            /// Relations of a circle region and a point.
-            /// </summary>
+            /// <summary>Relations of a circle region and a point.</summary>
             public static class Point
             {
-                /// <summary>
-                /// Shortest distance between a circle region and a point. Zero when the point lies inside the region.
-                /// </summary>
+                /// <summary>Shortest distance between a circle region and a point. Zero when the point lies inside the region.</summary>
                 public static class Distance
                 {
-                    /// <summary>
-                    /// Distance between a region of a circle centered in origin and a point.
-                    /// </summary>
+                    /// <summary>Distance between a region of a circle centered in origin and a point.</summary>
                     public static N FromRadius<N>(N radius, (N X, N Y) point)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                     {
@@ -353,9 +277,7 @@ public static class Circle
                         return gap > N.Zero ? gap : N.Zero;
                     }
 
-                    /// <summary>
-                    /// Distance between a region of a circle centered in <paramref name="center"/> and a point.
-                    /// </summary>
+                    /// <summary>Distance between a region of a circle centered in <paramref name="center"/> and a point.</summary>
                     public static N FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) point)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                     {
@@ -364,47 +286,33 @@ public static class Circle
                     }
                 }
 
-                /// <summary>
-                /// Determines whether a point lies inside a circle region (perimeter included).
-                /// </summary>
+                /// <summary>Determines whether a point lies inside a circle region (perimeter included).</summary>
                 public static class Intersection
                 {
-                    /// <summary>
-                    /// Determines whether a point lies inside a region of a circle centered in origin.
-                    /// </summary>
+                    /// <summary>Determines whether a point lies inside a region of a circle centered in origin.</summary>
                     public static bool FromRadius<N>(N radius, (N X, N Y) point)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                         => PT.Hypotenuse(point.X, point.Y) <= radius;
 
-                    /// <summary>
-                    /// Determines whether a point lies inside a region of a circle centered in <paramref name="center"/>.
-                    /// </summary>
+                    /// <summary>Determines whether a point lies inside a region of a circle centered in <paramref name="center"/>.</summary>
                     public static bool FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) point)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                         => PT.Hypotenuse(point.X - center.X, point.Y - center.Y) <= radius;
                 }
             }
 
-            /// <summary>
-            /// Relations of a circle region and another circle.
-            /// </summary>
+            /// <summary>Relations of a circle region and another circle.</summary>
             public static class Circle
             {
-                /// <summary>
-                /// Shortest distance between two circle regions. Zero when the regions overlap.
-                /// </summary>
+                /// <summary>Shortest distance between two circle regions. Zero when the regions overlap.</summary>
                 public static class Distance
                 {
-                    /// <summary>
-                    /// Distance between a region of a circle centered in origin and another circle.
-                    /// </summary>
+                    /// <summary>Distance between a region of a circle centered in origin and another circle.</summary>
                     public static N FromRadius<N>(N radius, (N X, N Y) otherCenter, N otherRadius)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                         => FromRadius((N.Zero, N.Zero), radius, otherCenter, otherRadius);
 
-                    /// <summary>
-                    /// Distance between a region of a circle centered in <paramref name="center"/> and another circle.
-                    /// </summary>
+                    /// <summary>Distance between a region of a circle centered in <paramref name="center"/> and another circle.</summary>
                     public static N FromRadius<N>((N X, N Y) center, N radius, (N X, N Y) otherCenter, N otherRadius)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                     {
@@ -416,14 +324,10 @@ public static class Circle
         }
     }
 
-    /// <summary>
-    /// Tangent line of a circle.
-    /// </summary>
+    /// <summary>Tangent line of a circle.</summary>
     public static class TangentLine
     {
-        /// <summary>
-        /// Get tangent line of a circle determined by center in origin and angle.
-        /// </summary>
+        /// <summary>Get tangent line of a circle determined by center in origin and angle.</summary>
         public static (N A, N B, N C) FromAngle<N>(N radius, N angle)
             where N : ITrigonometricFunctions<N>
             => (
@@ -432,9 +336,7 @@ public static class Circle
                 -(radius * radius));
     }
 
-    /// <summary>
-    /// Common point(s) of a circle and it's tangent line.
-    /// </summary>
+    /// <summary>Common point(s) of a circle and it's tangent line.</summary>
     public static class TangentPoint
     {
         public static ((N X, N Y) Point1, (N X, N Y) Point2)? FromPoint<N>(N radius, (N X, N Y) point)
@@ -462,18 +364,14 @@ public static class Circle
         }
     }
 
-    /// <summary>
-    /// Arc of a circle.
-    /// </summary>
+    /// <summary>Arc of a circle.</summary>
     /// <remarks>
     /// <a href="https://en.wikipedia.org/wiki/Circular_arc">Wikipedia</a>
     /// <a href="https://mathworld.wolfram.com/Arc.html">Wolfram Mathworld</a>
     /// </remarks>
     public static class Arc
     {
-        /// <summary>
-        /// Length of a circular arc.
-        /// </summary>
+        /// <summary>Length of a circular arc.</summary>
         public static class Length
         {
             public static N FromAngle<N>(N radius, N angle)
@@ -482,18 +380,14 @@ public static class Circle
         }
     }
 
-    /// <summary>
-    /// Chord of a circle.
-    /// </summary>
+    /// <summary>Chord of a circle.</summary>
     /// <remarks>
     /// <a href="https://en.wikipedia.org/wiki/Chord_(geometry)">Wikipedia</a>
     /// <a href="https://mathworld.wolfram.com/Chord.html">Wolfram Mathworld</a>
     /// </remarks>
     public static class Chord
     {
-        /// <summary>
-        /// The length of a chord of a circle.
-        /// </summary>
+        /// <summary>The length of a chord of a circle.</summary>
         public static class Length
         {
             public static N FromAngle<N>(N radius, N angle)
@@ -501,9 +395,7 @@ public static class Circle
                 => radius * N.CreateTruncating(2) * N.Sin(angle / N.CreateTruncating(2));
         }
 
-        /// <summary>
-        /// Sagitta of a circle determined by chord.
-        /// </summary>
+        /// <summary>Sagitta of a circle determined by chord.</summary>
         public static class Sagitta
         {
             public static N FromAngle<N>(N radius, N angle)
@@ -511,9 +403,7 @@ public static class Circle
                 => radius * (N.One - N.Cos(angle / N.CreateTruncating(2)));
         }
 
-        /// <summary>
-        /// Apothem of circle determined by chord.
-        /// </summary>
+        /// <summary>Apothem of circle determined by chord.</summary>
         public static class Apothem
         {
             public static N FromAngle<N>(N radius, N angle)
@@ -522,23 +412,17 @@ public static class Circle
         }
     }
 
-    /// <summary>
-    /// Sector of a circle or circular sector.
-    /// </summary>
+    /// <summary>Sector of a circle or circular sector.</summary>
     /// <remarks>
     /// <a href="https://en.wikipedia.org/wiki/Circular_sector">Wikipedia</a>
     /// <a href="https://mathworld.wolfram.com/CircularSector.html">Wolfram Mathworld</a>
     /// </remarks>
     public static class Sector
     {
-        /// <summary>
-        /// Perimeter of the circular sector.
-        /// </summary>
+        /// <summary>Perimeter of the circular sector.</summary>
         public static class Perimeter
         {
-            /// <summary>
-            /// Length of the perimeter (circumference) of the circular sector.
-            /// </summary>
+            /// <summary>Length of the perimeter (circumference) of the circular sector.</summary>
             public static class Length
             {
                 public static N FromAngle<N>(N radius, N angle)
@@ -551,14 +435,10 @@ public static class Circle
             }
         }
 
-        /// <summary>
-        /// Plane region enclosed by a circular sector.
-        /// </summary>
+        /// <summary>Plane region enclosed by a circular sector.</summary>
         public static class Region
         {
-            /// <summary>
-            /// The area of plane region enclosed by a circular sector.
-            /// </summary>
+            /// <summary>The area of plane region enclosed by a circular sector.</summary>
             public static class Area
             {
                 public static N FromArcAngle<N>(N radius, N arcAngle)
@@ -572,18 +452,14 @@ public static class Circle
         }
     }
 
-    /// <summary>
-    /// Segment of a circle or circular segment.
-    /// </summary>
+    /// <summary>Segment of a circle or circular segment.</summary>
     /// <remarks>
     /// <a href="https://en.wikipedia.org/wiki/Circular_segment">Wikipedia</a>
     /// <a href="https://mathworld.wolfram.com/CircularSegment.html">Wolfram Mathworld</a>
     /// </remarks>
     public static class Segment
     {
-        /// <summary>
-        /// Radius of a circular segment.
-        /// </summary>
+        /// <summary>Radius of a circular segment.</summary>
         public static class Radius
         {
             public static N FromSagittaAndChord<N>(N sagitta, N chordLength)
@@ -591,9 +467,7 @@ public static class Circle
                 => (sagitta / N.CreateTruncating(2)) + (chordLength * chordLength / (N.CreateTruncating(8) * sagitta));
         }
 
-        /// <summary>
-        /// Sagitta of a circular segment.
-        /// </summary>
+        /// <summary>Sagitta of a circular segment.</summary>
         public static class Sagitta
         {
             public static N FromAngle<N>(N radius, N angle)
@@ -601,9 +475,7 @@ public static class Circle
                 => radius * (N.One - N.Cos(angle / N.CreateTruncating(2)));
         }
 
-        /// <summary>
-        /// Apothem of a circular segment.
-        /// </summary>
+        /// <summary>Apothem of a circular segment.</summary>
         public static class Apothem
         {
             public static N FromAngle<N>(N radius, N angle)
@@ -611,14 +483,10 @@ public static class Circle
                 => radius * N.Cos(angle / N.CreateTruncating(2));
         }
 
-        /// <summary>
-        /// Perimeter of a circular segment.
-        /// </summary>
+        /// <summary>Perimeter of a circular segment.</summary>
         public static class Perimeter
         {
-            /// <summary>
-            /// Length of perimeter of a circular segment.
-            /// </summary>
+            /// <summary>Length of perimeter of a circular segment.</summary>
             public static class Length
             {
                 public static N FromAngle<N>(N radius, N angle)
@@ -627,14 +495,10 @@ public static class Circle
             }
         }
 
-        /// <summary>
-        /// Enclosed plane region of a circular segment.
-        /// </summary>
+        /// <summary>Enclosed plane region of a circular segment.</summary>
         public static class Region
         {
-            /// <summary>
-            /// The area of plane region enclosed by a circular segment.
-            /// </summary>
+            /// <summary>The area of plane region enclosed by a circular segment.</summary>
             public static class Area
             {
                 public static N FromAngle<N>(N radius, N angle)

@@ -2,12 +2,8 @@ using System.Numerics;
 
 namespace SMath.Statistics;
 
-/// <summary>
-/// Cubic mean.
-/// </summary>
-/// <remarks>
-/// <a href="https://en.wikipedia.org/wiki/Cubic_mean">Wikipedia</a>
-/// </remarks>
+/// <summary>Cubic mean.</summary>
+/// <remarks><a href="https://en.wikipedia.org/wiki/Cubic_mean">Wikipedia</a></remarks>
 public static class CubicMean
 {
     public static double Eval<N>(IEnumerable<N> sequence)

@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 
-/// <summary>
-/// Cramér's V, a measure of association between two nominal (categorical) sequences.
-/// </summary>
+/// <summary>Cramér's V, a measure of association between two nominal (categorical) sequences.</summary>
 /// <remarks>
 /// Derived from the Pearson chi-squared statistic of the contingency table.
 /// The result lies in the range [0, 1] and is unsigned, unlike the product-moment correlations.

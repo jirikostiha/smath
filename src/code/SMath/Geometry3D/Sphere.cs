@@ -19,9 +19,7 @@ public static class Sphere
 
     public static string PlainTextEquation => "(x - a)^2 + (y - b)^2 + (z - c)^2 = r^2";
 
-    /// <summary>
-    /// Radius of a sphere.
-    /// </summary>
+    /// <summary>Radius of a sphere.</summary>
     public static class Radius
     {
         public static N FromSurfaceArea<N>(N surface)
@@ -33,14 +31,10 @@ public static class Sphere
             => N.Cbrt(volume / (N.CreateChecked(4) / N.CreateChecked(3) * N.Pi));
     }
 
-    /// <summary>
-    /// Surface of a sphere.
-    /// </summary>
+    /// <summary>Surface of a sphere.</summary>
     public static class Surface
     {
-        /// <summary>
-        /// Surface area of a sphere.
-        /// </summary>
+        /// <summary>Surface area of a sphere.</summary>
         public static class Area
         {
             public static N FromRadius<N>(N radius)
@@ -48,9 +42,7 @@ public static class Sphere
                 => N.CreateChecked(4) * N.Pi * radius * radius;
         }
 
-        /// <summary>
-        /// Point on the surface of a sphere centered in origin.
-        /// </summary>
+        /// <summary>Point on the surface of a sphere centered in origin.</summary>
         public static class Point
         {
             public static N XFromAngles<N>(N radius, N polarAngle, N azimuth)
@@ -70,90 +62,62 @@ public static class Sphere
                 => GeometricVector3.Cartesian.FromSpherical(radius, polarAngle, azimuth);
         }
 
-        /// <summary>
-        /// Points on the surface of a sphere centered in origin.
-        /// </summary>
+        /// <summary>Points on the surface of a sphere centered in origin.</summary>
         public static class Points
         {
-            /// <summary>
-            /// Enumerating nearly evenly spread points on a golden angle spiral from the +z pole to the -z pole.
-            /// </summary>
+            /// <summary>Enumerating nearly evenly spread points on a golden angle spiral from the +z pole to the -z pole.</summary>
             public static IEnumerable<(N X, N Y, N Z)> FromRadius<N>(N radius, int count)
                 where N : IFloatingPointIeee754<N>
                 => SphereCap.Surface.Points.Spiral(radius, N.Pi, count);
         }
 
-        /// <summary>
-        /// Relations of a sphere surface and another geometric object.
-        /// </summary>
+        /// <summary>Relations of a sphere surface and another geometric object.</summary>
         public static class And
         {
-            /// <summary>
-            /// Relations of a sphere surface and a point.
-            /// </summary>
+            /// <summary>Relations of a sphere surface and a point.</summary>
             public static class Point
             {
-                /// <summary>
-                /// Shortest distance between a sphere surface and a point.
-                /// </summary>
+                /// <summary>Shortest distance between a sphere surface and a point.</summary>
                 public static class Distance
                 {
-                    /// <summary>
-                    /// Distance between a surface of a sphere centered in origin and a point.
-                    /// </summary>
+                    /// <summary>Distance between a surface of a sphere centered in origin and a point.</summary>
                     public static N FromRadius<N>(N radius, (N X, N Y, N Z) point)
                         where N : IRootFunctions<N>
                         => FromRadius((N.Zero, N.Zero, N.Zero), radius, point);
 
-                    /// <summary>
-                    /// Distance between a surface of a sphere centered in <paramref name="center"/> and a point.
-                    /// </summary>
+                    /// <summary>Distance between a surface of a sphere centered in <paramref name="center"/> and a point.</summary>
                     public static N FromRadius<N>((N X, N Y, N Z) center, N radius, (N X, N Y, N Z) point)
                         where N : IRootFunctions<N>
                         => N.Abs(GeometricVector3.Distance.FromCartesian(point, center) - radius);
                 }
 
-                /// <summary>
-                /// Determines whether a point lies on a sphere surface.
-                /// </summary>
+                /// <summary>Determines whether a point lies on a sphere surface.</summary>
                 public static class Intersection
                 {
-                    /// <summary>
-                    /// Determines whether a point lies on a surface of a sphere centered in origin.
-                    /// </summary>
+                    /// <summary>Determines whether a point lies on a surface of a sphere centered in origin.</summary>
                     public static bool FromRadius<N>(N radius, (N X, N Y, N Z) point)
                         where N : INumberBase<N>
                         => GeometricVector3.DotProduct.FromCartesian(point, point) == radius * radius;
 
-                    /// <summary>
-                    /// Determines whether a point lies on a surface of a sphere centered in <paramref name="center"/>.
-                    /// </summary>
+                    /// <summary>Determines whether a point lies on a surface of a sphere centered in <paramref name="center"/>.</summary>
                     public static bool FromRadius<N>((N X, N Y, N Z) center, N radius, (N X, N Y, N Z) point)
                         where N : INumberBase<N>
                         => FromRadius(radius, GeometricVector3.Direction.FromCartesian(center, point));
                 }
             }
 
-            /// <summary>
-            /// Relations of a sphere surface and a plane.
-            /// </summary>
+            /// <summary>Relations of a sphere surface and a plane.</summary>
             public static class Plane
             {
-                /// <summary>
-                /// Shortest distance between a sphere surface and a plane. Zero when the plane cuts the sphere.
-                /// </summary>
+                /// <summary>Shortest distance between a sphere surface and a plane. Zero when the plane cuts the sphere.</summary>
                 public static class Distance
                 {
-                    /// <summary>
-                    /// Distance between a surface of a sphere centered in origin and a plane in general form.
-                    /// </summary>
+                    /// <summary>Distance between a surface of a sphere centered in origin and a plane in general form.</summary>
                     public static N FromRadius<N>(N radius, (N A, N B, N C, N D) plane)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                         => FromRadius((N.Zero, N.Zero, N.Zero), radius, plane);
 
-                    /// <summary>
-                    /// Distance between a surface of a sphere centered in <paramref name="center"/> and a plane in general form.
-                    /// </summary>
+                    /// <summary>Distance between a surface of a sphere centered in <paramref name="center"/> and a plane in general form.</summary>
                     public static N FromRadius<N>((N X, N Y, N Z) center, N radius, (N A, N B, N C, N D) plane)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                     {
@@ -162,12 +126,8 @@ public static class Sphere
                     }
                 }
 
-                /// <summary>
-                /// Circle in which a plane cuts a sphere surface.
-                /// </summary>
-                /// <remarks>
-                /// <a href="https://en.wikipedia.org/wiki/Spherical_cap">Wikipedia</a>
-                /// </remarks>
+                /// <summary>Circle in which a plane cuts a sphere surface.</summary>
+                /// <remarks><a href="https://en.wikipedia.org/wiki/Spherical_cap">Wikipedia</a></remarks>
                 public static class Intersection
                 {
                     /// <summary>
@@ -206,26 +166,18 @@ public static class Sphere
                 }
             }
 
-            /// <summary>
-            /// Relations of a sphere surface and another sphere.
-            /// </summary>
+            /// <summary>Relations of a sphere surface and another sphere.</summary>
             public static class Sphere
             {
-                /// <summary>
-                /// Shortest distance between two sphere surfaces. Zero when the surfaces intersect.
-                /// </summary>
+                /// <summary>Shortest distance between two sphere surfaces. Zero when the surfaces intersect.</summary>
                 public static class Distance
                 {
-                    /// <summary>
-                    /// Distance between a surface of a sphere centered in origin and another sphere.
-                    /// </summary>
+                    /// <summary>Distance between a surface of a sphere centered in origin and another sphere.</summary>
                     public static N FromRadius<N>(N radius, (N X, N Y, N Z) otherCenter, N otherRadius)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                         => FromRadius((N.Zero, N.Zero, N.Zero), radius, otherCenter, otherRadius);
 
-                    /// <summary>
-                    /// Distance between a surface of a sphere centered in <paramref name="center"/> and another sphere.
-                    /// </summary>
+                    /// <summary>Distance between a surface of a sphere centered in <paramref name="center"/> and another sphere.</summary>
                     public static N FromRadius<N>((N X, N Y, N Z) center, N radius, (N X, N Y, N Z) otherCenter, N otherRadius)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                     {
@@ -238,17 +190,11 @@ public static class Sphere
                     }
                 }
 
-                /// <summary>
-                /// Circle in which two sphere surfaces intersect.
-                /// </summary>
-                /// <remarks>
-                /// <a href="https://mathworld.wolfram.com/Sphere-SphereIntersection.html">Wolfram Mathworld</a>
-                /// </remarks>
+                /// <summary>Circle in which two sphere surfaces intersect.</summary>
+                /// <remarks><a href="https://mathworld.wolfram.com/Sphere-SphereIntersection.html">Wolfram Mathworld</a></remarks>
                 public static class Intersection
                 {
-                    /// <summary>
-                    /// Circle in which a surface of a sphere centered in origin and another sphere intersect.
-                    /// </summary>
+                    /// <summary>Circle in which a surface of a sphere centered in origin and another sphere intersect.</summary>
                     /// <returns>
                     ///     null: the spheres do not meet, one contains the other, or they coincide;
                     ///     zero radius: the spheres are tangent;
@@ -258,9 +204,7 @@ public static class Sphere
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                         => FromRadius((N.Zero, N.Zero, N.Zero), radius, otherCenter, otherRadius);
 
-                    /// <summary>
-                    /// Circle in which a surface of a sphere centered in <paramref name="center"/> and another sphere intersect.
-                    /// </summary>
+                    /// <summary>Circle in which a surface of a sphere centered in <paramref name="center"/> and another sphere intersect.</summary>
                     /// <returns>
                     ///     null: the spheres do not meet, one contains the other, or they coincide;
                     ///     zero radius: the spheres are tangent;
@@ -288,14 +232,10 @@ public static class Sphere
         }
     }
 
-    /// <summary>
-    /// Ball region enclosed by a sphere.
-    /// </summary>
+    /// <summary>Ball region enclosed by a sphere.</summary>
     public static class Region
     {
-        /// <summary>
-        /// Enclosed volume of a sphere.
-        /// </summary>
+        /// <summary>Enclosed volume of a sphere.</summary>
         public static class Volume
         {
             public static N FromRadius<N>(N radius)
@@ -303,31 +243,21 @@ public static class Sphere
                 => N.CreateChecked(4) / N.CreateChecked(3) * N.Pi * radius * radius * radius;
         }
 
-        /// <summary>
-        /// Relations of a ball region and another geometric object.
-        /// </summary>
+        /// <summary>Relations of a ball region and another geometric object.</summary>
         public static class And
         {
-            /// <summary>
-            /// Relations of a ball region and a point.
-            /// </summary>
+            /// <summary>Relations of a ball region and a point.</summary>
             public static class Point
             {
-                /// <summary>
-                /// Shortest distance between a ball region and a point. Zero when the point lies inside the region.
-                /// </summary>
+                /// <summary>Shortest distance between a ball region and a point. Zero when the point lies inside the region.</summary>
                 public static class Distance
                 {
-                    /// <summary>
-                    /// Distance between a region of a sphere centered in origin and a point.
-                    /// </summary>
+                    /// <summary>Distance between a region of a sphere centered in origin and a point.</summary>
                     public static N FromRadius<N>(N radius, (N X, N Y, N Z) point)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                         => FromRadius((N.Zero, N.Zero, N.Zero), radius, point);
 
-                    /// <summary>
-                    /// Distance between a region of a sphere centered in <paramref name="center"/> and a point.
-                    /// </summary>
+                    /// <summary>Distance between a region of a sphere centered in <paramref name="center"/> and a point.</summary>
                     public static N FromRadius<N>((N X, N Y, N Z) center, N radius, (N X, N Y, N Z) point)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                     {
@@ -336,47 +266,33 @@ public static class Sphere
                     }
                 }
 
-                /// <summary>
-                /// Determines whether a point lies inside a ball region (surface included).
-                /// </summary>
+                /// <summary>Determines whether a point lies inside a ball region (surface included).</summary>
                 public static class Intersection
                 {
-                    /// <summary>
-                    /// Determines whether a point lies inside a region of a sphere centered in origin.
-                    /// </summary>
+                    /// <summary>Determines whether a point lies inside a region of a sphere centered in origin.</summary>
                     public static bool FromRadius<N>(N radius, (N X, N Y, N Z) point)
                         where N : INumberBase<N>, IComparisonOperators<N, N, bool>
                         => GeometricVector3.DotProduct.FromCartesian(point, point) <= radius * radius;
 
-                    /// <summary>
-                    /// Determines whether a point lies inside a region of a sphere centered in <paramref name="center"/>.
-                    /// </summary>
+                    /// <summary>Determines whether a point lies inside a region of a sphere centered in <paramref name="center"/>.</summary>
                     public static bool FromRadius<N>((N X, N Y, N Z) center, N radius, (N X, N Y, N Z) point)
                         where N : INumberBase<N>, IComparisonOperators<N, N, bool>
                         => FromRadius(radius, GeometricVector3.Direction.FromCartesian(center, point));
                 }
             }
 
-            /// <summary>
-            /// Relations of a ball region and another sphere.
-            /// </summary>
+            /// <summary>Relations of a ball region and another sphere.</summary>
             public static class Sphere
             {
-                /// <summary>
-                /// Shortest distance between two ball regions. Zero when the regions overlap.
-                /// </summary>
+                /// <summary>Shortest distance between two ball regions. Zero when the regions overlap.</summary>
                 public static class Distance
                 {
-                    /// <summary>
-                    /// Distance between a region of a sphere centered in origin and another sphere.
-                    /// </summary>
+                    /// <summary>Distance between a region of a sphere centered in origin and another sphere.</summary>
                     public static N FromRadius<N>(N radius, (N X, N Y, N Z) otherCenter, N otherRadius)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                         => FromRadius((N.Zero, N.Zero, N.Zero), radius, otherCenter, otherRadius);
 
-                    /// <summary>
-                    /// Distance between a region of a sphere centered in <paramref name="center"/> and another sphere.
-                    /// </summary>
+                    /// <summary>Distance between a region of a sphere centered in <paramref name="center"/> and another sphere.</summary>
                     public static N FromRadius<N>((N X, N Y, N Z) center, N radius, (N X, N Y, N Z) otherCenter, N otherRadius)
                         where N : IRootFunctions<N>, IComparisonOperators<N, N, bool>
                     {
@@ -385,12 +301,8 @@ public static class Sphere
                     }
                 }
 
-                /// <summary>
-                /// Volume shared by two ball regions, a lens of two spherical caps.
-                /// </summary>
-                /// <remarks>
-                /// <a href="https://mathworld.wolfram.com/Sphere-SphereIntersection.html">Wolfram Mathworld</a>
-                /// </remarks>
+                /// <summary>Volume shared by two ball regions, a lens of two spherical caps.</summary>
+                /// <remarks><a href="https://mathworld.wolfram.com/Sphere-SphereIntersection.html">Wolfram Mathworld</a></remarks>
                 public static class Overlap
                 {
                     /// <summary>
@@ -419,14 +331,10 @@ public static class Sphere
         }
     }
 
-    /// <summary>
-    /// Tangent plane of a sphere.
-    /// </summary>
+    /// <summary>Tangent plane of a sphere.</summary>
     public static class TangentPlane
     {
-        /// <summary>
-        /// Get tangent plane in general form of a sphere centered in origin at the surface point given by its angles.
-        /// </summary>
+        /// <summary>Get tangent plane in general form of a sphere centered in origin at the surface point given by its angles.</summary>
         public static (N A, N B, N C, N D) FromAngles<N>(N radius, N polarAngle, N azimuth)
             where N : ITrigonometricFunctions<N>
         {

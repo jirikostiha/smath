@@ -2,9 +2,7 @@
 
 namespace SMath.Statistics;
 
-/// <summary>
-/// Standard deviation.
-/// </summary>
+/// <summary>Standard deviation.</summary>
 /// <remarks>
 /// <a href="https://en.wikipedia.org/wiki/Standard_deviation">Wikipedia</a>
 /// <a href="https://mathworld.wolfram.com/StandardDeviation.html">Wolfram Mathworld</a>
@@ -15,9 +13,7 @@ public static class StandardDeviation
         where N : INumberBase<N>
         => double.Sqrt(double.CreateChecked(variance));
 
-    /// <summary>
-    /// Sample standard deviation.
-    /// </summary>
+    /// <summary>Sample standard deviation.</summary>
     public static class Sample
     {
         public static double Eval<N>(IEnumerable<N> sequence)
@@ -29,9 +25,7 @@ public static class StandardDeviation
             => FromVariance(Variance.Sample.Eval(sequence));
     }
 
-    /// <summary>
-    /// Population standard deviation.
-    /// </summary>
+    /// <summary>Population standard deviation.</summary>
     public static class Population
     {
         public static double Eval<N>(IEnumerable<N> sequence)
