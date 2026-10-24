@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1792605660560,
+  "lastUpdate": 1792838456360,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -612,6 +612,54 @@ window.BENCHMARK_DATA = {
             "value": 11408.563298906598,
             "unit": "ns",
             "range": "± 1.1071399979061478"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "de7245a385d739c24e5c63640a868a467070aaa1",
+          "message": "docs: compact XML doc comments and fix typos\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+          "timestamp": "2026-10-24T12:25:35+02:00",
+          "tree_id": "56d27769cfa26898285ef12fb153c7a682979808",
+          "url": "https://github.com/jirikostiha/smath/commit/de7245a385d739c24e5c63640a868a467070aaa1"
+        },
+        "date": 1792838455677,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power2_Eval",
+            "value": 14065.875079563686,
+            "unit": "ns",
+            "range": "± 4.2427245503385755"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power4_Eval",
+            "value": 15096.459533691406,
+            "unit": "ns",
+            "range": "± 4.504302393157997"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power6_Eval",
+            "value": 16486.751262119837,
+            "unit": "ns",
+            "range": "± 4.992944902483123"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power8_Eval",
+            "value": 16494.92330463116,
+            "unit": "ns",
+            "range": "± 12.004115503634933"
           }
         ]
       }
