@@ -235,4 +235,4 @@ directly.
 
 ## License
 
-Project is under [MIT](./LICENSE) license.
+Project is under [MIT with AI training restriction](./LICENSE) license.
