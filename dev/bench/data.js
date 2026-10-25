@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1792838456360,
+  "lastUpdate": 1792933051108,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -660,6 +660,54 @@ window.BENCHMARK_DATA = {
             "value": 16494.92330463116,
             "unit": "ns",
             "range": "± 12.004115503634933"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "befaf4f7fceb883dbecb8310137108525d5e01cb",
+          "message": "docs: LICENSE - forbid AI training\n\nAdd a clause that forbids training AI models on the source, and reserve\nthe text and data mining right under Article 4(3) of Directive 2019/790.\nPack LICENSE and reference it as PackageLicenseFile, because NuGet\notherwise reports the license as plain MIT.\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+          "timestamp": "2026-10-25T13:37:01+01:00",
+          "tree_id": "7e5801bf856da574d1796869b775e27085653b6c",
+          "url": "https://github.com/jirikostiha/smath/commit/befaf4f7fceb883dbecb8310137108525d5e01cb"
+        },
+        "date": 1792933050835,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power2_Eval",
+            "value": 11395.55699627216,
+            "unit": "ns",
+            "range": "± 1.761682602885573"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power4_Eval",
+            "value": 11402.0172391619,
+            "unit": "ns",
+            "range": "± 8.887978488087185"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power6_Eval",
+            "value": 11414.01624407087,
+            "unit": "ns",
+            "range": "± 3.1020847689875515"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power8_Eval",
+            "value": 11409.385083712064,
+            "unit": "ns",
+            "range": "± 1.3719454754465423"
           }
         ]
       }
