@@ -66,3 +66,6 @@ project.assets.json
 docs/web/_site/
 docs/web/api/*.yml
 docs/web/api/.manifest
+[Aa]rtifacts/
+.rtk/
+.claude/settings.local.json
