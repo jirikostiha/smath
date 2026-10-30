@@ -10,8 +10,23 @@ public static class Mode
     public static IEnumerable<N> Eval<N>(IEnumerable<N> numbers)
         where N : INumberBase<N>
     {
+        var counts = CountOccurrences(numbers, out int maxCount);
+
+        if (maxCount == 0) yield break;
+
+        foreach (var pair in counts)
+        {
+            if (pair.Value == maxCount)
+                yield return pair.Key;
+        }
+    }
+
+    // A ref local is not allowed in an iterator before C# 13, so the counting lives outside of Eval.
+    private static Dictionary<N, int> CountOccurrences<N>(IEnumerable<N> numbers, out int maxCount)
+        where N : INumberBase<N>
+    {
         var counts = new Dictionary<N, int>();
-        int maxCount = 0;
+        maxCount = 0;
 
         foreach (var val in numbers)
         {
@@ -22,13 +37,7 @@ public static class Mode
                 maxCount = count;
         }
 
-        if (maxCount == 0) yield break;
-
-        foreach (var pair in counts)
-        {
-            if (pair.Value == maxCount)
-                yield return pair.Key;
-        }
+        return counts;
     }
 
     public static IEnumerable<N> Eval<N>(ReadOnlySpan<N> numbers)

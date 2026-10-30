@@ -2,7 +2,6 @@
 
 	<!-- Common properties shared across all projects -->
 	<PropertyGroup>
-		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<Deterministic>true</Deterministic>
