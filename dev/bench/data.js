@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1792933051108,
+  "lastUpdate": 1793378311141,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -708,6 +708,54 @@ window.BENCHMARK_DATA = {
             "value": 11409.385083712064,
             "unit": "ns",
             "range": "± 1.3719454754465423"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "b6b5966a0b960f22402de9d1c74d70277d87bd97",
+          "message": "docs: readme - note target frameworks and the array overload ambiguity\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+          "timestamp": "2026-10-30T17:22:13+01:00",
+          "tree_id": "4cde4820d49bf96c7e153623b057bd9d5dd111d6",
+          "url": "https://github.com/jirikostiha/smath/commit/b6b5966a0b960f22402de9d1c74d70277d87bd97"
+        },
+        "date": 1793378310748,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power2_Eval",
+            "value": 11390.788924153645,
+            "unit": "ns",
+            "range": "± 2.564403917054224"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power4_Eval",
+            "value": 11376.37940343221,
+            "unit": "ns",
+            "range": "± 4.969755986144087"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power6_Eval",
+            "value": 11409.564543660481,
+            "unit": "ns",
+            "range": "± 2.0968280571683207"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power8_Eval",
+            "value": 11414.381687709263,
+            "unit": "ns",
+            "range": "± 0.9378435120974785"
           }
         ]
       }
