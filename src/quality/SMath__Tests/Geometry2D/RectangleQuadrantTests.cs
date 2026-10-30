@@ -24,7 +24,7 @@ public class RectangleQuadrantTests
     [InlineData(4, 0d, -4d)]  // bottom-right
     public void Quadrant_SingleNumber_HalvesSizeAndPicksQuadrant(int quadrant, double x, double y)
     {
-        var (origin, size) = Rectangle.Quadrant((10d, 8d), new[] { quadrant });
+        var (origin, size) = Rectangle.Quadrant((10d, 8d), new[] { quadrant }.AsSpan());
 
         Assert.Equal((x, y), origin);
         Assert.Equal((5d, 4d), size);
@@ -34,7 +34,7 @@ public class RectangleQuadrantTests
     public void Quadrant_NestedNumbers_DescendIntoEachInnerRectangle()
     {
         // top-right, then bottom-left of that, then top-right of that
-        var (origin, size) = Rectangle.Quadrant((8d, 8d), new[] { 1, 3, 1 });
+        var (origin, size) = Rectangle.Quadrant((8d, 8d), new[] { 1, 3, 1 }.AsSpan());
 
         // start centered: origin (-4,-4), size (8,8)
         // 1 -> origin (0,0),  size (4,4)
@@ -47,7 +47,7 @@ public class RectangleQuadrantTests
     [Fact]
     public void Quadrant_InnerRectangleStaysWithinTheOuterOne()
     {
-        var (origin, size) = Rectangle.Quadrant((4d, 4d), new[] { 2, 4 });
+        var (origin, size) = Rectangle.Quadrant((4d, 4d), new[] { 2, 4 }.AsSpan());
 
         // 2 (top-left) -> origin (-2,0), size (2,2)
         // 4 (bottom-right of that) -> origin (-1,0), size (1,1)
@@ -63,7 +63,7 @@ public class RectangleQuadrantTests
     {
         int[] path = [1, 4, 2, 3, 1];
 
-        var fromSpan = Rectangle.Quadrant((16d, 12d), path);
+        var fromSpan = Rectangle.Quadrant((16d, 12d), path.AsSpan());
         var fromEnumerable = Rectangle.Quadrant((16d, 12d), path.AsEnumerable());
 
         Assert.Equal(fromEnumerable.Origin, fromSpan.Origin);
@@ -84,7 +84,7 @@ public class RectangleQuadrantTests
     {
         // both overloads reject an out-of-range quadrant number
         Assert.Throws<ArgumentOutOfRangeException>(
-            () => Rectangle.Quadrant((1d, 1d), new[] { quadrant }));
+            () => Rectangle.Quadrant((1d, 1d), new[] { quadrant }.AsSpan()));
         Assert.Throws<ArgumentOutOfRangeException>(
             () => Rectangle.Quadrant((1d, 1d), new[] { quadrant }.AsEnumerable()));
     }

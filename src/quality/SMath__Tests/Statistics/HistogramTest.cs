@@ -11,7 +11,7 @@ public class HistogramTest
         var sequence = new[] { 0d };
         var bounds = new[] { 0d };
 
-        var bins = Histogram.GetExclusive<double, int>(sequence, bounds).ToArray();
+        var bins = Histogram.GetExclusive<double, int>(sequence.AsSpan(), bounds).ToArray();
 
         Assert.Equal(0, bins[0].Count);
         Assert.Equal(1, bins[1].Count);
@@ -23,7 +23,7 @@ public class HistogramTest
         var sequence = new[] { 0d };
         var bounds = new[] { 0d };
 
-        var bins = Histogram.GetInclusive<double, int>(sequence, bounds).ToArray();
+        var bins = Histogram.GetInclusive<double, int>(sequence.AsSpan(), bounds).ToArray();
 
         Assert.Equal(1, bins[0].Count);
         Assert.Equal(0, bins[1].Count);
@@ -35,7 +35,7 @@ public class HistogramTest
         var sequence = new[] { -3d, -2, -1, 0, 1, 2 };
         var bounds = new[] { -4d, -1, 1.5 };
 
-        var bins = Histogram.GetExclusive<double, int>(sequence, bounds).ToArray();
+        var bins = Histogram.GetExclusive<double, int>(sequence.AsSpan(), bounds).ToArray();
 
         Assert.Equal(0, bins[0].Count);
         Assert.Equal(2, bins[1].Count);

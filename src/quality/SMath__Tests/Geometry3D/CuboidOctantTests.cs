@@ -28,7 +28,7 @@ public class CuboidOctantTests
     [InlineData(8, 0d, -4d, -3d)]   // bottom, back-right
     public void Octant_SingleNumber_HalvesSizeAndPicksOctant(int octant, double x, double y, double z)
     {
-        var (origin, size) = Cuboid.Octant((10d, 8d, 6d), new[] { octant });
+        var (origin, size) = Cuboid.Octant((10d, 8d, 6d), new[] { octant }.AsSpan());
 
         Assert.Equal((x, y, z), origin);
         Assert.Equal((5d, 4d, 3d), size);
@@ -38,7 +38,7 @@ public class CuboidOctantTests
     public void Octant_NestedNumbers_DescendIntoEachInnerCuboid()
     {
         // top front-right, then bottom back-left of that, then top front-right of that
-        var (origin, size) = Cuboid.Octant((8d, 8d, 8d), new[] { 1, 7, 1 });
+        var (origin, size) = Cuboid.Octant((8d, 8d, 8d), new[] { 1, 7, 1 }.AsSpan());
 
         // start centered: origin (-4,-4,-4), size (8,8,8)
         // 1 -> origin (0,0,0),  size (4,4,4)
@@ -51,7 +51,7 @@ public class CuboidOctantTests
     [Fact]
     public void Octant_InnerCuboidStaysWithinTheOuterOne()
     {
-        var (origin, size) = Cuboid.Octant((4d, 4d, 4d), new[] { 2, 8 });
+        var (origin, size) = Cuboid.Octant((4d, 4d, 4d), new[] { 2, 8 }.AsSpan());
 
         // 2 (top, front-left) -> origin (-2,0,0), size (2,2,2)
         // 8 (bottom, back-right of that) -> origin (-1,0,0), size (1,1,1)
@@ -68,7 +68,7 @@ public class CuboidOctantTests
     {
         foreach (var octant in Enumerable.Range(1, 8))
         {
-            var (origin, size) = Cuboid.Octant((2d, 2d, 2d), new[] { octant });
+            var (origin, size) = Cuboid.Octant((2d, 2d, 2d), new[] { octant }.AsSpan());
 
             Assert.Equal((1d, 1d, 1d), size);
             Assert.True(Cuboid.Contains((-1d, -1d, -1d), (2d, 2d, 2d), origin));
@@ -83,7 +83,7 @@ public class CuboidOctantTests
     {
         int[] path = [1, 8, 5, 3, 7, 2];
 
-        var fromSpan = Cuboid.Octant((16d, 12d, 8d), path);
+        var fromSpan = Cuboid.Octant((16d, 12d, 8d), path.AsSpan());
         var fromEnumerable = Cuboid.Octant((16d, 12d, 8d), path.AsEnumerable());
 
         Assert.Equal(fromEnumerable.Origin, fromSpan.Origin);
@@ -104,7 +104,7 @@ public class CuboidOctantTests
     {
         // both overloads reject an out-of-range octant number
         Assert.Throws<ArgumentOutOfRangeException>(
-            () => Cuboid.Octant((1d, 1d, 1d), new[] { octant }));
+            () => Cuboid.Octant((1d, 1d, 1d), new[] { octant }.AsSpan()));
         Assert.Throws<ArgumentOutOfRangeException>(
             () => Cuboid.Octant((1d, 1d, 1d), new[] { octant }.AsEnumerable()));
     }

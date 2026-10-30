@@ -20,7 +20,7 @@ public class SpanOverloadParityTests
     public void Product_SpanMatchesEnumerable()
     {
         var fromEnumerable = Product.Eval(SampleA.AsEnumerable());
-        var fromSpan = Product.Eval<double>(SampleA);
+        var fromSpan = Product.Eval<double>(SampleA.AsSpan());
 
         Assert.Equal(fromEnumerable, fromSpan);
     }
@@ -28,7 +28,7 @@ public class SpanOverloadParityTests
     [Fact]
     public void Product_SpanReportsCount()
     {
-        var fromSpan = Product.Eval<double, int>(SampleA, out var spanCount);
+        var fromSpan = Product.Eval<double, int>(SampleA.AsSpan(), out var spanCount);
         var fromEnumerable = Product.Eval<double, int>(SampleA.AsEnumerable(), out var enumerableCount);
 
         Assert.Equal(SampleA.Length, spanCount);
@@ -50,7 +50,7 @@ public class SpanOverloadParityTests
         var used = bounds.Take(boundCount).ToArray();
 
         var fromEnumerable = Histogram.GetExclusive<double, int>(SampleA.AsEnumerable(), used);
-        var fromSpan = Histogram.GetExclusive<double, int>(SampleA, used);
+        var fromSpan = Histogram.GetExclusive<double, int>(SampleA.AsSpan(), used);
 
         Assert.Equal(fromEnumerable, fromSpan);
     }
@@ -65,7 +65,7 @@ public class SpanOverloadParityTests
         var used = bounds.Take(boundCount).ToArray();
 
         var fromEnumerable = Histogram.GetInclusive<double, int>(SampleA.AsEnumerable(), used);
-        var fromSpan = Histogram.GetInclusive<double, int>(SampleA, used);
+        var fromSpan = Histogram.GetInclusive<double, int>(SampleA.AsSpan(), used);
 
         Assert.Equal(fromEnumerable, fromSpan);
     }
@@ -74,7 +74,7 @@ public class SpanOverloadParityTests
     public void Histogram_SpanCountsSumUpToDataLength()
     {
         double[] bounds = [0d, 2.5, 6d];
-        var bins = Histogram.GetExclusive<double, int>(SampleA, bounds);
+        var bins = Histogram.GetExclusive<double, int>(SampleA.AsSpan(), bounds);
 
         Assert.Equal(SampleA.Length, bins.Sum(bin => bin.Count));
     }
@@ -83,42 +83,42 @@ public class SpanOverloadParityTests
     public void Variance_SampleSpanMatchesEnumerable()
         => Assert.Equal(
             Variance.Sample.Eval(SampleA.AsEnumerable()),
-            Variance.Sample.Eval<double>(SampleA),
+            Variance.Sample.Eval<double>(SampleA.AsSpan()),
             12);
 
     [Fact]
     public void Variance_PopulationSpanMatchesEnumerable()
         => Assert.Equal(
             Variance.Population.Eval(SampleA.AsEnumerable()),
-            Variance.Population.Eval<double>(SampleA),
+            Variance.Population.Eval<double>(SampleA.AsSpan()),
             12);
 
     [Fact]
     public void StandardDeviation_SampleSpanMatchesEnumerable()
         => Assert.Equal(
             StandardDeviation.Sample.Eval(SampleA.AsEnumerable()),
-            StandardDeviation.Sample.Eval<double>(SampleA),
+            StandardDeviation.Sample.Eval<double>(SampleA.AsSpan()),
             12);
 
     [Fact]
     public void StandardDeviation_SampleIsSquareRootOfVariance()
         => Assert.Equal(
-            Math.Sqrt(Variance.Sample.Eval<double>(SampleA)),
-            StandardDeviation.Sample.Eval<double>(SampleA),
+            Math.Sqrt(Variance.Sample.Eval<double>(SampleA.AsSpan())),
+            StandardDeviation.Sample.Eval<double>(SampleA.AsSpan()),
             12);
 
     [Fact]
     public void StandardDeviation_PopulationIsSquareRootOfVariance()
         => Assert.Equal(
-            Math.Sqrt(Variance.Population.Eval<double>(SampleA)),
-            StandardDeviation.Population.Eval<double>(SampleA),
+            Math.Sqrt(Variance.Population.Eval<double>(SampleA.AsSpan())),
+            StandardDeviation.Population.Eval<double>(SampleA.AsSpan()),
             12);
 
     [Fact]
     public void Covariance_SpanMatchesEnumerable()
     {
         var fromEnumerable = Covariance.Eval(SampleA.AsEnumerable(), SampleB.AsEnumerable(), out var count);
-        var fromSpan = Covariance.Eval<double>(SampleA, SampleB);
+        var fromSpan = Covariance.Eval<double>(SampleA.AsSpan(), SampleB.AsSpan());
 
         Assert.Equal(SampleA.Length, count);
         Assert.Equal(fromEnumerable, fromSpan, 12);
@@ -150,7 +150,7 @@ public class SpanOverloadParityTests
     public void PearsonCorrelation_SpanMatchesEnumerable()
         => Assert.Equal(
             PearsonCorrelation.Eval(SampleA.AsEnumerable(), SampleB.AsEnumerable()),
-            PearsonCorrelation.Eval<double>(SampleA, SampleB),
+            PearsonCorrelation.Eval<double>(SampleA.AsSpan(), SampleB.AsSpan()),
             12);
 
     [Fact]
@@ -165,7 +165,7 @@ public class SpanOverloadParityTests
     public void SpearmanRankCorrelation_SpanMatchesEnumerable()
         => Assert.Equal(
             SpearmanRankCorrelation.Eval(SampleA.AsEnumerable(), SampleB.AsEnumerable()),
-            SpearmanRankCorrelation.Eval<double>(SampleA, SampleB),
+            SpearmanRankCorrelation.Eval<double>(SampleA.AsSpan(), SampleB.AsSpan()),
             12);
 
     [Fact]
@@ -180,7 +180,7 @@ public class SpanOverloadParityTests
     public void KendallCorrelation_SpanMatchesEnumerable()
         => Assert.Equal(
             KendallCorrelation.Eval(SampleA.AsEnumerable(), SampleB.AsEnumerable()),
-            KendallCorrelation.Eval<double>(SampleA, SampleB),
+            KendallCorrelation.Eval<double>(SampleA.AsSpan(), SampleB.AsSpan()),
             12);
 
     [Fact]
@@ -195,7 +195,7 @@ public class SpanOverloadParityTests
     public void CramerCorrelation_SpanMatchesEnumerable()
         => Assert.Equal(
             CramerCorrelation.Eval(SampleA.AsEnumerable(), SampleB.AsEnumerable()),
-            CramerCorrelation.Eval<double>(SampleA, SampleB),
+            CramerCorrelation.Eval<double>(SampleA.AsSpan(), SampleB.AsSpan()),
             12);
 
     [Fact]
@@ -212,7 +212,7 @@ public class SpanOverloadParityTests
         foreach (var lag in new[] { -3, -1, 0, 1, 3 })
         {
             var fromList = PearsonCorrelation.EvalPerf(SampleA, SampleB, lag);
-            var fromSpan = PearsonCorrelation.EvalPerf<double, int>(SampleA, SampleB, lag);
+            var fromSpan = PearsonCorrelation.EvalPerf<double, int>(SampleA.AsSpan(), SampleB.AsSpan(), lag);
 
             Assert.Equal(fromList, fromSpan, 12);
         }
