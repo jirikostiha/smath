@@ -44,7 +44,13 @@ next to `IEnumerable<T>`, avoiding enumerator allocation and interface dispatch 
 Coordinate generators additionally offer buffer filling overloads, so a caller can size a
 buffer with the matching count helper and reuse or `stackalloc` it.
 
+Passing an array to a method that has both overloads is ambiguous before C# 14 (error
+`CS0121`). Pick the overload by the argument type, for example `values.AsSpan()` for the
+span overload or `values.AsEnumerable()` for the sequence one.
+
 ## Installation
+
+The package targets `net8.0` and `net10.0`.
 
 ```sh
 dotnet add package SMath
