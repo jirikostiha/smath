@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1793378311141,
+  "lastUpdate": 1793381497942,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -756,6 +756,54 @@ window.BENCHMARK_DATA = {
             "value": 11414.381687709263,
             "unit": "ns",
             "range": "± 0.9378435120974785"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "b3a30a20bb852811075b543bb8ea7f8739d6194d",
+          "message": "build: enable package validation\n\nChecks the multi-target package for inconsistent runtime assets after pack. No baseline version yet: against 1.6.0 the dropped net7.0 target fails with PKV006. Add PackageValidationBaselineVersion after the first release with net8.0 and net10.0.\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+          "timestamp": "2026-10-30T18:13:33+01:00",
+          "tree_id": "eafd78774c9de62536ec82c215b25ed8af7b955e",
+          "url": "https://github.com/jirikostiha/smath/commit/b3a30a20bb852811075b543bb8ea7f8739d6194d"
+        },
+        "date": 1793381497661,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power2_Eval",
+            "value": 11392.448763166156,
+            "unit": "ns",
+            "range": "± 3.8739027759305986"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power4_Eval",
+            "value": 11383.034415611854,
+            "unit": "ns",
+            "range": "± 5.783879750719504"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power6_Eval",
+            "value": 11417.561514282226,
+            "unit": "ns",
+            "range": "± 2.2324887235158446"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power8_Eval",
+            "value": 11408.388626098633,
+            "unit": "ns",
+            "range": "± 12.895500402454266"
           }
         ]
       }
