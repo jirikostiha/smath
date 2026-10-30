@@ -45,6 +45,7 @@ public static class Mode
     {
         if (numbers.Length == 0) return Array.Empty<N>();
 
+        // TODO: duplicates the counting of CountOccurrences; a span cannot be passed as IEnumerable<N>, so it is not shared yet.
         var counts = new Dictionary<N, int>();
         int maxCount = 0;
 
