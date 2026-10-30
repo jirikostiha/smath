@@ -9,7 +9,7 @@ public static class Moment
     public static double Eval<N>(IEnumerable<N> sequence, int degree)
         where N : INumberBase<N>
     {
-        if (degree < 1) throw new ArgumentOutOfRangeException(nameof(degree));
+        ArgumentOutOfRangeException.ThrowIfLessThan(degree, 1);
 
         // the mean and the deviations need two passes over the data, so a sequence which
         // cannot be enumerated twice is buffered instead of being walked a second time
@@ -31,7 +31,7 @@ public static class Moment
     public static double Eval<N>(ReadOnlySpan<N> sequence, int degree)
         where N : INumberBase<N>
     {
-        if (degree < 1) throw new ArgumentOutOfRangeException(nameof(degree));
+        ArgumentOutOfRangeException.ThrowIfLessThan(degree, 1);
         if (sequence.Length == 0) return double.NaN;
 
         var mean = ArithmeticMean.Eval(sequence);
@@ -54,7 +54,7 @@ public static class StandardizedMoment
     public static double Eval<N>(IEnumerable<N> sequence, int degree)
         where N : INumberBase<N>
     {
-        if (degree < 1) throw new ArgumentOutOfRangeException(nameof(degree));
+        ArgumentOutOfRangeException.ThrowIfLessThan(degree, 1);
 
         var list = sequence as IReadOnlyList<N> ?? sequence.ToArray();
         if (list.Count == 0) return double.NaN;
@@ -87,7 +87,7 @@ public static class StandardizedMoment
     public static double Eval<N>(ReadOnlySpan<N> sequence, int degree)
         where N : INumberBase<N>
     {
-        if (degree < 1) throw new ArgumentOutOfRangeException(nameof(degree));
+        ArgumentOutOfRangeException.ThrowIfLessThan(degree, 1);
         if (sequence.Length == 0) return double.NaN;
 
         var mean = ArithmeticMean.Eval(sequence);

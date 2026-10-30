@@ -31,6 +31,19 @@ public class MomentsAndKurtosisTest
         Assert.Equal(1.0, StandardizedMoment.Eval(data, 2), 6);
     }
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void Moments_DegreeBelowOne_ThrowsArgumentOutOfRange(int degree)
+    {
+        var data = new double[] { 1, 2, 3, 4, 5 };
+
+        Assert.Equal("degree", Assert.Throws<ArgumentOutOfRangeException>(() => { _ = Moment.Eval((IEnumerable<double>)data, degree); }).ParamName);
+        Assert.Equal("degree", Assert.Throws<ArgumentOutOfRangeException>(() => { _ = Moment.Eval(new ReadOnlySpan<double>(data), degree); }).ParamName);
+        Assert.Equal("degree", Assert.Throws<ArgumentOutOfRangeException>(() => { _ = StandardizedMoment.Eval((IEnumerable<double>)data, degree); }).ParamName);
+        Assert.Equal("degree", Assert.Throws<ArgumentOutOfRangeException>(() => { _ = StandardizedMoment.Eval(new ReadOnlySpan<double>(data), degree); }).ParamName);
+    }
+
     [Fact]
     public void Skewness_SymmetricDistribution_IsZero()
     {
