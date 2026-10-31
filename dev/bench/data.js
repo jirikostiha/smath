@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1793445791060,
+  "lastUpdate": 1793454406134,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -852,6 +852,54 @@ window.BENCHMARK_DATA = {
             "value": 11416.916946411133,
             "unit": "ns",
             "range": "± 2.3909405418753122"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "e052095a547cdc08380dcf6c9375e46e6264141f",
+          "message": "product: bump to version 1.7.0",
+          "timestamp": "2026-10-31T14:28:25+01:00",
+          "tree_id": "7b3448fbd473acf34ebb9bf1eb7a41084171b707",
+          "url": "https://github.com/jirikostiha/smath/commit/e052095a547cdc08380dcf6c9375e46e6264141f"
+        },
+        "date": 1793454405760,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power2_Eval",
+            "value": 11392.665645345052,
+            "unit": "ns",
+            "range": "± 4.607047200166619"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power4_Eval",
+            "value": 11376.885687607984,
+            "unit": "ns",
+            "range": "± 6.193177995029227"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power6_Eval",
+            "value": 11414.992131159855,
+            "unit": "ns",
+            "range": "± 2.693896781419361"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power8_Eval",
+            "value": 11420.610014695387,
+            "unit": "ns",
+            "range": "± 15.225325539404633"
           }
         ]
       }
