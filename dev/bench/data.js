@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1793381497942,
+  "lastUpdate": 1793445791060,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -804,6 +804,54 @@ window.BENCHMARK_DATA = {
             "value": 11408.388626098633,
             "unit": "ns",
             "range": "± 12.895500402454266"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "50e4d9fdf861227fac2bbe0510f9355e087680e8",
+          "message": "feat: CylindricalShell - thickness, surface area and volume of a thick-walled tube",
+          "timestamp": "2026-10-31T12:02:47+01:00",
+          "tree_id": "f9b86415fe22de9f157a0ab39a5ccd3b9b2282b8",
+          "url": "https://github.com/jirikostiha/smath/commit/50e4d9fdf861227fac2bbe0510f9355e087680e8"
+        },
+        "date": 1793445790531,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power2_Eval",
+            "value": 11389.284957885742,
+            "unit": "ns",
+            "range": "± 2.4370339999507533"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power4_Eval",
+            "value": 11378.07369014195,
+            "unit": "ns",
+            "range": "± 4.04114700827492"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power6_Eval",
+            "value": 11410.945802815755,
+            "unit": "ns",
+            "range": "± 1.8925926376592486"
+          },
+          {
+            "name": "SMath.Benchmarks.PowerFunctions_Benchmark.Power8_Eval",
+            "value": 11416.916946411133,
+            "unit": "ns",
+            "range": "± 2.3909405418753122"
           }
         ]
       }
