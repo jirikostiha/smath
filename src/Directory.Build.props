@@ -25,8 +25,8 @@
 
 	<!-- Output paths -->
 	<PropertyGroup>
-		<BaseOutputPath>..\..\..\artf\$(MSBuildProjectName)\bin\</BaseOutputPath>
-		<BaseIntermediateOutputPath>..\..\..\artf\$(MSBuildProjectName)\obj\</BaseIntermediateOutputPath>
+		<BaseOutputPath>$(MSBuildThisFileDirectory)..\artf\$(MSBuildProjectName)\bin\</BaseOutputPath>
+		<BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)..\artf\$(MSBuildProjectName)\obj\</BaseIntermediateOutputPath>
 	</PropertyGroup>
 
 </Project>
