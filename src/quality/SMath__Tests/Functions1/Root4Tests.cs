@@ -71,6 +71,18 @@ public class Root4Tests
         Assert.Equal(expected, Root4.Eval(x), 6);
     }
 
+    [Theory]
+    [InlineData(-1d, double.NaN)]
+    [InlineData(double.NaN, double.NaN)]
+    [InlineData(double.PositiveInfinity, double.PositiveInfinity)]
+    [InlineData(81d, 3d)]
+    [InlineData(1e300, 1e75)]
+    public void Eval_EdgeValues_MatchRootN(double x, double expected)
+    {
+        Assert.Equal(expected, Root4.Eval(x));
+        Assert.Equal(double.RootN(x, 4), Root4.Eval(x));
+    }
+
     [Fact]
     public void Eval_IsInverseOfPower4()
     {

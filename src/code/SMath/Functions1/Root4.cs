@@ -54,11 +54,13 @@ public class Root4 : IMathFunction, ISingleDomain, ISingleImage
         => N.Zero;
 
     /// <inheritdoc />
+    // For performance: two square roots are about ten times faster than RootN for double and float,
+    // at the cost of an error of up to 1 ulp instead of a correctly rounded result.
     public static N Eval<N>(N x)
         where N : IRootFunctions<N>
-        => N.RootN(x, 4);
+        => N.Sqrt(N.Sqrt(x));
 
     public static N DerivativeEval<N>(N x)
         where N : IRootFunctions<N>
-        => N.One / (N.CreateChecked(4) * Power3.Eval(N.RootN(x, 4)));
+        => N.One / (N.CreateChecked(4) * Power3.Eval(Eval(x)));
 }
