@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1793454406134,
+  "lastUpdate": 1794906137805,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -900,6 +900,48 @@ window.BENCHMARK_DATA = {
             "value": 11420.610014695387,
             "unit": "ns",
             "range": "± 15.225325539404633"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "0164455ace7adce5cc216336283b06000b690f89",
+          "message": "perf: Root4 - evaluate as two square roots\n\n- about 13x faster than RootN\n- test edge values against RootN\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+          "timestamp": "2026-11-17T09:44:42+01:00",
+          "tree_id": "4c1d5f846f21fb2c11703676ace933aed3e62913",
+          "url": "https://github.com/jirikostiha/smath/commit/0164455ace7adce5cc216336283b06000b690f89"
+        },
+        "date": 1794906137340,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Benchmarks.Determinant_Benchmark.Determinant_2x2_FromCells",
+            "value": 9431.33196512858,
+            "unit": "ns",
+            "range": "± 15.668439350692791"
+          },
+          {
+            "name": "SMath.Benchmarks.Determinant_Benchmark.Determinant_2x2_FromRows",
+            "value": 8639.152795410157,
+            "unit": "ns",
+            "range": "± 19.141710458435995"
+          },
+          {
+            "name": "SMath.Benchmarks.Determinant_Benchmark.Determinant_3x3_FromCells",
+            "value": 24009.463456217447,
+            "unit": "ns",
+            "range": "± 35.74288463381104"
           }
         ]
       }
