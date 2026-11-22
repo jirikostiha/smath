@@ -31,7 +31,6 @@ jobs:
       configuration: Release
       ref: ${{ inputs.tag || github.ref }}
       artifacts: true
-      binaries-path: artf/SMath/bin
 
   publish:
     needs: build

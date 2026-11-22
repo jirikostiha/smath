@@ -22,7 +22,6 @@ jobs:
       format-check: true # reports dotnet format issues on the released ref (non-blocking)
       ref: ${{ inputs.tag || github.ref_name }}
       artifacts: true
-      binaries-path: artf/SMath/bin
 
   benchmark:
     needs: build
@@ -52,7 +51,7 @@ jobs:
       contents: write
     with:
       tag: ${{ inputs.tag || github.ref_name }}
-      product-name: SMath
+      attach-binaries: false # a library: the NuGet package carries the binaries
 
   publish: # last: a nuget.org push cannot be undone, so it waits for the GitHub release
     needs: release
