@@ -2,14 +2,6 @@ name: Code Lint
 
 on:
   workflow_dispatch:
-  workflow_call: # release gate
-    inputs:
-      check-only:
-        type: boolean
-        default: false
-      ref:
-        type: string
-        default: ""
   pull_request:
     branches: ["rel/**", "release/**"]
     paths:
@@ -26,6 +18,4 @@ jobs:
       contents: write
       checks: write
     with:
-      check-only: ${{ inputs.check-only || false }}
-      ref: ${{ inputs.ref }}
       dir: src
