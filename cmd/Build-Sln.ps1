@@ -1,3 +1,5 @@
+#Requires -Version 7
+
 <#
 .SYNOPSIS
 Builds the repository solution.
@@ -28,7 +30,7 @@ name: Build-Sln
 kind: cmd
 description: Builds the repository solution with dotnet build. Use to compile the whole repository locally.
 profiles: [dotnet]
-version: 2.4.0
+version: 2.4.2
 ---#>
 # PositionalBinding off: -Configuration and -Solution bind only by name, so a bare
 # argument such as --no-build reaches $AdditionalArgs instead of a parameter slot.
@@ -47,6 +49,15 @@ Write-Verbose ("Building solution: {0}" -f $slnPath)
 
 # Quiet on success, real compiler errors on failure; -Verbose / -Debug raise the level.
 $verbosityArgs = Get-DotnetVerbosityArgs -NoLogo
-Invoke-Tool -FilePath "dotnet" `
-    -Arguments (@("build", $slnPath, "-c", $Configuration) + $verbosityArgs + $AdditionalArgs) `
-    -FailReason Build -FailMessage "dotnet build failed"
+
+# dotnet picks its SDK from the global.json nearest its working directory, so run it
+# from the solution's folder; the caller's location is restored afterwards.
+Push-Location -LiteralPath (Split-Path -Parent $slnPath)
+try {
+    Invoke-Tool -FilePath "dotnet" `
+        -Arguments (@("build", $slnPath, "-c", $Configuration) + $verbosityArgs + $AdditionalArgs) `
+        -FailReason Build -FailMessage "dotnet build failed"
+}
+finally {
+    Pop-Location
+}

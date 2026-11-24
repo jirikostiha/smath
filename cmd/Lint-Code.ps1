@@ -1,3 +1,5 @@
+#Requires -Version 7
+
 <#
 .SYNOPSIS
 Formats source code to match the editorconfig settings.
@@ -26,7 +28,7 @@ name: Lint-Code
 kind: cmd
 description: Formats the solution with dotnet format, or verifies formatting without changing files.
 profiles: [dotnet]
-version: 2.3.0
+version: 2.3.2
 ---#>
 [CmdletBinding()]
 param(
@@ -41,15 +43,23 @@ try { $slnPath = Get-SolutionPath -Path $Solution } catch { Stop-Script -Reason 
 # Quiet on success, the offending files on failure; -Verbose / -Debug raise the level.
 $verbosityArgs = Get-DotnetVerbosityArgs
 
-if ($Verify) {
-    Write-Verbose ("Verifying code formatting for: {0}" -f $slnPath)
-    Invoke-Tool -FilePath "dotnet" `
-        -Arguments (@("format", $slnPath, "--verify-no-changes") + $verbosityArgs) `
-        -FailReason Lint -FailMessage "code formatting violations found"
+# dotnet picks its SDK from the global.json nearest its working directory, so run it
+# from the solution's folder; the caller's location is restored afterwards.
+Push-Location -LiteralPath (Split-Path -Parent $slnPath)
+try {
+    if ($Verify) {
+        Write-Verbose ("Verifying code formatting for: {0}" -f $slnPath)
+        Invoke-Tool -FilePath "dotnet" `
+            -Arguments (@("format", $slnPath, "--verify-no-changes") + $verbosityArgs) `
+            -FailReason Lint -FailMessage "code formatting violations found"
+    }
+    else {
+        Write-Verbose ("Formatting code for: {0}" -f $slnPath)
+        Invoke-Tool -FilePath "dotnet" `
+            -Arguments (@("format", $slnPath) + $verbosityArgs) `
+            -FailReason Lint -FailMessage "dotnet format failed"
+    }
 }
-else {
-    Write-Verbose ("Formatting code for: {0}" -f $slnPath)
-    Invoke-Tool -FilePath "dotnet" `
-        -Arguments (@("format", $slnPath) + $verbosityArgs) `
-        -FailReason Lint -FailMessage "dotnet format failed"
+finally {
+    Pop-Location
 }

@@ -1,3 +1,5 @@
+#Requires -Version 7
+
 <#
 .SYNOPSIS
 Removes Git merge leftovers.
@@ -22,7 +24,7 @@ Lists the files that would be removed without touching them.
 name: Clean-OrigFiles
 kind: cmd
 description: Removes the .orig files Git leaves behind after a conflicted merge. Supports -WhatIf and -Root.
-version: 2.0
+version: 2.0.1
 ---#>
 [CmdletBinding(SupportsShouldProcess)]
 param(

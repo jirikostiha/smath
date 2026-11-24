@@ -1,3 +1,5 @@
+#Requires -Version 7
+
 <#
 .SYNOPSIS
 Removes TestResults folders.
@@ -23,7 +25,7 @@ name: Clean-TestResults
 kind: cmd
 description: Removes the TestResults folders that accumulate from repeated test runs. Supports -WhatIf.
 profiles: [dotnet]
-version: 2.0
+version: 2.0.1
 ---#>
 [CmdletBinding(SupportsShouldProcess)]
 param(

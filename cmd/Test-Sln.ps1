@@ -1,3 +1,5 @@
+#Requires -Version 7
+
 <#
 .SYNOPSIS
 Runs the solution's tests with dotnet test.
@@ -41,7 +43,7 @@ name: Test-Sln
 kind: cmd
 description: Runs the whole test suite with dotnet test on the solution. Use to verify a solution-based repository before committing or releasing; for a repository without a solution use Test-Csprojs.
 profiles: [dotnet]
-version: 2.6.0
+version: 2.6.1
 ---#>
 # PositionalBinding off: -Configuration and -Solution bind only by name, so a bare
 # argument such as --no-build reaches $AdditionalArgs instead of a parameter slot.

@@ -1,3 +1,5 @@
+#Requires -Version 7
+
 <#
 .SYNOPSIS
 Bumps the product version and sets the stage suffix.
@@ -42,7 +44,7 @@ name: Bump-Version
 kind: cmd
 description: Increments the product version and sets or clears the stage suffix. Use when preparing a release.
 profiles: [dotnet]
-version: 2.0.1
+version: 2.0.2
 ---#>
 [CmdletBinding(SupportsShouldProcess)]
 param(

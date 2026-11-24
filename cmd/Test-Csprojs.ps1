@@ -1,3 +1,5 @@
+#Requires -Version 7
+
 <#
 .SYNOPSIS
     Discovers C# test projects, scans initial test counts, compiles them one at a time and runs
@@ -18,6 +20,8 @@
     (e.g. a single [Theory] with multiple [InlineData] rows counts as one).
     Commented-out attributes are ignored.
 
+    Finding no test project at all is a precondition error (exit 3), not a pass.
+
     A project whose own file shows no test reference is evaluated with MSBuild (no restore
     needed), so test references added by a Directory.Build.props or .targets count too.
 
@@ -33,7 +37,7 @@ name: Test-Csprojs
 kind: cmd
 description: Discovers C# test projects and runs them in parallel with per-project build and test timing. The default test runner; needs no solution file. Use Test-Sln for solution-level dotnet test.
 profiles: [dotnet]
-version: 2.4.0
+version: 2.4.4
 ---#>
 [CmdletBinding()]
 param(
@@ -111,37 +115,46 @@ function Test-EvaluatedTestProject {
     return $false
 }
 
-$testProjects = @(foreach ($proj in $projectFiles) {
-    try {
-        [xml]$xml = Get-Content $proj.FullName -Raw
-    }
-    catch {
-        Write-Host "${cYellow}Warning: skipping unreadable/invalid project '$($proj.FullName)': $($_.Exception.Message)${cReset}"
-        continue
-    }
-
-    $refValues = @(
-        ($xml.SelectNodes('//PackageReference/@Include') | ForEach-Object { $_.Value })
-        ($xml.SelectNodes('//ProjectReference/@Include') | ForEach-Object { $_.Value })
-    )
-
-    $isTest = @($refValues | Where-Object { $_ -match $testRefPattern }).Count -gt 0
-    if (-not $isTest) {
-        $evaluatedVerdict = Test-EvaluatedTestProject -ProjectPath $proj.FullName -RefPattern $testRefPattern
-        if ($null -eq $evaluatedVerdict) {
-            Write-Host "${cYellow}Warning: could not evaluate '$($proj.FullName)'; judged by its project file only.${cReset}"
+# dotnet msbuild picks its SDK from the nearest global.json, so evaluate from the root,
+# like the builds below; the caller's location is restored afterwards.
+Push-Location -LiteralPath $resolvedRoot
+try {
+    $testProjects = @(foreach ($proj in $projectFiles) {
+        try {
+            [xml]$xml = Get-Content $proj.FullName -Raw
         }
-        $isTest = $evaluatedVerdict -eq $true
-    }
-    if ($isTest) {
-        $proj
-    }
-})
+        catch {
+            Write-Host "${cYellow}Warning: skipping unreadable/invalid project '$($proj.FullName)': $($_.Exception.Message)${cReset}"
+            continue
+        }
+
+        $refValues = @(
+            ($xml.SelectNodes('//PackageReference/@Include') | ForEach-Object { $_.Value })
+            ($xml.SelectNodes('//ProjectReference/@Include') | ForEach-Object { $_.Value })
+        )
+
+        $isTest = @($refValues | Where-Object { $_ -match $testRefPattern }).Count -gt 0
+        if (-not $isTest) {
+            $evaluatedVerdict = Test-EvaluatedTestProject -ProjectPath $proj.FullName -RefPattern $testRefPattern
+            if ($null -eq $evaluatedVerdict) {
+                Write-Host "${cYellow}Warning: could not evaluate '$($proj.FullName)'; judged by its project file only.${cReset}"
+            }
+            $isTest = $evaluatedVerdict -eq $true
+        }
+        if ($isTest) {
+            $proj
+        }
+    })
+}
+finally {
+    Pop-Location
+}
 
 $totalProjects = @($testProjects).Count
 if ($totalProjects -eq 0) {
-    Write-Host "${cYellow}No test projects found.${cReset}`n"
-    exit 0
+    # Not a pass: a wrong RootPath, or test projects hidden by the discovery exclusions,
+    # would otherwise let a release gate through with nothing tested.
+    Stop-Script -Reason Precondition -Message "No test projects found under '$RootPath'."
 }
 
 # --- LIST DISCOVERED TEST PROJECTS WITH ESTIMATED TEST COUNTS ---
@@ -529,7 +542,9 @@ try {
         $failedTestCount  = @($tests | Where-Object { $_.Outcome -eq 'Failed' }).Count
         $skippedTestCount = @($tests | Where-Object { $_.Outcome -in @('NotExecuted', 'Ignored', 'Skipped') }).Count
 
-        $status = if ($testRun.ExitCode -ne 0 -or $failedTestCount -gt 0) {
+        # MTP exits 8 when a project has no tests; that is NoTests, not a failure.
+        $noTestsExit = $isMtp -and $testRun.ExitCode -eq 8 -and $totalTestCount -eq 0
+        $status = if (($testRun.ExitCode -ne 0 -and -not $noTestsExit) -or $failedTestCount -gt 0) {
             "Failed"
         } elseif ($totalTestCount -eq 0) {
             "NoTests"
@@ -692,6 +707,8 @@ try {
     $totalTests     = (@($results | ForEach-Object { $_.Total }) | Measure-Object -Sum).Sum
     $totalBuildErrs = $buildFailures.Count
     $totalTimedOut  = $timedOutProjects.Count
+    # Per project, not per test: a test host that crashes before writing the TRX fails with no failed test.
+    $failedProjects = @($results | Where-Object { $_.Status -eq 'Failed' }).Count
 
     Write-Host "`n${cBold}--- EXECUTION SUMMARY ---${cReset}"
     
@@ -722,7 +739,7 @@ try {
     # Standardized exit codes (see Get-AiKitExitCode in Common.ps1), consistent with
     # the other cmd scripts: test failures or timeouts report Test, pure build
     # failures report Build. The finally block below still runs to clean up.
-    if ($totalFailed -gt 0 -or $totalTimedOut -gt 0) {
+    if ($failedProjects -gt 0 -or $totalTimedOut -gt 0) {
         exit (Get-AiKitExitCode Test)
     }
     if ($totalBuildErrs -gt 0) {

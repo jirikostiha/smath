@@ -1,3 +1,5 @@
+#Requires -Version 7
+
 <#
 .SYNOPSIS
 Removes build output folders.
@@ -23,7 +25,7 @@ name: Clean-Binaries
 kind: cmd
 description: Removes obj, bin and artf folders so the next build starts clean. Supports -WhatIf.
 profiles: [dotnet]
-version: 2.0
+version: 2.0.1
 ---#>
 [CmdletBinding(SupportsShouldProcess)]
 param(

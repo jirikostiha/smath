@@ -1,3 +1,5 @@
+#Requires -Version 7
+
 <#
 .SYNOPSIS
 Shared helper functions for the scripts in the cmd folder.
@@ -32,7 +34,7 @@ Write-Host ("Building {0}" -f (Get-Hyperlink -Path $slnPath))
 name: Common
 kind: cmd
 description: Shared helpers dot-sourced by the other scripts in cmd.
-version: 3.0.2
+version: 3.0.3
 ---#>
 
 # Note: this file is dot-sourced, so it runs in the caller's scope. It therefore

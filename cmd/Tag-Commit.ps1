@@ -1,3 +1,5 @@
+#Requires -Version 7
+
 <#
 .SYNOPSIS
 Tags the current commit with the product version.
@@ -34,7 +36,7 @@ name: Tag-Commit
 kind: cmd
 description: Tags the current commit with the product version and pushes the tag. Use when publishing a release.
 profiles: [dotnet]
-version: 2.1.3
+version: 2.2.2
 ---#>
 [CmdletBinding(SupportsShouldProcess)]
 param(
@@ -47,6 +49,15 @@ param(
 . (Join-Path $PSScriptRoot "Common.ps1")
 
 $current = Get-ProductVersion -Path $VersionFile
+# git runs against this script's repository, not whichever one the caller stands in.
+$root = Get-RepositoryRoot
+
+# The tag marks HEAD, so HEAD must carry the version: an uncommitted version file would tag the previous commit.
+$versionFileChanges = git -C $root status --porcelain -- $current.Path
+if ($LASTEXITCODE -ne 0) { throw ("git status failed (exit code: {0})." -f $LASTEXITCODE) }
+if ($versionFileChanges) {
+    throw ("The version file has uncommitted changes; commit them first: {0}" -f $current.Path)
+}
 
 $tagPrefix = if ($PSBoundParameters.ContainsKey('Prefix')) { ConvertTo-ThreePartVersion $Prefix } else { $current.Prefix }
 $tagSuffix = if ($PSBoundParameters.ContainsKey('Suffix')) { $Suffix } else { $current.Suffix }
@@ -55,12 +66,12 @@ $tag = if ($tagSuffix) { "v$tagPrefix-$tagSuffix" } else { "v$tagPrefix" }
 if ($PSCmdlet.ShouldProcess($current.Path, "Publish tag $tag")) {
     Write-Host ("Tagging commit {0} using file: {1}" -f $tag, (Get-Hyperlink -Path $current.Path)) -ForegroundColor Cyan
 
-    git tag $tag
+    git -C $root tag $tag
     if ($LASTEXITCODE -ne 0) { throw ("git tag failed (exit code: {0})." -f $LASTEXITCODE) }
 
     if (-not $NoPush) {
         # Only the new tag: --tags would also publish every unrelated local-only tag.
-        git push origin "refs/tags/$tag"
+        git -C $root push origin "refs/tags/$tag"
         if ($LASTEXITCODE -ne 0) { throw ("git push failed (exit code: {0})." -f $LASTEXITCODE) }
     }
 }

@@ -1,3 +1,5 @@
+#Requires -Version 7
+
 <#
 .SYNOPSIS
 Commits and pushes the current product version.
@@ -35,7 +37,7 @@ name: Commit-Version
 kind: cmd
 description: Commits and pushes the file carrying the product version. Use after bumping a version.
 profiles: [dotnet]
-version: 2.1.2
+version: 2.1.4
 ---#>
 [CmdletBinding(SupportsShouldProcess)]
 param(
@@ -48,6 +50,8 @@ param(
 . (Join-Path $PSScriptRoot "Common.ps1")
 
 $current = Get-ProductVersion -Path $VersionFile
+# git runs against this script's repository, not whichever one the caller stands in.
+$root = Get-RepositoryRoot
 
 $versionPrefix = if ($PSBoundParameters.ContainsKey('Prefix')) { ConvertTo-ThreePartVersion $Prefix } else { $current.Prefix }
 $versionSuffix = if ($PSBoundParameters.ContainsKey('Suffix')) { $Suffix } else { $current.Suffix }
@@ -61,14 +65,14 @@ if (-not $WhatIfPreference -and
 if ($PSCmdlet.ShouldProcess($current.Path, "Commit version $display")) {
     Write-Host ("Committing version {0} using file: {1}" -f $display, (Get-Hyperlink -Path $current.Path)) -ForegroundColor Cyan
 
-    git add -- $current.Path
+    git -C $root add -- $current.Path
     if ($LASTEXITCODE -ne 0) { throw ("git add failed (exit code: {0})." -f $LASTEXITCODE) }
 
-    git commit -m ("product: bump to version {0}" -f $display)
+    git -C $root commit -m ("product: bump to version {0}" -f $display)
     if ($LASTEXITCODE -ne 0) { throw ("git commit failed (exit code: {0})." -f $LASTEXITCODE) }
 
     if (-not $NoPush) {
-        git push
+        git -C $root push
         if ($LASTEXITCODE -ne 0) { throw ("git push failed (exit code: {0})." -f $LASTEXITCODE) }
     }
 }

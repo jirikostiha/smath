@@ -1,3 +1,5 @@
+#Requires -Version 7
+
 <#
 .SYNOPSIS
 Runs the whole release pipeline: build, test, lint, version, tag and push.
@@ -117,7 +119,7 @@ name: Publish-Release
 kind: cmd
 description: Runs the release pipeline end to end - build, test, lint, version bump by branch type, commit, tag, merge into main and push. Use to cut a release.
 profiles: [dotnet]
-version: 3.5.1
+version: 3.5.3
 ---#>
 [CmdletBinding(SupportsShouldProcess)]
 param(
@@ -1301,7 +1303,8 @@ try {
     if ($createdReleaseBranch -or $mergeStatus -eq "Merged") { $pushes.Add(@("origin", "main")) }
     # --set-upstream always: a release branch cut on a run whose push failed has no upstream yet.
     $pushes.Add(@("--set-upstream", "origin", $branch))
-    $pushes.Add(@("origin", "--tags"))
+    # Only the release tag: --tags would also publish every unrelated local-only tag.
+    $pushes.Add(@("origin", "refs/tags/$($target.Tag)"))
 
     $pending = [System.Collections.Generic.List[string[]]]::new()
     $pushFailed = $false
