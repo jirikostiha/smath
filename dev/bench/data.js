@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1795876898567,
+  "lastUpdate": 1795877605626,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -1092,6 +1092,42 @@ window.BENCHMARK_DATA = {
             "value": 24542.621799723307,
             "unit": "ns",
             "range": "± 4.349166748274359"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "7357cbc041232016c3b700290ea11dd8c417e133",
+          "message": "perf: GeometricVector2.Rotation - evaluate sine and cosine together\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+          "timestamp": "2026-11-28T15:36:25+01:00",
+          "tree_id": "66340b9422571f8e0598700dc3d5f7ccf3aafaf3",
+          "url": "https://github.com/jirikostiha/smath/commit/7357cbc041232016c3b700290ea11dd8c417e133"
+        },
+        "date": 1795877605054,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Functions1.PT_Hypotenuse_Benchmark.SMath",
+            "value": 27992.386707850867,
+            "unit": "ns",
+            "range": "± 6.279225900928745"
+          },
+          {
+            "name": "SMath.Functions1.PT_Hypotenuse_Benchmark.Double",
+            "value": 28003.00272216797,
+            "unit": "ns",
+            "range": "± 7.921681747235117"
           }
         ]
       }
