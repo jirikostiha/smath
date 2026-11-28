@@ -5,6 +5,17 @@ namespace SMath.Geometry2D;
 public class LineSegmentTests
 {
     [Theory]
+    [InlineData(1d, 3d, 1d, 0d)]
+    [InlineData(-3d, 1d, 0d, 0d)]
+    [InlineData(7d, -1d, 4d, 0d)]
+    public void ClosestPointToAPointLiesOnTheSegment(double x, double y, double expectedX, double expectedY)
+        => Assert.Equal((expectedX, expectedY), Line.Segment.And.Point.ClosestPoint.FromPoints((0d, 0d), (4d, 0d), (x, y)));
+
+    [Fact]
+    public void ClosestPointOfASegmentOfNoLengthIsItsPoint()
+        => Assert.Equal((2d, 2d), Line.Segment.And.Point.ClosestPoint.FromPoints((2d, 2d), (2d, 2d), (5d, -1d)));
+
+    [Theory]
     [InlineData(0, 0, 1, 0, 0)]
     [InlineData(0, 0, 0, 1, double.PositiveInfinity)]
     [InlineData(0, 0, -1, 0, 0)]

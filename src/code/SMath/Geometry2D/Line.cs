@@ -370,6 +370,21 @@ public static class Line
             /// <summary>Line segment and point investigation.</summary>
             public static class Point
             {
+                /// <summary> Point of a line segment closest to a point; the first point for a segment of no length. </summary>
+                public static class ClosestPoint
+                {
+                    public static (N X, N Y) FromPoints<N>((N X, N Y) sp1, (N X, N Y) sp2, (N X, N Y) point)
+                        where N : INumber<N>
+                    {
+                        var direction = GeometricVector2.Direction.FromCartesian(sp1, sp2);
+                        var length2 = GeometricVector2.MagnitudeSquared.FromCartesian(direction);
+                        var t = length2 == N.Zero
+                            ? N.Zero
+                            : N.Clamp(GeometricVector2.DotProduct.FromCartesian(GeometricVector2.Direction.FromCartesian(sp1, point), direction) / length2, N.Zero, N.One);
+                        return (sp1.X + (t * direction.X), sp1.Y + (t * direction.Y));
+                    }
+                }
+
                 /// <summary>
                 /// Distance of line segment and point.
                 /// <a href="https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line#Line_defined_by_two_points">Wikipedia</a>
