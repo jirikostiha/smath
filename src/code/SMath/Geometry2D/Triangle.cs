@@ -126,6 +126,17 @@ public static class Triangle
     /// <summary>Enclosed plane region of a triangle.</summary>
     public static class Region
     {
+        /// <summary> Signed area of a triangle, positive when its vertices run counterclockwise. </summary>
+        /// <remarks><a href="https://en.wikipedia.org/wiki/Shoelace_formula">Wikipedia</a></remarks>
+        public static class SignedArea
+        {
+            public static N FromVertices<N>((N X, N Y) vertex1, (N X, N Y) vertex2, (N X, N Y) vertex3)
+                where N : INumberBase<N>
+                => GeometricVector2.CrossProduct.FromCartesian(
+                    GeometricVector2.Direction.FromCartesian(vertex1, vertex2),
+                    GeometricVector2.Direction.FromCartesian(vertex1, vertex3)) / N.CreateChecked(2);
+        }
+
         /// <summary>Enclosed plane region area of a triangle.</summary>
         /// <remarks><a href="https://en.wikipedia.org/wiki/Area_of_a_triangle">Wikipedia</a></remarks>
         public static class Area

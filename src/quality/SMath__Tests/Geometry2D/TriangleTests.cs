@@ -4,6 +4,13 @@ namespace SMath.Geometry2D;
 
 public class TriangleTests
 {
+    [Theory]
+    [InlineData(0d, 0d, 4d, 0d, 0d, 3d, 6d)]
+    [InlineData(0d, 0d, 0d, 3d, 4d, 0d, -6d)]
+    [InlineData(0d, 0d, 1d, 1d, 2d, 2d, 0d)]
+    public void SignedAreaIsPositiveForCounterclockwiseVertices(double x1, double y1, double x2, double y2, double x3, double y3, double expected)
+        => Assert.Equal(expected, Triangle.Region.SignedArea.FromVertices((x1, y1), (x2, y2), (x3, y3)));
+
     [Fact]
     public void Counts()
     {
