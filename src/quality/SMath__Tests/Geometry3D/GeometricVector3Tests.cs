@@ -113,6 +113,15 @@ public class GeometricVector3Tests
     public void AngleBetweenVectors(double x1, double y1, double z1, double x2, double y2, double z2, double expected)
         => Assert.Equal(expected, GeometricVector3.Angle.FromCartesian((x1, y1, z1), (x2, y2, z2)), 12);
 
+    [Theory]
+    [InlineData(0d, 1d, 0d, 0d, 0d, 2d, Math.PI / 2d)]
+    [InlineData(0d, -1d, 0d, 0d, 0d, 2d, -Math.PI / 2d)]
+    [InlineData(-1d, 0d, 0d, 0d, 0d, 2d, Math.PI)]
+    [InlineData(0d, 1d, 0d, 0d, 0d, -2d, -Math.PI / 2d)]
+    [InlineData(1d, 1d, 0d, 0d, 0d, 5d, Math.PI / 4d)]
+    public void SignedAngleAboutAnAxisFollowsTheRightHandRule(double x2, double y2, double z2, double axisX, double axisY, double axisZ, double expected)
+        => Assert.Equal(expected, GeometricVector3.Angle.FromCartesian((2d, 0d, 0d), (x2, y2, z2), (axisX, axisY, axisZ)), 12);
+
     [Fact]
     public void DistanceAndDirection()
     {

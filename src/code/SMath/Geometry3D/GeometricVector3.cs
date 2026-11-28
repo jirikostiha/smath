@@ -186,6 +186,15 @@ public static class GeometricVector3
         public static N FromCartesian<N>((N X, N Y, N Z) vector1, (N X, N Y, N Z) vector2)
             where N : IFloatingPointIeee754<N>
             => N.Atan2(Magnitude.FromCartesian(CrossProduct.FromCartesian(vector1, vector2)), DotProduct.FromCartesian(vector1, vector2));
+
+        /// <summary> Signed angle from the first to the second vector about an axis, in the range (-pi, pi]; positive counterclockwise when looking against the axis. </summary>
+        /// <remarks> Both vectors lie in the plane perpendicular to the axis. Computed as atan2(n · (a × b), (a · b) * |n|). Zero when either vector is zero. </remarks>
+        /// <param name="vector1"> Vector the angle starts at. </param>
+        /// <param name="vector2"> Vector the angle ends at. </param>
+        /// <param name="axis"> Non-zero axis of the rotation, of any length. </param>
+        public static N FromCartesian<N>((N X, N Y, N Z) vector1, (N X, N Y, N Z) vector2, (N X, N Y, N Z) axis)
+            where N : IFloatingPointIeee754<N>
+            => N.Atan2(TripleProduct.FromCartesian(axis, vector1, vector2), DotProduct.FromCartesian(vector1, vector2) * Magnitude.FromCartesian(axis));
     }
 
     /// <summary>
