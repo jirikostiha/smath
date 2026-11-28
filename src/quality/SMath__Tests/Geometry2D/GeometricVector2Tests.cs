@@ -217,4 +217,19 @@ public class GeometricVector2Tests
         Assert.Equal(ex, rx, 9);
         Assert.Equal(ey, ry, 9);
     }
+
+    [Fact]
+    public void MagnitudeSquaredIsTheSquareOfTheMagnitude() => Assert.Equal(25d, GeometricVector2.MagnitudeSquared.FromCartesian((3d, 4d)));
+
+    [Fact]
+    public void ProjectionIsThePartParallelToTheDirection() => Assert.Equal((3d, 0d), GeometricVector2.Projection.FromCartesian((3d, 4d), (2d, 0d)));
+
+    [Fact]
+    public void ProjectionOntoAZeroDirectionIsZero() => Assert.Equal((0d, 0d), GeometricVector2.Projection.FromCartesian((3d, 4d), (0d, 0d)));
+
+    [Fact]
+    public void RejectionIsThePartPerpendicularToTheDirection() => Assert.Equal((0d, 4d), GeometricVector2.Rejection.FromCartesian((3d, 4d), (2d, 0d)));
+
+    [Fact]
+    public void RejectionFromAZeroDirectionIsTheVector() => Assert.Equal((3d, 4d), GeometricVector2.Rejection.FromCartesian((3d, 4d), (0d, 0d)));
 }

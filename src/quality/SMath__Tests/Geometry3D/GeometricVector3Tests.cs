@@ -166,4 +166,88 @@ public class GeometricVector3Tests
         Assert.Equal(2d, rotated.Y, 12);
         Assert.Equal(1d, rotated.Z, 12);
     }
+
+    [Fact]
+    public void MagnitudeSquaredIsTheSquareOfTheMagnitude() => Assert.Equal(49d, GeometricVector3.MagnitudeSquared.FromCartesian((2d, 3d, 6d)));
+
+    [Fact]
+    public void RejectionIsThePartPerpendicularToTheDirection()
+    {
+        var rejection = GeometricVector3.Rejection.FromCartesian((1d, 2d, 3d), (0d, 0d, 2d));
+
+        Assert.Equal((1d, 2d, 0d), rejection);
+    }
+
+    [Fact]
+    public void RejectionAndProjectionAddUpToTheVector()
+    {
+        var vector = (X: 1d, Y: -2d, Z: 3d);
+        var onto = (0.5d, 4d, -1d);
+
+        var rejection = GeometricVector3.Rejection.FromCartesian(vector, onto);
+        var projection = GeometricVector3.Projection.FromCartesian(vector, onto);
+
+        Assert.Equal(0d, GeometricVector3.DotProduct.FromCartesian(rejection, onto), 12);
+        Assert.Equal(vector.X, rejection.X + projection.X, 12);
+        Assert.Equal(vector.Y, rejection.Y + projection.Y, 12);
+        Assert.Equal(vector.Z, rejection.Z + projection.Z, 12);
+    }
+
+    [Fact]
+    public void RejectionFromAZeroDirectionIsTheVector() => Assert.Equal((1d, 2d, 3d), GeometricVector3.Rejection.FromCartesian((1d, 2d, 3d), (0d, 0d, 0d)));
+
+    [Theory]
+    [InlineData(1d, 0d, 0d)]
+    [InlineData(0d, 0d, -3d)]
+    [InlineData(1d, 2d, 3d)]
+    [InlineData(-0.3d, 0.1d, 0.9d)]
+    public void OrthonormalBasisOfAVectorIsRightHandedAndPointsAlongIt(double x, double y, double z)
+    {
+        var (u, v, w) = GeometricVector3.OrthonormalBasis.FromCartesian((x, y, z));
+
+        AssertOrthonormalRightHanded(u, v, w);
+        var unit = GeometricVector3.Cartesian.Normalized((x, y, z));
+        Assert.Equal(unit.X, w.X, 12);
+        Assert.Equal(unit.Y, w.Y, 12);
+        Assert.Equal(unit.Z, w.Z, 12);
+    }
+
+    [Fact]
+    public void OrthonormalBasisOfTwoVectorsIsTheGramSchmidtProcess()
+    {
+        var (e1, e2, e3) = GeometricVector3.OrthonormalBasis.FromCartesian((3d, 0d, 0d), (1d, 2d, 0d));
+
+        Assert.Equal((1d, 0d, 0d), e1);
+        Assert.Equal((0d, 1d, 0d), e2);
+        Assert.Equal((0d, 0d, 1d), e3);
+    }
+
+    [Fact]
+    public void OrthonormalBasisOfTwoSkewVectorsIsRightHanded()
+    {
+        var (e1, e2, e3) = GeometricVector3.OrthonormalBasis.FromCartesian((1d, 2d, 3d), (-2d, 0.5d, 1d));
+
+        AssertOrthonormalRightHanded(e1, e2, e3);
+    }
+
+    [Fact]
+    public void OrthonormalBasisOfParallelVectorsHasNoSecondAndThirdVector()
+    {
+        var (_, e2, e3) = GeometricVector3.OrthonormalBasis.FromCartesian((1d, 2d, 3d), (2d, 4d, 6d));
+
+        Assert.Equal((0d, 0d, 0d), e2);
+        Assert.Equal((0d, 0d, 0d), e3);
+    }
+
+    private static void AssertOrthonormalRightHanded(
+        (double X, double Y, double Z) a, (double X, double Y, double Z) b, (double X, double Y, double Z) c)
+    {
+        Assert.Equal(1d, GeometricVector3.MagnitudeSquared.FromCartesian(a), 12);
+        Assert.Equal(1d, GeometricVector3.MagnitudeSquared.FromCartesian(b), 12);
+        Assert.Equal(1d, GeometricVector3.MagnitudeSquared.FromCartesian(c), 12);
+        Assert.Equal(0d, GeometricVector3.DotProduct.FromCartesian(a, b), 12);
+        Assert.Equal(0d, GeometricVector3.DotProduct.FromCartesian(a, c), 12);
+        Assert.Equal(0d, GeometricVector3.DotProduct.FromCartesian(b, c), 12);
+        Assert.Equal(1d, GeometricVector3.TripleProduct.FromCartesian(a, b, c), 12);
+    }
 }

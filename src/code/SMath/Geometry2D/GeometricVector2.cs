@@ -43,6 +43,15 @@ public static class GeometricVector2
             => FromTwoPolarVectors(vector1.Magnitude, vector2.Magnitude, vector1.Angle - vector2.Angle);
     }
 
+    /// <summary> Squared magnitude of a vector. It spares the root where only lengths are compared. </summary>
+    public static class MagnitudeSquared
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static N FromCartesian<N>((N X, N Y) vector)
+            where N : INumberBase<N>
+            => DotProduct.FromCartesian(vector, vector);
+    }
+
     /// <summary>X-component of vector.</summary>
     public static class X
     {
@@ -209,6 +218,36 @@ public static class GeometricVector2
         public static (N X, N Y) FromCartesian<N>((N X, N Y) fromVector, (N X, N Y) toVector)
             where N : ISubtractionOperators<N, N, N>
             => (toVector.X - fromVector.X, toVector.Y - fromVector.Y);
+    }
+
+    /// <summary> Projection of a vector onto another one. </summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Vector_projection">Wikipedia</a></remarks>
+    public static class Projection
+    {
+        /// <summary> Component of <paramref name="vector"/> parallel to <paramref name="onto"/>. Zero when <paramref name="onto"/> is zero. </summary>
+        public static (N X, N Y) FromCartesian<N>((N X, N Y) vector, (N X, N Y) onto)
+            where N : INumberBase<N>
+        {
+            var length2 = MagnitudeSquared.FromCartesian(onto);
+            if (length2 == N.Zero)
+                return (N.Zero, N.Zero);
+
+            var t = DotProduct.FromCartesian(vector, onto) / length2;
+            return (onto.X * t, onto.Y * t);
+        }
+    }
+
+    /// <summary> Rejection of a vector from another one, the part of it that is not parallel to the other one. </summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Vector_projection#Vector_rejection">Wikipedia</a></remarks>
+    public static class Rejection
+    {
+        /// <summary> Component of <paramref name="vector"/> perpendicular to <paramref name="onto"/>. It is the vector itself when <paramref name="onto"/> is zero. </summary>
+        public static (N X, N Y) FromCartesian<N>((N X, N Y) vector, (N X, N Y) onto)
+            where N : INumberBase<N>
+        {
+            var parallel = Projection.FromCartesian(vector, onto);
+            return (vector.X - parallel.X, vector.Y - parallel.Y);
+        }
     }
 
     /// <summary>Reflection of a vector about a normal.</summary>

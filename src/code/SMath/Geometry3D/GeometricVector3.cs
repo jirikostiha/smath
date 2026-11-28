@@ -31,6 +31,15 @@ public static class GeometricVector3
             => FromCartesian(Cartesian.FromCartesianVectors(vectors));
     }
 
+    /// <summary> Squared magnitude of a vector. It spares the root where only lengths are compared. </summary>
+    public static class MagnitudeSquared
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static N FromCartesian<N>((N X, N Y, N Z) vector)
+            where N : INumberBase<N>
+            => DotProduct.FromCartesian(vector, vector);
+    }
+
     /// <summary>X component of a vector.</summary>
     public static class X
     {
@@ -227,6 +236,29 @@ public static class GeometricVector3
         }
     }
 
+    /// <summary> Right-handed orthonormal basis built from vectors; the vectors of a zero input are zero. </summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process">Wikipedia</a></remarks>
+    public static class OrthonormalBasis
+    {
+        /// <summary> Basis whose third vector points along the input vector. The first two span the plane perpendicular to it, see <see cref="Normal"/>. </summary>
+        public static ((N X, N Y, N Z) U, (N X, N Y, N Z) V, (N X, N Y, N Z) W) FromCartesian<N>((N X, N Y, N Z) vector)
+            where N : INumber<N>, IRootFunctions<N>
+        {
+            var w = Cartesian.Normalized(vector);
+            var u = Cartesian.Normalized(Normal.FromCartesian(vector));
+            return (u, CrossProduct.FromCartesian(w, u), w);
+        }
+
+        /// <summary> Basis by the Gram-Schmidt process: the first vector points along <paramref name="vector1"/>, the second lies in the plane of both vectors. The second and third are zero when the vectors are parallel. </summary>
+        public static ((N X, N Y, N Z) E1, (N X, N Y, N Z) E2, (N X, N Y, N Z) E3) FromCartesian<N>((N X, N Y, N Z) vector1, (N X, N Y, N Z) vector2)
+            where N : IRootFunctions<N>
+        {
+            var e1 = Cartesian.Normalized(vector1);
+            var e2 = Cartesian.Normalized(Rejection.FromCartesian(vector2, e1));
+            return (e1, e2, CrossProduct.FromCartesian(e1, e2));
+        }
+    }
+
     /// <summary>Distance of two vectors.</summary>
     public static class Distance
     {
@@ -252,12 +284,25 @@ public static class GeometricVector3
         public static (N X, N Y, N Z) FromCartesian<N>((N X, N Y, N Z) vector, (N X, N Y, N Z) onto)
             where N : INumberBase<N>
         {
-            var length2 = DotProduct.FromCartesian(onto, onto);
+            var length2 = MagnitudeSquared.FromCartesian(onto);
             if (length2 == N.Zero)
                 return (N.Zero, N.Zero, N.Zero);
 
             var t = DotProduct.FromCartesian(vector, onto) / length2;
             return (onto.X * t, onto.Y * t, onto.Z * t);
+        }
+    }
+
+    /// <summary> Rejection of a vector from another one, the part of it that is not parallel to the other one. </summary>
+    /// <remarks><a href="https://en.wikipedia.org/wiki/Vector_projection#Vector_rejection">Wikipedia</a></remarks>
+    public static class Rejection
+    {
+        /// <summary> Component of <paramref name="vector"/> perpendicular to <paramref name="onto"/>. It is the vector itself when <paramref name="onto"/> is zero. </summary>
+        public static (N X, N Y, N Z) FromCartesian<N>((N X, N Y, N Z) vector, (N X, N Y, N Z) onto)
+            where N : INumberBase<N>
+        {
+            var parallel = Projection.FromCartesian(vector, onto);
+            return (vector.X - parallel.X, vector.Y - parallel.Y, vector.Z - parallel.Z);
         }
     }
 
