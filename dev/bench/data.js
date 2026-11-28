@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794907990326,
+  "lastUpdate": 1795860586525,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -984,6 +984,42 @@ window.BENCHMARK_DATA = {
             "value": 23909.54634530204,
             "unit": "ns",
             "range": "± 30.562047514434838"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "a414f5bdefec9935047bd3fe30a4f6388921072d",
+          "message": "feat: GeometricVector3 - signed angle about an axis\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+          "timestamp": "2026-11-28T10:50:34+01:00",
+          "tree_id": "bb525ebcde06809dd07dda9a75e8bce261f1f666",
+          "url": "https://github.com/jirikostiha/smath/commit/a414f5bdefec9935047bd3fe30a4f6388921072d"
+        },
+        "date": 1795860586022,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Functions1.PT_Hypotenuse_Benchmark.SMath",
+            "value": 14413.588825770787,
+            "unit": "ns",
+            "range": "± 6.058349257025681"
+          },
+          {
+            "name": "SMath.Functions1.PT_Hypotenuse_Benchmark.Double",
+            "value": 14413.385317288912,
+            "unit": "ns",
+            "range": "± 9.172575122170107"
           }
         ]
       }
