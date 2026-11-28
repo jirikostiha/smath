@@ -18,6 +18,15 @@ public static class Ellipse
             => N.Sqrt(N.One - (minorRadius * minorRadius) / (majorRadius * majorRadius));
     }
 
+    /// <summary> Ratio of the minor to the major radius of an ellipse, sqrt(1 - e^2). </summary>
+    public static class AxisRatio
+    {
+        // the product form keeps the precision for an eccentricity close to 1
+        public static N FromEccentricity<N>(N eccentricity)
+            where N : IRootFunctions<N>
+            => N.Sqrt((N.One - eccentricity) * (N.One + eccentricity));
+    }
+
     /// <summary>Linear eccentricity of an ellipse.</summary>
     public static class LinearEccentricity
     {

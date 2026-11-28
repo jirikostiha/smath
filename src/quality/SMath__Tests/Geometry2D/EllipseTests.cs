@@ -5,6 +5,13 @@ namespace SMath.Geometry2D;
 
 public class EllipseTests
 {
+    [Theory]
+    [InlineData(5d, 3d)]
+    [InlineData(2d, 2d)]
+    [InlineData(10d, 0.5d)]
+    public void AxisRatioInvertsTheEccentricity(double majorRadius, double minorRadius)
+        => Assert.Equal(minorRadius / majorRadius, Ellipse.AxisRatio.FromEccentricity(Ellipse.Eccentricity.FromRadius(majorRadius, minorRadius)), 12);
+
     [Fact]
     public void Eccentricity_Circle_IsZero()
     {
