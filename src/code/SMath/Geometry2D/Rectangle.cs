@@ -42,9 +42,19 @@ public static class Rectangle
     /// </summary>
     public static bool ContainsByCorners<N>((N X, N Y) corner1, (N X, N Y) corner2, (N X, N Y) point)
         where N : INumber<N>
-        => Aabb.Contains(
-            ((N.Min(corner1.X, corner2.X), N.Min(corner1.Y, corner2.Y)), (N.Max(corner1.X, corner2.X), N.Max(corner1.Y, corner2.Y))),
-            point);
+        => Aabb.Contains(BoxByCorners(corner1, corner2), point);
+
+    /// <summary>
+    /// Point of an axis-aligned rectangle defined by two opposite corners closest to a point; the point itself when inside.
+    /// The corners may be given in any order.
+    /// </summary>
+    public static (N X, N Y) ClosestPointByCorners<N>((N X, N Y) corner1, (N X, N Y) corner2, (N X, N Y) point)
+        where N : INumber<N>
+        => Aabb.ClosestPoint(BoxByCorners(corner1, corner2), point);
+
+    private static ((N X, N Y) Min, (N X, N Y) Max) BoxByCorners<N>((N X, N Y) corner1, (N X, N Y) corner2)
+        where N : INumber<N>
+        => ((N.Min(corner1.X, corner2.X), N.Min(corner1.Y, corner2.Y)), (N.Max(corner1.X, corner2.X), N.Max(corner1.Y, corner2.Y)));
 
     public static (N X, N Y) Vertex1<N>()
         where N : IFloatingPoint<N>

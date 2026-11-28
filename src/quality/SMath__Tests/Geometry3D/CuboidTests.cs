@@ -35,6 +35,16 @@ public class CuboidTests
         Assert.Equal(expected, Cuboid.ContainsByCorners((3d, 3d, 3d), (-2d, -2d, -2d), (x, y, z)));
     }
 
+    [Theory]
+    [InlineData(0d, 1d, 2d, 0d, 1d, 2d)]
+    [InlineData(5d, 1d, -4d, 3d, 1d, -2d)]
+    [InlineData(-9d, 9d, 0d, -2d, 3d, 0d)]
+    public void ClosestPointByCorners_ClampsEachAxis(double x, double y, double z, double expectedX, double expectedY, double expectedZ)
+    {
+        Assert.Equal((expectedX, expectedY, expectedZ), Cuboid.ClosestPointByCorners((-2d, -2d, -2d), (3d, 3d, 3d), (x, y, z)));
+        Assert.Equal((expectedX, expectedY, expectedZ), Cuboid.ClosestPointByCorners((3d, 3d, 3d), (-2d, -2d, -2d), (x, y, z)));
+    }
+
     [Fact]
     public void UnitVerticesAndCenters()
     {

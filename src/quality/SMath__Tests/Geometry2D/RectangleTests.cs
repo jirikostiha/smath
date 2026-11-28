@@ -4,6 +4,16 @@ namespace SMath.Geometry2D;
 
 public class RectangleTests
 {
+    [Theory]
+    [InlineData(0d, 1d, 0d, 1d)]
+    [InlineData(5d, 1d, 3d, 1d)]
+    [InlineData(-9d, 9d, -2d, 3d)]
+    public void ClosestPointByCorners_ClampsEachAxis(double x, double y, double expectedX, double expectedY)
+    {
+        Assert.Equal((expectedX, expectedY), Rectangle.ClosestPointByCorners((-2d, -2d), (3d, 3d), (x, y)));
+        Assert.Equal((expectedX, expectedY), Rectangle.ClosestPointByCorners((3d, 3d), (-2d, -2d), (x, y)));
+    }
+
     [Fact]
     public void Counts()
     {

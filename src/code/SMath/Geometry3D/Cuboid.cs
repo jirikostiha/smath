@@ -65,6 +65,16 @@ public static class Cuboid
             && point.Z >= minZ && point.Z <= maxZ;
     }
 
+    /// <summary>
+    /// Point of an axis-aligned cuboid defined by two opposite corners closest to a point; the point itself when inside.
+    /// The corners may be given in any order.
+    /// </summary>
+    public static (N X, N Y, N Z) ClosestPointByCorners<N>((N X, N Y, N Z) corner1, (N X, N Y, N Z) corner2, (N X, N Y, N Z) point)
+        where N : INumber<N>
+        => (N.Clamp(point.X, N.Min(corner1.X, corner2.X), N.Max(corner1.X, corner2.X)),
+            N.Clamp(point.Y, N.Min(corner1.Y, corner2.Y), N.Max(corner1.Y, corner2.Y)),
+            N.Clamp(point.Z, N.Min(corner1.Z, corner2.Z), N.Max(corner1.Z, corner2.Z)));
+
     public static (N X, N Y, N Z) Vertex1<N>()
         where N : IFloatingPoint<N>
         => (N.Zero, N.Zero, N.Zero);
