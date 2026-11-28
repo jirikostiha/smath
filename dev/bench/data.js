@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1795876561122,
+  "lastUpdate": 1795876898567,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -1056,6 +1056,42 @@ window.BENCHMARK_DATA = {
             "value": 28001.926951090496,
             "unit": "ns",
             "range": "± 5.383767299026218"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "600968b76d974fc8802c91bfc9157b5a4200173d",
+          "message": "product: bump to version 1.8.0",
+          "timestamp": "2026-11-28T15:24:24+01:00",
+          "tree_id": "7dfe34c13779aa2221822673cfb5a370bba9e327",
+          "url": "https://github.com/jirikostiha/smath/commit/600968b76d974fc8802c91bfc9157b5a4200173d"
+        },
+        "date": 1795876897882,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Functions1.PT_Hypotenuse_Benchmark.SMath",
+            "value": 24542.976869710288,
+            "unit": "ns",
+            "range": "± 4.943306431533731"
+          },
+          {
+            "name": "SMath.Functions1.PT_Hypotenuse_Benchmark.Double",
+            "value": 24542.621799723307,
+            "unit": "ns",
+            "range": "± 4.349166748274359"
           }
         ]
       }
