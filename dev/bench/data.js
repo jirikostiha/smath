@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1795860586525,
+  "lastUpdate": 1795876561122,
   "repoUrl": "https://github.com/jirikostiha/smath",
   "entries": {
     "Benchmark.Net": [
@@ -1020,6 +1020,42 @@ window.BENCHMARK_DATA = {
             "value": 14413.385317288912,
             "unit": "ns",
             "range": "± 9.172575122170107"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "committer": {
+            "email": "ijkdata@gmail.com",
+            "name": "Jiri Kostiha",
+            "username": "jirikostiha"
+          },
+          "distinct": true,
+          "id": "ebf3873dc8d3f94bfbfd500b1a29bb3f511a1949",
+          "message": "feat: RotationQuaternion - rotation in space as a quaternion\n\n- compose, conjugate, rotate\n- slerp of rotations\n- Interpolation3 linear, spherical\n- tests and docs\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+          "timestamp": "2026-11-28T15:19:25+01:00",
+          "tree_id": "b25fed402779880cedf69e896f0c5c1a6f52a42b",
+          "url": "https://github.com/jirikostiha/smath/commit/ebf3873dc8d3f94bfbfd500b1a29bb3f511a1949"
+        },
+        "date": 1795876560840,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "SMath.Functions1.PT_Hypotenuse_Benchmark.SMath",
+            "value": 28002.935917445593,
+            "unit": "ns",
+            "range": "± 9.289514820294619"
+          },
+          {
+            "name": "SMath.Functions1.PT_Hypotenuse_Benchmark.Double",
+            "value": 28001.926951090496,
+            "unit": "ns",
+            "range": "± 5.383767299026218"
           }
         ]
       }
