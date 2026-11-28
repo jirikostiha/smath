@@ -354,8 +354,10 @@ public static class GeometricVector2
         /// <summary>Rotate a vector counterclockwise around the origin by an angle in radians.</summary>
         public static (N X, N Y) FromCartesian<N>((N X, N Y) vector, N angle)
             where N : ITrigonometricFunctions<N>
-            => ((vector.X * N.Cos(angle)) - (vector.Y * N.Sin(angle)),
-                (vector.X * N.Sin(angle)) + (vector.Y * N.Cos(angle)));
+        {
+            var (sin, cos) = N.SinCos(angle);
+            return ((vector.X * cos) - (vector.Y * sin), (vector.X * sin) + (vector.Y * cos));
+        }
 
         /// <summary>Rotate a point counterclockwise around a center point by an angle in radians.</summary>
         public static (N X, N Y) FromCartesian<N>((N X, N Y) point, (N X, N Y) center, N angle)
